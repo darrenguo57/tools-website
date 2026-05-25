@@ -1,237 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Code Diff - ToolBox</title>
-  <meta name="description" content="Free online code diff tool. Compare two code snippets side by side with line-by-line highlighting of additions, deletions, and modifications.">
-  <meta name="keywords" content="code diff, compare code, text diff, diff online, code comparison">
-  <meta name="author" content="ToolBox">
-  <meta name="robots" content="index, follow">
-
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Code Diff - ToolBox">
-  <meta property="og:description" content="Free online code diff tool with line-by-line comparison.">
-  <meta property="og:url" content="https://toolbox.example.com/tools/formatters/code-diff.html">
-  <meta property="og:site_name" content="ToolBox">
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Code Diff - ToolBox">
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Code Diff",
-    "url": "https://toolbox.example.com/tools/formatters/code-diff.html",
-    "description": "Free online code diff tool with line-by-line comparison.",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-  }
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@0.453.0"></script>
-
-  <link rel="stylesheet" href="../../assets/css/main.css">
-  <link rel="stylesheet" href="../../assets/css/tools.css">
-  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
-
-  <style>
-    .diff-container { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--color-border); border-radius: 8px; overflow: hidden; font-family: 'Courier New', Courier, monospace; font-size: 13px; }
-    .diff-side { overflow: auto; max-height: 600px; }
-    .diff-side-header { padding: 8px 12px; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; background: var(--color-bg-secondary); border-bottom: 1px solid var(--color-border); position: sticky; top: 0; z-index: 1; font-family: var(--font-family); }
-    .diff-side-header.left { border-right: 1px solid var(--color-border); }
-    .diff-line { display: flex; min-height: 22px; line-height: 22px; }
-    .diff-line-num { width: 48px; min-width: 48px; text-align: right; padding-right: 8px; color: #8b949e; background: var(--color-bg-secondary); border-right: 1px solid var(--color-border); user-select: none; font-size: 12px; }
-    .diff-line-content { flex: 1; padding: 0 8px; white-space: pre; }
-    .diff-line.equal .diff-line-content { background: transparent; }
-    .diff-line.add .diff-line-content { background: #dafbe1; color: #116329; }
-    .diff-line.add .diff-line-num { background: #acf2bd; color: #116329; }
-    .diff-line.remove .diff-line-content { background: #ffebe9; color: #82071e; }
-    .diff-line.remove .diff-line-num { background: #ff8182; color: #82071e; }
-    .diff-line.modify .diff-line-content { background: #fff8c5; color: #7a5e00; }
-    .diff-line.modify .diff-line-num { background: #ffe066; color: #7a5e00; }
-    .diff-line.empty .diff-line-content { background: #f6f8fa; color: #8b949e; }
-    .diff-stats { display: flex; gap: 16px; padding: 10px 0; font-size: 13px; }
-    .diff-stats .added { color: #116329; font-weight: 600; }
-    .diff-stats .removed { color: #82071e; font-weight: 600; }
-    .diff-stats .modified { color: #7a5e00; font-weight: 600; }
-    .diff-stats .unchanged { color: #57606a; }
-    @media (max-width: 768px) {
-      .diff-container { grid-template-columns: 1fr; }
-      .diff-side-header.left { border-right: none; border-bottom: 1px solid var(--color-border); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Compare - ToolBox</title>
+    <meta name="description" content="Compare code">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    
+    <style>
+        /* Tool Page Custom Styles */
+        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .workspace-grid .full-width { grid-column: 1 / -1; }
+        .textarea-wrap { position: relative; }
+        .textarea-wrap textarea, .textarea-wrap input {
+            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
+            resize: vertical; background: var(--color-bg); color: var(--color-text);
+            box-sizing: border-box;
+        }
+        .textarea-wrap input { min-height: auto; resize: none; }
+        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
+        
+        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
-
-  <nav class="navbar" id="navbar">
-    <div class="navbar-container">
-      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
-      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
-      <div class="navbar-actions">
-        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
-        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
-        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
-      </div>
-    </div>
-  </nav>
-
-  <div class="main-layout">
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header"><h3>Categories</h3></div>
-      <ul class="sidebar-list">
-        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
-        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
-        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
-        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
-        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
-        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
-        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
-        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
-        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
-      </ul>
-    </aside>
-
-    <main class="main-content tool-page">
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="../../index.html">Home</a>
-        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
-        <a href="../../index.html?category=formatters">Formatters</a>
-        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
-        <span class="breadcrumb-current">Code Diff</span>
-      </nav>
-
-      <section class="tool-header">
-        <div class="tool-header__icon"><i data-lucide="git-compare"></i></div>
-        <div class="tool-header-info">
-          <h1 class="tool-header__title">Code Diff</h1>
-          <p class="tool-header__desc">Compare two code snippets side by side. Highlights added, deleted, and modified lines with line numbers.</p>
-          <span class="tool-card-tag">Formatters</span>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo">
+                <i data-lucide="toolbox"></i>
+                <span>ToolBox</span>
+            </a>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+            </div>
+            <div class="header-actions">
+                <button class="lang-btn" id="langToggle" aria-label="Toggle Language">
+                    <span class="lang-label">EN</span>
+                </button>
+                <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">
+                    <i data-lucide="sun" class="theme-icon-light"></i>
+                    <i data-lucide="moon" class="theme-icon-dark"></i>
+                </button>
+            </div>
         </div>
-      </section>
-
-      <section class="tool-content">
-        <div class="tool-workspace">
-
-          <div class="tool-workspace--split">
-            <!-- Left Input -->
-            <div class="tool-panel">
-              <div class="tool-panel__header">
-                <h3 class="tool-panel__title"><i data-lucide="file-text"></i> Original</h3>
-                <div class="tool-panel__actions">
-                  <button class="tool-action-btn" id="btnPasteLeft"><i data-lucide="clipboard-paste"></i> Paste</button>
+    </header>
+    
+    <!-- Breadcrumb -->
+    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_formatters" data-i18n="cat_formatters">Formatters</a> / <span>Code Compare</span></div></div>
+    
+    <!-- Main Content -->
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <!-- Tool Header -->
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="git-compare"></i></div>
+                    <h1>Code Compare</h1>
+                    <p>Compare code</p>
                 </div>
-              </div>
-              <div class="tool-panel__body">
-                <textarea class="tool-input__field" id="leftInput" placeholder="Paste original code here..." style="min-height:250px;"></textarea>
-              </div>
-            </div>
-
-            <!-- Right Input -->
-            <div class="tool-panel">
-              <div class="tool-panel__header">
-                <h3 class="tool-panel__title"><i data-lucide="file-text"></i> Modified</h3>
-                <div class="tool-panel__actions">
-                  <button class="tool-action-btn" id="btnPasteRight"><i data-lucide="clipboard-paste"></i> Paste</button>
+                
+                <!-- Tool Workspace -->
+                <div class="tool-workspace">
+                    <div class="workspace-grid">
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-text"></i>
+                                <span data-i18n="input_label">Input</span>
+                            </div>
+                            <div class="textarea-wrap">
+                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                            </div>
+                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        </div>
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-output"></i>
+                                <span data-i18n="output_label">Output</span>
+                            </div>
+                            <div class="textarea-wrap">
+                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            </div>
+                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
+                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
+                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                    </div>
                 </div>
-              </div>
-              <div class="tool-panel__body">
-                <textarea class="tool-input__field" id="rightInput" placeholder="Paste modified code here..." style="min-height:250px;"></textarea>
-              </div>
-            </div>
-          </div>
-
-          <!-- Actions -->
-          <div class="tool-actions">
-            <div class="tool-actions__primary">
-              <button class="btn btn-primary" id="btnCompare"><i data-lucide="git-compare"></i> Compare</button>
-            </div>
-            <div class="tool-actions__secondary">
-              <button class="tool-action-btn" id="btnSwap"><i data-lucide="arrow-left-right"></i> Swap</button>
-              <button class="tool-action-btn tool-action-btn--danger" id="btnClear"><i data-lucide="trash-2"></i> Clear</button>
-            </div>
-          </div>
-
-          <!-- Stats -->
-          <div class="diff-stats" id="diffStats" style="display:none;">
-            <span class="added">+ <span id="statAdded">0</span> added</span>
-            <span class="removed">- <span id="statRemoved">0</span> removed</span>
-            <span class="modified">~ <span id="statModified">0</span> modified</span>
-            <span class="unchanged">= <span id="statUnchanged">0</span> unchanged</span>
-          </div>
-
-          <!-- Diff Output -->
-          <div class="tool-panel">
-            <div class="tool-panel__header">
-              <h3 class="tool-panel__title"><i data-lucide="git-diff"></i> Comparison Result</h3>
-            </div>
-            <div class="tool-panel__body" style="padding:0;">
-              <div class="diff-container" id="diffOutput">
-                <div style="grid-column:1/-1;padding:40px;text-align:center;color:#8b949e;">
-                  Click "Compare" to see the differences...
+                
+                <!-- Ad Slot -->
+                <div class="ad-slot" style="margin-top:2rem">
+                    <span data-i18n="ad_label">Advertisement</span>
                 </div>
-              </div>
             </div>
-          </div>
-
+            <aside class="tool-sidebar">
+                <div class="ad-slot">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
+            </aside>
         </div>
-
-        <div class="tool-sidebar-ad">
-          <div class="ad-slot" id="adSlotRight"><span>Advertisement</span></div>
-        </div>
-      </section>
-
-      <div class="ad-slot" id="adSlotBottom"><span>Advertisement</span></div>
-
-      <section class="tool-info">
-        <h2 class="tool-info__title">How to Use</h2>
-        <div class="tool-info__content">
-          <div class="tool-steps">
-            <div class="tool-step"><div class="tool-step__number">1</div><div class="tool-step__content"><div class="tool-step__title">Enter original code</div><div class="tool-step__desc">Paste the original code in the left panel.</div></div></div>
-            <div class="tool-step"><div class="tool-step__number">2</div><div class="tool-step__content"><div class="tool-step__title">Enter modified code</div><div class="tool-step__desc">Paste the modified code in the right panel.</div></div></div>
-            <div class="tool-step"><div class="tool-step__number">3</div><div class="tool-step__content"><div class="tool-step__title">Compare</div><div class="tool-step__desc">Click Compare to see line-by-line differences.</div></div></div>
-            <div class="tool-step"><div class="tool-step__number">4</div><div class="tool-step__content"><div class="tool-step__title">Review differences</div><div class="tool-step__desc">Green = added, Red = removed, Yellow = modified.</div></div></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="related-tools">
-        <h2>Related Tools</h2>
-        <div class="related-tools-grid">
-          <a href="text-diff.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="file-diff"></i></div><h3>Text Diff</h3><span class="tool-card-tag">Formatters</span></a>
-          <a href="json-formatter.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="braces"></i></div><h3>JSON Formatter</h3><span class="tool-card-tag">Formatters</span></a>
-          <a href="code-formatter.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="code"></i></div><h3>Code Formatter</h3><span class="tool-card-tag">Formatters</span></a>
-          <a href="csv-viewer.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="table"></i></div><h3>CSV Viewer</h3><span class="tool-card-tag">Formatters</span></a>
-        </div>
-      </section>
     </main>
-  </div>
-
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
-      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
-    </div>
-  </footer>
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-  <script src="../../assets/js/i18n.js"></script>
-  <script src="../../assets/js/utils.js"></script>
-  <script src="../../assets/js/app.js"></script>
-
-  <script>
-    (function() {
-      const leftInput = document.getElementById('leftInput');
-      const rightInput = document.getElementById('rightInput');
-      const diffOutput = document.getElementById('diffOutput');
-      const diffStats = document.getElementById('diffStats');
-
-      function escapeHtml(str) {
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-links">
+                <a href="#" data-i18n="footer_about">About</a>
+                <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+                <a href="#" data-i18n="footer_terms">Terms of Service</a>
+                <a href="#" data-i18n="footer_contact">Contact</a>
+            </div>
+            <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
+        </div>
+    </footer>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+    
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i data-lucide="chevron-up"></i>
+    </button>
+    
+    <!-- Scripts -->
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/app.js"></script>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        if (typeof I18n !== 'undefined') {
+            I18n.init();
+        }
+    });
+    
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        if (toast) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    }
+    
+    function copyOutput() {
+        const output = document.getElementById('outputArea');
+        if (!output || !output.value) {
+            showToast('Nothing to copy');
+            return;
+        }
+        navigator.clipboard.writeText(output.value).then(() => {
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        }).catch(() => {
+            output.select();
+            document.execCommand('copy');
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        });
+    }
+    
+    function clearAll() {
+        const input = document.getElementById('inputArea');
+        const output = document.getElementById('outputArea');
+        const inputCount = document.getElementById('inputCount');
+        const outputCount = document.getElementById('outputCount');
+        if (input) input.value = '';
+        if (output) output.value = '';
+        if (inputCount) inputCount.textContent = '0';
+        if (outputCount) outputCount.textContent = '0';
+        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
+    }
+    
+    function escapeHtml(str) {
         return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       }
 
@@ -373,5 +338,17 @@
       });
     })();
   </script>
+
+    // Input character counter
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputArea = document.getElementById('inputArea');
+        const inputCount = document.getElementById('inputCount');
+        if (inputArea && inputCount) {
+            inputArea.addEventListener('input', () => {
+                inputCount.textContent = inputArea.value.length;
+            });
+        }
+    });
+    </script>
 </body>
 </html>

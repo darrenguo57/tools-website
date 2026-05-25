@@ -9,6 +9,11 @@
   <meta name="author" content="ToolBox">
   <meta name="robots" content="index, follow">
 
+  <!-- Favicon & Manifest -->
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2563EB">
+
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="ToolBox - Free Online Tools for Developers &amp; Designers">
@@ -49,7 +54,7 @@
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="assets/css/main.css">
-  <link rel="stylesheet" href="assets/css/dark.css" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="assets/css/dark.css">
 </head>
 <body>
 
@@ -63,18 +68,18 @@
 
       <div class="navbar-search">
         <i data-lucide="search"></i>
-        <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+        <input type="text" class="search-input" id="searchInput" data-search-input data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
       </div>
 
       <div class="navbar-actions">
         <button class="btn-icon" id="langToggle" aria-label="Toggle Language">
           <span class="lang-label">EN</span>
         </button>
-        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">
+        <button class="btn-icon" id="themeToggle" data-theme-toggle aria-label="Toggle Theme">
           <i data-lucide="sun" class="theme-icon-light"></i>
           <i data-lucide="moon" class="theme-icon-dark"></i>
         </button>
-        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu">
+        <button class="btn-icon hamburger" id="hamburgerBtn" data-mobile-menu-toggle aria-label="Menu">
           <i data-lucide="menu"></i>
         </button>
       </div>
@@ -85,7 +90,7 @@
   <div class="main-layout">
 
     <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar" id="sidebar" data-sidebar>
       <div class="sidebar-header">
         <h3 data-i18n="sidebar_categories">Categories</h3>
       </div>
@@ -160,21 +165,21 @@
       <section class="tools-grid" id="toolsGrid">
 
         <!-- ===== Converters (8) ===== -->
-        <a href="tools/converters/base64.html" class="tool-card" data-category="converters" data-name-en="Base64 Encode/Decode" data-name-zh="Base64 编解�?>
+        <a href="tools/converters/base64.html" class="tool-card" data-category="converters" data-name-en="Base64 Encode/Decode" data-name-zh="Base64 编解码">
           <div class="tool-card-icon"><i data-lucide="arrow-left-right"></i></div>
           <h3 data-i18n="tool_base64">Base64 Encode/Decode</h3>
           <p data-i18n="tool_base64_desc">Encode and decode Base64 strings</p>
           <span class="tool-card-tag" data-i18n="cat_converters">Converters</span>
         </a>
 
-        <a href="tools/converters/url.html" class="tool-card" data-category="converters" data-name-en="URL Encode/Decode" data-name-zh="URL 编解�?>
+        <a href="tools/converters/url.html" class="tool-card" data-category="converters" data-name-en="URL Encode/Decode" data-name-zh="URL 编解码">
           <div class="tool-card-icon"><i data-lucide="link"></i></div>
           <h3 data-i18n="tool_url">URL Encode/Decode</h3>
           <p data-i18n="tool_url_desc">Encode and decode URL components</p>
           <span class="tool-card-tag" data-i18n="cat_converters">Converters</span>
         </a>
 
-        <a href="tools/converters/json-yaml.html" class="tool-card" data-category="converters" data-name-en="JSON to YAML" data-name-zh="JSON �?YAML">
+        <a href="tools/converters/json-yaml.html" class="tool-card" data-category="converters" data-name-en="JSON to YAML" data-name-zh="JSON 转 YAML">
           <div class="tool-card-icon"><i data-lucide="file-json"></i></div>
           <h3 data-i18n="tool_json_yaml">JSON to YAML</h3>
           <p data-i18n="tool_json_yaml_desc">Convert between JSON and YAML formats</p>
@@ -195,7 +200,7 @@
           <span class="tool-card-tag" data-i18n="cat_converters">Converters</span>
         </a>
 
-        <a href="tools/converters/timestamp.html" class="tool-card" data-category="converters" data-name-en="Timestamp Converter" data-name-zh="时间戳转�?>
+        <a href="tools/converters/timestamp.html" class="tool-card" data-category="converters" data-name-en="Timestamp Converter" data-name-zh="时间戳转换">
           <div class="tool-card-icon"><i data-lucide="clock"></i></div>
           <h3 data-i18n="tool_timestamp">Timestamp Converter</h3>
           <p data-i18n="tool_timestamp_desc">Convert Unix timestamps to human-readable dates</p>
@@ -209,7 +214,7 @@
           <span class="tool-card-tag" data-i18n="cat_converters">Converters</span>
         </a>
 
-        <a href="tools/converters/markdown-html.html" class="tool-card" data-category="converters" data-name-en="Markdown to HTML" data-name-zh="Markdown �?HTML">
+        <a href="tools/converters/markdown-html.html" class="tool-card" data-category="converters" data-name-en="Markdown to HTML" data-name-zh="Markdown 转 HTML">
           <div class="tool-card-icon"><i data-lucide="file-text"></i></div>
           <h3 data-i18n="tool_markdown_html">Markdown to HTML</h3>
           <p data-i18n="tool_markdown_html_desc">Convert Markdown text to HTML</p>
@@ -217,35 +222,35 @@
         </a>
 
         <!-- ===== Calculators (6) ===== -->
-        <a href="tools/calculators/standard.html" class="tool-card" data-category="calculators" data-name-en="Standard Calculator" data-name-zh="标准计算�?>
+        <a href="tools/calculators/standard.html" class="tool-card" data-category="calculators" data-name-en="Standard Calculator" data-name-zh="标准计算器">
           <div class="tool-card-icon"><i data-lucide="calculator"></i></div>
           <h3 data-i18n="tool_calculator_standard">Standard Calculator</h3>
           <p data-i18n="tool_calculator_standard_desc">Basic arithmetic operations</p>
           <span class="tool-card-tag" data-i18n="cat_calculators">Calculators</span>
         </a>
 
-        <a href="tools/calculators/scientific.html" class="tool-card" data-category="calculators" data-name-en="Scientific Calculator" data-name-zh="科学计算�?>
+        <a href="tools/calculators/scientific.html" class="tool-card" data-category="calculators" data-name-en="Scientific Calculator" data-name-zh="科学计算器">
           <div class="tool-card-icon"><i data-lucide="calculator-variant"></i></div>
           <h3 data-i18n="tool_calculator_scientific">Scientific Calculator</h3>
           <p data-i18n="tool_calculator_scientific_desc">Advanced mathematical functions</p>
           <span class="tool-card-tag" data-i18n="cat_calculators">Calculators</span>
         </a>
 
-        <a href="tools/calculators/loan.html" class="tool-card" data-category="calculators" data-name-en="Loan Calculator" data-name-zh="贷款计算�?>
+        <a href="tools/calculators/loan.html" class="tool-card" data-category="calculators" data-name-en="Loan Calculator" data-name-zh="贷款计算器">
           <div class="tool-card-icon"><i data-lucide="banknote"></i></div>
           <h3 data-i18n="tool_loan">Loan Calculator</h3>
           <p data-i18n="tool_loan_desc">Calculate monthly payments and interest</p>
           <span class="tool-card-tag" data-i18n="cat_calculators">Calculators</span>
         </a>
 
-        <a href="tools/calculators/bmi.html" class="tool-card" data-category="calculators" data-name-en="BMI Calculator" data-name-zh="BMI 计算�?>
+        <a href="tools/calculators/bmi.html" class="tool-card" data-category="calculators" data-name-en="BMI Calculator" data-name-zh="BMI 计算器">
           <div class="tool-card-icon"><i data-lucide="heart-pulse"></i></div>
           <h3 data-i18n="tool_bmi">BMI Calculator</h3>
           <p data-i18n="tool_bmi_desc">Calculate your Body Mass Index</p>
           <span class="tool-card-tag" data-i18n="cat_calculators">Calculators</span>
         </a>
 
-        <a href="tools/calculators/age.html" class="tool-card" data-category="calculators" data-name-en="Age Calculator" data-name-zh="年龄计算�?>
+        <a href="tools/calculators/age.html" class="tool-card" data-category="calculators" data-name-en="Age Calculator" data-name-zh="年龄计算器">
           <div class="tool-card-icon"><i data-lucide="cake"></i></div>
           <h3 data-i18n="tool_age">Age Calculator</h3>
           <p data-i18n="tool_age_desc">Calculate exact age from birth date</p>
@@ -302,7 +307,7 @@
           <span class="tool-card-tag" data-i18n="cat_image_tools">Image Tools</span>
         </a>
 
-        <a href="tools/image-tools/color-palette.html" class="tool-card" data-category="image-tools" data-name-en="Color Picker" data-name-zh="调色�?>
+        <a href="tools/image-tools/color-palette.html" class="tool-card" data-category="image-tools" data-name-en="Color Picker" data-name-zh="调色板">
           <div class="tool-card-icon"><i data-lucide="pipette"></i></div>
           <h3 data-i18n="tool_color_picker">Color Picker</h3>
           <p data-i18n="tool_color_picker_desc">Pick colors from images</p>
@@ -317,14 +322,14 @@
         </a>
 
         <!-- ===== Generators (8) ===== -->
-        <a href="tools/generators/uuid.html" class="tool-card" data-category="generators" data-name-en="UUID Generator" data-name-zh="UUID 生成�?>
+        <a href="tools/generators/uuid.html" class="tool-card" data-category="generators" data-name-en="UUID Generator" data-name-zh="UUID 生成器">
           <div class="tool-card-icon"><i data-lucide="fingerprint"></i></div>
           <h3 data-i18n="tool_uuid">UUID Generator</h3>
           <p data-i18n="tool_uuid_desc">Generate unique UUIDs (v1, v4, v5)</p>
           <span class="tool-card-tag" data-i18n="cat_generators">Generators</span>
         </a>
 
-        <a href="tools/generators/nanoid.html" class="tool-card" data-category="generators" data-name-en="NanoID Generator" data-name-zh="NanoID 生成�?>
+        <a href="tools/generators/nanoid.html" class="tool-card" data-category="generators" data-name-en="NanoID Generator" data-name-zh="NanoID 生成器">
           <div class="tool-card-icon"><i data-lucide="hash"></i></div>
           <h3 data-i18n="tool_nanoid">NanoID Generator</h3>
           <p data-i18n="tool_nanoid_desc">Generate short, unique, URL-friendly IDs</p>
@@ -338,7 +343,7 @@
           <span class="tool-card-tag" data-i18n="cat_generators">Generators</span>
         </a>
 
-        <a href="tools/generators/password.html" class="tool-card" data-category="generators" data-name-en="Password Generator" data-name-zh="密码生成�?>
+        <a href="tools/generators/password.html" class="tool-card" data-category="generators" data-name-en="Password Generator" data-name-zh="密码生成器">
           <div class="tool-card-icon"><i data-lucide="key-round"></i></div>
           <h3 data-i18n="tool_password">Password Generator</h3>
           <p data-i18n="tool_password_desc">Generate secure random passwords</p>
@@ -374,42 +379,42 @@
         </a>
 
         <!-- ===== Formatters (8) ===== -->
-        <a href="tools/formatters/json-formatter.html" class="tool-card" data-category="formatters" data-name-en="JSON Formatter" data-name-zh="JSON 格式�?>
+        <a href="tools/formatters/json-formatter.html" class="tool-card" data-category="formatters" data-name-en="JSON Formatter" data-name-zh="JSON 格式化">
           <div class="tool-card-icon"><i data-lucide="braces"></i></div>
           <h3 data-i18n="tool_json_format">JSON Formatter</h3>
           <p data-i18n="tool_json_format_desc">Format, validate, and minify JSON</p>
           <span class="tool-card-tag" data-i18n="cat_formatters">Formatters</span>
         </a>
 
-        <a href="tools/formatters/json-visualizer.html" class="tool-card" data-category="formatters" data-name-en="JSON Visualizer" data-name-zh="JSON 可视�?>
+        <a href="tools/formatters/json-visualizer.html" class="tool-card" data-category="formatters" data-name-en="JSON Visualizer" data-name-zh="JSON 可视化">
           <div class="tool-card-icon"><i data-lucide="network"></i></div>
           <h3 data-i18n="tool_json_visual">JSON Visualizer</h3>
           <p data-i18n="tool_json_visual_desc">Visualize JSON data as interactive tree</p>
           <span class="tool-card-tag" data-i18n="cat_formatters">Formatters</span>
         </a>
 
-        <a href="tools/formatters/sql-formatter.html" class="tool-card" data-category="formatters" data-name-en="SQL Formatter" data-name-zh="SQL 格式�?>
+        <a href="tools/formatters/sql-formatter.html" class="tool-card" data-category="formatters" data-name-en="SQL Formatter" data-name-zh="SQL 格式化">
           <div class="tool-card-icon"><i data-lucide="database"></i></div>
           <h3 data-i18n="tool_sql_format">SQL Formatter</h3>
           <p data-i18n="tool_sql_format_desc">Format and beautify SQL queries</p>
           <span class="tool-card-tag" data-i18n="cat_formatters">Formatters</span>
         </a>
 
-        <a href="tools/formatters/code-formatter.html" class="tool-card" data-category="formatters" data-name-en="Code Formatter" data-name-zh="代码格式�?>
+        <a href="tools/formatters/code-formatter.html" class="tool-card" data-category="formatters" data-name-en="Code Formatter" data-name-zh="代码格式化">
           <div class="tool-card-icon"><i data-lucide="code-2"></i></div>
           <h3 data-i18n="tool_code_format">Code Formatter</h3>
           <p data-i18n="tool_code_format_desc">Format code in multiple languages</p>
           <span class="tool-card-tag" data-i18n="cat_formatters">Formatters</span>
         </a>
 
-        <a href="tools/formatters/xml-formatter.html" class="tool-card" data-category="formatters" data-name-en="XML Formatter" data-name-zh="XML 格式�?>
+        <a href="tools/formatters/xml-formatter.html" class="tool-card" data-category="formatters" data-name-en="XML Formatter" data-name-zh="XML 格式化">
           <div class="tool-card-icon"><i data-lucide="file-code-2"></i></div>
           <h3 data-i18n="tool_xml_format">XML Formatter</h3>
           <p data-i18n="tool_xml_format_desc">Format and validate XML documents</p>
           <span class="tool-card-tag" data-i18n="cat_formatters">Formatters</span>
         </a>
 
-        <a href="tools/formatters/csv-viewer.html" class="tool-card" data-category="formatters" data-name-en="CSV Viewer" data-name-zh="CSV 查看�?>
+        <a href="tools/formatters/csv-viewer.html" class="tool-card" data-category="formatters" data-name-en="CSV Viewer" data-name-zh="CSV 查看器">
           <div class="tool-card-icon"><i data-lucide="table"></i></div>
           <h3 data-i18n="tool_csv_viewer">CSV Viewer</h3>
           <p data-i18n="tool_csv_viewer_desc">View and edit CSV files online</p>
@@ -431,7 +436,7 @@
         </a>
 
         <!-- ===== Encryption (6) ===== -->
-        <a href="tools/crypto/hash.html" class="tool-card" data-category="crypto" data-name-en="Hash Generator" data-name-zh="哈希生成�?>
+        <a href="tools/crypto/hash.html" class="tool-card" data-category="crypto" data-name-en="Hash Generator" data-name-zh="哈希生成器">
           <div class="tool-card-icon"><i data-lucide="lock"></i></div>
           <h3 data-i18n="tool_hash">Hash Generator</h3>
           <p data-i18n="tool_hash_desc">Generate MD5, SHA-1, SHA-256, SHA-512 hashes</p>
@@ -445,14 +450,14 @@
           <span class="tool-card-tag" data-i18n="cat_crypto">Encryption</span>
         </a>
 
-        <a href="tools/crypto/aes.html" class="tool-card" data-category="crypto" data-name-en="AES Encrypt/Decrypt" data-name-zh="AES 加解�?>
+        <a href="tools/crypto/aes.html" class="tool-card" data-category="crypto" data-name-en="AES Encrypt/Decrypt" data-name-zh="AES 加解密">
           <div class="tool-card-icon"><i data-lucide="shield"></i></div>
           <h3 data-i18n="tool_aes">AES Encrypt/Decrypt</h3>
           <p data-i18n="tool_aes_desc">Encrypt and decrypt with AES algorithm</p>
           <span class="tool-card-tag" data-i18n="cat_crypto">Encryption</span>
         </a>
 
-        <a href="tools/crypto/rsa.html" class="tool-card" data-category="crypto" data-name-en="RSA Encrypt/Decrypt" data-name-zh="RSA 加解�?>
+        <a href="tools/crypto/rsa.html" class="tool-card" data-category="crypto" data-name-en="RSA Encrypt/Decrypt" data-name-zh="RSA 加解密">
           <div class="tool-card-icon"><i data-lucide="key"></i></div>
           <h3 data-i18n="tool_rsa">RSA Encrypt/Decrypt</h3>
           <p data-i18n="tool_rsa_desc">Encrypt and decrypt with RSA algorithm</p>
@@ -488,7 +493,7 @@
           <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
         </a>
 
-        <a href="tools/charts/flowchart.html" class="tool-card" data-category="charts" data-name-en="Flowchart" data-name-zh="流程�?>
+        <a href="tools/charts/flowchart.html" class="tool-card" data-category="charts" data-name-en="Flowchart" data-name-zh="流程图">
           <div class="tool-card-icon"><i data-lucide="git-branch"></i></div>
           <h3 data-i18n="tool_flowchart">Flowchart</h3>
           <p data-i18n="tool_flowchart_desc">Design flowcharts and process diagrams</p>
@@ -502,7 +507,7 @@
           <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
         </a>
 
-        <a href="tools/charts/gantt.html" class="tool-card" data-category="charts" data-name-en="Gantt Chart" data-name-zh="甘特�?>
+        <a href="tools/charts/gantt.html" class="tool-card" data-category="charts" data-name-en="Gantt Chart" data-name-zh="甘特图">
           <div class="tool-card-icon"><i data-lucide="calendar-range"></i></div>
           <h3 data-i18n="tool_gantt">Gantt Chart</h3>
           <p data-i18n="tool_gantt_desc">Create project timelines and Gantt charts</p>
@@ -516,35 +521,35 @@
           <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
         </a>
 
-        <a href="tools/charts/network.html" class="tool-card" data-category="charts" data-name-en="Relation Graph" data-name-zh="关系�?>
+        <a href="tools/charts/network.html" class="tool-card" data-category="charts" data-name-en="Relation Graph" data-name-zh="关系图">
           <div class="tool-card-icon"><i data-lucide="circle-dot"></i></div>
           <h3 data-i18n="tool_relation">Relation Graph</h3>
           <p data-i18n="tool_relation_desc">Visualize relationships and connections</p>
           <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
         </a>
 
-        <a href="tools/charts/dashboard.html" class="tool-card" data-category="charts" data-name-en="Dashboard" data-name-zh="仪表�?>
+        <a href="tools/charts/dashboard.html" class="tool-card" data-category="charts" data-name-en="Dashboard" data-name-zh="仪表盘">
           <div class="tool-card-icon"><i data-lucide="gauge"></i></div>
           <h3 data-i18n="tool_dashboard">Dashboard</h3>
           <p data-i18n="tool_dashboard_desc">Create interactive dashboards with gauges</p>
           <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
         </a>
 
-        <a href="tools/charts/treemap.html" class="tool-card" data-category="charts" data-name-en="Tree Map" data-name-zh="树状�?>
+        <a href="tools/charts/treemap.html" class="tool-card" data-category="charts" data-name-en="Tree Map" data-name-zh="树状图">
           <div class="tool-card-icon"><i data-lucide="list-tree"></i></div>
           <h3 data-i18n="tool_tree_map">Tree Map</h3>
           <p data-i18n="tool_tree_map_desc">Visualize hierarchical data as tree maps</p>
           <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
         </a>
 
-        <a href="tools/charts/scatter.html" class="tool-card" data-category="charts" data-name-en="Scatter Plot" data-name-zh="散点�?>
+        <a href="tools/charts/scatter.html" class="tool-card" data-category="charts" data-name-en="Scatter Plot" data-name-zh="散点图">
           <div class="tool-card-icon"><i data-lucide="target"></i></div>
           <h3 data-i18n="tool_scatter">Scatter Plot</h3>
           <p data-i18n="tool_scatter_desc">Create scatter plots for data analysis</p>
           <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
         </a>
 
-        <a href="tools/charts/area-chart.html" class="tool-card" data-category="charts" data-name-en="Area Chart" data-name-zh="面积�?>
+        <a href="tools/charts/area-chart.html" class="tool-card" data-category="charts" data-name-en="Area Chart" data-name-zh="面积图">
           <div class="tool-card-icon"><i data-lucide="chart-area"></i></div>
           <h3 data-i18n="tool_area_chart">Area Chart</h3>
           <p data-i18n="tool_area_chart_desc">Create area charts to show trends</p>
@@ -573,7 +578,7 @@
           <span class="tool-card-tag" data-i18n="cat_testing">Testing</span>
         </a>
 
-        <a href="tools/testers/color-picker.html" class="tool-card" data-category="testing" data-name-en="Color Picker" data-name-zh="颜色选择�?>
+        <a href="tools/testers/color-picker.html" class="tool-card" data-category="testing" data-name-en="Color Picker" data-name-zh="颜色选择器">
           <div class="tool-card-icon"><i data-lucide="pipette"></i></div>
           <h3 data-i18n="tool_color_picker_test">Color Picker</h3>
           <p data-i18n="tool_color_picker_test_desc">Pick and convert colors between formats</p>
@@ -588,6 +593,12 @@
         </a>
 
       </section>
+
+      <!-- No Results -->
+      <div class="no-results" id="noResults" data-no-results style="display:none">
+        <i data-lucide="search-x"></i>
+        <p>No tools found matching your search.</p>
+      </div>
 
       <!-- Ad Slot -->
       <div class="ad-slot" id="adSlotBottom">
@@ -611,11 +622,23 @@
   </footer>
 
   <!-- Mobile Sidebar Overlay -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar-overlay" id="sidebarOverlay" data-mobile-overlay></div>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" id="backToTop" data-back-to-top aria-label="Back to top">
+    <i data-lucide="chevron-up"></i>
+  </button>
 
   <!-- Scripts -->
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/utils.js"></script>
   <script src="assets/js/app.js"></script>
+  <script>
+    // Initialize Lucide icons
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+  </script>
 </body>
 </html>

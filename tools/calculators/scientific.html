@@ -1,384 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scientific Calculator - ToolBox</title>
-  <meta name="description" content="Free online scientific calculator with trigonometric, logarithmic, and advanced math functions.">
-  <meta name="keywords" content="scientific calculator, trigonometry, logarithm, math functions, online calculator">
-  <meta name="author" content="ToolBox">
-  <meta name="robots" content="index, follow">
-
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Scientific Calculator - ToolBox">
-  <meta property="og:description" content="Free online scientific calculator with advanced math functions.">
-  <meta property="og:url" content="https://toolbox.example.com/tools/calculators/scientific.html">
-  <meta property="og:site_name" content="ToolBox">
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Scientific Calculator",
-    "url": "https://toolbox.example.com/tools/calculators/scientific.html",
-    "description": "Free online scientific calculator.",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-  }
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@0.453.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjs@12.2.1/lib/browser/math.min.js"></script>
-
-  <link rel="stylesheet" href="../../assets/css/main.css">
-  <link rel="stylesheet" href="../../assets/css/tools.css">
-  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
-
-  <style>
-    .sci-calc-container { max-width: 520px; margin: 0 auto; }
-    .sci-calc-display {
-      background: var(--color-bg-secondary);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-xl);
-      padding: var(--space-5);
-      margin-bottom: var(--space-4);
-      text-align: right;
-      min-height: 110px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-    }
-    .sci-calc-expression {
-      font-size: var(--font-size-sm);
-      color: var(--color-text-tertiary);
-      min-height: 20px;
-      word-break: break-all;
-      margin-bottom: var(--space-2);
-      font-family: var(--font-family-mono);
-    }
-    .sci-calc-result {
-      font-size: var(--font-size-3xl);
-      font-weight: var(--font-weight-bold);
-      color: var(--color-text);
-      word-break: break-all;
-      line-height: 1.2;
-      font-family: var(--font-family-mono);
-    }
-    .sci-calc-mode-bar {
-      display: flex;
-      gap: var(--space-2);
-      margin-bottom: var(--space-3);
-      flex-wrap: wrap;
-    }
-    .sci-calc-mode-btn {
-      padding: var(--space-1) var(--space-3);
-      border-radius: var(--radius-full);
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-medium);
-      border: 1px solid var(--color-border);
-      background: var(--color-surface);
-      color: var(--color-text-secondary);
-      cursor: pointer;
-      transition: all var(--transition-fast);
-    }
-    .sci-calc-mode-btn:hover { background: var(--color-bg-tertiary); }
-    .sci-calc-mode-btn.active { background: var(--color-primary); color: var(--color-text-inverse); border-color: var(--color-primary); }
-    .sci-calc-memory-bar {
-      display: flex;
-      gap: var(--space-1);
-      margin-bottom: var(--space-3);
-    }
-    .sci-calc-mem-btn {
-      flex: 1;
-      padding: var(--space-2);
-      border-radius: var(--radius-md);
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-semibold);
-      border: 1px solid var(--color-border);
-      background: var(--color-bg-secondary);
-      color: var(--color-text-secondary);
-      cursor: pointer;
-      transition: all var(--transition-fast);
-    }
-    .sci-calc-mem-btn:hover { background: var(--color-primary-light); color: var(--color-primary); }
-    .sci-calc-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: var(--space-2);
-    }
-    .sci-calc-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 48px;
-      border-radius: var(--radius-lg);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
-      border: 1px solid var(--color-border);
-      background: var(--color-surface);
-      color: var(--color-text);
-      cursor: pointer;
-      transition: all var(--transition-fast);
-      user-select: none;
-    }
-    .sci-calc-btn:hover { background: var(--color-bg-tertiary); }
-    .sci-calc-btn:active { transform: scale(0.96); }
-    .sci-calc-btn--func { background: var(--color-info-light); color: var(--color-info); font-weight: var(--font-weight-semibold); }
-    .sci-calc-btn--func:hover { background: var(--color-info); color: var(--color-text-inverse); }
-    .sci-calc-btn--operator { background: var(--color-primary-light); color: var(--color-primary); font-weight: var(--font-weight-semibold); }
-    .sci-calc-btn--operator:hover { background: var(--color-primary); color: var(--color-text-inverse); }
-    .sci-calc-btn--equals { background: var(--color-primary); color: var(--color-text-inverse); font-weight: var(--font-weight-bold); }
-    .sci-calc-btn--equals:hover { background: var(--color-primary-hover); }
-    .sci-calc-btn--clear { background: var(--color-error-light); color: var(--color-error); }
-    .sci-calc-btn--clear:hover { background: var(--color-error); color: var(--color-text-inverse); }
-    .sci-calc-btn--wide { grid-column: span 2; }
-    .sci-calc-history-panel {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-xl);
-      margin-top: var(--space-4);
-      overflow: hidden;
-    }
-    .sci-calc-history-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: var(--space-3) var(--space-4);
-      border-bottom: 1px solid var(--color-border-light);
-      background: var(--color-bg-secondary);
-    }
-    .sci-calc-history-header h3 { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text); }
-    .sci-calc-history-list { max-height: 200px; overflow-y: auto; padding: var(--space-2); }
-    .sci-calc-history-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: var(--space-2) var(--space-3);
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      transition: background var(--transition-fast);
-      font-size: var(--font-size-sm);
-    }
-    .sci-calc-history-item:hover { background: var(--color-bg-tertiary); }
-    .sci-calc-history-expr { color: var(--color-text-tertiary); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--font-family-mono); }
-    .sci-calc-history-val { font-weight: var(--font-weight-semibold); color: var(--color-text); margin-left: var(--space-3); font-family: var(--font-family-mono); }
-    .sci-calc-history-empty { padding: var(--space-6); text-align: center; color: var(--color-text-tertiary); font-size: var(--font-size-sm); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Calculator - ToolBox</title>
+    <meta name="description" content="Advanced math functions">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    
+    <style>
+        /* Tool Page Custom Styles */
+        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .workspace-grid .full-width { grid-column: 1 / -1; }
+        .textarea-wrap { position: relative; }
+        .textarea-wrap textarea, .textarea-wrap input {
+            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
+            resize: vertical; background: var(--color-bg); color: var(--color-text);
+            box-sizing: border-box;
+        }
+        .textarea-wrap input { min-height: auto; resize: none; }
+        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
+        
+        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
-
-  <nav class="navbar" id="navbar">
-    <div class="navbar-container">
-      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
-      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
-      <div class="navbar-actions">
-        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
-        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
-        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
-      </div>
-    </div>
-  </nav>
-
-  <div class="main-layout">
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header"><h3>Categories</h3></div>
-      <ul class="sidebar-list">
-        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
-        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
-        <li><a href="../../index.html?category=calculators" class="sidebar-item active"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
-        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
-        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
-        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
-        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
-        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
-        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
-      </ul>
-    </aside>
-
-    <main class="main-content tool-page">
-
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="../../index.html" class="breadcrumb__link">Home</a>
-        <span class="breadcrumb__separator">/</span>
-        <a href="../../index.html?category=calculators" class="breadcrumb__link">Calculators</a>
-        <span class="breadcrumb__separator">/</span>
-        <span class="breadcrumb__current">Scientific Calculator</span>
-      </nav>
-
-      <section class="tool-header">
-        <div class="tool-header__icon"><i data-lucide="sigma"></i></div>
-        <h1 class="tool-header__title">Scientific Calculator</h1>
-        <p class="tool-header__desc">Advanced calculator with trigonometric, logarithmic, and scientific functions. Supports angle/radian mode and memory operations.</p>
-      </section>
-
-      <section class="tool-workspace">
-        <div class="sci-calc-container">
-          <div class="sci-calc-display">
-            <div class="sci-calc-expression" id="sciExpression"></div>
-            <div class="sci-calc-result" id="sciResult">0</div>
-          </div>
-
-          <div class="sci-calc-mode-bar">
-            <button class="sci-calc-mode-btn active" id="btnDeg" data-mode="deg">DEG</button>
-            <button class="sci-calc-mode-btn" id="btnRad" data-mode="rad">RAD</button>
-            <button class="sci-calc-mode-btn" id="btn2nd">2nd</button>
-          </div>
-
-          <div class="sci-calc-memory-bar">
-            <button class="sci-calc-mem-btn" data-mem="mc">MC</button>
-            <button class="sci-calc-mem-btn" data-mem="mr">MR</button>
-            <button class="sci-calc-mem-btn" data-mem="m+">M+</button>
-            <button class="sci-calc-mem-btn" data-mem="m-">M-</button>
-            <button class="sci-calc-mem-btn" data-mem="ms">MS</button>
-          </div>
-
-          <div class="sci-calc-grid">
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="func" data-value="sin">sin</button>
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="func" data-value="cos">cos</button>
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="func" data-value="tan">tan</button>
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="func" data-value="log">log</button>
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="func" data-value="ln">ln</button>
-
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="func" data-value="asin">sin<sup>-1</sup></button>
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="func" data-value="acos">cos<sup>-1</sup></button>
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="func" data-value="atan">tan<sup>-1</sup></button>
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="func" data-value="sqrt">&radic;</button>
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="func" data-value="cbrt"><sup>3</sup>&radic;</button>
-
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="const" data-value="pi">&pi;</button>
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="const" data-value="e">e</button>
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="func" data-value="fact">n!</button>
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="func" data-value="pow">x<sup>y</sup></button>
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="func" data-value="inv">1/x</button>
-
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="paren" data-value="(">(</button>
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="paren" data-value=")">)</button>
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="func" data-value="abs">|x|</button>
-            <button class="sci-calc-btn sci-calc-btn--func" data-action="func" data-value="exp">e<sup>x</sup></button>
-            <button class="sci-calc-btn sci-calc-btn--clear" data-action="clear">C</button>
-
-            <button class="sci-calc-btn" data-action="number" data-value="7">7</button>
-            <button class="sci-calc-btn" data-action="number" data-value="8">8</button>
-            <button class="sci-calc-btn" data-action="number" data-value="9">9</button>
-            <button class="sci-calc-btn sci-calc-btn--operator" data-action="operator" data-value="/">&divide;</button>
-            <button class="sci-calc-btn sci-calc-btn--clear" data-action="backspace">&larr;</button>
-
-            <button class="sci-calc-btn" data-action="number" data-value="4">4</button>
-            <button class="sci-calc-btn" data-action="number" data-value="5">5</button>
-            <button class="sci-calc-btn" data-action="number" data-value="6">6</button>
-            <button class="sci-calc-btn sci-calc-btn--operator" data-action="operator" data-value="*">&times;</button>
-            <button class="sci-calc-btn sci-calc-btn--operator" data-action="percent">%</button>
-
-            <button class="sci-calc-btn" data-action="number" data-value="1">1</button>
-            <button class="sci-calc-btn" data-action="number" data-value="2">2</button>
-            <button class="sci-calc-btn" data-action="number" data-value="3">3</button>
-            <button class="sci-calc-btn sci-calc-btn--operator" data-action="operator" data-value="-">&minus;</button>
-            <button class="sci-calc-btn sci-calc-btn--operator" data-action="negate">&plusmn;</button>
-
-            <button class="sci-calc-btn sci-calc-btn--wide" data-action="number" data-value="0">0</button>
-            <button class="sci-calc-btn" data-action="decimal">.</button>
-            <button class="sci-calc-btn sci-calc-btn--equals" data-action="equals">=</button>
-            <button class="sci-calc-btn sci-calc-btn--operator" data-action="operator" data-value="+">+</button>
-          </div>
-
-          <div class="sci-calc-history-panel">
-            <div class="sci-calc-history-header">
-              <h3><i data-lucide="history" style="width:16px;height:16px;display:inline;vertical-align:middle;margin-right:6px;"></i>History</h3>
-              <button class="tool-action-btn" id="btnClearHistory"><i data-lucide="trash-2"></i> Clear</button>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo">
+                <i data-lucide="toolbox"></i>
+                <span>ToolBox</span>
+            </a>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
             </div>
-            <div class="sci-calc-history-list" id="historyList">
-              <div class="sci-calc-history-empty">No calculations yet</div>
+            <div class="header-actions">
+                <button class="lang-btn" id="langToggle" aria-label="Toggle Language">
+                    <span class="lang-label">EN</span>
+                </button>
+                <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">
+                    <i data-lucide="sun" class="theme-icon-light"></i>
+                    <i data-lucide="moon" class="theme-icon-dark"></i>
+                </button>
             </div>
-          </div>
         </div>
-      </section>
-
-      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
-
-      <section class="tool-info">
-        <h2 class="tool-info__title">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <div class="tool-step__title">Choose Mode</div>
-              <div class="tool-step__desc">Toggle between DEG (degree) and RAD (radian) for trigonometric functions.</div>
+    </header>
+    
+    <!-- Breadcrumb -->
+    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_calculators" data-i18n="cat_calculators">Calculators</a> / <span>Scientific Calculator</span></div></div>
+    
+    <!-- Main Content -->
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <!-- Tool Header -->
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="calculator-variant"></i></div>
+                    <h1>Scientific Calculator</h1>
+                    <p>Advanced math functions</p>
+                </div>
+                
+                <!-- Tool Workspace -->
+                <div class="tool-workspace">
+                    <div class="workspace-grid">
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-text"></i>
+                                <span data-i18n="input_label">Input</span>
+                            </div>
+                            <div class="textarea-wrap">
+                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                            </div>
+                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        </div>
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-output"></i>
+                                <span data-i18n="output_label">Output</span>
+                            </div>
+                            <div class="textarea-wrap">
+                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            </div>
+                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
+                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
+                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                    </div>
+                </div>
+                
+                <!-- Ad Slot -->
+                <div class="ad-slot" style="margin-top:2rem">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
             </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <div class="tool-step__title">Use Scientific Functions</div>
-              <div class="tool-step__desc">Click sin, cos, tan, log, ln, sqrt, factorial, and more. Use parentheses for complex expressions.</div>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <div class="tool-step__title">Memory Functions</div>
-              <div class="tool-step__desc">Use MC (clear), MR (recall), M+ (add), M- (subtract), MS (store) for memory operations.</div>
-            </div>
-          </div>
+            <aside class="tool-sidebar">
+                <div class="ad-slot">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
+            </aside>
         </div>
-      </section>
-
-      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
-        <h2 class="tool-info__title">Related Tools</h2>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
-          <a href="standard.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">Standard Calculator</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Calculators</span>
-          </a>
-          <a href="loan.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">Loan Calculator</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Calculators</span>
-          </a>
-          <a href="bmi.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">BMI Calculator</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Calculators</span>
-          </a>
-          <a href="password-strength.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">Password Strength</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Calculators</span>
-          </a>
-        </div>
-      </section>
-
     </main>
-  </div>
-
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
-      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-  <script src="../../assets/js/i18n.js"></script>
-  <script src="../../assets/js/utils.js"></script>
-  <script src="../../assets/js/app.js"></script>
-
-  <script>
-    (function() {
-      const expressionEl = document.getElementById('sciExpression');
-      const resultEl = document.getElementById('sciResult');
-      const historyList = document.getElementById('historyList');
-
-      let expression = '';
-      let displayValue = '0';
-      let lastResult = null;
-      let isDeg = true;
-      let memory = 0;
-      let history = [];
-      let isNewInput = true;
-
-      function updateDisplay() {
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-links">
+                <a href="#" data-i18n="footer_about">About</a>
+                <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+                <a href="#" data-i18n="footer_terms">Terms of Service</a>
+                <a href="#" data-i18n="footer_contact">Contact</a>
+            </div>
+            <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
+        </div>
+    </footer>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+    
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i data-lucide="chevron-up"></i>
+    </button>
+    
+    <!-- Scripts -->
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/app.js"></script>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        if (typeof I18n !== 'undefined') {
+            I18n.init();
+        }
+    });
+    
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        if (toast) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    }
+    
+    function copyOutput() {
+        const output = document.getElementById('outputArea');
+        if (!output || !output.value) {
+            showToast('Nothing to copy');
+            return;
+        }
+        navigator.clipboard.writeText(output.value).then(() => {
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        }).catch(() => {
+            output.select();
+            document.execCommand('copy');
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        });
+    }
+    
+    function clearAll() {
+        const input = document.getElementById('inputArea');
+        const output = document.getElementById('outputArea');
+        const inputCount = document.getElementById('inputCount');
+        const outputCount = document.getElementById('outputCount');
+        if (input) input.value = '';
+        if (output) output.value = '';
+        if (inputCount) inputCount.textContent = '0';
+        if (outputCount) outputCount.textContent = '0';
+        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
+    }
+    
+    function updateDisplay() {
         resultEl.textContent = displayValue;
         expressionEl.textContent = expression;
       }
@@ -624,30 +442,18 @@
       });
 
       // Keyboard support
-      document.addEventListener('keydown', function(e) {
-        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-        if (e.key >= '0' && e.key <= '9') { inputNumber(e.key); e.preventDefault(); }
-        else if (e.key === '.') { inputDecimal(); e.preventDefault(); }
-        else if (e.key === '+') { inputOperator('+'); e.preventDefault(); }
-        else if (e.key === '-') { inputOperator('-'); e.preventDefault(); }
-        else if (e.key === '*') { inputOperator('*'); e.preventDefault(); }
-        else if (e.key === '/') { inputOperator('/'); e.preventDefault(); }
-        else if (e.key === 'Enter' || e.key === '=') { calculate(); e.preventDefault(); }
-        else if (e.key === 'Escape') { clear(); e.preventDefault(); }
-        else if (e.key === 'Backspace') { backspace(); e.preventDefault(); }
-        else if (e.key === '(') { inputParen('('); e.preventDefault(); }
-        else if (e.key === ')') { inputParen(')'); e.preventDefault(); }
-        else if (e.key === '^') { inputFunc('pow'); e.preventDefault(); }
-        else if (e.key === '%') { percent(); e.preventDefault(); }
-      });
+      
 
-      document.getElementById('btnClearHistory').addEventListener('click', function() {
-        history = [];
-        renderHistory();
-      });
-
-      updateDisplay();
-    })();
-  </script>
+    // Input character counter
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputArea = document.getElementById('inputArea');
+        const inputCount = document.getElementById('inputCount');
+        if (inputArea && inputCount) {
+            inputArea.addEventListener('input', () => {
+                inputCount.textContent = inputArea.value.length;
+            });
+        }
+    });
+    </script>
 </body>
 </html>

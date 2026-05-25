@@ -4,245 +4,198 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unit Converter - ToolBox</title>
-    <meta name="description" content="Convert between units of length, weight, temperature, area, volume, and speed. Fast and accurate.">
+    <meta name="description" content="Convert units of measurement">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
     <link rel="stylesheet" href="../../assets/css/tools.css">
+    
     <style>
-        .converter-card {
-            background: var(--bg, #fff); border: 1px solid var(--border, #e2e8f0);
-            border-radius: 0.75rem; padding: 1.5rem;
+        /* Tool Page Custom Styles */
+        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .workspace-grid .full-width { grid-column: 1 / -1; }
+        .textarea-wrap { position: relative; }
+        .textarea-wrap textarea, .textarea-wrap input {
+            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
+            resize: vertical; background: var(--color-bg); color: var(--color-text);
+            box-sizing: border-box;
         }
-        .category-tabs {
-            display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;
-        }
-        .category-tab {
-            padding: 0.5rem 1rem; border-radius: 2rem; border: 1px solid var(--border, #e2e8f0);
-            background: var(--bg, #fff); color: var(--text, #1e293b); cursor: pointer;
-            font-size: 14px; font-weight: 500; transition: all 0.2s;
-        }
-        .category-tab:hover { border-color: var(--primary, #3b82f6); }
-        .category-tab.active {
-            background: var(--primary, #3b82f6); color: #fff; border-color: var(--primary, #3b82f6);
-        }
-        .convert-row {
-            display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;
-        }
-        .convert-field { flex: 1; min-width: 150px; }
-        .convert-field label {
-            display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 13px;
-            color: var(--text-muted, #64748b);
-        }
-        .convert-field input, .convert-field select {
-            width: 100%; padding: 0.6rem 0.75rem; border: 1px solid var(--border, #e2e8f0);
-            border-radius: 0.5rem; font-size: 16px; background: var(--bg, #fff);
-            color: var(--text, #1e293b); box-sizing: border-box;
-        }
-        .convert-field input:focus, .convert-field select:focus {
-            outline: none; border-color: var(--primary, #3b82f6);
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
-        }
-        .swap-btn {
-            width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border, #e2e8f0);
-            background: var(--bg-secondary, #f1f5f9); cursor: pointer; display: flex;
-            align-items: center; justify-content: center; transition: all 0.2s;
-            margin-top: 1.2rem; flex-shrink: 0;
-        }
-        .swap-btn:hover { background: var(--primary, #3b82f6); color: #fff; }
-        .result-display {
-            margin-top: 1.5rem; padding: 1rem; background: var(--bg-secondary, #f8fafc);
-            border: 1px solid var(--border, #e2e8f0); border-radius: 0.5rem;
-            text-align: center;
-        }
-        .result-display .result-value {
-            font-size: 28px; font-weight: 700; color: var(--text, #1e293b);
-            font-family: 'Inter', sans-serif;
-        }
-        .result-display .result-label {
-            font-size: 13px; color: var(--text-muted, #94a3b8); margin-top: 0.25rem;
-        }
-        .quick-ref {
-            margin-top: 1.5rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 0.5rem;
-        }
-        .quick-ref-item {
-            padding: 0.5rem 0.75rem; background: var(--bg-secondary, #f8fafc);
-            border-radius: 0.375rem; font-size: 13px; display: flex;
-            justify-content: space-between; color: var(--text, #1e293b);
-        }
-        .quick-ref-item span:first-child { color: var(--text-muted, #94a3b8); }
-        .toast {
-            position: fixed; bottom: 2rem; right: 2rem; padding: 0.75rem 1.5rem;
-            background: #1e293b; color: #fff; border-radius: 0.5rem; font-size: 14px;
-            transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 9999;
-        }
-        .toast.show { transform: translateY(0); opacity: 1; }
-        @media (max-width: 768px) {
-            .convert-row { flex-direction: column; }
-            .swap-btn { transform: rotate(90deg); margin-top: 0; }
-        }
+        .textarea-wrap input { min-height: auto; resize: none; }
+        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
+        
+        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header class="header">
         <div class="container header-inner">
-            <a href="../../index.html" class="logo"><i data-lucide="ruler" style="width:28px;height:28px"></i> ToolBox</a>
+            <a href="../../index.html" class="logo">
+                <i data-lucide="toolbox"></i>
+                <span>ToolBox</span>
+            </a>
             <div class="header-search">
                 <i data-lucide="search"></i>
                 <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
             </div>
             <div class="header-actions">
-                <button class="lang-btn" onclick="I18n.setLang(I18n.currentLang==='en'?'zh':'en')">EN</button>
-                <button class="theme-btn" onclick="document.body.classList.toggle('dark')"><i data-lucide="sun"></i></button>
+                <button class="lang-btn" id="langToggle" aria-label="Toggle Language">
+                    <span class="lang-label">EN</span>
+                </button>
+                <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">
+                    <i data-lucide="sun" class="theme-icon-light"></i>
+                    <i data-lucide="moon" class="theme-icon-dark"></i>
+                </button>
             </div>
         </div>
     </header>
-    <div class="breadcrumb"><div class="container"><a href="../../index.html">Home</a> / <a href="../../index.html#converters">Converters</a> / <span>Unit Converter</span></div></div>
+    
+    <!-- Breadcrumb -->
+    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_converters" data-i18n="cat_converters">Converters</a> / <span>Unit Converter</span></div></div>
+    
+    <!-- Main Content -->
     <main class="tool-page">
         <div class="container tool-layout">
             <div class="tool-main">
+                <!-- Tool Header -->
                 <div class="tool-header">
                     <div class="tool-icon"><i data-lucide="ruler"></i></div>
                     <h1>Unit Converter</h1>
-                    <p>Convert between different units of measurement. Supports length, weight, temperature, area, volume, and speed.</p>
+                    <p>Convert units of measurement</p>
                 </div>
+                
+                <!-- Tool Workspace -->
                 <div class="tool-workspace">
-                    <div class="converter-card">
-                        <div class="category-tabs" id="categoryTabs"></div>
-                        <div class="convert-row">
-                            <div class="convert-field">
-                                <label>Value</label>
-                                <input type="number" id="valueInput" value="1" step="any">
+                    <div class="workspace-grid">
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-text"></i>
+                                <span data-i18n="input_label">Input</span>
                             </div>
-                            <div class="convert-field">
-                                <label>From</label>
-                                <select id="fromUnit"></select>
+                            <div class="textarea-wrap">
+                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
                             </div>
-                            <button class="swap-btn" onclick="swapUnits()" title="Swap units">
-                                <i data-lucide="arrow-left-right" style="width:18px;height:18px"></i>
-                            </button>
-                            <div class="convert-field">
-                                <label>To</label>
-                                <select id="toUnit"></select>
-                            </div>
+                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
-                        <div class="result-display">
-                            <div class="result-value" id="resultValue">-</div>
-                            <div class="result-label" id="resultLabel"></div>
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-output"></i>
+                                <span data-i18n="output_label">Output</span>
+                            </div>
+                            <div class="textarea-wrap">
+                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            </div>
+                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
-                        <div class="quick-ref" id="quickRef"></div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
+                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
+                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
                 </div>
-                <div class="ad-slot" style="margin-top:2rem"><div class="ad-placeholder">Advertisement</div></div>
+                
+                <!-- Ad Slot -->
+                <div class="ad-slot" style="margin-top:2rem">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
             </div>
             <aside class="tool-sidebar">
-                <div class="ad-slot"><div class="ad-placeholder">Advertisement</div></div>
+                <div class="ad-slot">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
             </aside>
         </div>
     </main>
-    <footer class="footer"><div class="container"><p>&copy; 2024 ToolBox. All rights reserved.</p></div></footer>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-links">
+                <a href="#" data-i18n="footer_about">About</a>
+                <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+                <a href="#" data-i18n="footer_terms">Terms of Service</a>
+                <a href="#" data-i18n="footer_contact">Contact</a>
+            </div>
+            <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
+        </div>
+    </footer>
+    
+    <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
-    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i data-lucide="chevron-up"></i>
+    </button>
+    
+    <!-- Scripts -->
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/app.js"></script>
+    
     <script>
-    lucide.createIcons();
-
-    // Unit definitions: all values relative to a base unit
-    const categories = {
-        length: {
-            name: 'Length', icon: 'ruler',
-            base: 'meter',
-            units: {
-                millimeter: { name: 'Millimeter (mm)', factor: 0.001 },
-                centimeter: { name: 'Centimeter (cm)', factor: 0.01 },
-                meter: { name: 'Meter (m)', factor: 1 },
-                kilometer: { name: 'Kilometer (km)', factor: 1000 },
-                inch: { name: 'Inch (in)', factor: 0.0254 },
-                foot: { name: 'Foot (ft)', factor: 0.3048 },
-                yard: { name: 'Yard (yd)', factor: 0.9144 },
-                mile: { name: 'Mile (mi)', factor: 1609.344 },
-                nautical_mile: { name: 'Nautical Mile', factor: 1852 }
-            }
-        },
-        weight: {
-            name: 'Weight', icon: 'weight',
-            base: 'kilogram',
-            units: {
-                milligram: { name: 'Milligram (mg)', factor: 0.000001 },
-                gram: { name: 'Gram (g)', factor: 0.001 },
-                kilogram: { name: 'Kilogram (kg)', factor: 1 },
-                metric_ton: { name: 'Metric Ton (t)', factor: 1000 },
-                ounce: { name: 'Ounce (oz)', factor: 0.0283495 },
-                pound: { name: 'Pound (lb)', factor: 0.453592 },
-                stone: { name: 'Stone (st)', factor: 6.35029 }
-            }
-        },
-        temperature: {
-            name: 'Temperature', icon: 'thermometer',
-            base: 'celsius',
-            units: {
-                celsius: { name: 'Celsius (C)' },
-                fahrenheit: { name: 'Fahrenheit (F)' },
-                kelvin: { name: 'Kelvin (K)' }
-            }
-        },
-        area: {
-            name: 'Area', icon: 'square',
-            base: 'sqmeter',
-            units: {
-                sqmillimeter: { name: 'mm\u00B2', factor: 0.000001 },
-                sqcentimeter: { name: 'cm\u00B2', factor: 0.0001 },
-                sqmeter: { name: 'm\u00B2', factor: 1 },
-                sqkilometer: { name: 'km\u00B2', factor: 1000000 },
-                hectare: { name: 'Hectare (ha)', factor: 10000 },
-                acre: { name: 'Acre', factor: 4046.86 },
-                sqfoot: { name: 'ft\u00B2', factor: 0.092903 },
-                sqinch: { name: 'in\u00B2', factor: 0.00064516 },
-                sqmile: { name: 'mi\u00B2', factor: 2589988.11 }
-            }
-        },
-        volume: {
-            name: 'Volume', icon: 'beaker',
-            base: 'liter',
-            units: {
-                milliliter: { name: 'Milliliter (mL)', factor: 0.001 },
-                liter: { name: 'Liter (L)', factor: 1 },
-                cubicmeter: { name: 'm\u00B3', factor: 1000 },
-                gallon_us: { name: 'Gallon (US)', factor: 3.78541 },
-                quart_us: { name: 'Quart (US)', factor: 0.946353 },
-                pint_us: { name: 'Pint (US)', factor: 0.473176 },
-                cup_us: { name: 'Cup (US)', factor: 0.236588 },
-                fluid_oz_us: { name: 'Fl Oz (US)', factor: 0.0295735 },
-                tablespoon: { name: 'Tablespoon', factor: 0.0147868 },
-                teaspoon: { name: 'Teaspoon', factor: 0.00492892 }
-            }
-        },
-        speed: {
-            name: 'Speed', icon: 'gauge',
-            base: 'mps',
-            units: {
-                mps: { name: 'm/s', factor: 1 },
-                kph: { name: 'km/h', factor: 0.277778 },
-                mph: { name: 'mph', factor: 0.44704 },
-                knot: { name: 'Knot', factor: 0.514444 },
-                fps: { name: 'ft/s', factor: 0.3048 },
-                mach: { name: 'Mach', factor: 343 }
-            }
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
         }
-    };
-
-    let currentCategory = 'length';
-    const valueInput = document.getElementById('valueInput');
-    const fromUnit = document.getElementById('fromUnit');
-    const toUnit = document.getElementById('toUnit');
-    const resultValue = document.getElementById('resultValue');
-    const resultLabel = document.getElementById('resultLabel');
-    const quickRef = document.getElementById('quickRef');
-
-    // Build category tabs
+        if (typeof I18n !== 'undefined') {
+            I18n.init();
+        }
+    });
+    
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        if (toast) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    }
+    
+    function copyOutput() {
+        const output = document.getElementById('outputArea');
+        if (!output || !output.value) {
+            showToast('Nothing to copy');
+            return;
+        }
+        navigator.clipboard.writeText(output.value).then(() => {
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        }).catch(() => {
+            output.select();
+            document.execCommand('copy');
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        });
+    }
+    
+    function clearAll() {
+        const input = document.getElementById('inputArea');
+        const output = document.getElementById('outputArea');
+        const inputCount = document.getElementById('inputCount');
+        const outputCount = document.getElementById('outputCount');
+        if (input) input.value = '';
+        if (output) output.value = '';
+        if (inputCount) inputCount.textContent = '0';
+        if (outputCount) outputCount.textContent = '0';
+        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
+    }
+    
     function buildTabs() {
         const tabs = document.getElementById('categoryTabs');
         tabs.innerHTML = '';
@@ -355,6 +308,18 @@
     buildTabs();
     buildUnits();
     convert();
+    </script>
+
+    // Input character counter
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputArea = document.getElementById('inputArea');
+        const inputCount = document.getElementById('inputCount');
+        if (inputArea && inputCount) {
+            inputArea.addEventListener('input', () => {
+                inputCount.textContent = inputArea.value.length;
+            });
+        }
+    });
     </script>
 </body>
 </html>

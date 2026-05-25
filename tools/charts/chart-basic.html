@@ -1,280 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Basic Chart Generator - ToolBox</title>
-  <meta name="description" content="Create beautiful charts online: bar, line, pie, radar, polar area, and doughnut charts. Customize colors, legends, and animations.">
-  <meta name="keywords" content="chart generator, bar chart, line chart, pie chart, radar chart, online chart maker">
-  <meta name="author" content="ToolBox">
-  <meta name="robots" content="index, follow">
-
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Basic Chart Generator - ToolBox">
-  <meta property="og:description" content="Create beautiful charts online with Chart.js. Free and no installation required.">
-  <meta property="og:url" content="https://toolbox.example.com/tools/charts/chart-basic.html">
-  <meta property="og:site_name" content="ToolBox">
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Basic Chart Generator",
-    "url": "https://toolbox.example.com/tools/charts/chart-basic.html",
-    "description": "Create beautiful charts online with Chart.js.",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-  }
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@0.453.0"></script>
-
-  <link rel="stylesheet" href="../../assets/css/main.css">
-  <link rel="stylesheet" href="../../assets/css/tools.css">
-  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
-
-  <style>
-    .data-table { width: 100%; border-collapse: collapse; }
-    .data-table th, .data-table td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--color-border-light); font-size: var(--font-size-sm); }
-    .data-table th { font-weight: 600; color: var(--color-text-secondary); background: var(--color-bg-secondary); }
-    .data-table input { width: 100%; padding: 6px 10px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); font-size: var(--font-size-sm); outline: none; }
-    .data-table input:focus { border-color: var(--color-primary); box-shadow: 0 0 0 2px rgba(59,130,246,0.15); }
-    .btn-remove-row { background: none; border: none; color: var(--color-error); cursor: pointer; padding: 4px; border-radius: var(--radius-sm); }
-    .btn-remove-row:hover { background: var(--color-error-light); }
-    .chart-preview-container { position: relative; width: 100%; min-height: 400px; display: flex; align-items: center; justify-content: center; }
-    .chart-preview-container canvas { max-width: 100%; max-height: 500px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Charts - ToolBox</title>
+    <meta name="description" content="Create basic charts">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    
+    <style>
+        /* Tool Page Custom Styles */
+        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .workspace-grid .full-width { grid-column: 1 / -1; }
+        .textarea-wrap { position: relative; }
+        .textarea-wrap textarea, .textarea-wrap input {
+            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
+            resize: vertical; background: var(--color-bg); color: var(--color-text);
+            box-sizing: border-box;
+        }
+        .textarea-wrap input { min-height: auto; resize: none; }
+        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
+        
+        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
-
-  <nav class="navbar" id="navbar">
-    <div class="navbar-container">
-      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
-      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
-      <div class="navbar-actions">
-        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
-        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
-        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
-      </div>
-    </div>
-  </nav>
-
-  <div class="main-layout">
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header"><h3>Categories</h3></div>
-      <ul class="sidebar-list">
-        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
-        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
-        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
-        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
-        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
-        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
-        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
-        <li><a href="../../index.html?category=charts" class="sidebar-item active"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
-        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
-      </ul>
-    </aside>
-
-    <main class="main-content tool-page">
-
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="../../index.html" class="breadcrumb__link">Home</a>
-        <span class="breadcrumb__separator">/</span>
-        <a href="../../index.html?category=charts" class="breadcrumb__link">Charts</a>
-        <span class="breadcrumb__separator">/</span>
-        <span class="breadcrumb__current">Basic Chart Generator</span>
-      </nav>
-
-      <section class="tool-header">
-        <div class="tool-header__icon"><i data-lucide="bar-chart-3"></i></div>
-        <h1 class="tool-header__title">Basic Chart Generator</h1>
-        <p class="tool-header__desc">Create beautiful charts with Chart.js. Supports bar, line, pie, radar, polar area, and doughnut charts with customizable colors and options.</p>
-      </section>
-
-      <section class="tool-workspace">
-
-        <!-- Settings -->
-        <div class="tool-settings">
-          <div class="tool-settings__title">Chart Settings</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
-            <div class="tool-settings__group">
-              <label class="tool-settings__label" for="chartType">Chart Type</label>
-              <select id="chartType" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
-                <option value="bar">Bar Chart</option>
-                <option value="line">Line Chart</option>
-                <option value="pie">Pie Chart</option>
-                <option value="radar">Radar Chart</option>
-                <option value="polarArea">Polar Area Chart</option>
-                <option value="doughnut">Doughnut Chart</option>
-              </select>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo">
+                <i data-lucide="toolbox"></i>
+                <span>ToolBox</span>
+            </a>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
             </div>
-            <div class="tool-settings__group">
-              <label class="tool-settings__label" for="colorTheme">Color Theme</label>
-              <select id="colorTheme" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
-                <option value="vibrant">Vibrant</option>
-                <option value="pastel">Pastel</option>
-                <option value="ocean">Ocean</option>
-                <option value="sunset">Sunset</option>
-                <option value="forest">Forest</option>
-                <option value="monochrome">Monochrome</option>
-              </select>
+            <div class="header-actions">
+                <button class="lang-btn" id="langToggle" aria-label="Toggle Language">
+                    <span class="lang-label">EN</span>
+                </button>
+                <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">
+                    <i data-lucide="sun" class="theme-icon-light"></i>
+                    <i data-lucide="moon" class="theme-icon-dark"></i>
+                </button>
             </div>
-          </div>
-          <div class="tool-settings__group">
-            <label class="tool-settings__label" for="chartTitle">Chart Title</label>
-            <input type="text" id="chartTitle" class="tool-input__field" style="min-height:auto;padding:8px 12px;" placeholder="Enter chart title..." value="My Chart">
-          </div>
-          <div style="display:flex;gap:var(--space-6);flex-wrap:wrap;">
-            <label class="form-checkbox"><input type="checkbox" id="showLegend" checked> Show Legend</label>
-            <label class="form-checkbox"><input type="checkbox" id="enableAnimation" checked> Enable Animation</label>
-          </div>
         </div>
-
-        <!-- Data Input -->
-        <div class="tool-panel">
-          <div class="tool-panel__header">
-            <span class="tool-panel__title"><i data-lucide="table-2"></i> Data</span>
-            <div class="tool-panel__actions">
-              <button class="btn btn--sm btn--secondary" id="btnAddRow"><i data-lucide="plus"></i> Add Row</button>
-              <button class="btn btn--sm btn--secondary" id="btnClearData"><i data-lucide="trash-2"></i> Clear</button>
+    </header>
+    
+    <!-- Breadcrumb -->
+    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_charts" data-i18n="cat_charts">Charts</a> / <span>Basic Charts</span></div></div>
+    
+    <!-- Main Content -->
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <!-- Tool Header -->
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="bar-chart-3"></i></div>
+                    <h1>Basic Charts</h1>
+                    <p>Create basic charts</p>
+                </div>
+                
+                <!-- Tool Workspace -->
+                <div class="tool-workspace">
+                    <div class="workspace-grid">
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-text"></i>
+                                <span data-i18n="input_label">Input</span>
+                            </div>
+                            <div class="textarea-wrap">
+                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                            </div>
+                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        </div>
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-output"></i>
+                                <span data-i18n="output_label">Output</span>
+                            </div>
+                            <div class="textarea-wrap">
+                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            </div>
+                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
+                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
+                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                    </div>
+                </div>
+                
+                <!-- Ad Slot -->
+                <div class="ad-slot" style="margin-top:2rem">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
             </div>
-          </div>
-          <div class="tool-panel__body" style="overflow-x:auto;">
-            <table class="data-table" id="dataTable">
-              <thead><tr><th>Label</th><th>Value</th><th style="width:50px;"></th></tr></thead>
-              <tbody id="dataBody">
-                <tr><td><input type="text" value="January" class="label-input"></td><td><input type="number" value="65" class="value-input"></td><td><button class="btn-remove-row" title="Remove"><i data-lucide="x" style="width:16px;height:16px;"></i></button></td></tr>
-                <tr><td><input type="text" value="February" class="label-input"></td><td><input type="number" value="59" class="value-input"></td><td><button class="btn-remove-row" title="Remove"><i data-lucide="x" style="width:16px;height:16px;"></i></button></td></tr>
-                <tr><td><input type="text" value="March" class="label-input"></td><td><input type="number" value="80" class="value-input"></td><td><button class="btn-remove-row" title="Remove"><i data-lucide="x" style="width:16px;height:16px;"></i></button></td></tr>
-                <tr><td><input type="text" value="April" class="label-input"></td><td><input type="number" value="81" class="value-input"></td><td><button class="btn-remove-row" title="Remove"><i data-lucide="x" style="width:16px;height:16px;"></i></button></td></tr>
-                <tr><td><input type="text" value="May" class="label-input"></td><td><input type="number" value="56" class="value-input"></td><td><button class="btn-remove-row" title="Remove"><i data-lucide="x" style="width:16px;height:16px;"></i></button></td></tr>
-                <tr><td><input type="text" value="June" class="label-input"></td><td><input type="number" value="72" class="value-input"></td><td><button class="btn-remove-row" title="Remove"><i data-lucide="x" style="width:16px;height:16px;"></i></button></td></tr>
-              </tbody>
-            </table>
-          </div>
+            <aside class="tool-sidebar">
+                <div class="ad-slot">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
+            </aside>
         </div>
-
-        <!-- Actions -->
-        <div class="tool-actions">
-          <div class="tool-actions__primary">
-            <button class="btn btn--primary" id="btnGenerate"><i data-lucide="sparkles"></i> Generate</button>
-          </div>
-          <div class="tool-actions__secondary">
-            <button class="btn btn--secondary" id="btnDownloadPNG"><i data-lucide="download"></i> Download PNG</button>
-            <button class="btn btn--secondary" id="btnDownloadSVG"><i data-lucide="file-image"></i> Download SVG</button>
-          </div>
-        </div>
-
-        <!-- Preview -->
-        <div class="tool-panel">
-          <div class="tool-panel__header">
-            <span class="tool-panel__title"><i data-lucide="eye"></i> Preview</span>
-          </div>
-          <div class="tool-panel__body">
-            <div class="chart-preview-container" id="previewContainer">
-              <div id="chartPlaceholder" class="tool-output__placeholder">
-                <i data-lucide="bar-chart-3"></i>
-                <span class="tool-output__placeholder-text">Click "Generate" to create your chart</span>
-              </div>
-              <canvas id="chartCanvas" style="display:none;"></canvas>
-            </div>
-          </div>
-        </div>
-
-      </section>
-
-      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
-
-      <section class="tool-info">
-        <h2 class="tool-info__title">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <div class="tool-step__title">Choose Chart Type</div>
-              <div class="tool-step__desc">Select from bar, line, pie, radar, polar area, or doughnut chart.</div>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <div class="tool-step__title">Enter Data</div>
-              <div class="tool-step__desc">Add labels and values. Use "Add Row" to add more data points.</div>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <div class="tool-step__title">Customize & Generate</div>
-              <div class="tool-step__desc">Set title, color theme, legend, and animation options, then click Generate.</div>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <div class="tool-step__title">Download</div>
-              <div class="tool-step__desc">Download your chart as PNG or SVG image.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
-        <h2 class="tool-info__title">Related Tools</h2>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
-          <a href="chart-advanced.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">Advanced Charts</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
-          </a>
-          <a href="scatter.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">Scatter / Bubble Chart</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
-          </a>
-          <a href="area-chart.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">Area / Stacked Chart</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
-          </a>
-          <a href="realtime-chart.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">Realtime Chart</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
-          </a>
-        </div>
-      </section>
-
     </main>
-  </div>
-
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
-      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script src="../../assets/js/i18n.js"></script>
-  <script src="../../assets/js/utils.js"></script>
-  <script src="../../assets/js/app.js"></script>
-
-  <script>
-  (function() {
-    const colorThemes = {
-      vibrant: ['#3B82F6','#EF4444','#10B981','#F59E0B','#8B5CF6','#EC4899','#06B6D4','#F97316','#6366F1','#14B8A6'],
-      pastel: ['#93C5FD','#FCA5A5','#6EE7B7','#FCD34D','#C4B5FD','#F9A8D4','#67E8F9','#FDBA74','#A5B4FC','#5EEAD4'],
-      ocean: ['#0EA5E9','#0284C7','#0369A1','#06B6D4','#0891B2','#0E7490','#22D3EE','#38BDF8','#7DD3FC','#BAE6FD'],
-      sunset: ['#F97316','#EF4444','#F59E0B','#DC2626','#EA580C','#D97706','#FB923C','#F87171','#FBBF24','#FCA5A5'],
-      forest: ['#10B981','#059669','#047857','#065F46','#34D399','#6EE7B7','#A7F3D0','#047857','#064E3B','#065F46'],
-      monochrome: ['#1F2937','#374151','#4B5563','#6B7280','#9CA3AF','#D1D5DB','#E5E7EB','#F3F4F6','#111827','#1F2937']
-    };
-
-    let chartInstance = null;
-
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-links">
+                <a href="#" data-i18n="footer_about">About</a>
+                <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+                <a href="#" data-i18n="footer_terms">Terms of Service</a>
+                <a href="#" data-i18n="footer_contact">Contact</a>
+            </div>
+            <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
+        </div>
+    </footer>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+    
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i data-lucide="chevron-up"></i>
+    </button>
+    
+    <!-- Scripts -->
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/app.js"></script>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        if (typeof I18n !== 'undefined') {
+            I18n.init();
+        }
+    });
+    
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        if (toast) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    }
+    
+    function copyOutput() {
+        const output = document.getElementById('outputArea');
+        if (!output || !output.value) {
+            showToast('Nothing to copy');
+            return;
+        }
+        navigator.clipboard.writeText(output.value).then(() => {
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        }).catch(() => {
+            output.select();
+            document.execCommand('copy');
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        });
+    }
+    
+    function clearAll() {
+        const input = document.getElementById('inputArea');
+        const output = document.getElementById('outputArea');
+        const inputCount = document.getElementById('inputCount');
+        const outputCount = document.getElementById('outputCount');
+        if (input) input.value = '';
+        if (output) output.value = '';
+        if (inputCount) inputCount.textContent = '0';
+        if (outputCount) outputCount.textContent = '0';
+        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
+    }
+    
     function getColors(count) {
       const theme = document.getElementById('colorTheme').value;
       const palette = colorThemes[theme] || colorThemes.vibrant;
@@ -383,5 +304,17 @@
     });
   })();
   </script>
+
+    // Input character counter
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputArea = document.getElementById('inputArea');
+        const inputCount = document.getElementById('inputCount');
+        if (inputArea && inputCount) {
+            inputArea.addEventListener('input', () => {
+                inputCount.textContent = inputArea.value.length;
+            });
+        }
+    });
+    </script>
 </body>
 </html>

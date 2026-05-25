@@ -1,480 +1,240 @@
 /* ============================================================
    dark.css - Dark Theme Override Stylesheet
-   Activated via body.dark class
+   Activated via html.dark class (applied on <html> element)
    ============================================================ */
 
 /* ----------------------------------------------------------
-   1. Dark Theme Color Variables
+   1. Dark Theme CSS Variables
    ---------------------------------------------------------- */
-body.dark {
+html.dark {
   /* --- Background & Surface --- */
-  --color-bg: #0F172A;
-  --color-bg-secondary: #0B1120;
-  --color-bg-tertiary: #1E293B;
-  --color-surface: #1E293B;
-  --color-surface-hover: #273548;
+  --color-bg: #0B0F1A;
+  --color-bg-secondary: #111827;
+  --color-bg-tertiary: #1F2937;
+  --color-surface: #151C2C;
+  --color-surface-hover: #1E293B;
 
   /* --- Text --- */
-  --color-text: #E2E8F0;
+  --color-text: #F1F5F9;
   --color-text-secondary: #94A3B8;
   --color-text-tertiary: #64748B;
-  --color-text-inverse: #0F172A;
+  --color-text-inverse: #0B0F1A;
   --color-text-link: #60A5FA;
   --color-text-link-hover: #93C5FD;
 
   /* --- Border --- */
-  --color-border: #334155;
+  --color-border: #1E293B;
   --color-border-light: #1E293B;
   --color-border-focus: #3B82F6;
 
-  /* --- Primary Color Adjustments --- */
+  /* --- Primary Color --- */
   --color-primary: #3B82F6;
   --color-primary-hover: #60A5FA;
   --color-primary-light: rgba(59, 130, 246, 0.15);
   --color-primary-dark: #2563EB;
 
-  /* --- Semantic Color Adjustments for Dark Mode --- */
-  --color-success: #34D399;
-  --color-success-light: rgba(16, 185, 129, 0.15);
-  --color-warning: #FBBF24;
-  --color-warning-light: rgba(245, 158, 11, 0.15);
-  --color-error: #F87171;
-  --color-error-light: rgba(239, 68, 68, 0.15);
-  --color-info: #22D3EE;
-  --color-info-light: rgba(6, 182, 212, 0.15);
-
-  /* --- Shadow Adjustments (darker, more subtle) --- */
-  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
-  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+  /* --- Shadow Adjustments (darker, more pronounced) --- */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
 }
 
-
 /* ----------------------------------------------------------
-   2. Global Dark Mode Overrides
+   2. Global Dark Mode Base
    ---------------------------------------------------------- */
-body.dark {
+html.dark body {
   background-color: var(--color-bg);
   color: var(--color-text);
 }
 
-/* Selection */
-body.dark ::selection {
+/* Text selection highlight */
+html.dark ::selection {
   background-color: var(--color-primary);
   color: #FFFFFF;
 }
 
-/* Scrollbar */
-body.dark ::-webkit-scrollbar-track {
+/* Scrollbar - WebKit */
+html.dark ::-webkit-scrollbar-track {
   background: var(--color-bg-secondary);
 }
 
-body.dark ::-webkit-scrollbar-thumb {
+html.dark ::-webkit-scrollbar-thumb {
   background: var(--color-border);
+  border-radius: 4px;
 }
 
-body.dark ::-webkit-scrollbar-thumb:hover {
+html.dark ::-webkit-scrollbar-thumb:hover {
   background: var(--color-text-tertiary);
 }
 
-
 /* ----------------------------------------------------------
-   3. Navigation Bar - Dark
+   3. Navigation Bar
    ---------------------------------------------------------- */
-body.dark .navbar {
-  background-color: rgba(15, 23, 42, 0.85);
+html.dark .navbar {
+  background-color: rgba(11, 15, 26, 0.85);
   border-bottom-color: var(--color-border);
 }
 
-body.dark .navbar__logo {
+html.dark .navbar-logo {
   color: var(--color-text);
 }
 
-body.dark .navbar__logo:hover {
+html.dark .navbar-logo:hover {
   color: var(--color-primary);
 }
 
-body.dark .navbar__search-input {
-  background-color: var(--color-bg-tertiary);
+/* ----------------------------------------------------------
+   4. Search Input
+   ---------------------------------------------------------- */
+html.dark .search-input {
+  background-color: var(--color-bg-secondary);
   border-color: var(--color-border);
   color: var(--color-text);
 }
 
-body.dark .navbar__search-input::placeholder {
+html.dark .search-input::placeholder {
   color: var(--color-text-tertiary);
 }
 
-body.dark .navbar__search-input:focus {
+html.dark .search-input:focus {
   border-color: var(--color-border-focus);
-  background-color: var(--color-surface);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
-body.dark .navbar__search-icon {
-  color: var(--color-text-tertiary);
-}
-
-body.dark .navbar__action-btn {
-  color: var(--color-text-secondary);
-}
-
-body.dark .navbar__action-btn:hover {
-  background-color: var(--color-bg-tertiary);
-  color: var(--color-text);
-}
-
-body.dark .navbar__lang {
-  color: var(--color-text-secondary);
-}
-
-body.dark .navbar__lang:hover {
-  background-color: var(--color-bg-tertiary);
-  color: var(--color-text);
-}
-
-body.dark .navbar__menu-toggle {
-  color: var(--color-text-secondary);
-}
-
-
 /* ----------------------------------------------------------
-   4. Sidebar - Dark
+   5. Sidebar
    ---------------------------------------------------------- */
-body.dark .sidebar {
+html.dark .sidebar {
   background-color: var(--color-surface);
   border-right-color: var(--color-border);
 }
 
-body.dark .sidebar__category {
+html.dark .sidebar-header h3 {
   color: var(--color-text-secondary);
 }
 
-body.dark .sidebar__category:hover {
+html.dark .sidebar-item {
+  color: var(--color-text-secondary);
+}
+
+html.dark .sidebar-item:hover {
   background-color: var(--color-bg-tertiary);
   color: var(--color-text);
 }
 
-body.dark .sidebar__category--active {
-  background-color: var(--color-primary-light);
-  color: var(--color-primary);
+html.dark .sidebar-item.active {
+  background-color: var(--color-primary);
+  color: #FFFFFF;
 }
-
-body.dark .sidebar__category-count {
-  color: var(--color-text-tertiary);
-  background-color: var(--color-bg);
-}
-
 
 /* ----------------------------------------------------------
-   5. Cards - Dark
+   6. Tool Cards
    ---------------------------------------------------------- */
-body.dark .tool-card {
+html.dark .tool-card {
   background-color: var(--color-surface);
   border-color: var(--color-border);
 }
 
-body.dark .tool-card:hover {
+html.dark .tool-card:hover {
   border-color: var(--color-primary);
   box-shadow: var(--shadow-lg);
 }
 
-body.dark .tool-card__icon-wrapper {
-  background-color: var(--color-primary-light);
+html.dark .tool-card h3 {
+  color: var(--color-text);
+}
+
+html.dark .tool-card p {
+  color: var(--color-text-secondary);
+}
+
+html.dark .tool-card-icon {
+  background-color: rgba(59, 130, 246, 0.1);
   color: var(--color-primary);
 }
 
-body.dark .tool-card:hover .tool-card__icon-wrapper {
+html.dark .tool-card:hover .tool-card-icon {
   background-color: var(--color-primary);
   color: #FFFFFF;
 }
 
-body.dark .tool-card__title {
-  color: var(--color-text);
-}
-
-body.dark .tool-card__desc {
-  color: var(--color-text-secondary);
-}
-
-body.dark .tool-card__meta {
-  border-top-color: var(--color-border);
-  color: var(--color-text-tertiary);
-}
-
-body.dark .tool-card__tag {
-  background-color: var(--color-bg);
-  color: var(--color-text-secondary);
-}
-
-body.dark .tool-card__arrow {
-  color: var(--color-text-tertiary);
-}
-
-
-/* ----------------------------------------------------------
-   6. Form Elements - Dark
-   ---------------------------------------------------------- */
-body.dark .form-input,
-body.dark .form-textarea,
-body.dark .form-select {
-  background-color: var(--color-bg);
-  border-color: var(--color-border);
-  color: var(--color-text);
-}
-
-body.dark .form-input::placeholder,
-body.dark .form-textarea::placeholder {
-  color: var(--color-text-tertiary);
-}
-
-body.dark .form-input:hover,
-body.dark .form-textarea:hover,
-body.dark .form-select:hover {
-  border-color: var(--color-text-tertiary);
-}
-
-body.dark .form-input:focus,
-body.dark .form-textarea:focus,
-body.dark .form-select:focus {
-  border-color: var(--color-border-focus);
-  background-color: var(--color-bg);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-}
-
-body.dark .form-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-}
-
-body.dark .form-label {
-  color: var(--color-text);
-}
-
-body.dark .form-hint {
-  color: var(--color-text-tertiary);
-}
-
-body.dark .form-checkbox,
-body.dark .form-radio {
-  color: var(--color-text-secondary);
-}
-
-
-/* ----------------------------------------------------------
-   7. Buttons - Dark
-   ---------------------------------------------------------- */
-body.dark .btn--secondary {
+html.dark .tool-card-tag {
   background-color: var(--color-bg-tertiary);
-  color: var(--color-text);
-  border-color: var(--color-border);
-}
-
-body.dark .btn--secondary:hover {
-  background-color: var(--color-border);
-}
-
-body.dark .btn--ghost {
   color: var(--color-text-secondary);
 }
 
-body.dark .btn--ghost:hover {
-  background-color: var(--color-bg-tertiary);
+/* ----------------------------------------------------------
+   7. Welcome Section
+   ---------------------------------------------------------- */
+html.dark .welcome-section h1 {
   color: var(--color-text);
 }
 
-body.dark .btn--outline {
-  color: var(--color-primary);
-  border-color: var(--color-primary);
+html.dark .welcome-section p {
+  color: var(--color-text-secondary);
 }
-
-body.dark .btn--outline:hover {
-  background-color: var(--color-primary);
-  color: #FFFFFF;
-}
-
 
 /* ----------------------------------------------------------
-   8. Footer - Dark
+   8. Footer
    ---------------------------------------------------------- */
-body.dark .footer {
+html.dark .footer {
   background-color: var(--color-bg-secondary);
   border-top-color: var(--color-border);
 }
 
-body.dark .footer__brand-name {
-  color: var(--color-text);
-}
-
-body.dark .footer__brand-desc {
+html.dark .footer-links a {
   color: var(--color-text-secondary);
 }
 
-body.dark .footer__heading {
-  color: var(--color-text);
-}
-
-body.dark .footer__link {
-  color: var(--color-text-secondary);
-}
-
-body.dark .footer__link:hover {
+html.dark .footer-links a:hover {
   color: var(--color-primary);
 }
 
-body.dark .footer__bottom {
-  border-top-color: var(--color-border);
+html.dark .footer-copyright {
   color: var(--color-text-tertiary);
 }
 
-body.dark .footer__bottom-link {
-  color: var(--color-text-tertiary);
-}
-
-body.dark .footer__bottom-link:hover {
-  color: var(--color-text-secondary);
-}
-
-
 /* ----------------------------------------------------------
-   9. Breadcrumb - Dark
+   9. Ad Slot
    ---------------------------------------------------------- */
-body.dark .breadcrumb {
-  color: var(--color-text-tertiary);
-}
-
-body.dark .breadcrumb__link {
-  color: var(--color-text-secondary);
-}
-
-body.dark .breadcrumb__link:hover {
-  color: var(--color-primary);
-}
-
-body.dark .breadcrumb__current {
-  color: var(--color-text);
-}
-
-
-/* ----------------------------------------------------------
-   10. Page Header - Dark
-   ---------------------------------------------------------- */
-body.dark .page-header__title {
-  color: var(--color-text);
-}
-
-body.dark .page-header__desc {
-  color: var(--color-text-secondary);
-}
-
-body.dark .section-heading__title {
-  color: var(--color-text);
-}
-
-
-/* ----------------------------------------------------------
-   11. Ad Slot - Dark
-   ---------------------------------------------------------- */
-body.dark .ad-slot {
-  background-color: var(--color-bg);
+html.dark .ad-slot {
   border-color: var(--color-border);
-  color: var(--color-text-tertiary);
-}
-
-
-/* ----------------------------------------------------------
-   12. Toast - Dark
-   ---------------------------------------------------------- */
-body.dark .toast {
-  background-color: var(--color-surface);
-  border-color: var(--color-border);
-  color: var(--color-text);
-}
-
-
-/* ----------------------------------------------------------
-   13. Empty State - Dark
-   ---------------------------------------------------------- */
-body.dark .empty-state__icon {
-  color: var(--color-text-tertiary);
-}
-
-body.dark .empty-state__title {
-  color: var(--color-text);
-}
-
-body.dark .empty-state__desc {
-  color: var(--color-text-secondary);
-}
-
-
-/* ----------------------------------------------------------
-   14. Skeleton Loading - Dark
-   ---------------------------------------------------------- */
-body.dark .skeleton {
-  background: linear-gradient(90deg, var(--color-bg-tertiary) 25%, var(--color-border) 50%, var(--color-bg-tertiary) 75%);
-  background-size: 200% 100%;
-}
-
-
-/* ----------------------------------------------------------
-   15. Badge - Dark
-   ---------------------------------------------------------- */
-body.dark .badge--neutral {
   background-color: var(--color-bg);
-  color: var(--color-text-secondary);
+  color: var(--color-text-tertiary);
 }
 
-
 /* ----------------------------------------------------------
-   16. Sidebar Overlay - Dark
+   10. Sidebar Overlay
    ---------------------------------------------------------- */
-body.dark .sidebar-overlay {
+html.dark .sidebar-overlay {
   background-color: rgba(0, 0, 0, 0.6);
 }
 
+/* ----------------------------------------------------------
+   11. Action Buttons (navbar)
+   ---------------------------------------------------------- */
+html.dark .btn-icon {
+  color: var(--color-text-secondary);
+}
+
+html.dark .btn-icon:hover {
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text);
+}
 
 /* ----------------------------------------------------------
-   17. Code Blocks - Dark
+   12. Code Blocks & Tables
    ---------------------------------------------------------- */
-body.dark code,
-body.dark pre {
+html.dark code,
+html.dark pre {
   background-color: var(--color-bg);
   color: var(--color-text);
 }
 
-body.dark pre {
+html.dark pre {
   border-color: var(--color-border);
 }
 
-
-/* ----------------------------------------------------------
-   18. Table - Dark
-   ---------------------------------------------------------- */
-body.dark table {
-  border-color: var(--color-border);
-}
-
-body.dark th {
-  background-color: var(--color-bg-tertiary);
-  color: var(--color-text);
-  border-color: var(--color-border);
-}
-
-body.dark td {
-  border-color: var(--color-border);
-  color: var(--color-text-secondary);
-}
-
-body.dark tr:hover td {
-  background-color: var(--color-surface-hover);
-}
-
-
-/* ----------------------------------------------------------
-   19. Divider / HR - Dark
-   ---------------------------------------------------------- */
-body.dark hr {
+html.dark hr {
   border-color: var(--color-border);
 }

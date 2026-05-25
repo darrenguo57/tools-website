@@ -1,66 +1,63 @@
 /**
- * app.js - 主应用逻辑
- * 负责 DOMContentLoaded 初始化、主题切换、搜索、侧边栏、移动端菜单等核心功能
+ * app.js - Main Application Logic
+ * Handles theme toggle, language switch, search, sidebar filtering,
+ * mobile menu, and back-to-top functionality.
+ * Uses IIFE pattern for encapsulation.
  */
 const App = (() => {
   'use strict';
 
-  // ========== 常量 ==========
+  // ========== Constants ==========
   const THEME_STORAGE_KEY = 'toolbox-theme';
-  const SIDEBAR_STORAGE_KEY = 'toolbox-sidebar-collapsed';
+  const DEBOUNCE_DELAY = 300;
+  const SCROLL_THRESHOLD = 300;
+  const MOBILE_BREAKPOINT = 768;
 
-  // ========== 状态 ==========
+  // ========== State ==========
   let currentCategory = 'all';
   let searchQuery = '';
 
-  // ========== 初始化 ==========
+  // ========== DOM Cache ==========
+  const $ = (selector) => document.querySelector(selector);
+  const $$ = (selector) => document.querySelectorAll(selector);
+
+  // ========== Initialization ==========
 
   /**
-   * 应用入口：DOMContentLoaded 时调用
+   * Application entry point, called on DOMContentLoaded
    */
-  async function init() {
+  function init() {
     initTheme();
-    await initI18n();
+    initI18n();
     initSearch();
     initSidebar();
     initMobileMenu();
-    initToolCards();
-    generateBreadcrumb();
-    initScrollEffects();
+    initBackToTop();
   }
 
-  // ========== 国际化 ==========
+  // ========== Theme Toggle ==========
 
   /**
-   * 初始化国际化模块
-   */
-  async function initI18n() {
-    if (typeof I18n !== 'undefined') {
-      await I18n.init();
-    }
-  }
-
-  // ========== 主题切换 ==========
-
-  /**
-   * 初始化主题：读取 localStorage，应用 dark 类
+   * Initialize theme: read from localStorage, apply dark class to <html>
    */
   function initTheme() {
     const savedTheme = getStoredTheme();
     applyTheme(savedTheme);
 
-    // 绑定主题切换按钮
-    document.querySelectorAll('[data-theme-toggle]').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    // Bind theme toggle button
+    const themeToggle = $('#themeToggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', (e) => {
         e.preventDefault();
         toggleTheme();
       });
-    });
+    }
   }
 
   /**
-   * 获取存储的主题偏好
-   * @returns {'dark'|'light'} 主题值
+   * Get stored theme preference from localStorage
+   * Falls back to system preference, then 'light'
+   * @returns {'dark'|'light'} theme value
    */
   function getStoredTheme() {
     try {
@@ -69,10 +66,10 @@ const App = (() => {
         return stored;
       }
     } catch (e) {
-      // localStorage 不可用
+      // localStorage unavailable, silent fail
     }
 
-    // 检测系统偏好
+    // Detect system preference
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       return 'dark';
     }
@@ -81,37 +78,43 @@ const App = (() => {
   }
 
   /**
-   * 应用主题到页面
-   * @param {'dark'|'light'} theme - 主题值
+   * Apply theme to <html> element and update toggle button
+   * @param {'dark'|'light'} theme - theme value
    */
   function applyTheme(theme) {
-    const root = document.documentElement;
+    const html = document.documentElement;
 
     if (theme === 'dark') {
-      root.classList.add('dark');
+      html.classList.add('dark');
     } else {
-      root.classList.remove('dark');
+      html.classList.remove('dark');
     }
 
-    // 更新主题切换按钮状态
-    document.querySelectorAll('[data-theme-toggle]').forEach(btn => {
+    // Update theme toggle button aria-label and icon visibility
+    const themeToggle = $('#themeToggle');
+    if (themeToggle) {
       const isDark = theme === 'dark';
-      btn.setAttribute('aria-label', isDark
+      themeToggle.setAttribute('aria-label', isDark
         ? (typeof I18n !== 'undefined' ? I18n.t('theme.light') : 'Light Mode')
         : (typeof I18n !== 'undefined' ? I18n.t('theme.dark') : 'Dark Mode')
       );
-      btn.classList.toggle('active', isDark);
-    });
 
-    // 更新 meta theme-color（如果有）
-    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+      // Toggle icon visibility (light icon shown in dark mode, dark icon in light mode)
+      const lightIcon = themeToggle.querySelector('.theme-icon-light');
+      const darkIcon = themeToggle.querySelector('.theme-icon-dark');
+      if (lightIcon) lightIcon.style.display = isDark ? 'none' : '';
+      if (darkIcon) darkIcon.style.display = isDark ? '' : 'none';
+    }
+
+    // Update meta theme-color if present
+    const metaThemeColor = $('meta[name="theme-color"]');
     if (metaThemeColor) {
-      metaThemeColor.setAttribute('content', theme === 'dark' ? '#1a1a2e' : '#ffffff');
+      metaThemeColor.setAttribute('content', theme === 'dark' ? '#0B0F1A' : '#ffffff');
     }
   }
 
   /**
-   * 切换主题
+   * Toggle between dark and light themes
    */
   function toggleTheme() {
     const isDark = document.documentElement.classList.contains('dark');
@@ -122,30 +125,96 @@ const App = (() => {
     try {
       localStorage.setItem(THEME_STORAGE_KEY, newTheme);
     } catch (e) {
-      // 静默失败
+      // silent fail
     }
   }
 
-  // ========== 搜索功能 ==========
+  // ========== Language Toggle ==========
 
   /**
-   * 初始化搜索功能
+   * Initialize i18n module and bind language toggle button
+   */
+  function initI18n() {
+    if (typeof I18n !== 'undefined' && typeof I18n.init === 'function') {
+      I18n.init();
+    }
+
+    // Support both homepage (#langToggle) and tool pages (.lang-btn)
+    const langToggle = $('#langToggle') || $('.lang-btn');
+
+    if (langToggle) {
+      langToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (typeof I18n !== 'undefined' && typeof I18n.setLang === 'function' && typeof I18n.getLang === 'function') {
+          const currentLang = I18n.getLang();
+          I18n.setLang(currentLang === 'en' ? 'zh' : 'en');
+        }
+        // Update button text to show current language
+        updateLangLabel();
+      });
+
+      // Set initial label
+      updateLangLabel();
+    }
+
+    // Also bind theme toggle for tool pages
+    const themeToggle = $('#themeToggle') || $('.theme-btn');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleTheme();
+      });
+    }
+  }
+
+  /**
+   * Update language toggle button text to reflect current language
+   */
+  function updateLangLabel() {
+    // Support both homepage (#langToggle) and tool pages (.lang-btn with .lang-label span)
+    const langToggle = $('#langToggle') || $('.lang-btn');
+
+    if (!langToggle) return;
+
+    const currentLang = (typeof I18n !== 'undefined' && typeof I18n.getLang === 'function')
+      ? I18n.getLang()
+      : 'en';
+
+    // Check for .lang-label span inside button (tool pages)
+    const label = langToggle.querySelector('.lang-label');
+    if (label) {
+      label.textContent = currentLang === 'zh' ? 'EN' : '中文';
+    } else {
+      // Direct text content (homepage)
+      langToggle.textContent = currentLang === 'zh' ? 'EN' : '中文';
+    }
+  }
+
+  // ========== Search ==========
+
+  /**
+   * Initialize search with debounced input handler
    */
   function initSearch() {
-    const searchInput = document.querySelector('[data-search-input]');
+    const searchInput = $('#searchInput');
     if (!searchInput) return;
 
-    // 使用防抖处理搜索输入
-    const debouncedSearch = Utils.debounce((query) => {
-      searchQuery = query.trim().toLowerCase();
-      filterToolCards();
-    }, 300);
+    // Debounced search handler
+    const debouncedSearch = (typeof Utils !== 'undefined' && typeof Utils.debounce === 'function')
+      ? Utils.debounce((query) => {
+          searchQuery = query.trim().toLowerCase();
+          filterToolCards();
+        }, DEBOUNCE_DELAY)
+      : (query) => {
+          searchQuery = query.trim().toLowerCase();
+          filterToolCards();
+        };
 
     searchInput.addEventListener('input', (e) => {
       debouncedSearch(e.target.value);
     });
 
-    // 支持 Esc 清空搜索
+    // Clear search on Escape
     searchInput.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         searchInput.value = '';
@@ -155,7 +224,7 @@ const App = (() => {
       }
     });
 
-    // 支持 Ctrl/Cmd + K 聚焦搜索框
+    // Focus search on Ctrl/Cmd + K
     document.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
@@ -165,139 +234,97 @@ const App = (() => {
   }
 
   /**
-   * 根据搜索关键词和分类筛选工具卡片
+   * Filter tool cards based on current search query and active category
    */
   function filterToolCards() {
-    const cards = document.querySelectorAll('[data-tool-card]');
+    const cards = $$('.tools-grid .tool-card');
     let visibleCount = 0;
 
     cards.forEach(card => {
-      const title = (card.getAttribute('data-tool-title') || '').toLowerCase();
-      const description = (card.getAttribute('data-tool-desc') || '').toLowerCase();
-      const category = (card.getAttribute('data-tool-category') || '').toLowerCase();
-      const keywords = (card.getAttribute('data-tool-keywords') || '').toLowerCase();
+      // Read data attributes for matching
+      const nameEn = (card.getAttribute('data-name-en') || '').toLowerCase();
+      const nameZh = (card.getAttribute('data-name-zh') || '').toLowerCase();
+      const category = (card.getAttribute('data-category') || '').toLowerCase();
 
-      // 分类筛选
+      // Category filter
       const categoryMatch = currentCategory === 'all' || category === currentCategory;
 
-      // 搜索匹配（支持中英文）
+      // Search filter (match against both English and Chinese names)
       const searchMatch = !searchQuery
-        || title.includes(searchQuery)
-        || description.includes(searchQuery)
-        || keywords.includes(searchQuery);
+        || nameEn.includes(searchQuery)
+        || nameZh.includes(searchQuery);
 
       const isVisible = categoryMatch && searchMatch;
 
       card.style.display = isVisible ? '' : 'none';
-      card.classList.toggle('hidden', !isVisible);
 
       if (isVisible) {
         visibleCount++;
       }
     });
 
-    // 显示/隐藏无结果提示
+    // Show/hide no-results message
     updateNoResults(visibleCount);
   }
 
   /**
-   * 更新无搜索结果提示
-   * @param {number} count - 可见卡片数量
+   * Toggle no-results element visibility
+   * @param {number} count - number of visible cards
    */
   function updateNoResults(count) {
-    const noResults = document.querySelector('[data-no-results]');
+    const noResults = $('#noResults') || $('[data-no-results]');
     if (noResults) {
       noResults.style.display = count === 0 ? '' : 'none';
     }
   }
 
-  // ========== 侧边栏分类筛选 ==========
+  // ========== Sidebar Category Filter ==========
 
   /**
-   * 初始化侧边栏分类筛选功能
+   * Initialize sidebar category click handlers
    */
   function initSidebar() {
-    const categoryBtns = document.querySelectorAll('[data-category]');
+    const categoryItems = $$('.sidebar-item[data-category]');
 
-    categoryBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    categoryItems.forEach(item => {
+      item.addEventListener('click', (e) => {
         e.preventDefault();
-        const category = btn.getAttribute('data-category');
+        const category = item.getAttribute('data-category');
         setActiveCategory(category);
       });
     });
-
-    // 恢复侧边栏折叠状态
-    restoreSidebarState();
-
-    // 侧边栏折叠/展开
-    const sidebarToggle = document.querySelector('[data-sidebar-toggle]');
-    if (sidebarToggle) {
-      sidebarToggle.addEventListener('click', toggleSidebar);
-    }
   }
 
   /**
-   * 设置当前活跃的分类
-   * @param {string} category - 分类标识
+   * Set the active category and re-filter cards
+   * @param {string} category - category identifier
    */
   function setActiveCategory(category) {
     currentCategory = category;
 
-    // 更新按钮高亮状态
-    document.querySelectorAll('[data-category]').forEach(btn => {
-      const btnCategory = btn.getAttribute('data-category');
-      btn.classList.toggle('active', btnCategory === category);
+    // Update active state on sidebar items
+    $$('.sidebar-item[data-category]').forEach(item => {
+      const itemCategory = item.getAttribute('data-category');
+      item.classList.toggle('active', itemCategory === category);
     });
 
-    // 筛选卡片
+    // Re-filter cards (combines with search)
     filterToolCards();
 
-    // 移动端自动关闭侧边栏
-    if (window.innerWidth < 768) {
+    // Auto-close mobile sidebar after selecting a category
+    if (window.innerWidth < MOBILE_BREAKPOINT) {
       closeMobileMenu();
     }
   }
 
-  /**
-   * 切换侧边栏折叠状态
-   */
-  function toggleSidebar() {
-    const sidebar = document.querySelector('[data-sidebar]');
-    if (!sidebar) return;
-
-    const isCollapsed = sidebar.classList.toggle('collapsed');
-
-    try {
-      localStorage.setItem(SIDEBAR_STORAGE_KEY, isCollapsed ? 'true' : 'false');
-    } catch (e) {
-      // 静默失败
-    }
-  }
+  // ========== Mobile Menu ==========
 
   /**
-   * 恢复侧边栏折叠状态
-   */
-  function restoreSidebarState() {
-    try {
-      const isCollapsed = localStorage.getItem(SIDEBAR_STORAGE_KEY) === 'true';
-      const sidebar = document.querySelector('[data-sidebar]');
-      if (sidebar && isCollapsed) {
-        sidebar.classList.add('collapsed');
-      }
-    } catch (e) {
-      // 静默失败
-    }
-  }
-
-  // ========== 移动端汉堡菜单 ==========
-
-  /**
-   * 初始化移动端汉堡菜单
+   * Initialize mobile hamburger menu and overlay
    */
   function initMobileMenu() {
-    const hamburger = document.querySelector('[data-mobile-menu-toggle]');
-    const overlay = document.querySelector('[data-mobile-overlay]');
+    const hamburger = $('#hamburgerBtn');
+    const overlay = $('#sidebarOverlay');
 
     if (hamburger) {
       hamburger.addEventListener('click', (e) => {
@@ -310,21 +337,21 @@ const App = (() => {
       overlay.addEventListener('click', closeMobileMenu);
     }
 
-    // 窗口大小变化时自动关闭移动菜单
-    window.addEventListener('resize', Utils.debounce(() => {
-      if (window.innerWidth >= 768) {
+    // Auto-close mobile menu on window resize past breakpoint
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= MOBILE_BREAKPOINT) {
         closeMobileMenu();
       }
-    }, 150));
+    });
   }
 
   /**
-   * 切换移动端菜单
+   * Toggle mobile sidebar open/close state
    */
   function toggleMobileMenu() {
-    const sidebar = document.querySelector('[data-sidebar]');
-    const overlay = document.querySelector('[data-mobile-overlay]');
-    const hamburger = document.querySelector('[data-mobile-menu-toggle]');
+    const sidebar = $('#sidebar');
+    const overlay = $('#sidebarOverlay');
+    const hamburger = $('#hamburgerBtn');
 
     if (!sidebar) return;
 
@@ -344,12 +371,12 @@ const App = (() => {
   }
 
   /**
-   * 关闭移动端菜单
+   * Close mobile sidebar and reset overlay
    */
   function closeMobileMenu() {
-    const sidebar = document.querySelector('[data-sidebar]');
-    const overlay = document.querySelector('[data-mobile-overlay]');
-    const hamburger = document.querySelector('[data-mobile-menu-toggle]');
+    const sidebar = $('#sidebar');
+    const overlay = $('#sidebarOverlay');
+    const hamburger = $('#hamburgerBtn');
 
     if (sidebar) sidebar.classList.remove('mobile-open');
     if (overlay) overlay.classList.remove('active');
@@ -360,205 +387,46 @@ const App = (() => {
     document.body.style.overflow = '';
   }
 
-  // ========== 工具卡片 ==========
+  // ========== Back to Top ==========
 
   /**
-   * 初始化工具卡片点击跳转
+   * Initialize back-to-top button visibility on scroll
    */
-  function initToolCards() {
-    document.querySelectorAll('[data-tool-card]').forEach(card => {
-      card.addEventListener('click', (e) => {
-        // 避免点击内部链接或按钮时触发跳转
-        if (e.target.closest('a') || e.target.closest('button')) {
-          return;
-        }
+  function initBackToTop() {
+    const backToTop = $('#backToTop') || $('[data-back-to-top]');
+    if (!backToTop) return;
 
-        const url = card.getAttribute('data-tool-url');
-        if (url) {
-          window.location.href = url;
-        }
-      });
-
-      // 键盘可访问性
-      card.setAttribute('tabindex', '0');
-      card.setAttribute('role', 'link');
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          card.click();
-        }
-      });
-    });
-  }
-
-  // ========== 面包屑导航 ==========
-
-  /**
-   * 根据当前页面路径生成面包屑导航
-   */
-  function generateBreadcrumb() {
-    const breadcrumbContainer = document.querySelector('[data-breadcrumb]');
-    if (!breadcrumbContainer) return;
-
-    const path = window.location.pathname;
-    const parts = path.split('/').filter(Boolean);
-
-    // 移除末尾的 .html 后缀
-    const cleanParts = parts.map(p => p.replace(/\.html?$/, ''));
-
-    const crumbs = [];
-
-    // 首页
-    crumbs.push({
-      label: typeof I18n !== 'undefined' ? I18n.t('breadcrumb.home') : 'Home',
-      href: getBaseHref()
-    });
-
-    // 构建路径层级
-    let accumulatedPath = getBaseHref();
-    cleanParts.forEach((part, index) => {
-      accumulatedPath += part + '/';
-      const isLast = index === cleanParts.length - 1;
-
-      // 尝试从 data 属性获取友好的面包屑名称
-      const friendlyName = getBreadcrumbName(part);
-
-      crumbs.push({
-        label: friendlyName || part,
-        href: isLast ? null : accumulatedPath,
-        isLast
-      });
-    });
-
-    // 渲染面包屑
-    renderBreadcrumb(breadcrumbContainer, crumbs);
-  }
-
-  /**
-   * 获取基础路径
-   * @returns {string}
-   */
-  function getBaseHref() {
-    const base = document.querySelector('base');
-    if (base) return base.getAttribute('href') || '/';
-    return '/';
-  }
-
-  /**
-   * 获取面包屑的友好名称
-   * @param {string} slug - URL 路径片段
-   * @returns {string|null} 友好名称
-   */
-  function getBreadcrumbName(slug) {
-    // 尝试从页面 data 属性获取
-    const pageNameEl = document.querySelector(`[data-page-name="${slug}"]`);
-    if (pageNameEl) {
-      return pageNameEl.textContent.trim();
-    }
-
-    // 尝试从页面 title 获取
-    const title = document.title;
-    if (title) {
-      return title;
-    }
-
-    return null;
-  }
-
-  /**
-   * 渲染面包屑导航
-   * @param {HTMLElement} container - 面包屑容器
-   * @param {Array<{label: string, href: string|null, isLast?: boolean}>} crumbs - 面包屑数据
-   */
-  function renderBreadcrumb(container, crumbs) {
-    container.innerHTML = '';
-
-    crumbs.forEach((crumb, index) => {
-      // 分隔符
-      if (index > 0) {
-        const separator = document.createElement('span');
-        separator.className = 'breadcrumb-separator';
-        separator.setAttribute('aria-hidden', 'true');
-        separator.textContent = '/';
-        container.appendChild(separator);
-      }
-
-      if (crumb.isLast) {
-        // 当前页（不可点击）
-        const span = document.createElement('span');
-        span.className = 'breadcrumb-item active';
-        span.setAttribute('aria-current', 'page');
-        span.textContent = crumb.label;
-        container.appendChild(span);
+    // Show/hide based on scroll position
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > SCROLL_THRESHOLD) {
+        backToTop.classList.add('visible');
       } else {
-        // 链接
-        const link = document.createElement('a');
-        link.className = 'breadcrumb-item';
-        link.href = crumb.href;
-        link.textContent = crumb.label;
-        container.appendChild(link);
+        backToTop.classList.remove('visible');
       }
+    }, { passive: true });
+
+    // Smooth scroll to top on click
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 
-  // ========== 滚动效果 ==========
-
-  /**
-   * 初始化滚动相关效果
-   */
-  function initScrollEffects() {
-    // 滚动时自动隐藏/显示头部
-    let lastScrollY = 0;
-    const header = document.querySelector('[data-header]');
-
-    if (header) {
-      window.addEventListener('scroll', Utils.debounce(() => {
-        const currentScrollY = window.scrollY;
-
-        if (currentScrollY > lastScrollY && currentScrollY > 100) {
-          header.classList.add('header-hidden');
-        } else {
-          header.classList.remove('header-hidden');
-        }
-
-        lastScrollY = currentScrollY;
-      }, 10), { passive: true });
-    }
-
-    // 回到顶部按钮
-    const backToTop = document.querySelector('[data-back-to-top]');
-    if (backToTop) {
-      window.addEventListener('scroll', Utils.debounce(() => {
-        if (window.scrollY > 300) {
-          backToTop.classList.add('visible');
-        } else {
-          backToTop.classList.remove('visible');
-        }
-      }, 50), { passive: true });
-
-      backToTop.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    }
-  }
-
-  // ========== DOMContentLoaded 绑定 ==========
+  // ========== DOMContentLoaded Binding ==========
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
-    // DOM 已就绪（例如脚本在 body 末尾加载）
+    // DOM already ready (e.g. script loaded at end of body)
     init();
   }
 
-  // 公开 API（供外部调用）
+  // ========== Public API ==========
   return {
     init,
     initTheme,
     toggleTheme,
     filterToolCards,
     setActiveCategory,
-    generateBreadcrumb,
     toggleMobileMenu,
     closeMobileMenu
   };

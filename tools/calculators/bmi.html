@@ -1,296 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BMI Calculator - ToolBox</title>
-  <meta name="description" content="Free online BMI calculator with unit conversion, visual scale, and health classification.">
-  <meta name="keywords" content="BMI calculator, body mass index, health, weight, height">
-  <meta name="author" content="ToolBox">
-  <meta name="robots" content="index, follow">
-
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="BMI Calculator - ToolBox">
-  <meta property="og:description" content="Free online BMI calculator with visual scale.">
-  <meta property="og:url" content="https://toolbox.example.com/tools/calculators/bmi.html">
-  <meta property="og:site_name" content="ToolBox">
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "BMI Calculator",
-    "url": "https://toolbox.example.com/tools/calculators/bmi.html",
-    "description": "Free online BMI calculator.",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-  }
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@0.453.0"></script>
-
-  <link rel="stylesheet" href="../../assets/css/main.css">
-  <link rel="stylesheet" href="../../assets/css/tools.css">
-  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
-
-  <style>
-    .bmi-form { display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);align-items:end; }
-    .bmi-unit-toggle { display:flex;gap:var(--space-2);margin-bottom:var(--space-4); }
-    .bmi-unit-btn {
-      padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);font-size:var(--font-size-sm);
-      font-weight:var(--font-weight-medium);border:1px solid var(--color-border);background:var(--color-surface);
-      color:var(--color-text-secondary);cursor:pointer;transition:all var(--transition-fast);
-    }
-    .bmi-unit-btn.active { background:var(--color-primary);color:var(--color-text-inverse);border-color:var(--color-primary); }
-    .bmi-result-card {
-      background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);
-      padding:var(--space-8);text-align:center;margin-top:var(--space-6);
-    }
-    .bmi-value { font-size:var(--font-size-4xl);font-weight:var(--font-weight-bold);margin-bottom:var(--space-2); }
-    .bmi-category { font-size:var(--font-size-lg);font-weight:var(--font-weight-semibold);margin-bottom:var(--space-4); }
-    .bmi-range { font-size:var(--font-size-sm);color:var(--color-text-tertiary); }
-    .bmi-scale { margin-top:var(--space-6);position:relative;height:40px;border-radius:var(--radius-full);overflow:visible; }
-    .bmi-scale-bar {
-      height:100%;border-radius:var(--radius-full);
-      background:linear-gradient(to right, #3B82F6 0%, #10B981 28.5%, #F59E0B 57%, #EF4444 100%);
-      position:relative;
-    }
-    .bmi-scale-marker {
-      position:absolute;top:-8px;width:4px;height:56px;background:var(--color-text);
-      border-radius:2px;transform:translateX(-50%);transition:left 0.5s ease;z-index:2;
-    }
-    .bmi-scale-labels { display:flex;justify-content:space-between;margin-top:var(--space-2);font-size:var(--font-size-xs);color:var(--color-text-tertiary); }
-    .bmi-info-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-3);margin-top:var(--space-6); }
-    .bmi-info-item {
-      padding:var(--space-4);border-radius:var(--radius-lg);text-align:center;
-      border:1px solid var(--color-border);
-    }
-    .bmi-info-item .bmi-info-label { font-size:var(--font-size-xs);color:var(--color-text-tertiary);margin-bottom:var(--space-1); }
-    .bmi-info-item .bmi-info-range { font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold); }
-    .bmi-info-item.underweight { border-color:#3B82F6; }
-    .bmi-info-item.underweight .bmi-info-range { color:#3B82F6; }
-    .bmi-info-item.normal { border-color:#10B981; }
-    .bmi-info-item.normal .bmi-info-range { color:#10B981; }
-    .bmi-info-item.overweight { border-color:#F59E0B; }
-    .bmi-info-item.overweight .bmi-info-range { color:#F59E0B; }
-    .bmi-info-item.obese { border-color:#EF4444; }
-    .bmi-info-item.obese .bmi-info-range { color:#EF4444; }
-    @media(max-width:640px) {
-      .bmi-form { grid-template-columns:1fr; }
-      .bmi-info-grid { grid-template-columns:1fr 1fr; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator - ToolBox</title>
+    <meta name="description" content="Calculate Body Mass Index">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    
+    <style>
+        /* Tool Page Custom Styles */
+        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .workspace-grid .full-width { grid-column: 1 / -1; }
+        .textarea-wrap { position: relative; }
+        .textarea-wrap textarea, .textarea-wrap input {
+            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
+            resize: vertical; background: var(--color-bg); color: var(--color-text);
+            box-sizing: border-box;
+        }
+        .textarea-wrap input { min-height: auto; resize: none; }
+        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
+        
+        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
-
-  <nav class="navbar" id="navbar">
-    <div class="navbar-container">
-      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
-      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
-      <div class="navbar-actions">
-        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
-        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
-        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
-      </div>
-    </div>
-  </nav>
-
-  <div class="main-layout">
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header"><h3>Categories</h3></div>
-      <ul class="sidebar-list">
-        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
-        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
-        <li><a href="../../index.html?category=calculators" class="sidebar-item active"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
-        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
-        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
-        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
-        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
-        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
-        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
-      </ul>
-    </aside>
-
-    <main class="main-content tool-page">
-
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="../../index.html" class="breadcrumb__link">Home</a>
-        <span class="breadcrumb__separator">/</span>
-        <a href="../../index.html?category=calculators" class="breadcrumb__link">Calculators</a>
-        <span class="breadcrumb__separator">/</span>
-        <span class="breadcrumb__current">BMI Calculator</span>
-      </nav>
-
-      <section class="tool-header">
-        <div class="tool-header__icon"><i data-lucide="heart-pulse"></i></div>
-        <h1 class="tool-header__title">BMI Calculator</h1>
-        <p class="tool-header__desc">Calculate your Body Mass Index (BMI) and see where you fall on the health scale with a visual indicator.</p>
-      </section>
-
-      <section class="tool-workspace">
-        <div class="tool-panel">
-          <div class="tool-panel__header">
-            <span class="tool-panel__title"><i data-lucide="ruler"></i> Body Measurements</span>
-          </div>
-          <div class="tool-panel__body">
-            <div class="bmi-unit-toggle">
-              <button class="bmi-unit-btn active" id="btnMetric" data-unit="metric">Metric (cm/kg)</button>
-              <button class="bmi-unit-btn" id="btnImperial" data-unit="imperial">Imperial (ft/lb)</button>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo">
+                <i data-lucide="toolbox"></i>
+                <span>ToolBox</span>
+            </a>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
             </div>
-            <div class="bmi-form">
-              <div class="form-group" id="heightGroup">
-                <label class="form-label" for="height" id="heightLabel">Height (cm)</label>
-                <input type="number" id="height" class="form-input" value="170" min="0" step="0.1">
-              </div>
-              <div class="form-group" id="weightGroup">
-                <label class="form-label" for="weight" id="weightLabel">Weight (kg)</label>
-                <input type="number" id="weight" class="form-input" value="70" min="0" step="0.1">
-              </div>
+            <div class="header-actions">
+                <button class="lang-btn" id="langToggle" aria-label="Toggle Language">
+                    <span class="lang-label">EN</span>
+                </button>
+                <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">
+                    <i data-lucide="sun" class="theme-icon-light"></i>
+                    <i data-lucide="moon" class="theme-icon-dark"></i>
+                </button>
             </div>
-            <div class="btn-group" style="margin-top:var(--space-4);">
-              <button class="btn btn--primary" id="btnCalculate"><i data-lucide="calculator"></i> Calculate</button>
-              <button class="btn btn--secondary" id="btnReset"><i data-lucide="rotate-ccw"></i> Reset</button>
-            </div>
-          </div>
         </div>
-
-        <div id="bmiResult" style="display:none;">
-          <div class="bmi-result-card">
-            <div class="bmi-value" id="bmiValue">0</div>
-            <div class="bmi-category" id="bmiCategory">-</div>
-            <div class="bmi-range" id="bmiRange">Healthy BMI range: 18.5 - 24.9</div>
-          </div>
-
-          <div class="bmi-scale">
-            <div class="bmi-scale-bar">
-              <div class="bmi-scale-marker" id="bmiMarker" style="left:0%;"></div>
+    </header>
+    
+    <!-- Breadcrumb -->
+    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_calculators" data-i18n="cat_calculators">Calculators</a> / <span>BMI Calculator</span></div></div>
+    
+    <!-- Main Content -->
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <!-- Tool Header -->
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="heart-pulse"></i></div>
+                    <h1>BMI Calculator</h1>
+                    <p>Calculate Body Mass Index</p>
+                </div>
+                
+                <!-- Tool Workspace -->
+                <div class="tool-workspace">
+                    <div class="workspace-grid">
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-text"></i>
+                                <span data-i18n="input_label">Input</span>
+                            </div>
+                            <div class="textarea-wrap">
+                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                            </div>
+                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        </div>
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-output"></i>
+                                <span data-i18n="output_label">Output</span>
+                            </div>
+                            <div class="textarea-wrap">
+                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            </div>
+                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
+                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
+                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                    </div>
+                </div>
+                
+                <!-- Ad Slot -->
+                <div class="ad-slot" style="margin-top:2rem">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
             </div>
-            <div class="bmi-scale-labels">
-              <span>15</span><span>18.5</span><span>25</span><span>30</span><span>40</span>
-            </div>
-          </div>
-
-          <div class="bmi-info-grid">
-            <div class="bmi-info-item underweight">
-              <div class="bmi-info-label">Underweight</div>
-              <div class="bmi-info-range">&lt; 18.5</div>
-            </div>
-            <div class="bmi-info-item normal">
-              <div class="bmi-info-label">Normal</div>
-              <div class="bmi-info-range">18.5 - 24.9</div>
-            </div>
-            <div class="bmi-info-item overweight">
-              <div class="bmi-info-label">Overweight</div>
-              <div class="bmi-info-range">25 - 29.9</div>
-            </div>
-            <div class="bmi-info-item obese">
-              <div class="bmi-info-label">Obese</div>
-              <div class="bmi-info-range">&ge; 30</div>
-            </div>
-          </div>
+            <aside class="tool-sidebar">
+                <div class="ad-slot">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
+            </aside>
         </div>
-      </section>
-
-      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
-
-      <section class="tool-info">
-        <h2 class="tool-info__title">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <div class="tool-step__title">Select Unit System</div>
-              <div class="tool-step__desc">Choose Metric (cm/kg) or Imperial (ft/lb) for your measurements.</div>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <div class="tool-step__title">Enter Measurements</div>
-              <div class="tool-step__desc">Input your height and weight in the selected units.</div>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <div class="tool-step__title">View Results</div>
-              <div class="tool-step__desc">See your BMI value, category, and position on the visual scale.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
-        <h2 class="tool-info__title">Related Tools</h2>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
-          <a href="standard.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">Standard Calculator</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Calculators</span>
-          </a>
-          <a href="loan.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">Loan Calculator</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Calculators</span>
-          </a>
-          <a href="age.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">Age Calculator</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Calculators</span>
-          </a>
-          <a href="password-strength.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">Password Strength</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Calculators</span>
-          </a>
-        </div>
-      </section>
-
     </main>
-  </div>
-
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
-      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-  <script src="../../assets/js/i18n.js"></script>
-  <script src="../../assets/js/utils.js"></script>
-  <script src="../../assets/js/app.js"></script>
-
-  <script>
-    (function() {
-      let isMetric = true;
-
-      document.getElementById('btnMetric').addEventListener('click', function() {
-        isMetric = true;
-        this.classList.add('active');
-        document.getElementById('btnImperial').classList.remove('active');
-        document.getElementById('heightLabel').textContent = 'Height (cm)';
-        document.getElementById('weightLabel').textContent = 'Weight (kg)';
-        document.getElementById('height').value = '';
-        document.getElementById('weight').value = '';
-        document.getElementById('height').placeholder = 'e.g. 170';
-        document.getElementById('weight').placeholder = 'e.g. 70';
-      });
-
-      document.getElementById('btnImperial').addEventListener('click', function() {
-        isMetric = false;
-        this.classList.add('active');
-        document.getElementById('btnMetric').classList.remove('active');
-        document.getElementById('heightLabel').textContent = 'Height (ft, e.g. 5.8)';
-        document.getElementById('weightLabel').textContent = 'Weight (lb)';
-        document.getElementById('height').value = '';
-        document.getElementById('weight').value = '';
-        document.getElementById('height').placeholder = 'e.g. 5.8';
-        document.getElementById('weight').placeholder = 'e.g. 154';
-      });
-
-      function calculate() {
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-links">
+                <a href="#" data-i18n="footer_about">About</a>
+                <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+                <a href="#" data-i18n="footer_terms">Terms of Service</a>
+                <a href="#" data-i18n="footer_contact">Contact</a>
+            </div>
+            <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
+        </div>
+    </footer>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+    
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i data-lucide="chevron-up"></i>
+    </button>
+    
+    <!-- Scripts -->
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/app.js"></script>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        if (typeof I18n !== 'undefined') {
+            I18n.init();
+        }
+    });
+    
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        if (toast) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    }
+    
+    function copyOutput() {
+        const output = document.getElementById('outputArea');
+        if (!output || !output.value) {
+            showToast('Nothing to copy');
+            return;
+        }
+        navigator.clipboard.writeText(output.value).then(() => {
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        }).catch(() => {
+            output.select();
+            document.execCommand('copy');
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        });
+    }
+    
+    function clearAll() {
+        const input = document.getElementById('inputArea');
+        const output = document.getElementById('outputArea');
+        const inputCount = document.getElementById('inputCount');
+        const outputCount = document.getElementById('outputCount');
+        if (input) input.value = '';
+        if (output) output.value = '';
+        if (inputCount) inputCount.textContent = '0';
+        if (outputCount) outputCount.textContent = '0';
+        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
+    }
+    
+    function calculate() {
         let heightVal = parseFloat(document.getElementById('height').value);
         let weightVal = parseFloat(document.getElementById('weight').value);
 
@@ -339,5 +245,17 @@
       });
     })();
   </script>
+
+    // Input character counter
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputArea = document.getElementById('inputArea');
+        const inputCount = document.getElementById('inputCount');
+        if (inputArea && inputCount) {
+            inputArea.addEventListener('input', () => {
+                inputCount.textContent = inputArea.value.length;
+            });
+        }
+    });
+    </script>
 </body>
 </html>

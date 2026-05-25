@@ -1,244 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UUID Generator - ToolBox</title>
-  <meta name="description" content="Generate unique UUIDs (v1, v4) online. Customize format with uppercase/lowercase and hyphen options.">
-  <meta name="keywords" content="UUID generator, GUID generator, UUID v4, UUID v1, unique identifier">
-  <meta name="author" content="ToolBox">
-  <meta name="robots" content="index, follow">
-
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="UUID Generator - ToolBox">
-  <meta property="og:description" content="Generate unique UUIDs (v1, v4) online. Free and no installation required.">
-  <meta property="og:url" content="https://toolbox.example.com/tools/generators/uuid.html">
-  <meta property="og:site_name" content="ToolBox">
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "UUID Generator",
-    "url": "https://toolbox.example.com/tools/generators/uuid.html",
-    "description": "Generate unique UUIDs (v1, v4) online.",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-  }
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@0.453.0"></script>
-
-  <link rel="stylesheet" href="../../assets/css/main.css">
-  <link rel="stylesheet" href="../../assets/css/tools.css">
-  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UUID Generator - ToolBox</title>
+    <meta name="description" content="Generate unique IDs">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    
+    <style>
+        /* Tool Page Custom Styles */
+        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .workspace-grid .full-width { grid-column: 1 / -1; }
+        .textarea-wrap { position: relative; }
+        .textarea-wrap textarea, .textarea-wrap input {
+            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
+            resize: vertical; background: var(--color-bg); color: var(--color-text);
+            box-sizing: border-box;
+        }
+        .textarea-wrap input { min-height: auto; resize: none; }
+        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
+        
+        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
-
-  <!-- Navigation -->
-  <nav class="navbar" id="navbar">
-    <div class="navbar-container">
-      <a href="../../index.html" class="navbar-logo">
-        <i data-lucide="toolbox"></i>
-        <span>ToolBox</span>
-      </a>
-      <div class="navbar-search">
-        <i data-lucide="search"></i>
-        <input type="text" class="search-input" id="searchInput" placeholder="Search tools...">
-      </div>
-      <div class="navbar-actions">
-        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
-        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">
-          <i data-lucide="sun" class="theme-icon-light"></i>
-          <i data-lucide="moon" class="theme-icon-dark"></i>
-        </button>
-        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Main Layout -->
-  <div class="main-layout">
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header"><h3>Categories</h3></div>
-      <ul class="sidebar-list">
-        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
-        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
-        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
-        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
-        <li><a href="../../index.html?category=generators" class="sidebar-item active"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
-        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
-        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
-        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
-        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
-      </ul>
-    </aside>
-
-    <main class="main-content tool-page">
-
-      <!-- Breadcrumb -->
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="../../index.html" class="breadcrumb__link">Home</a>
-        <span class="breadcrumb__separator">/</span>
-        <a href="../../index.html?category=generators" class="breadcrumb__link">Generators</a>
-        <span class="breadcrumb__separator">/</span>
-        <span class="breadcrumb__current">UUID Generator</span>
-      </nav>
-
-      <!-- Tool Header -->
-      <section class="tool-header">
-        <div class="tool-header__icon"><i data-lucide="fingerprint"></i></div>
-        <h1 class="tool-header__title">UUID Generator</h1>
-        <p class="tool-header__desc">Generate universally unique identifiers (UUIDs) in v1 or v4 format. Customize output with uppercase/lowercase and hyphen options.</p>
-      </section>
-
-      <!-- Tool Content -->
-      <section class="tool-workspace">
-
-        <!-- Settings Panel -->
-        <div class="tool-settings">
-          <div class="tool-settings__title">Options</div>
-          <div class="tool-settings__group">
-            <label class="tool-settings__label" for="uuidVersion">UUID Version</label>
-            <select id="uuidVersion" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
-              <option value="v4">v4 (Random)</option>
-              <option value="v1">v1 (Time-based)</option>
-            </select>
-          </div>
-          <div class="tool-settings__group">
-            <label class="tool-settings__label" for="uuidCount">Count (1-100)</label>
-            <input type="number" id="uuidCount" value="1" min="1" max="100" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
-          </div>
-          <div class="tool-toggle">
-            <span class="tool-toggle__label">Uppercase</span>
-            <div class="tool-toggle__switch" id="toggleUppercase" role="switch" aria-checked="false" tabindex="0"></div>
-          </div>
-          <div class="tool-toggle">
-            <span class="tool-toggle__label">No Hyphens</span>
-            <div class="tool-toggle__switch" id="toggleNoHyphens" role="switch" aria-checked="false" tabindex="0"></div>
-          </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="tool-actions">
-          <div class="tool-actions__primary">
-            <button class="btn btn--primary" id="btnGenerate"><i data-lucide="sparkles"></i> Generate</button>
-          </div>
-          <div class="tool-actions__secondary">
-            <button class="btn btn--secondary" id="btnCopyAll"><i data-lucide="copy"></i> Copy All</button>
-            <button class="btn btn--secondary btn--danger" id="btnClear"><i data-lucide="trash-2"></i> Clear</button>
-          </div>
-        </div>
-
-        <!-- Output Panel -->
-        <div class="tool-panel">
-          <div class="tool-panel__header">
-            <span class="tool-panel__title"><i data-lucide="list"></i> Results</span>
-            <div class="tool-panel__actions">
-              <span id="resultCount" style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);"></span>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo">
+                <i data-lucide="toolbox"></i>
+                <span>ToolBox</span>
+            </a>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
             </div>
-          </div>
-          <div class="tool-panel__body">
-            <div id="uuidResults" class="tool-output__placeholder">
-              <i data-lucide="fingerprint"></i>
-              <span class="tool-output__placeholder-text">Click "Generate" to create UUIDs</span>
+            <div class="header-actions">
+                <button class="lang-btn" id="langToggle" aria-label="Toggle Language">
+                    <span class="lang-label">EN</span>
+                </button>
+                <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">
+                    <i data-lucide="sun" class="theme-icon-light"></i>
+                    <i data-lucide="moon" class="theme-icon-dark"></i>
+                </button>
             </div>
-          </div>
         </div>
-
-      </section>
-
-      <!-- Ad Slot -->
-      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);">
-        <span>Advertisement</span>
-      </div>
-
-      <!-- How to Use -->
-      <section class="tool-info">
-        <h2 class="tool-info__title">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <div class="tool-step__title">Choose UUID Version</div>
-              <div class="tool-step__desc">Select v4 (random, recommended) or v1 (time-based) UUID format.</div>
+    </header>
+    
+    <!-- Breadcrumb -->
+    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_generators" data-i18n="cat_generators">Generators</a> / <span>UUID Generator</span></div></div>
+    
+    <!-- Main Content -->
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <!-- Tool Header -->
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="fingerprint"></i></div>
+                    <h1>UUID Generator</h1>
+                    <p>Generate unique IDs</p>
+                </div>
+                
+                <!-- Tool Workspace -->
+                <div class="tool-workspace">
+                    <div class="workspace-grid">
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-text"></i>
+                                <span data-i18n="input_label">Input</span>
+                            </div>
+                            <div class="textarea-wrap">
+                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                            </div>
+                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        </div>
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-output"></i>
+                                <span data-i18n="output_label">Output</span>
+                            </div>
+                            <div class="textarea-wrap">
+                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            </div>
+                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
+                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
+                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                    </div>
+                </div>
+                
+                <!-- Ad Slot -->
+                <div class="ad-slot" style="margin-top:2rem">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
             </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <div class="tool-step__title">Set Options</div>
-              <div class="tool-step__desc">Adjust count, case, and hyphen preferences.</div>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <div class="tool-step__title">Generate &amp; Copy</div>
-              <div class="tool-step__desc">Click Generate to create UUIDs. Copy individual or all results.</div>
-            </div>
-          </div>
+            <aside class="tool-sidebar">
+                <div class="ad-slot">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
+            </aside>
         </div>
-      </section>
-
-      <!-- Related Tools -->
-      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
-        <h2 class="tool-info__title">Related Tools</h2>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
-          <a href="nanoid.html" class="tool-card tool-card-sm" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">NanoID Generator</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
-          </a>
-          <a href="password.html" class="tool-card tool-card-sm" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">Password Generator</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
-          </a>
-          <a href="random-number.html" class="tool-card tool-card-sm" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">Random Number</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
-          </a>
-          <a href="fake-data.html" class="tool-card tool-card-sm" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">Fake Data Generator</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
-          </a>
-        </div>
-      </section>
-
     </main>
-  </div>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-links">
-        <a href="#">About</a>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Contact</a>
-      </div>
-      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-  <script src="../../assets/js/i18n.js"></script>
-  <script src="../../assets/js/utils.js"></script>
-  <script src="../../assets/js/app.js"></script>
-
-  <script>
-    (function() {
-      // Toggle switches
-      const toggleUppercase = document.getElementById('toggleUppercase');
-      const toggleNoHyphens = document.getElementById('toggleNoHyphens');
-      let uppercase = false;
-      let noHyphens = false;
-
-      function setupToggle(el, callback) {
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-links">
+                <a href="#" data-i18n="footer_about">About</a>
+                <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+                <a href="#" data-i18n="footer_terms">Terms of Service</a>
+                <a href="#" data-i18n="footer_contact">Contact</a>
+            </div>
+            <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
+        </div>
+    </footer>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+    
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i data-lucide="chevron-up"></i>
+    </button>
+    
+    <!-- Scripts -->
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/app.js"></script>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        if (typeof I18n !== 'undefined') {
+            I18n.init();
+        }
+    });
+    
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        if (toast) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    }
+    
+    function copyOutput() {
+        const output = document.getElementById('outputArea');
+        if (!output || !output.value) {
+            showToast('Nothing to copy');
+            return;
+        }
+        navigator.clipboard.writeText(output.value).then(() => {
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        }).catch(() => {
+            output.select();
+            document.execCommand('copy');
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        });
+    }
+    
+    function clearAll() {
+        const input = document.getElementById('inputArea');
+        const output = document.getElementById('outputArea');
+        const inputCount = document.getElementById('inputCount');
+        const outputCount = document.getElementById('outputCount');
+        if (input) input.value = '';
+        if (output) output.value = '';
+        if (inputCount) inputCount.textContent = '0';
+        if (outputCount) outputCount.textContent = '0';
+        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
+    }
+    
+    function setupToggle(el, callback) {
         el.addEventListener('click', () => {
           const active = el.classList.toggle('tool-toggle__switch--active');
           el.setAttribute('aria-checked', active);
@@ -355,5 +313,17 @@
       });
     })();
   </script>
+
+    // Input character counter
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputArea = document.getElementById('inputArea');
+        const inputCount = document.getElementById('inputCount');
+        if (inputArea && inputCount) {
+            inputArea.addEventListener('input', () => {
+                inputCount.textContent = inputArea.value.length;
+            });
+        }
+    });
+    </script>
 </body>
 </html>

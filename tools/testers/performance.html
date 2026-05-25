@@ -1,287 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Web Performance Test - ToolBox</title>
-  <meta name="description" content="Free online HTML performance analyzer. Check HTML size, CSS/JS stats, image optimization, and get a performance score.">
-  <meta name="keywords" content="performance test, HTML analyzer, page speed, web performance, optimization">
-  <meta name="author" content="ToolBox">
-  <meta name="robots" content="index, follow">
-
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Web Performance Test - ToolBox">
-  <meta property="og:description" content="Free online HTML performance analyzer.">
-  <meta property="og:url" content="https://toolbox.example.com/tools/testers/performance.html">
-  <meta property="og:site_name" content="ToolBox">
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Web Performance Test",
-    "url": "https://toolbox.example.com/tools/testers/performance.html",
-    "description": "Free online HTML performance analyzer.",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-  }
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@0.453.0"></script>
-
-  <link rel="stylesheet" href="../../assets/css/main.css">
-  <link rel="stylesheet" href="../../assets/css/tools.css">
-  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
-
-  <style>
-    .perf-score-ring {
-      width:160px;height:160px;margin:0 auto;position:relative;
-    }
-    .perf-score-ring svg { width:100%;height:100%;transform:rotate(-90deg); }
-    .perf-score-ring circle { fill:none;stroke-width:8; }
-    .perf-score-ring .ring-bg { stroke:var(--color-border); }
-    .perf-score-ring .ring-fill { stroke-linecap:round;transition:stroke-dashoffset 1s ease; }
-    .perf-score-value {
-      position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-      font-size:var(--font-size-4xl);font-weight:var(--font-weight-bold);
-    }
-    .perf-score-label {
-      text-align:center;font-size:var(--font-size-sm);color:var(--color-text-tertiary);margin-top:var(--space-2);
-    }
-    .perf-stats-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-4);margin-top:var(--space-6); }
-    .perf-stat-card {
-      background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);
-      padding:var(--space-4);text-align:center;
-    }
-    .perf-stat-card .stat-icon { width:32px;height:32px;margin:0 auto var(--space-2);color:var(--color-primary); }
-    .perf-stat-card .stat-value { font-size:var(--font-size-xl);font-weight:var(--font-weight-bold);color:var(--color-text); }
-    .perf-stat-card .stat-label { font-size:var(--font-size-xs);color:var(--color-text-tertiary);margin-top:var(--space-1); }
-    .perf-suggestions { margin-top:var(--space-6); }
-    .perf-suggestion {
-      display:flex;align-items:flex-start;gap:var(--space-3);padding:var(--space-3) var(--space-4);
-      border:1px solid var(--color-border-light);border-radius:var(--radius-md);margin-bottom:var(--space-2);
-      font-size:var(--font-size-sm);
-    }
-    .perf-suggestion .sug-icon { flex-shrink:0;margin-top:2px; }
-    .perf-suggestion .sug-icon.good { color:var(--color-success); }
-    .perf-suggestion .sug-icon.warn { color:var(--color-warning); }
-    .perf-suggestion .sug-icon.bad { color:var(--color-error); }
-    .perf-suggestion .sug-text { color:var(--color-text-secondary);line-height:1.5; }
-    .perf-suggestion .sug-text strong { color:var(--color-text); }
-    .perf-details { margin-top:var(--space-6); }
-    .perf-detail-row {
-      display:flex;justify-content:space-between;align-items:center;padding:var(--space-3) 0;
-      border-bottom:1px solid var(--color-border-light);font-size:var(--font-size-sm);
-    }
-    .perf-detail-row:last-child { border-bottom:none; }
-    .perf-detail-label { color:var(--color-text-secondary); }
-    .perf-detail-value { font-weight:var(--font-weight-semibold);color:var(--color-text); }
-    @media(max-width:640px) {
-      .perf-stats-grid { grid-template-columns:1fr; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Test - ToolBox</title>
+    <meta name="description" content="Test performance">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    
+    <style>
+        /* Tool Page Custom Styles */
+        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .workspace-grid .full-width { grid-column: 1 / -1; }
+        .textarea-wrap { position: relative; }
+        .textarea-wrap textarea, .textarea-wrap input {
+            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
+            resize: vertical; background: var(--color-bg); color: var(--color-text);
+            box-sizing: border-box;
+        }
+        .textarea-wrap input { min-height: auto; resize: none; }
+        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
+        
+        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
-
-  <nav class="navbar" id="navbar">
-    <div class="navbar-container">
-      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
-      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
-      <div class="navbar-actions">
-        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
-        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
-        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
-      </div>
-    </div>
-  </nav>
-
-  <div class="main-layout">
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header"><h3>Categories</h3></div>
-      <ul class="sidebar-list">
-        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
-        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
-        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
-        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
-        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
-        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
-        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
-        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
-        <li><a href="../../index.html?category=testing" class="sidebar-item active"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
-      </ul>
-    </aside>
-
-    <main class="main-content tool-page">
-
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="../../index.html" class="breadcrumb__link">Home</a>
-        <span class="breadcrumb__separator">/</span>
-        <a href="../../index.html?category=testing" class="breadcrumb__link">Testing</a>
-        <span class="breadcrumb__separator">/</span>
-        <span class="breadcrumb__current">Web Performance Test</span>
-      </nav>
-
-      <section class="tool-header">
-        <div class="tool-header__icon"><i data-lucide="gauge"></i></div>
-        <h1 class="tool-header__title">Web Performance Test</h1>
-        <p class="tool-header__desc">Analyze HTML code for performance issues. Get a performance score, size analysis, and optimization suggestions.</p>
-      </section>
-
-      <section class="tool-workspace">
-        <div class="tool-panel">
-          <div class="tool-panel__header">
-            <span class="tool-panel__title"><i data-lucide="code-2"></i> HTML Code Input</span>
-            <div class="tool-panel__actions">
-              <button class="tool-action-btn" id="btnPaste"><i data-lucide="clipboard-paste"></i> Paste</button>
-              <button class="tool-action-btn" id="btnClear"><i data-lucide="trash-2"></i> Clear</button>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo">
+                <i data-lucide="toolbox"></i>
+                <span>ToolBox</span>
+            </a>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
             </div>
-          </div>
-          <div class="tool-panel__body">
-            <textarea id="htmlInput" class="form-textarea" style="font-family:var(--font-family-mono);min-height:200px;" placeholder="Paste your HTML code here to analyze performance..."></textarea>
-            <div class="btn-group" style="margin-top:var(--space-4);">
-              <button class="btn btn--primary" id="btnAnalyze"><i data-lucide="search"></i> Analyze</button>
-              <button class="btn btn--secondary" id="btnSample"><i data-lucide="file-code"></i> Load Sample</button>
+            <div class="header-actions">
+                <button class="lang-btn" id="langToggle" aria-label="Toggle Language">
+                    <span class="lang-label">EN</span>
+                </button>
+                <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">
+                    <i data-lucide="sun" class="theme-icon-light"></i>
+                    <i data-lucide="moon" class="theme-icon-dark"></i>
+                </button>
             </div>
-          </div>
         </div>
-
-        <div id="resultsSection" style="display:none;">
-          <div class="tool-panel" style="margin-top:var(--space-4);">
-            <div class="tool-panel__header">
-              <span class="tool-panel__title"><i data-lucide="activity"></i> Performance Score</span>
+    </header>
+    
+    <!-- Breadcrumb -->
+    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_testing" data-i18n="cat_testing">Testing</a> / <span>Performance Test</span></div></div>
+    
+    <!-- Main Content -->
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <!-- Tool Header -->
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="zap"></i></div>
+                    <h1>Performance Test</h1>
+                    <p>Test performance</p>
+                </div>
+                
+                <!-- Tool Workspace -->
+                <div class="tool-workspace">
+                    <div class="workspace-grid">
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-text"></i>
+                                <span data-i18n="input_label">Input</span>
+                            </div>
+                            <div class="textarea-wrap">
+                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                            </div>
+                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        </div>
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-output"></i>
+                                <span data-i18n="output_label">Output</span>
+                            </div>
+                            <div class="textarea-wrap">
+                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            </div>
+                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
+                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
+                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                    </div>
+                </div>
+                
+                <!-- Ad Slot -->
+                <div class="ad-slot" style="margin-top:2rem">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
             </div>
-            <div class="tool-panel__body" style="text-align:center;">
-              <div class="perf-score-ring">
-                <svg viewBox="0 0 120 120">
-                  <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
-                  <circle class="ring-fill" id="scoreRing" cx="60" cy="60" r="52"
-                    stroke-dasharray="326.73" stroke-dashoffset="326.73"></circle>
-                </svg>
-                <div class="perf-score-value" id="scoreValue">0</div>
-              </div>
-              <div class="perf-score-label" id="scoreLabel">Analyzing...</div>
-            </div>
-          </div>
-
-          <div class="perf-stats-grid">
-            <div class="perf-stat-card">
-              <div class="stat-icon"><i data-lucide="file-text"></i></div>
-              <div class="stat-value" id="statHtmlSize">0 KB</div>
-              <div class="stat-label">HTML Size</div>
-            </div>
-            <div class="perf-stat-card">
-              <div class="stat-icon"><i data-lucide="image"></i></div>
-              <div class="stat-value" id="statImages">0</div>
-              <div class="stat-label">Images Found</div>
-            </div>
-            <div class="perf-stat-card">
-              <div class="stat-icon"><i data-lucide="braces"></i></div>
-              <div class="stat-value" id="statCss">0</div>
-              <div class="stat-label">CSS References</div>
-            </div>
-            <div class="perf-stat-card">
-              <div class="stat-icon"><i data-lucide="file-code"></i></div>
-              <div class="stat-value" id="statJs">0</div>
-              <div class="stat-label">JS References</div>
-            </div>
-          </div>
-
-          <div class="tool-panel" style="margin-top:var(--space-4);">
-            <div class="tool-panel__header">
-              <span class="tool-panel__title"><i data-lucide="list"></i> Detailed Analysis</span>
-            </div>
-            <div class="tool-panel__body">
-              <div class="perf-details" id="detailsList"></div>
-            </div>
-          </div>
-
-          <div class="tool-panel" style="margin-top:var(--space-4);">
-            <div class="tool-panel__header">
-              <span class="tool-panel__title"><i data-lucide="lightbulb"></i> Optimization Suggestions</span>
-            </div>
-            <div class="tool-panel__body">
-              <div class="perf-suggestions" id="suggestionsList"></div>
-            </div>
-          </div>
+            <aside class="tool-sidebar">
+                <div class="ad-slot">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
+            </aside>
         </div>
-      </section>
-
-      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
-
-      <section class="tool-info">
-        <h2 class="tool-info__title">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <div class="tool-step__title">Paste HTML Code</div>
-              <div class="tool-step__desc">Paste the HTML source code you want to analyze into the input area.</div>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <div class="tool-step__title">Analyze</div>
-              <div class="tool-step__desc">Click Analyze to run the performance analysis and generate a score.</div>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <div class="tool-step__title">Review Suggestions</div>
-              <div class="tool-step__desc">Check the optimization suggestions to improve your page performance.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
-        <h2 class="tool-info__title">Related Tools</h2>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
-          <a href="regex.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">Regex Tester</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Testing</span>
-          </a>
-          <a href="css-gradient.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">CSS Gradient Generator</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Testing</span>
-          </a>
-          <a href="color-picker.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">Color Picker</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Testing</span>
-          </a>
-          <a href="../formatters/html-entity.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
-            <div style="font-weight:600;color:var(--color-text);">HTML Entity Encoder</div>
-            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Converters</span>
-          </a>
-        </div>
-      </section>
-
     </main>
-  </div>
-
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
-      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-  <script src="../../assets/js/i18n.js"></script>
-  <script src="../../assets/js/utils.js"></script>
-  <script src="../../assets/js/app.js"></script>
-
-  <script>
-    (function() {
-      var sampleHtml = '<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>Sample Page</title>\n  <link rel="stylesheet" href="styles.css">\n  <link rel="stylesheet" href="https://cdn.example.com/bootstrap.min.css">\n  <script src="https://cdn.example.com/jquery.min.js"><\/script>\n  <script src="app.js"><\/script>\n  <style>\n    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }\n    .container { max-width: 1200px; margin: 0 auto; }\n    h1 { color: #333; font-size: 2em; }\n    .hero { background-image: url(hero-banner.jpg); height: 500px; }\n    .content img { width: 100%; height: auto; }\n  </style>\n</head>\n<body>\n  <div class="container">\n    <header>\n      <h1>Welcome to My Website</h1>\n      <nav>\n        <a href="/">Home</a>\n        <a href="/about">About</a>\n        <a href="/contact">Contact</a>\n      </nav>\n    </header>\n    <section class="hero">\n      <img src="hero-image.jpg" alt="Hero" width="1200" height="500">\n      <img src="logo.png" alt="Logo">\n      <img src="photo1.jpg" alt="Photo 1">\n    </section>\n    <main>\n      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</p>\n      <div class="inline-style" style="color: red; font-size: 24px; margin-top: 10px;">Styled content</div>\n      <table>\n        <tr><td>Cell 1</td><td>Cell 2</td></tr>\n        <tr><td>Cell 3</td><td>Cell 4</td></tr>\n      </table>\n      <script>\n        console.log("Inline script");\n        document.querySelector("h1").style.color = "blue";\n      <\/script>\n    </main>\n    <footer>\n      <p>&copy; 2024 My Website</p>\n    </footer>\n  </div>\n</body>\n</html>';
-
-      function formatBytes(bytes) {
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-links">
+                <a href="#" data-i18n="footer_about">About</a>
+                <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+                <a href="#" data-i18n="footer_terms">Terms of Service</a>
+                <a href="#" data-i18n="footer_contact">Contact</a>
+            </div>
+            <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
+        </div>
+    </footer>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+    
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i data-lucide="chevron-up"></i>
+    </button>
+    
+    <!-- Scripts -->
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/app.js"></script>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        if (typeof I18n !== 'undefined') {
+            I18n.init();
+        }
+    });
+    
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        if (toast) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    }
+    
+    function copyOutput() {
+        const output = document.getElementById('outputArea');
+        if (!output || !output.value) {
+            showToast('Nothing to copy');
+            return;
+        }
+        navigator.clipboard.writeText(output.value).then(() => {
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        }).catch(() => {
+            output.select();
+            document.execCommand('copy');
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        });
+    }
+    
+    function clearAll() {
+        const input = document.getElementById('inputArea');
+        const output = document.getElementById('outputArea');
+        const inputCount = document.getElementById('inputCount');
+        const outputCount = document.getElementById('outputCount');
+        if (input) input.value = '';
+        if (output) output.value = '';
+        if (inputCount) inputCount.textContent = '0';
+        if (outputCount) outputCount.textContent = '0';
+        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
+    }
+    
+    function formatBytes(bytes) {
         if (bytes < 1024) return bytes + ' B';
         if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
         return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
@@ -496,5 +411,17 @@
       });
     })();
   </script>
+
+    // Input character counter
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputArea = document.getElementById('inputArea');
+        const inputCount = document.getElementById('inputCount');
+        if (inputArea && inputCount) {
+            inputArea.addEventListener('input', () => {
+                inputCount.textContent = inputArea.value.length;
+            });
+        }
+    });
+    </script>
 </body>
 </html>

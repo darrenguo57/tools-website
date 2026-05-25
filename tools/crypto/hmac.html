@@ -4,167 +4,198 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HMAC Calculator - ToolBox</title>
-    <meta name="description" content="Calculate HMAC hashes online. Supports HMAC-MD5, HMAC-SHA1, HMAC-SHA256, HMAC-SHA512 with Base64 and Hex output.">
+    <meta name="description" content="Calculate HMAC">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
     <link rel="stylesheet" href="../../assets/css/tools.css">
+    
     <style>
-        .workspace-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+        /* Tool Page Custom Styles */
+        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .workspace-grid .full-width { grid-column: 1 / -1; }
         .textarea-wrap { position: relative; }
-        .textarea-wrap textarea {
-            width: 100%; min-height: 120px; padding: 1rem; border: 1px solid var(--border, #e2e8f0);
-            border-radius: 0.5rem; font-family: 'Courier New', monospace; font-size: 14px;
-            resize: vertical; background: var(--bg, #fff); color: var(--text, #1e293b);
+        .textarea-wrap textarea, .textarea-wrap input {
+            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
+            resize: vertical; background: var(--color-bg); color: var(--color-text);
             box-sizing: border-box;
         }
-        .textarea-wrap textarea:focus { outline: none; border-color: var(--primary, #3b82f6); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
-        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .textarea-wrap input { min-height: auto; resize: none; }
+        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
-        .btn {
-            padding: 0.5rem 1.25rem; border-radius: 0.5rem; border: none; cursor: pointer;
-            font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem;
-            transition: all 0.2s;
-        }
-        .btn-primary { background: var(--primary, #3b82f6); color: #fff; }
-        .btn-primary:hover { background: var(--primary-hover, #2563eb); }
-        .btn-secondary { background: var(--bg-secondary, #f1f5f9); color: var(--text, #1e293b); border: 1px solid var(--border, #e2e8f0); }
-        .btn-secondary:hover { background: var(--bg-tertiary, #e2e8f0); }
-        .btn-danger { background: #ef4444; color: #fff; }
-        .btn-danger:hover { background: #dc2626; }
-        .toast {
-            position: fixed; bottom: 2rem; right: 2rem; padding: 0.75rem 1.5rem;
-            background: #1e293b; color: #fff; border-radius: 0.5rem; font-size: 14px;
-            transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 9999;
-        }
-        .toast.show { transform: translateY(0); opacity: 1; }
-        .options-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 0.75rem; margin-bottom: 1rem;
-        }
-        .option-group { display: flex; flex-direction: column; gap: 0.3rem; }
-        .option-group label { font-weight: 600; font-size: 13px; color: var(--text-muted, #64748b); }
-        .option-group input, .option-group select {
-            padding: 0.5rem 0.75rem; border: 1px solid var(--border, #e2e8f0);
-            border-radius: 0.375rem; font-size: 14px; background: var(--bg, #fff);
-            color: var(--text, #1e293b);
-        }
-        .option-group input:focus, .option-group select:focus {
-            outline: none; border-color: var(--primary, #3b82f6);
-        }
-        .result-box {
-            background: var(--bg-secondary, #f8fafc); border: 1px solid var(--border, #e2e8f0);
-            border-radius: 0.5rem; padding: 1rem; margin-top: 0.5rem; position: relative;
-        }
-        .result-box-header {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;
-        }
-        .result-box-label { font-weight: 600; font-size: 13px; color: var(--text-muted, #64748b); }
-        .result-box pre {
-            font-family: 'Courier New', monospace; font-size: 13px; word-break: break-all;
-            white-space: pre-wrap; color: var(--text, #1e293b); background: var(--bg, #fff);
-            padding: 0.75rem; border-radius: 0.375rem; border: 1px solid var(--border, #e2e8f0);
-        }
-        .copy-btn-sm {
-            background: none; border: none; cursor: pointer; color: var(--primary, #3b82f6);
-            padding: 0.2rem; border-radius: 0.25rem; display: flex; align-items: center;
-        }
-        .copy-btn-sm:hover { background: var(--bg-tertiary, #e2e8f0); }
-        .char-count { font-size: 12px; color: var(--text-muted, #94a3b8); text-align: right; margin-top: 0.25rem; }
+        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
+        
+        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header class="header">
         <div class="container header-inner">
-            <a href="../../index.html" class="logo"><i data-lucide="fingerprint" style="width:28px;height:28px"></i> ToolBox</a>
+            <a href="../../index.html" class="logo">
+                <i data-lucide="toolbox"></i>
+                <span>ToolBox</span>
+            </a>
             <div class="header-search">
                 <i data-lucide="search"></i>
                 <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
             </div>
             <div class="header-actions">
-                <button class="lang-btn" onclick="I18n.setLang(I18n.currentLang==='en'?'zh':'en')">EN</button>
-                <button class="theme-btn" onclick="document.body.classList.toggle('dark')"><i data-lucide="sun"></i></button>
+                <button class="lang-btn" id="langToggle" aria-label="Toggle Language">
+                    <span class="lang-label">EN</span>
+                </button>
+                <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">
+                    <i data-lucide="sun" class="theme-icon-light"></i>
+                    <i data-lucide="moon" class="theme-icon-dark"></i>
+                </button>
             </div>
         </div>
     </header>
-    <div class="breadcrumb"><div class="container"><a href="../../index.html">Home</a> / <a href="../../index.html#crypto">Encryption</a> / <span>HMAC Calculator</span></div></div>
+    
+    <!-- Breadcrumb -->
+    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_crypto" data-i18n="cat_crypto">Encryption</a> / <span>HMAC Calculator</span></div></div>
+    
+    <!-- Main Content -->
     <main class="tool-page">
         <div class="container tool-layout">
             <div class="tool-main">
+                <!-- Tool Header -->
                 <div class="tool-header">
-                    <div class="tool-icon"><i data-lucide="fingerprint"></i></div>
+                    <div class="tool-icon"><i data-lucide="file-key"></i></div>
                     <h1>HMAC Calculator</h1>
-                    <p>Calculate Hash-based Message Authentication Code (HMAC) using various algorithms. Output in Base64 or Hex format.</p>
+                    <p>Calculate HMAC</p>
                 </div>
+                
+                <!-- Tool Workspace -->
                 <div class="tool-workspace">
-                    <div class="options-grid">
-                        <div class="option-group">
-                            <label for="hmacAlgo"><i data-lucide="shield" style="width:14px;height:14px"></i> Algorithm</label>
-                            <select id="hmacAlgo">
-                                <option value="HMAC-MD5">HMAC-MD5</option>
-                                <option value="HMAC-SHA1">HMAC-SHA1</option>
-                                <option value="HMAC-SHA256" selected>HMAC-SHA256</option>
-                                <option value="HMAC-SHA512">HMAC-SHA512</option>
-                            </select>
-                        </div>
-                        <div class="option-group">
-                            <label for="hmacFormat"><i data-lucide="file-code" style="width:14px;height:14px"></i> Output Format</label>
-                            <select id="hmacFormat">
-                                <option value="Hex">Hex</option>
-                                <option value="Base64">Base64</option>
-                            </select>
-                        </div>
-                    </div>
                     <div class="workspace-grid">
                         <div>
-                            <div class="textarea-label"><i data-lucide="file-text" style="width:16px;height:16px"></i> Message</div>
-                            <div class="textarea-wrap">
-                                <textarea id="messageInput" placeholder="Enter the message to sign..."></textarea>
+                            <div class="textarea-label">
+                                <i data-lucide="file-text"></i>
+                                <span data-i18n="input_label">Input</span>
                             </div>
-                            <div class="char-count"><span id="messageCount">0</span> characters</div>
+                            <div class="textarea-wrap">
+                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                            </div>
+                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
-                    </div>
-                    <div class="option-group" style="margin-top:0.5rem">
-                        <label for="hmacKey"><i data-lucide="key" style="width:14px;height:14px"></i> Secret Key</label>
-                        <input type="text" id="hmacKey" placeholder="Enter your secret key...">
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-output"></i>
+                                <span data-i18n="output_label">Output</span>
+                            </div>
+                            <div class="textarea-wrap">
+                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            </div>
+                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        </div>
                     </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="calculateHMAC()"><i data-lucide="calculator" style="width:16px;height:16px"></i> Calculate</button>
-                        <button class="btn btn-secondary" onclick="copyResult()"><i data-lucide="copy" style="width:16px;height:16px"></i> Copy</button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2" style="width:16px;height:16px"></i> Clear</button>
-                    </div>
-                    <div class="result-box">
-                        <div class="result-box-header">
-                            <span class="result-box-label">HMAC Result</span>
-                            <button class="copy-btn-sm" onclick="copyResult()" title="Copy"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i></button>
-                        </div>
-                        <pre id="hmacResult">-</pre>
+                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
+                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
+                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
                 </div>
-                <div class="ad-slot" style="margin-top:2rem"><div class="ad-placeholder">Advertisement</div></div>
+                
+                <!-- Ad Slot -->
+                <div class="ad-slot" style="margin-top:2rem">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
             </div>
             <aside class="tool-sidebar">
-                <div class="ad-slot"><div class="ad-placeholder">Advertisement</div></div>
+                <div class="ad-slot">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
             </aside>
         </div>
     </main>
-    <footer class="footer"><div class="container"><p>&copy; 2024 ToolBox. All rights reserved.</p></div></footer>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-links">
+                <a href="#" data-i18n="footer_about">About</a>
+                <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+                <a href="#" data-i18n="footer_terms">Terms of Service</a>
+                <a href="#" data-i18n="footer_contact">Contact</a>
+            </div>
+            <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
+        </div>
+    </footer>
+    
+    <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
-    <script src="https://unpkg.com/lucide@0.453.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.js"></script>
+    
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i data-lucide="chevron-up"></i>
+    </button>
+    
+    <!-- Scripts -->
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/app.js"></script>
+    
     <script>
-    lucide.createIcons();
-
-    const messageInput = document.getElementById('messageInput');
-    const messageCount = document.getElementById('messageCount');
-
-    messageInput.addEventListener('input', () => {
-        messageCount.textContent = messageInput.value.length;
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        if (typeof I18n !== 'undefined') {
+            I18n.init();
+        }
     });
-
+    
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        if (toast) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    }
+    
+    function copyOutput() {
+        const output = document.getElementById('outputArea');
+        if (!output || !output.value) {
+            showToast('Nothing to copy');
+            return;
+        }
+        navigator.clipboard.writeText(output.value).then(() => {
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        }).catch(() => {
+            output.select();
+            document.execCommand('copy');
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        });
+    }
+    
+    function clearAll() {
+        const input = document.getElementById('inputArea');
+        const output = document.getElementById('outputArea');
+        const inputCount = document.getElementById('inputCount');
+        const outputCount = document.getElementById('outputCount');
+        if (input) input.value = '';
+        if (output) output.value = '';
+        if (inputCount) inputCount.textContent = '0';
+        if (outputCount) outputCount.textContent = '0';
+        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
+    }
+    
     function calculateHMAC() {
         const message = messageInput.value;
         const key = document.getElementById('hmacKey').value.trim();
@@ -221,6 +252,18 @@
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 2500);
     }
+    </script>
+
+    // Input character counter
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputArea = document.getElementById('inputArea');
+        const inputCount = document.getElementById('inputCount');
+        if (inputArea && inputCount) {
+            inputArea.addEventListener('input', () => {
+                inputCount.textContent = inputArea.value.length;
+            });
+        }
+    });
     </script>
 </body>
 </html>

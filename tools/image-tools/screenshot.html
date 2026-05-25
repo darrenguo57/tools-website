@@ -3,180 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML Screenshot - ToolBox</title>
-    <meta name="description" content="Capture HTML code as an image. Paste HTML code and render it to a downloadable screenshot.">
+    <title>Screenshot Tool - ToolBox</title>
+    <meta name="description" content="Capture screenshots">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
     <link rel="stylesheet" href="../../assets/css/tools.css">
+    
     <style>
-        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
-        .btn {
-            padding: 0.5rem 1.25rem; border-radius: 0.5rem; border: none; cursor: pointer;
-            font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem;
-            transition: all 0.2s;
-        }
-        .btn-primary { background: var(--primary, #3b82f6); color: #fff; }
-        .btn-primary:hover { background: var(--primary-hover, #2563eb); }
-        .btn-secondary { background: var(--bg-secondary, #f1f5f9); color: var(--text, #1e293b); border: 1px solid var(--border, #e2e8f0); }
-        .btn-secondary:hover { background: var(--bg-tertiary, #e2e8f0); }
-        .btn-success { background: #10b981; color: #fff; }
-        .btn-success:hover { background: #059669; }
-        .btn-danger { background: #ef4444; color: #fff; }
-        .btn-danger:hover { background: #dc2626; }
-        .toast {
-            position: fixed; bottom: 2rem; right: 2rem; padding: 0.75rem 1.5rem;
-            background: #1e293b; color: #fff; border-radius: 0.5rem; font-size: 14px;
-            transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 9999;
-        }
-        .toast.show { transform: translateY(0); opacity: 1; }
+        /* Tool Page Custom Styles */
         .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         .workspace-grid .full-width { grid-column: 1 / -1; }
-        .textarea-wrap textarea {
-            width: 100%; min-height: 300px; padding: 1rem; border: 1px solid var(--border, #e2e8f0);
-            border-radius: 0.5rem; font-family: 'Courier New', monospace; font-size: 13px;
-            resize: vertical; background: var(--bg, #fff); color: var(--text, #1e293b);
-            box-sizing: border-box; line-height: 1.5;
+        .textarea-wrap { position: relative; }
+        .textarea-wrap textarea, .textarea-wrap input {
+            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
+            resize: vertical; background: var(--color-bg); color: var(--color-text);
+            box-sizing: border-box;
         }
-        .textarea-wrap textarea:focus { outline: none; border-color: var(--primary, #3b82f6); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
-        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 14px; color: var(--text, #1e293b); }
-        .options-panel {
-            background: var(--bg-secondary, #f8fafc); border: 1px solid var(--border, #e2e8f0);
-            border-radius: 0.75rem; padding: 1rem 1.25rem; margin-bottom: 1rem;
-        }
-        .options-panel h4 { font-size: 14px; font-weight: 600; margin-bottom: 0.75rem; color: var(--text, #1e293b); }
-        .option-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem; }
-        .option-row:last-child { margin-bottom: 0; }
-        .option-label { font-size: 13px; color: var(--text-secondary, #64748b); min-width: 120px; }
-        select, input[type="number"] {
-            padding: 0.35rem 0.5rem; border: 1px solid var(--border, #e2e8f0); border-radius: 0.375rem;
-            font-size: 13px; background: var(--bg, #fff); color: var(--text, #1e293b);
-        }
-        .preview-area {
-            border: 1px solid var(--border, #e2e8f0); border-radius: 0.75rem; overflow: hidden;
-            background: #fff; min-height: 300px;
-        }
-        .preview-area iframe { width: 100%; border: none; }
-        .preview-area img { max-width: 100%; display: block; }
-        .preview-header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0.5rem 0.75rem; background: var(--bg-secondary, #f8fafc);
-            border-bottom: 1px solid var(--border, #e2e8f0); font-size: 13px; font-weight: 600;
-            color: var(--text, #1e293b);
-        }
-        .preview-body { padding: 0; overflow: auto; max-height: 500px; }
-        .info-box {
-            background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2);
-            border-radius: 0.5rem; padding: 0.75rem 1rem; margin-bottom: 1rem;
-            font-size: 13px; color: var(--text-secondary, #64748b); line-height: 1.5;
-        }
-        .info-box strong { color: var(--primary, #3b82f6); }
-        .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted, #94a3b8); font-size: 14px; }
-        .loading { text-align: center; padding: 2rem; color: var(--text-muted, #94a3b8); }
-        .loading::after { content: ''; display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border, #e2e8f0); border-top-color: var(--primary, #3b82f6); border-radius: 50%; animation: spin 0.8s linear infinite; margin-left: 0.5rem; vertical-align: middle; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .textarea-wrap input { min-height: auto; resize: none; }
+        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
+        
         @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header class="header">
         <div class="container header-inner">
-            <a href="../../index.html" class="logo"><i data-lucide="image" style="width:28px;height:28px"></i> ToolBox</a>
-            <div class="header-search"><i data-lucide="search"></i><input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools..."></div>
+            <a href="../../index.html" class="logo">
+                <i data-lucide="toolbox"></i>
+                <span>ToolBox</span>
+            </a>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+            </div>
             <div class="header-actions">
-                <button class="lang-btn" onclick="I18n.setLang(I18n.currentLang==='en'?'zh':'en')">EN</button>
-                <button class="theme-btn" onclick="document.body.classList.toggle('dark')"><i data-lucide="sun"></i></button>
+                <button class="lang-btn" id="langToggle" aria-label="Toggle Language">
+                    <span class="lang-label">EN</span>
+                </button>
+                <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">
+                    <i data-lucide="sun" class="theme-icon-light"></i>
+                    <i data-lucide="moon" class="theme-icon-dark"></i>
+                </button>
             </div>
         </div>
     </header>
-    <div class="breadcrumb"><div class="container"><a href="../../index.html">Home</a> / <a href="../../index.html#image-tools">Image Tools</a> / <span>HTML Screenshot</span></div></div>
+    
+    <!-- Breadcrumb -->
+    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_image_tools" data-i18n="cat_image_tools">Image Tools</a> / <span>Screenshot Tool</span></div></div>
+    
+    <!-- Main Content -->
     <main class="tool-page">
         <div class="container tool-layout">
             <div class="tool-main">
+                <!-- Tool Header -->
                 <div class="tool-header">
                     <div class="tool-icon"><i data-lucide="camera"></i></div>
-                    <h1>HTML Screenshot</h1>
-                    <p>Enter HTML code and capture it as an image. Uses html2canvas for client-side rendering.</p>
+                    <h1>Screenshot Tool</h1>
+                    <p>Capture screenshots</p>
                 </div>
+                
+                <!-- Tool Workspace -->
                 <div class="tool-workspace">
-                    <div class="info-box">
-                        <strong>How it works:</strong> Paste your HTML code below, preview it in the iframe, then capture it as a PNG image.
-                        The tool uses html2canvas to render the HTML content client-side. External resources (images, fonts, CSS) may not render if blocked by CORS.
-                    </div>
-
                     <div class="workspace-grid">
                         <div>
-                            <div class="textarea-label"><i data-lucide="code" style="width:16px;height:16px"></i> HTML Code</div>
-                            <div class="textarea-wrap">
-                                <textarea id="htmlInput" placeholder="Enter your HTML code here...&#10;&#10;Example:&#10;<div style='padding:40px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;text-align:center;border-radius:12px'>&#10;  <h1>Hello World</h1>&#10;  <p>This is a screenshot example</p>&#10;</div>"></textarea>
+                            <div class="textarea-label">
+                                <i data-lucide="file-text"></i>
+                                <span data-i18n="input_label">Input</span>
                             </div>
+                            <div class="textarea-wrap">
+                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                            </div>
+                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
                         <div>
-                            <div class="textarea-label"><i data-lucide="eye" style="width:16px;height:16px"></i> Preview / Screenshot</div>
-                            <div class="preview-area" id="previewArea">
-                                <div class="preview-header">
-                                    <span>Preview</span>
-                                    <span id="previewStatus" style="font-weight:400;font-size:12px;color:var(--text-muted,#94a3b8)">Waiting for input...</span>
-                                </div>
-                                <div class="preview-body" id="previewBody">
-                                    <div class="empty-state" id="emptyState">Enter HTML code and click Preview to see the result</div>
-                                    <iframe id="previewFrame" style="display:none" sandbox="allow-same-origin"></iframe>
-                                    <div id="screenshotResult" style="display:none"></div>
-                                </div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-output"></i>
+                                <span data-i18n="output_label">Output</span>
                             </div>
+                            <div class="textarea-wrap">
+                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            </div>
+                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
                     </div>
-
-                    <div class="options-panel">
-                        <h4><i data-lucide="settings" style="width:14px;height:14px;display:inline;vertical-align:middle"></i> Capture Settings</h4>
-                        <div class="option-row">
-                            <span class="option-label">Capture Width</span>
-                            <input type="number" id="captureWidth" value="800" min="200" max="2000">
-                            <span style="font-size:12px;color:var(--text-muted,#94a3b8)">px</span>
-                        </div>
-                        <div class="option-row">
-                            <span class="option-label">Scale</span>
-                            <select id="captureScale">
-                                <option value="1">1x</option>
-                                <option value="2" selected>2x (Retina)</option>
-                                <option value="3">3x</option>
-                            </select>
-                        </div>
-                        <div class="option-row">
-                            <span class="option-label">Background</span>
-                            <select id="captureBg">
-                                <option value="#ffffff">White</option>
-                                <option value="transparent">Transparent</option>
-                                <option value="#f8fafc">Light Gray</option>
-                                <option value="#1e293b">Dark</option>
-                            </select>
-                        </div>
-                    </div>
-
                     <div class="btn-group">
-                        <button class="btn btn-secondary" onclick="previewHTML()"><i data-lucide="eye" style="width:16px;height:16px"></i> Preview</button>
-                        <button class="btn btn-primary" onclick="captureScreenshot()"><i data-lucide="camera" style="width:16px;height:16px"></i> Capture</button>
-                        <button class="btn btn-success" id="btnDownload" onclick="downloadScreenshot()" style="display:none"><i data-lucide="download" style="width:16px;height:16px"></i> Download</button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2" style="width:16px;height:16px"></i> Clear</button>
+                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
+                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
+                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
                 </div>
-                <div class="ad-slot" style="margin-top:2rem"><div class="ad-placeholder">Advertisement</div></div>
+                
+                <!-- Ad Slot -->
+                <div class="ad-slot" style="margin-top:2rem">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
             </div>
-            <aside class="tool-sidebar"><div class="ad-slot"><div class="ad-placeholder">Advertisement</div></div></aside>
+            <aside class="tool-sidebar">
+                <div class="ad-slot">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
+            </aside>
         </div>
     </main>
-    <footer class="footer"><div class="container"><p>&copy; 2024 ToolBox. All rights reserved.</p></div></footer>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-links">
+                <a href="#" data-i18n="footer_about">About</a>
+                <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+                <a href="#" data-i18n="footer_terms">Terms of Service</a>
+                <a href="#" data-i18n="footer_contact">Contact</a>
+            </div>
+            <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
+        </div>
+    </footer>
+    
+    <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
-    <script src="https://unpkg.com/lucide@0.453.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i data-lucide="chevron-up"></i>
+    </button>
+    
+    <!-- Scripts -->
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/app.js"></script>
+    
     <script>
-    lucide.createIcons();
-
-    let screenshotDataUrl = null;
-
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        if (typeof I18n !== 'undefined') {
+            I18n.init();
+        }
+    });
+    
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        if (toast) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    }
+    
+    function copyOutput() {
+        const output = document.getElementById('outputArea');
+        if (!output || !output.value) {
+            showToast('Nothing to copy');
+            return;
+        }
+        navigator.clipboard.writeText(output.value).then(() => {
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        }).catch(() => {
+            output.select();
+            document.execCommand('copy');
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        });
+    }
+    
+    function clearAll() {
+        const input = document.getElementById('inputArea');
+        const output = document.getElementById('outputArea');
+        const inputCount = document.getElementById('inputCount');
+        const outputCount = document.getElementById('outputCount');
+        if (input) input.value = '';
+        if (output) output.value = '';
+        if (inputCount) inputCount.textContent = '0';
+        if (outputCount) outputCount.textContent = '0';
+        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
+    }
+    
     function previewHTML() {
         const html = document.getElementById('htmlInput').value.trim();
         if (!html) { showToast('Please enter HTML code'); return; }
@@ -283,6 +302,18 @@
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 2500);
     }
+    </script>
+
+    // Input character counter
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputArea = document.getElementById('inputArea');
+        const inputCount = document.getElementById('inputCount');
+        if (inputArea && inputCount) {
+            inputArea.addEventListener('input', () => {
+                inputCount.textContent = inputArea.value.length;
+            });
+        }
+    });
     </script>
 </body>
 </html>

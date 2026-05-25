@@ -1,219 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SQL Formatter - ToolBox</title>
-  <meta name="description" content="Free online SQL formatter. Beautify and minify SQL queries with keyword casing and indentation options.">
-  <meta name="keywords" content="SQL formatter, SQL beautifier, SQL minifier, format SQL online">
-  <meta name="author" content="ToolBox">
-  <meta name="robots" content="index, follow">
-
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="SQL Formatter - ToolBox">
-  <meta property="og:description" content="Free online SQL formatter and beautifier.">
-  <meta property="og:url" content="https://toolbox.example.com/tools/formatters/sql-formatter.html">
-  <meta property="og:site_name" content="ToolBox">
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="SQL Formatter - ToolBox">
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "SQL Formatter",
-    "url": "https://toolbox.example.com/tools/formatters/sql-formatter.html",
-    "description": "Free online SQL formatter and beautifier.",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-  }
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@0.453.0"></script>
-
-  <link rel="stylesheet" href="../../assets/css/main.css">
-  <link rel="stylesheet" href="../../assets/css/tools.css">
-  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
-
-  <style>
-    .sql-output { font-family: 'Courier New', Courier, monospace; font-size: 13px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
-    .sql-keyword { color: #cf222e; font-weight: 600; }
-    .sql-function { color: #8250df; }
-    .sql-string { color: #0a3069; }
-    .sql-number { color: #0550ae; }
-    .sql-comment { color: #6e7781; font-style: italic; }
-    .sql-operator { color: #cf222e; }
-    .indent-options { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-    .indent-options label { font-size: 13px; color: #57606a; }
-    .indent-options select { padding: 4px 8px; border: 1px solid #d0d7de; border-radius: 6px; font-size: 13px; background: #fff; }
-    .success-message { color: #1a7f37; background: #dafbe1; border: 1px solid #3fb950; border-radius: 8px; padding: 12px 16px; font-size: 13px; margin-top: 8px; display: none; }
-    .success-message.show { display: block; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Formatter - ToolBox</title>
+    <meta name="description" content="Format SQL queries">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    
+    <style>
+        /* Tool Page Custom Styles */
+        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .workspace-grid .full-width { grid-column: 1 / -1; }
+        .textarea-wrap { position: relative; }
+        .textarea-wrap textarea, .textarea-wrap input {
+            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
+            resize: vertical; background: var(--color-bg); color: var(--color-text);
+            box-sizing: border-box;
+        }
+        .textarea-wrap input { min-height: auto; resize: none; }
+        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
+        
+        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
-
-  <nav class="navbar" id="navbar">
-    <div class="navbar-container">
-      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
-      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
-      <div class="navbar-actions">
-        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
-        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
-        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
-      </div>
-    </div>
-  </nav>
-
-  <div class="main-layout">
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header"><h3>Categories</h3></div>
-      <ul class="sidebar-list">
-        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
-        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
-        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
-        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
-        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
-        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
-        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
-        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
-        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
-      </ul>
-    </aside>
-
-    <main class="main-content tool-page">
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="../../index.html">Home</a>
-        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
-        <a href="../../index.html?category=formatters">Formatters</a>
-        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
-        <span class="breadcrumb-current">SQL Formatter</span>
-      </nav>
-
-      <section class="tool-header">
-        <div class="tool-header__icon"><i data-lucide="database"></i></div>
-        <div class="tool-header-info">
-          <h1 class="tool-header__title">SQL Formatter</h1>
-          <p class="tool-header__desc">Format and beautify SQL queries with keyword casing, proper indentation, and line breaks. Supports SELECT, INSERT, UPDATE, DELETE, and more.</p>
-          <span class="tool-card-tag">Formatters</span>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo">
+                <i data-lucide="toolbox"></i>
+                <span>ToolBox</span>
+            </a>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+            </div>
+            <div class="header-actions">
+                <button class="lang-btn" id="langToggle" aria-label="Toggle Language">
+                    <span class="lang-label">EN</span>
+                </button>
+                <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">
+                    <i data-lucide="sun" class="theme-icon-light"></i>
+                    <i data-lucide="moon" class="theme-icon-dark"></i>
+                </button>
+            </div>
         </div>
-      </section>
-
-      <section class="tool-content">
-        <div class="tool-workspace">
-          <div class="tool-panel">
-            <div class="tool-panel__header">
-              <h3 class="tool-panel__title"><i data-lucide="file-text"></i> Input SQL</h3>
-              <div class="tool-panel__actions">
-                <button class="tool-action-btn" id="btnPaste"><i data-lucide="clipboard-paste"></i> Paste</button>
-                <button class="tool-action-btn tool-action-btn--danger" id="btnClear"><i data-lucide="trash-2"></i> Clear</button>
-              </div>
+    </header>
+    
+    <!-- Breadcrumb -->
+    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_formatters" data-i18n="cat_formatters">Formatters</a> / <span>SQL Formatter</span></div></div>
+    
+    <!-- Main Content -->
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <!-- Tool Header -->
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="database"></i></div>
+                    <h1>SQL Formatter</h1>
+                    <p>Format SQL queries</p>
+                </div>
+                
+                <!-- Tool Workspace -->
+                <div class="tool-workspace">
+                    <div class="workspace-grid">
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-text"></i>
+                                <span data-i18n="input_label">Input</span>
+                            </div>
+                            <div class="textarea-wrap">
+                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                            </div>
+                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        </div>
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-output"></i>
+                                <span data-i18n="output_label">Output</span>
+                            </div>
+                            <div class="textarea-wrap">
+                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            </div>
+                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
+                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
+                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                    </div>
+                </div>
+                
+                <!-- Ad Slot -->
+                <div class="ad-slot" style="margin-top:2rem">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
             </div>
-            <div class="tool-panel__body">
-              <textarea class="tool-input__field" id="sqlInput" placeholder="Paste your SQL query here, e.g. SELECT id, name FROM users WHERE age > 18 ORDER BY name;" style="min-height:220px;"></textarea>
-            </div>
-            <div class="tool-input__options">
-              <div class="tool-input__option indent-options">
-                <label for="keywordCase">Keywords:</label>
-                <select id="keywordCase">
-                  <option value="upper">UPPERCASE</option>
-                  <option value="lower">lowercase</option>
-                </select>
-                <label for="indentSize">Indent:</label>
-                <select id="indentSize">
-                  <option value="2">2 Spaces</option>
-                  <option value="4">4 Spaces</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div class="tool-actions">
-            <div class="tool-actions__primary">
-              <button class="btn btn-primary" id="btnFormat"><i data-lucide="align-left"></i> Format</button>
-              <button class="btn btn-primary" id="btnMinify"><i data-lucide="minimize-2"></i> Minify</button>
-            </div>
-            <div class="tool-actions__secondary">
-              <button class="tool-action-btn" id="btnCopy"><i data-lucide="copy"></i> Copy Result</button>
-            </div>
-          </div>
-
-          <div class="success-message" id="successMsg"></div>
-
-          <div class="tool-panel">
-            <div class="tool-panel__header">
-              <h3 class="tool-panel__title"><i data-lucide="file-output"></i> Output</h3>
-              <div class="tool-panel__actions">
-                <button class="tool-action-btn" id="btnCopyOutput"><i data-lucide="copy"></i> Copy</button>
-              </div>
-            </div>
-            <div class="tool-panel__body">
-              <div class="tool-output__content sql-output" id="sqlOutput" style="min-height:220px;">
-                <span style="color:#8b949e;">Formatted SQL will appear here...</span>
-              </div>
-            </div>
-          </div>
+            <aside class="tool-sidebar">
+                <div class="ad-slot">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
+            </aside>
         </div>
-
-        <div class="tool-sidebar-ad">
-          <div class="ad-slot" id="adSlotRight"><span>Advertisement</span></div>
-        </div>
-      </section>
-
-      <div class="ad-slot" id="adSlotBottom"><span>Advertisement</span></div>
-
-      <section class="tool-info">
-        <h2 class="tool-info__title">How to Use</h2>
-        <div class="tool-info__content">
-          <div class="tool-steps">
-            <div class="tool-step"><div class="tool-step__number">1</div><div class="tool-step__content"><div class="tool-step__title">Paste your SQL</div><div class="tool-step__desc">Enter or paste your SQL query into the input area.</div></div></div>
-            <div class="tool-step"><div class="tool-step__number">2</div><div class="tool-step__content"><div class="tool-step__title">Choose options</div><div class="tool-step__desc">Select keyword casing (UPPER/lower) and indentation size.</div></div></div>
-            <div class="tool-step"><div class="tool-step__number">3</div><div class="tool-step__content"><div class="tool-step__title">Format or Minify</div><div class="tool-step__desc">Click Format to beautify or Minify to compress your SQL.</div></div></div>
-            <div class="tool-step"><div class="tool-step__number">4</div><div class="tool-step__content"><div class="tool-step__title">Copy the result</div><div class="tool-step__desc">Click Copy to copy the formatted SQL to your clipboard.</div></div></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="related-tools">
-        <h2>Related Tools</h2>
-        <div class="related-tools-grid">
-          <a href="json-formatter.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="braces"></i></div><h3>JSON Formatter</h3><span class="tool-card-tag">Formatters</span></a>
-          <a href="code-formatter.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="code"></i></div><h3>Code Formatter</h3><span class="tool-card-tag">Formatters</span></a>
-          <a href="xml-formatter.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="file-code"></i></div><h3>XML Formatter</h3><span class="tool-card-tag">Formatters</span></a>
-          <a href="csv-viewer.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="table"></i></div><h3>CSV Viewer</h3><span class="tool-card-tag">Formatters</span></a>
-        </div>
-      </section>
     </main>
-  </div>
-
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
-      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
-    </div>
-  </footer>
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-  <script src="../../assets/js/i18n.js"></script>
-  <script src="../../assets/js/utils.js"></script>
-  <script src="../../assets/js/app.js"></script>
-
-  <script>
-    (function() {
-      const input = document.getElementById('sqlInput');
-      const output = document.getElementById('sqlOutput');
-      const successMsg = document.getElementById('successMsg');
-      let lastResult = '';
-
-      const KEYWORDS = ['SELECT','FROM','WHERE','AND','OR','NOT','IN','LIKE','BETWEEN','IS','NULL','ORDER','BY','GROUP','HAVING','LIMIT','OFFSET','INSERT','INTO','VALUES','UPDATE','SET','DELETE','CREATE','TABLE','DROP','ALTER','ADD','COLUMN','INDEX','JOIN','INNER','LEFT','RIGHT','OUTER','FULL','ON','AS','DISTINCT','UNION','ALL','EXISTS','CASE','WHEN','THEN','ELSE','END','ASC','DESC','COUNT','SUM','AVG','MIN','MAX','IF','BEGIN','COMMIT','ROLLBACK','PRIMARY','KEY','FOREIGN','REFERENCES','CONSTRAINT','DEFAULT','CHECK','UNIQUE','VARCHAR','INT','INTEGER','TEXT','BOOLEAN','DATE','TIMESTAMP','FLOAT','DOUBLE','DECIMAL','NOT NULL','AUTO_INCREMENT','WITH','RECURSIVE','OVER','PARTITION','WINDOW','ROW_NUMBER','RANK','DENSE_RANK','LEAD','LAG','FIRST_VALUE','LAST_VALUE','COALESCE','CAST','CONVERT','TRUNCATE','MERGE','USING','MATCHED','EXCEPT','INTERSECT','ANY','SOME','NATURAL','CROSS','LATERAL','FETCH','NEXT','ROWS','ONLY','TOP','OUTPUT','RETURNING','CONFLICT','DO','NOTHING','EXCLUDE','REPLACE','ILIKE','SIMILAR','TO','TRUE','FALSE','UNKNOWN','ESCAPE','COLLATE','NOCASE','DEFERRABLE','DEFERRED','IMMEDIATE','INITIALLY','CASCADE','RESTRICT','NO','ACTION','TRIGGER','BEFORE','AFTER','EACH','ROW','STATEMENT','EXECUTE','LANGUAGE','PLPGSQL','RETURNS','VOID','REPLACE','FUNCTION','PROCEDURE','RETURNS','TRIGGER','VIEW','MATERIALIZED','GRANT','REVOKE','SCHEMA','DATABASE','IF','EXISTS','TEMPORARY','TEMP','UNLOGGED','LOGGED','INHERIT','OF','TYPE','ENUM','SERIAL','BIGSERIAL','SMALLSERIAL','GENERATED','ALWAYS','IDENTITY','SEQUENCE','OWNED','NONE','CYCLE','CACHE','START','INCREMENT','MINVALUE','MAXVALUE','RESTART'];
-
-      const FUNCTIONS = ['COUNT','SUM','AVG','MIN','MAX','COALESCE','NULLIF','CAST','CONVERT','CONCAT','SUBSTRING','TRIM','UPPER','LOWER','LENGTH','REPLACE','ROUND','FLOOR','CEIL','ABS','NOW','CURRENT_DATE','CURRENT_TIMESTAMP','DATE_TRUNC','EXTRACT','DATE_PART','ARRAY_AGG','STRING_AGG','ROW_NUMBER','RANK','DENSE_RANK','LEAD','LAG','FIRST_VALUE','LAST_VALUE','NTILE','PERCENT_RANK','CUME_DIST','LAG','LEAD','GENERATE_SERIES','UNNEST','ARRAY'];
-
-      function getIndent() { return parseInt(document.getElementById('indentSize').value); }
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-links">
+                <a href="#" data-i18n="footer_about">About</a>
+                <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+                <a href="#" data-i18n="footer_terms">Terms of Service</a>
+                <a href="#" data-i18n="footer_contact">Contact</a>
+            </div>
+            <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
+        </div>
+    </footer>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+    
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i data-lucide="chevron-up"></i>
+    </button>
+    
+    <!-- Scripts -->
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/app.js"></script>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        if (typeof I18n !== 'undefined') {
+            I18n.init();
+        }
+    });
+    
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        if (toast) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    }
+    
+    function copyOutput() {
+        const output = document.getElementById('outputArea');
+        if (!output || !output.value) {
+            showToast('Nothing to copy');
+            return;
+        }
+        navigator.clipboard.writeText(output.value).then(() => {
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        }).catch(() => {
+            output.select();
+            document.execCommand('copy');
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        });
+    }
+    
+    function clearAll() {
+        const input = document.getElementById('inputArea');
+        const output = document.getElementById('outputArea');
+        const inputCount = document.getElementById('inputCount');
+        const outputCount = document.getElementById('outputCount');
+        if (input) input.value = '';
+        if (output) output.value = '';
+        if (inputCount) inputCount.textContent = '0';
+        if (outputCount) outputCount.textContent = '0';
+        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
+    }
+    
+    function getIndent() { return parseInt(document.getElementById('indentSize').value); }
       function getCase() { return document.getElementById('keywordCase').value; }
 
       function escapeHtml(str) {
@@ -259,7 +242,15 @@
 
           // Add newlines before major clauses
           majorClauses.forEach(function(clause) {
-            const escaped = clause.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const escaped = clause.replace(/[.*+?^${}()|[\]\\]/g, '\\function process() {
+        const input = document.getElementById('inputArea');
+        const output = document.getElementById('outputArea');
+        if (!input || !output) return;
+        output.value = input.value;
+        showToast('Processed!');
+    }
+    
+');
             const re = new RegExp('\\s+(' + escaped + ')\\b', 'gi');
             s = s.replace(re, '\n' + clause.toUpperCase());
           });
@@ -333,7 +324,15 @@
       function highlightSQL(sql) {
         const escaped = escapeHtml(sql);
         // Highlight strings
-        let result = escaped.replace(/'[^']*'/g, '<span class="sql-string">$&</span>');
+        let result = escaped.replace(/'[^']*'/g, '<span class="sql-string">function process() {
+        const input = document.getElementById('inputArea');
+        const output = document.getElementById('outputArea');
+        if (!input || !output) return;
+        output.value = input.value;
+        showToast('Processed!');
+    }
+    
+</span>');
         // Highlight numbers
         result = result.replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="sql-number">$1</span>');
         // Highlight keywords
@@ -390,5 +389,17 @@
       });
     })();
   </script>
+
+    // Input character counter
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputArea = document.getElementById('inputArea');
+        const inputCount = document.getElementById('inputCount');
+        if (inputArea && inputCount) {
+            inputArea.addEventListener('input', () => {
+                inputCount.textContent = inputArea.value.length;
+            });
+        }
+    });
+    </script>
 </body>
 </html>

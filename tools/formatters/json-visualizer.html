@@ -1,237 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JSON Visualizer - ToolBox</title>
-  <meta name="description" content="Free online JSON visualizer. View JSON data as an interactive, collapsible tree structure with type indicators.">
-  <meta name="keywords" content="JSON visualizer, JSON tree viewer, JSON viewer, online JSON tree">
-  <meta name="author" content="ToolBox">
-  <meta name="robots" content="index, follow">
-
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="JSON Visualizer - ToolBox">
-  <meta property="og:description" content="Free online JSON visualizer with interactive tree view.">
-  <meta property="og:url" content="https://toolbox.example.com/tools/formatters/json-visualizer.html">
-  <meta property="og:site_name" content="ToolBox">
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="JSON Visualizer - ToolBox">
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "JSON Visualizer",
-    "url": "https://toolbox.example.com/tools/formatters/json-visualizer.html",
-    "description": "Free online JSON visualizer with interactive collapsible tree view.",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-  }
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@0.453.0"></script>
-
-  <link rel="stylesheet" href="../../assets/css/main.css">
-  <link rel="stylesheet" href="../../assets/css/tools.css">
-  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
-
-  <style>
-    .json-tree { font-family: 'Courier New', Courier, monospace; font-size: 13px; line-height: 1.8; }
-    .json-tree-node { margin-left: 20px; }
-    .json-tree-node.root { margin-left: 0; }
-    .json-tree-toggle { cursor: pointer; user-select: none; display: inline-flex; align-items: center; gap: 4px; }
-    .json-tree-toggle:hover { opacity: 0.8; }
-    .json-tree-arrow { display: inline-block; width: 16px; text-align: center; color: #57606a; transition: transform 0.2s; font-size: 12px; }
-    .json-tree-arrow.collapsed { transform: rotate(-90deg); }
-    .json-tree-key { color: #0550ae; font-weight: 500; }
-    .json-tree-type { color: #6e7781; font-size: 11px; font-style: italic; margin-left: 4px; }
-    .json-tree-value-string { color: #0a3069; }
-    .json-tree-value-number { color: #0550ae; font-weight: 600; }
-    .json-tree-value-boolean { color: #cf222e; font-weight: 500; }
-    .json-tree-value-null { color: #6e7781; font-style: italic; }
-    .json-tree-bracket { color: #24292f; }
-    .json-tree-count { color: #6e7781; font-size: 11px; }
-    .json-tree-children { border-left: 1px dashed #d0d7de; margin-left: 8px; padding-left: 12px; }
-    .json-tree-children.hidden { display: none; }
-    .json-tree-inline { display: inline; }
-    .type-icon { display: inline-block; width: 16px; height: 16px; border-radius: 3px; text-align: center; line-height: 16px; font-size: 10px; color: #fff; margin-right: 4px; vertical-align: middle; }
-    .type-icon.obj { background: #8250df; }
-    .type-icon.arr { background: #0969da; }
-    .type-icon.str { background: #1a7f37; }
-    .type-icon.num { background: #bf8700; }
-    .type-icon.bool { background: #cf222e; }
-    .type-icon.nil { background: #6e7781; }
-    .error-message { color: #cf222e; background: #ffebe9; border: 1px solid #ff8182; border-radius: 8px; padding: 12px 16px; font-size: 13px; margin-top: 8px; display: none; }
-    .error-message.show { display: block; }
-    .stats-bar { display: flex; gap: 16px; padding: 8px 0; font-size: 12px; color: #57606a; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Json Visualizer - ToolBox</title>
+    <meta name="description" content="Json Visualizer tool">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    
+    <style>
+        /* Tool Page Custom Styles */
+        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .workspace-grid .full-width { grid-column: 1 / -1; }
+        .textarea-wrap { position: relative; }
+        .textarea-wrap textarea, .textarea-wrap input {
+            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
+            resize: vertical; background: var(--color-bg); color: var(--color-text);
+            box-sizing: border-box;
+        }
+        .textarea-wrap input { min-height: auto; resize: none; }
+        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
+        
+        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
-
-  <nav class="navbar" id="navbar">
-    <div class="navbar-container">
-      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
-      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
-      <div class="navbar-actions">
-        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
-        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
-        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
-      </div>
-    </div>
-  </nav>
-
-  <div class="main-layout">
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header"><h3>Categories</h3></div>
-      <ul class="sidebar-list">
-        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
-        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
-        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
-        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
-        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
-        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
-        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
-        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
-        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
-      </ul>
-    </aside>
-
-    <main class="main-content tool-page">
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="../../index.html">Home</a>
-        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
-        <a href="../../index.html?category=formatters">Formatters</a>
-        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
-        <span class="breadcrumb-current">JSON Visualizer</span>
-      </nav>
-
-      <section class="tool-header">
-        <div class="tool-header__icon"><i data-lucide="network"></i></div>
-        <div class="tool-header-info">
-          <h1 class="tool-header__title">JSON Visualizer</h1>
-          <p class="tool-header__desc">Visualize JSON data as an interactive, collapsible tree structure. Easily explore complex nested objects and arrays.</p>
-          <span class="tool-card-tag">Formatters</span>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo">
+                <i data-lucide="toolbox"></i>
+                <span>ToolBox</span>
+            </a>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+            </div>
+            <div class="header-actions">
+                <button class="lang-btn" id="langToggle" aria-label="Toggle Language">
+                    <span class="lang-label">EN</span>
+                </button>
+                <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">
+                    <i data-lucide="sun" class="theme-icon-light"></i>
+                    <i data-lucide="moon" class="theme-icon-dark"></i>
+                </button>
+            </div>
         </div>
-      </section>
-
-      <section class="tool-content">
-        <div class="tool-workspace">
-          <div class="tool-panel">
-            <div class="tool-panel__header">
-              <h3 class="tool-panel__title"><i data-lucide="file-json"></i> Input JSON</h3>
-              <div class="tool-panel__actions">
-                <button class="tool-action-btn" id="btnPaste"><i data-lucide="clipboard-paste"></i> Paste</button>
-                <button class="tool-action-btn tool-action-btn--danger" id="btnClear"><i data-lucide="trash-2"></i> Clear</button>
-              </div>
+    </header>
+    
+    <!-- Breadcrumb -->
+    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_all" data-i18n="cat_all">Tools</a> / <span>Json Visualizer</span></div></div>
+    
+    <!-- Main Content -->
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <!-- Tool Header -->
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="tool"></i></div>
+                    <h1>Json Visualizer</h1>
+                    <p>Json Visualizer tool</p>
+                </div>
+                
+                <!-- Tool Workspace -->
+                <div class="tool-workspace">
+                    <div class="workspace-grid">
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-text"></i>
+                                <span data-i18n="input_label">Input</span>
+                            </div>
+                            <div class="textarea-wrap">
+                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                            </div>
+                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        </div>
+                        <div>
+                            <div class="textarea-label">
+                                <i data-lucide="file-output"></i>
+                                <span data-i18n="output_label">Output</span>
+                            </div>
+                            <div class="textarea-wrap">
+                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            </div>
+                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
+                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
+                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                    </div>
+                </div>
+                
+                <!-- Ad Slot -->
+                <div class="ad-slot" style="margin-top:2rem">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
             </div>
-            <div class="tool-panel__body">
-              <textarea class="tool-input__field" id="jsonInput" placeholder='Paste your JSON here, e.g. {"name": "John", "hobbies": ["reading", "coding"]}' style="min-height:200px;"></textarea>
-            </div>
-          </div>
-
-          <div class="tool-actions">
-            <div class="tool-actions__primary">
-              <button class="btn btn-primary" id="btnVisualize"><i data-lucide="eye"></i> Visualize</button>
-            </div>
-            <div class="tool-actions__secondary">
-              <button class="tool-action-btn" id="btnExpandAll"><i data-lucide="unfold-vertical"></i> Expand All</button>
-              <button class="tool-action-btn" id="btnCollapseAll"><i data-lucide="fold-vertical"></i> Collapse All</button>
-            </div>
-          </div>
-
-          <div class="error-message" id="errorMsg"></div>
-
-          <div class="stats-bar" id="statsBar" style="display:none;">
-            <span id="statType"></span>
-            <span id="statKeys"></span>
-            <span id="statDepth"></span>
-          </div>
-
-          <div class="tool-panel">
-            <div class="tool-panel__header">
-              <h3 class="tool-panel__title"><i data-lucide="git-fork"></i> Tree View</h3>
-            </div>
-            <div class="tool-panel__body">
-              <div class="tool-output__content json-tree" id="treeOutput" style="min-height:300px;">
-                <span style="color:#8b949e;">JSON tree visualization will appear here...</span>
-              </div>
-            </div>
-          </div>
+            <aside class="tool-sidebar">
+                <div class="ad-slot">
+                    <span data-i18n="ad_label">Advertisement</span>
+                </div>
+            </aside>
         </div>
-
-        <div class="tool-sidebar-ad">
-          <div class="ad-slot" id="adSlotRight"><span>Advertisement</span></div>
-        </div>
-      </section>
-
-      <div class="ad-slot" id="adSlotBottom"><span>Advertisement</span></div>
-
-      <section class="tool-info">
-        <h2 class="tool-info__title">How to Use</h2>
-        <div class="tool-info__content">
-          <div class="tool-steps">
-            <div class="tool-step">
-              <div class="tool-step__number">1</div>
-              <div class="tool-step__content">
-                <div class="tool-step__title">Paste your JSON</div>
-                <div class="tool-step__desc">Enter or paste your JSON data into the input area.</div>
-              </div>
-            </div>
-            <div class="tool-step">
-              <div class="tool-step__number">2</div>
-              <div class="tool-step__content">
-                <div class="tool-step__title">Visualize</div>
-                <div class="tool-step__desc">Click "Visualize" to generate an interactive tree view.</div>
-              </div>
-            </div>
-            <div class="tool-step">
-              <div class="tool-step__number">3</div>
-              <div class="tool-step__content">
-                <div class="tool-step__title">Explore</div>
-                <div class="tool-step__desc">Click nodes to expand or collapse them. Use Expand/Collapse All buttons for bulk operations.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="related-tools">
-        <h2>Related Tools</h2>
-        <div class="related-tools-grid">
-          <a href="json-formatter.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="braces"></i></div><h3>JSON Formatter</h3><span class="tool-card-tag">Formatters</span></a>
-          <a href="xml-formatter.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="file-code"></i></div><h3>XML Formatter</h3><span class="tool-card-tag">Formatters</span></a>
-          <a href="csv-viewer.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="table"></i></div><h3>CSV Viewer</h3><span class="tool-card-tag">Formatters</span></a>
-          <a href="code-diff.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="git-compare"></i></div><h3>Code Diff</h3><span class="tool-card-tag">Formatters</span></a>
-        </div>
-      </section>
     </main>
-  </div>
-
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
-      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
-    </div>
-  </footer>
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-  <script src="../../assets/js/i18n.js"></script>
-  <script src="../../assets/js/utils.js"></script>
-  <script src="../../assets/js/app.js"></script>
-
-  <script>
-    (function() {
-      const input = document.getElementById('jsonInput');
-      const treeOutput = document.getElementById('treeOutput');
-      const errorMsg = document.getElementById('errorMsg');
-      const statsBar = document.getElementById('statsBar');
-
-      function getTypeIcon(type) {
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-links">
+                <a href="#" data-i18n="footer_about">About</a>
+                <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+                <a href="#" data-i18n="footer_terms">Terms of Service</a>
+                <a href="#" data-i18n="footer_contact">Contact</a>
+            </div>
+            <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
+        </div>
+    </footer>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+    
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i data-lucide="chevron-up"></i>
+    </button>
+    
+    <!-- Scripts -->
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/app.js"></script>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        if (typeof I18n !== 'undefined') {
+            I18n.init();
+        }
+    });
+    
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        if (toast) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    }
+    
+    function copyOutput() {
+        const output = document.getElementById('outputArea');
+        if (!output || !output.value) {
+            showToast('Nothing to copy');
+            return;
+        }
+        navigator.clipboard.writeText(output.value).then(() => {
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        }).catch(() => {
+            output.select();
+            document.execCommand('copy');
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        });
+    }
+    
+    function clearAll() {
+        const input = document.getElementById('inputArea');
+        const output = document.getElementById('outputArea');
+        const inputCount = document.getElementById('inputCount');
+        const outputCount = document.getElementById('outputCount');
+        if (input) input.value = '';
+        if (output) output.value = '';
+        if (inputCount) inputCount.textContent = '0';
+        if (outputCount) outputCount.textContent = '0';
+        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
+    }
+    
+    function getTypeIcon(type) {
         const icons = { object: '{', array: '[]', string: 'A', number: '#', boolean: '!?', null: '~' };
         return '<span class="type-icon ' + ({object:'obj',array:'arr',string:'str',number:'num',boolean:'bool',null:'nil'}[type]) + '">' + (icons[type]||'?') + '</span>';
       }
@@ -386,5 +351,17 @@
       });
     })();
   </script>
+
+    // Input character counter
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputArea = document.getElementById('inputArea');
+        const inputCount = document.getElementById('inputCount');
+        if (inputArea && inputCount) {
+            inputArea.addEventListener('input', () => {
+                inputCount.textContent = inputArea.value.length;
+            });
+        }
+    });
+    </script>
 </body>
 </html>
