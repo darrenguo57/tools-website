@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tool Name - ToolBox</title>
+  <meta name="description" content="Free online tool for developers and designers. Fast, easy, and no installation required.">
+  <meta name="keywords" content="online tool, free tool, developer tool">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Tool Name - ToolBox">
+  <meta property="og:description" content="Free online tool for developers and designers. Fast, easy, and no installation required.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/tool-name.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Tool Name - ToolBox">
+  <meta name="twitter:description" content="Free online tool for developers and designers.">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Tool Name",
+    "url": "https://toolbox.example.com/tools/tool-name.html",
+    "description": "Free online tool for developers and designers.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "ToolBox",
+      "url": "https://toolbox.example.com/"
+    }
+  }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+</head>
+<body>
+
+  <!-- ========== Navigation ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo">
+        <i data-lucide="toolbox"></i>
+        <span>ToolBox</span>
+      </a>
+
+      <div class="navbar-search">
+        <i data-lucide="search"></i>
+        <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+      </div>
+
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language">
+          <span class="lang-label">EN</span>
+        </button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="theme-icon-light"></i>
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+        </button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== Main Layout ========== -->
+  <div class="main-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3 data-i18n="sidebar_categories">Categories</h3>
+      </div>
+      <ul class="sidebar-list">
+        <li>
+          <a href="../index.html" class="sidebar-item" data-category="all">
+            <i data-lucide="layout-grid"></i>
+            <span data-i18n="cat_all">All Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=converters" class="sidebar-item" data-category="converters">
+            <i data-lucide="repeat"></i>
+            <span data-i18n="cat_converters">Converters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=calculators" class="sidebar-item" data-category="calculators">
+            <i data-lucide="calculator"></i>
+            <span data-i18n="cat_calculators">Calculators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=image-tools" class="sidebar-item" data-category="image-tools">
+            <i data-lucide="image"></i>
+            <span data-i18n="cat_image_tools">Image Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=generators" class="sidebar-item" data-category="generators">
+            <i data-lucide="sparkles"></i>
+            <span data-i18n="cat_generators">Generators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=formatters" class="sidebar-item" data-category="formatters">
+            <i data-lucide="braces"></i>
+            <span data-i18n="cat_formatters">Formatters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=crypto" class="sidebar-item" data-category="crypto">
+            <i data-lucide="shield"></i>
+            <span data-i18n="cat_crypto">Encryption</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=charts" class="sidebar-item" data-category="charts">
+            <i data-lucide="bar-chart-3"></i>
+            <span data-i18n="cat_charts">Charts</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=testing" class="sidebar-item" data-category="testing">
+            <i data-lucide="flask-conical"></i>
+            <span data-i18n="cat_testing">Testing</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content tool-page">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../index.html" data-i18n="breadcrumb_home">Home</a>
+        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+        <a href="../index.html?category=category-name" class="breadcrumb-category" data-i18n="cat_category_name">Category</a>
+        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+        <span class="breadcrumb-current" data-i18n="tool_name">Tool Name</span>
+      </nav>
+
+      <!-- Tool Header -->
+      <section class="tool-header">
+        <div class="tool-header-icon">
+          <i data-lucide="icon-name"></i>
+        </div>
+        <div class="tool-header-info">
+          <h1 data-i18n="tool_name">Tool Name</h1>
+          <p class="tool-description" data-i18n="tool_name_desc">Tool description goes here. Explain what this tool does and its main features.</p>
+          <span class="tool-card-tag" data-i18n="cat_category_name">Category</span>
+        </div>
+      </section>
+
+      <!-- Tool Content Area -->
+      <section class="tool-content">
+        <div class="tool-workspace">
+
+          <!-- Input Area -->
+          <div class="tool-panel tool-input-panel">
+            <div class="tool-panel-header">
+              <h3 data-i18n="input_label">Input</h3>
+              <div class="tool-panel-actions">
+                <button class="btn btn-sm" id="btnPaste" data-i18n="btn_paste">
+                  <i data-lucide="clipboard-paste"></i> Paste
+                </button>
+                <button class="btn btn-sm" id="btnClear" data-i18n="btn_clear">
+                  <i data-lucide="trash-2"></i> Clear
+                </button>
+              </div>
+            </div>
+            <div class="tool-panel-body">
+              <!-- Tool-specific input goes here -->
+              <textarea class="tool-textarea" id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter your input here..."></textarea>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="tool-actions">
+            <button class="btn btn-primary" id="btnConvert" data-i18n="btn_convert">
+              <i data-lucide="arrow-right"></i> Convert
+            </button>
+            <button class="btn btn-secondary" id="btnSwap" data-i18n="btn_swap">
+              <i data-lucide="arrow-left-right"></i> Swap
+            </button>
+            <button class="btn btn-secondary" id="btnCopy" data-i18n="btn_copy">
+              <i data-lucide="copy"></i> Copy
+            </button>
+            <button class="btn btn-secondary" id="btnDownload" data-i18n="btn_download">
+              <i data-lucide="download"></i> Download
+            </button>
+          </div>
+
+          <!-- Output Area -->
+          <div class="tool-panel tool-output-panel">
+            <div class="tool-panel-header">
+              <h3 data-i18n="output_label">Output</h3>
+              <div class="tool-panel-actions">
+                <button class="btn btn-sm" id="btnCopyOutput" data-i18n="btn_copy">
+                  <i data-lucide="copy"></i> Copy
+                </button>
+                <button class="btn btn-sm" id="btnDownloadOutput" data-i18n="btn_download">
+                  <i data-lucide="download"></i> Download
+                </button>
+              </div>
+            </div>
+            <div class="tool-panel-body">
+              <!-- Tool-specific output goes here -->
+              <textarea class="tool-textarea" id="outputArea" readonly data-i18n-placeholder="output_placeholder" placeholder="Output will appear here..."></textarea>
+            </div>
+          </div>
+
+          <!-- Tool Options (optional) -->
+          <div class="tool-options" id="toolOptions">
+            <h3 data-i18n="options_label">Options</h3>
+            <div class="tool-options-grid">
+              <!-- Tool-specific options go here -->
+              <div class="tool-option">
+                <label for="option1" data-i18n="option_1">Option 1</label>
+                <select id="option1" class="tool-select">
+                  <option value="default">Default</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Sidebar Ad -->
+        <div class="tool-sidebar-ad">
+          <div class="ad-slot" id="adSlotRight">
+            <span data-i18n="ad_label">Advertisement</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Ad Slot Bottom -->
+      <div class="ad-slot" id="adSlotBottom">
+        <span data-i18n="ad_label">Advertisement</span>
+      </div>
+
+      <!-- Tool Description / How to Use -->
+      <section class="tool-description-section">
+        <h2 data-i18n="how_to_use">How to Use</h2>
+        <div class="tool-description-content">
+          <ol>
+            <li data-i18n="step_1">Enter your input in the input area above.</li>
+            <li data-i18n="step_2">Configure any options if available.</li>
+            <li data-i18n="step_3">Click the convert/process button.</li>
+            <li data-i18n="step_4">View the result in the output area.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Related Tools -->
+      <section class="related-tools">
+        <h2 data-i18n="related_tools">Related Tools</h2>
+        <div class="related-tools-grid">
+
+          <a href="tool-related-1.html" class="tool-card tool-card-sm">
+            <div class="tool-card-icon"><i data-lucide="icon-related-1"></i></div>
+            <h3 data-i18n="tool_related_1">Related Tool 1</h3>
+            <span class="tool-card-tag" data-i18n="cat_category_name">Category</span>
+          </a>
+
+          <a href="tool-related-2.html" class="tool-card tool-card-sm">
+            <div class="tool-card-icon"><i data-lucide="icon-related-2"></i></div>
+            <h3 data-i18n="tool_related_2">Related Tool 2</h3>
+            <span class="tool-card-tag" data-i18n="cat_category_name">Category</span>
+          </a>
+
+          <a href="tool-related-3.html" class="tool-card tool-card-sm">
+            <div class="tool-card-icon"><i data-lucide="icon-related-3"></i></div>
+            <h3 data-i18n="tool_related_3">Related Tool 3</h3>
+            <span class="tool-card-tag" data-i18n="cat_category_name">Category</span>
+          </a>
+
+          <a href="tool-related-4.html" class="tool-card tool-card-sm">
+            <div class="tool-card-icon"><i data-lucide="icon-related-4"></i></div>
+            <h3 data-i18n="tool_related_4">Related Tool 4</h3>
+            <span class="tool-card-tag" data-i18n="cat_category_name">Category</span>
+          </a>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links">
+        <a href="#" data-i18n="footer_about">About</a>
+        <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="#" data-i18n="footer_terms">Terms of Service</a>
+        <a href="#" data-i18n="footer_contact">Contact</a>
+      </div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

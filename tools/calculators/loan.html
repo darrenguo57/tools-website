@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan Calculator - ToolBox</title>
+  <meta name="description" content="Free online loan calculator with amortization schedule, pie chart, and downloadable report.">
+  <meta name="keywords" content="loan calculator, mortgage calculator, amortization, monthly payment, interest">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Loan Calculator - ToolBox">
+  <meta property="og:description" content="Free online loan calculator with amortization schedule.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/calculators/loan.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Loan Calculator",
+    "url": "https://toolbox.example.com/tools/calculators/loan.html",
+    "description": "Free online loan calculator.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    .loan-form { display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4); }
+    .loan-form .form-group.full-width { grid-column:span 2; }
+    .loan-results { display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-4);margin-top:var(--space-6); }
+    .loan-result-card {
+      background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);
+      padding:var(--space-5);text-align:center;
+    }
+    .loan-result-card .label { font-size:var(--font-size-sm);color:var(--color-text-tertiary);margin-bottom:var(--space-2); }
+    .loan-result-card .value { font-size:var(--font-size-2xl);font-weight:var(--font-weight-bold);color:var(--color-primary); }
+    .loan-result-card .value.total { color:var(--color-text); }
+    .loan-result-card .value.interest { color:var(--color-error); }
+    .loan-chart-area { margin-top:var(--space-6);display:flex;gap:var(--space-6);align-items:center;flex-wrap:wrap; }
+    .loan-pie-canvas { width:200px;height:200px;flex-shrink:0; }
+    .loan-legend { display:flex;flex-direction:column;gap:var(--space-3); }
+    .loan-legend-item { display:flex;align-items:center;gap:var(--space-2);font-size:var(--font-size-sm); }
+    .loan-legend-color { width:14px;height:14px;border-radius:var(--radius-sm);flex-shrink:0; }
+    .loan-table-wrap { margin-top:var(--space-6);overflow-x:auto; }
+    .loan-table { width:100%;border-collapse:collapse;font-size:var(--font-size-sm); }
+    .loan-table th {
+      background:var(--color-bg-secondary);padding:var(--space-3) var(--space-4);
+      text-align:left;font-weight:var(--font-weight-semibold);color:var(--color-text);
+      border-bottom:2px solid var(--color-border);white-space:nowrap;
+    }
+    .loan-table td {
+      padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--color-border-light);
+      color:var(--color-text-secondary);white-space:nowrap;
+    }
+    .loan-table tr:hover td { background:var(--color-bg-secondary); }
+    @media(max-width:640px) {
+      .loan-form { grid-template-columns:1fr; }
+      .loan-form .form-group.full-width { grid-column:span 1; }
+      .loan-results { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item active"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=calculators" class="breadcrumb__link">Calculators</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Loan Calculator</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="landmark"></i></div>
+        <h1 class="tool-header__title">Loan Calculator</h1>
+        <p class="tool-header__desc">Calculate monthly payments, total interest, and view a detailed amortization schedule for any loan.</p>
+      </section>
+
+      <section class="tool-workspace">
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="settings-2"></i> Loan Parameters</span>
+          </div>
+          <div class="tool-panel__body">
+            <div class="loan-form">
+              <div class="form-group">
+                <label class="form-label" for="loanAmount">Loan Amount ($)</label>
+                <input type="number" id="loanAmount" class="form-input" value="100000" min="0" step="1000">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="annualRate">Annual Interest Rate (%)</label>
+                <input type="number" id="annualRate" class="form-input" value="5" min="0" max="100" step="0.1">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="loanTerm">Loan Term</label>
+                <input type="number" id="loanTerm" class="form-input" value="30" min="1" max="50">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="termUnit">Term Unit</label>
+                <select id="termUnit" class="form-select">
+                  <option value="years">Years</option>
+                  <option value="months">Months</option>
+                </select>
+              </div>
+              <div class="form-group full-width">
+                <div class="btn-group">
+                  <button class="btn btn--primary" id="btnCalculate"><i data-lucide="calculator"></i> Calculate</button>
+                  <button class="btn btn--secondary" id="btnReset"><i data-lucide="rotate-ccw"></i> Reset</button>
+                  <button class="btn btn--secondary" id="btnDownload"><i data-lucide="download"></i> Download Report</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="resultsSection" style="display:none;">
+          <div class="loan-results">
+            <div class="loan-result-card">
+              <div class="label">Monthly Payment</div>
+              <div class="value" id="monthlyPayment">$0</div>
+            </div>
+            <div class="loan-result-card">
+              <div class="label">Total Interest</div>
+              <div class="value interest" id="totalInterest">$0</div>
+            </div>
+            <div class="loan-result-card">
+              <div class="label">Total Repayment</div>
+              <div class="value total" id="totalRepayment">$0</div>
+            </div>
+          </div>
+
+          <div class="loan-chart-area">
+            <canvas id="pieChart" class="loan-pie-canvas" width="200" height="200"></canvas>
+            <div class="loan-legend">
+              <div class="loan-legend-item">
+                <div class="loan-legend-color" style="background:#3B82F6;"></div>
+                <span>Principal: <strong id="legendPrincipal">$0</strong></span>
+              </div>
+              <div class="loan-legend-item">
+                <div class="loan-legend-color" style="background:#EF4444;"></div>
+                <span>Interest: <strong id="legendInterest">$0</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="loan-table-wrap">
+            <div class="tool-panel">
+              <div class="tool-panel__header">
+                <span class="tool-panel__title"><i data-lucide="table"></i> Amortization Schedule</span>
+              </div>
+              <div class="tool-panel__body" style="padding:0;">
+                <table class="loan-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Payment</th>
+                      <th>Principal</th>
+                      <th>Interest</th>
+                      <th>Balance</th>
+                    </tr>
+                  </thead>
+                  <tbody id="scheduleBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Enter Loan Details</div>
+              <div class="tool-step__desc">Input the loan amount, annual interest rate, and loan term (in years or months).</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Calculate</div>
+              <div class="tool-step__desc">Click Calculate to see the monthly payment, total interest, and total repayment amount.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Review Schedule</div>
+              <div class="tool-step__desc">View the full amortization schedule showing the breakdown of each monthly payment.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="standard.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Standard Calculator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Calculators</span>
+          </a>
+          <a href="scientific.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Scientific Calculator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Calculators</span>
+          </a>
+          <a href="bmi.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">BMI Calculator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Calculators</span>
+          </a>
+          <a href="age.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Age Calculator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Calculators</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+    (function() {
+      function formatCurrency(num) {
+        return '$' + num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      }
+
+      function calculate() {
+        const P = parseFloat(document.getElementById('loanAmount').value);
+        const annualRate = parseFloat(document.getElementById('annualRate').value);
+        const term = parseInt(document.getElementById('loanTerm').value);
+        const unit = document.getElementById('termUnit').value;
+
+        if (isNaN(P) || isNaN(annualRate) || isNaN(term) || P <= 0 || annualRate < 0 || term <= 0) {
+          alert('Please enter valid loan parameters.');
+          return;
+        }
+
+        const n = unit === 'years' ? term * 12 : term;
+        const r = annualRate / 100 / 12;
+
+        let monthlyPayment;
+        if (r === 0) {
+          monthlyPayment = P / n;
+        } else {
+          monthlyPayment = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+        }
+
+        const totalRepayment = monthlyPayment * n;
+        const totalInterest = totalRepayment - P;
+
+        document.getElementById('monthlyPayment').textContent = formatCurrency(monthlyPayment);
+        document.getElementById('totalInterest').textContent = formatCurrency(totalInterest);
+        document.getElementById('totalRepayment').textContent = formatCurrency(totalRepayment);
+        document.getElementById('legendPrincipal').textContent = formatCurrency(P);
+        document.getElementById('legendInterest').textContent = formatCurrency(totalInterest);
+
+        // Amortization schedule
+        let balance = P;
+        let rows = '';
+        for (let i = 1; i <= n; i++) {
+          const interestPayment = balance * r;
+          const principalPayment = monthlyPayment - interestPayment;
+          balance -= principalPayment;
+          if (balance < 0) balance = 0;
+          rows += '<tr>' +
+            '<td>' + i + '</td>' +
+            '<td>' + formatCurrency(monthlyPayment) + '</td>' +
+            '<td>' + formatCurrency(principalPayment) + '</td>' +
+            '<td>' + formatCurrency(interestPayment) + '</td>' +
+            '<td>' + formatCurrency(balance) + '</td>' +
+          '</tr>';
+        }
+        document.getElementById('scheduleBody').innerHTML = rows;
+
+        // Pie chart
+        drawPie(P, totalInterest);
+
+        document.getElementById('resultsSection').style.display = 'block';
+      }
+
+      function drawPie(principal, interest) {
+        const canvas = document.getElementById('pieChart');
+        const ctx = canvas.getContext('2d');
+        const total = principal + interest;
+        const cx = 100, cy = 100, radius = 80;
+
+        ctx.clearRect(0, 0, 200, 200);
+
+        // Principal slice
+        const principalAngle = (principal / total) * 2 * Math.PI;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, radius, -Math.PI / 2, -Math.PI / 2 + principalAngle);
+        ctx.closePath();
+        ctx.fillStyle = '#3B82F6';
+        ctx.fill();
+
+        // Interest slice
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, radius, -Math.PI / 2 + principalAngle, -Math.PI / 2 + 2 * Math.PI);
+        ctx.closePath();
+        ctx.fillStyle = '#EF4444';
+        ctx.fill();
+
+        // Center circle for donut effect
+        ctx.beginPath();
+        ctx.arc(cx, cy, 40, 0, 2 * Math.PI);
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-surface').trim() || '#fff';
+        ctx.fill();
+
+        // Center text
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-text').trim() || '#1F2937';
+        ctx.font = 'bold 14px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const pPercent = Math.round(principal / total * 100);
+        ctx.fillText(pPercent + '%', cx, cy);
+      }
+
+      document.getElementById('btnCalculate').addEventListener('click', calculate);
+
+      document.getElementById('btnReset').addEventListener('click', function() {
+        document.getElementById('loanAmount').value = '100000';
+        document.getElementById('annualRate').value = '5';
+        document.getElementById('loanTerm').value = '30';
+        document.getElementById('termUnit').value = 'years';
+        document.getElementById('resultsSection').style.display = 'none';
+      });
+
+      document.getElementById('btnDownload').addEventListener('click', function() {
+        const section = document.getElementById('resultsSection');
+        if (section.style.display === 'none') {
+          alert('Please calculate first.');
+          return;
+        }
+        let csv = 'Period,Payment,Principal,Interest,Balance\n';
+        const rows = document.querySelectorAll('#scheduleBody tr');
+        rows.forEach(function(row) {
+          const cells = row.querySelectorAll('td');
+          csv += Array.from(cells).map(function(c) { return c.textContent.trim(); }).join(',') + '\n';
+        });
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'loan-amortization.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+
+      // Auto-calculate on load
+      calculate();
+    })();
+  </script>
+</body>
+</html>

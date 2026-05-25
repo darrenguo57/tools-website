@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Picker & Converter - ToolBox</title>
+  <meta name="description" content="Free online color picker with HEX, RGB, HSL, CMYK conversion. WCAG contrast checker and palette history.">
+  <meta name="keywords" content="color picker, color converter, HEX to RGB, HSL, CMYK, WCAG contrast">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Color Picker & Converter - ToolBox">
+  <meta property="og:description" content="Free online color picker with conversion.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/testers/color-picker.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Color Picker & Converter",
+    "url": "https://toolbox.example.com/tools/testers/color-picker.html",
+    "description": "Free online color picker with conversion.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    .color-layout { display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6); }
+    .color-picker-area {
+      display:flex;flex-direction:column;gap:var(--space-4);
+    }
+    .color-spectrum {
+      width:100%;height:200px;border-radius:var(--radius-lg);cursor:crosshair;position:relative;
+      background:linear-gradient(to right, #fff, #f00);
+    }
+    .color-spectrum::after {
+      content:'';position:absolute;inset:0;border-radius:var(--radius-lg);
+      background:linear-gradient(to bottom, transparent, #000);
+    }
+    .color-spectrum-cursor {
+      position:absolute;width:16px;height:16px;border:2px solid #fff;border-radius:50%;
+      box-shadow:0 0 4px rgba(0,0,0,0.5);transform:translate(-50%,-50%);pointer-events:none;z-index:2;
+    }
+    .color-hue-bar {
+      width:100%;height:20px;border-radius:var(--radius-full);cursor:pointer;position:relative;
+      background:linear-gradient(to right,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00);
+    }
+    .color-hue-cursor {
+      position:absolute;top:-3px;width:8px;height:26px;background:#fff;border:2px solid var(--color-border);
+      border-radius:4px;transform:translateX(-50%);pointer-events:none;box-shadow:0 1px 4px rgba(0,0,0,0.3);
+    }
+    .color-preview-bar {
+      display:flex;gap:var(--space-3);align-items:center;
+    }
+    .color-preview-swatch {
+      width:64px;height:64px;border-radius:var(--radius-lg);border:2px solid var(--color-border);
+      flex-shrink:0;
+    }
+    .color-preview-hex {
+      font-family:var(--font-family-mono);font-size:var(--font-size-xl);font-weight:var(--font-weight-bold);
+      color:var(--color-text);
+    }
+    .color-inputs { display:flex;flex-direction:column;gap:var(--space-3); }
+    .color-input-row {
+      display:flex;align-items:center;gap:var(--space-3);
+    }
+    .color-input-label {
+      width:50px;font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);
+      color:var(--color-text-tertiary);flex-shrink:0;
+    }
+    .color-input-field {
+      flex:1;padding:var(--space-2) var(--space-3);border:1px solid var(--color-border);
+      border-radius:var(--radius-md);background:var(--color-surface);color:var(--color-text);
+      font-family:var(--font-family-mono);font-size:var(--font-size-sm);outline:none;
+    }
+    .color-input-field:focus { border-color:var(--color-border-focus);box-shadow:0 0 0 3px rgba(59,130,246,0.15); }
+    .color-copy-btn {
+      width:32px;height:32px;border-radius:var(--radius-md);border:none;
+      background:var(--color-bg-tertiary);color:var(--color-text-secondary);cursor:pointer;
+      display:flex;align-items:center;justify-content:center;transition:all var(--transition-fast);flex-shrink:0;
+    }
+    .color-copy-btn:hover { background:var(--color-primary-light);color:var(--color-primary); }
+    .color-palette {
+      margin-top:var(--space-4);
+    }
+    .color-palette h3 { font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);color:var(--color-text);margin-bottom:var(--space-2); }
+    .color-palette-swatches { display:flex;gap:var(--space-2);flex-wrap:wrap; }
+    .color-palette-swatch {
+      width:32px;height:32px;border-radius:var(--radius-md);border:2px solid var(--color-border);
+      cursor:pointer;transition:transform var(--transition-fast);
+    }
+    .color-palette-swatch:hover { transform:scale(1.15); }
+    .contrast-section {
+      margin-top:var(--space-6);
+    }
+    .contrast-section h3 { font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);color:var(--color-text);margin-bottom:var(--space-3); }
+    .contrast-row { display:flex;gap:var(--space-3);align-items:center;margin-bottom:var(--space-3); }
+    .contrast-swatch {
+      width:48px;height:48px;border-radius:var(--radius-md);border:2px solid var(--color-border);flex-shrink:0;
+    }
+    .contrast-result {
+      padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);
+    }
+    .contrast-result.pass { background:var(--color-success-light);color:var(--color-success); }
+    .contrast-result.fail { background:var(--color-error-light);color:var(--color-error); }
+    @media(max-width:768px) {
+      .color-layout { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item active"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=testing" class="breadcrumb__link">Testing</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Color Picker & Converter</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="pipette"></i></div>
+        <h1 class="tool-header__title">Color Picker & Converter</h1>
+        <p class="tool-header__desc">Pick colors, convert between HEX, RGB, HSL, and CMYK formats. Check WCAG contrast ratios for accessibility.</p>
+      </section>
+
+      <section class="tool-workspace">
+        <div class="color-layout">
+          <div class="color-picker-area">
+            <div class="color-spectrum" id="spectrum">
+              <div class="color-spectrum-cursor" id="spectrumCursor"></div>
+            </div>
+            <div class="color-hue-bar" id="hueBar">
+              <div class="color-hue-cursor" id="hueCursor"></div>
+            </div>
+            <div class="color-preview-bar">
+              <div class="color-preview-swatch" id="previewSwatch"></div>
+              <div>
+                <div class="color-preview-hex" id="previewHex">#3B82F6</div>
+                <div style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);margin-top:var(--space-1);" id="previewRgb">rgb(59, 130, 246)</div>
+              </div>
+            </div>
+
+            <div class="btn-group">
+              <button class="btn btn--secondary" id="btnRandom"><i data-lucide="shuffle"></i> Random Color</button>
+            </div>
+
+            <div class="color-palette">
+              <h3>Recent Colors</h3>
+              <div class="color-palette-swatches" id="paletteSwatches">
+                <div style="color:var(--color-text-tertiary);font-size:var(--font-size-xs);">No recent colors</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="tool-panel">
+              <div class="tool-panel__header">
+                <span class="tool-panel__title"><i data-lucide="repeat"></i> Color Values</span>
+              </div>
+              <div class="tool-panel__body">
+                <div class="color-inputs">
+                  <div class="color-input-row">
+                    <span class="color-input-label">HEX</span>
+                    <input type="text" id="hexInput" class="color-input-field" value="#3B82F6">
+                    <button class="color-copy-btn" data-copy="hex"><i data-lucide="copy" style="width:14px;height:14px;"></i></button>
+                  </div>
+                  <div class="color-input-row">
+                    <span class="color-input-label">RGB</span>
+                    <input type="text" id="rgbInput" class="color-input-field" value="rgb(59, 130, 246)">
+                    <button class="color-copy-btn" data-copy="rgb"><i data-lucide="copy" style="width:14px;height:14px;"></i></button>
+                  </div>
+                  <div class="color-input-row">
+                    <span class="color-input-label">HSL</span>
+                    <input type="text" id="hslInput" class="color-input-field" value="hsl(217, 91%, 60%)">
+                    <button class="color-copy-btn" data-copy="hsl"><i data-lucide="copy" style="width:14px;height:14px;"></i></button>
+                  </div>
+                  <div class="color-input-row">
+                    <span class="color-input-label">CMYK</span>
+                    <input type="text" id="cmykInput" class="color-input-field" value="cmyk(76%, 47%, 0%, 4%)">
+                    <button class="color-copy-btn" data-copy="cmyk"><i data-lucide="copy" style="width:14px;height:14px;"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="contrast-section">
+              <div class="tool-panel">
+                <div class="tool-panel__header">
+                  <span class="tool-panel__title"><i data-lucide="accessibility"></i> WCAG Contrast Checker</span>
+                </div>
+                <div class="tool-panel__body">
+                  <div class="contrast-row">
+                    <span style="font-size:var(--font-size-sm);color:var(--color-text-secondary);min-width:80px;">Foreground</span>
+                    <input type="color" id="fgColor" value="#3B82F6" style="width:48px;height:36px;border:1px solid var(--color-border);border-radius:var(--radius-md);cursor:pointer;padding:2px;">
+                    <input type="text" id="fgHex" class="color-input-field" value="#3B82F6" style="flex:1;">
+                  </div>
+                  <div class="contrast-row">
+                    <span style="font-size:var(--font-size-sm);color:var(--color-text-secondary);min-width:80px;">Background</span>
+                    <input type="color" id="bgColor" value="#FFFFFF" style="width:48px;height:36px;border:1px solid var(--color-border);border-radius:var(--radius-md);cursor:pointer;padding:2px;">
+                    <input type="text" id="bgHex" class="color-input-field" value="#FFFFFF" style="flex:1;">
+                  </div>
+                  <div style="display:flex;gap:var(--space-3);margin-top:var(--space-3);flex-wrap:wrap;">
+                    <div class="contrast-result" id="contrastAA">AA: -</div>
+                    <div class="contrast-result" id="contrastAAA">AAA: -</div>
+                    <div class="contrast-result" id="contrastAALarge">AA Large: -</div>
+                  </div>
+                  <div style="margin-top:var(--space-3);padding:var(--space-3);border-radius:var(--radius-md);text-align:center;font-weight:var(--font-weight-semibold);" id="contrastPreview">
+                    Sample Text
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Pick a Color</div>
+              <div class="tool-step__desc">Click on the spectrum to select saturation/brightness. Use the hue bar to change the hue.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">View Conversions</div>
+              <div class="tool-step__desc">See the color in HEX, RGB, HSL, and CMYK formats. Click copy to copy any value.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Check Contrast</div>
+              <div class="tool-step__desc">Set foreground and background colors to check WCAG accessibility contrast ratios.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="css-gradient.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">CSS Gradient Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Testing</span>
+          </a>
+          <a href="regex.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Regex Tester</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Testing</span>
+          </a>
+          <a href="performance.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Performance Test</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Testing</span>
+          </a>
+          <a href="../image-tools/color-palette.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Color Palette</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Image Tools</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+    (function() {
+      var currentHue = 217, currentSat = 0.76, currentVal = 0.96;
+      var recentColors = [];
+      var isDraggingSpectrum = false, isDraggingHue = false;
+
+      // Color conversion functions
+      function hsvToRgb(h, s, v) {
+        var r, g, b;
+        var i = Math.floor(h / 60) % 6;
+        var f = h / 60 - Math.floor(h / 60);
+        var p = v * (1 - s);
+        var q = v * (1 - f * s);
+        var t = v * (1 - (1 - f) * s);
+        switch (i) {
+          case 0: r = v; g = t; b = p; break;
+          case 1: r = q; g = v; b = p; break;
+          case 2: r = p; g = v; b = t; break;
+          case 3: r = p; g = q; b = v; break;
+          case 4: r = t; g = p; b = v; break;
+          case 5: r = v; g = p; b = q; break;
+        }
+        return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+      }
+
+      function rgbToHsl(r, g, b) {
+        r /= 255; g /= 255; b /= 255;
+        var max = Math.max(r, g, b), min = Math.min(r, g, b);
+        var h, s, l = (max + min) / 2;
+        if (max === min) { h = s = 0; }
+        else {
+          var d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          switch (max) {
+            case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+            case g: h = ((b - r) / d + 2) / 6; break;
+            case b: h = ((r - g) / d + 4) / 6; break;
+          }
+        }
+        return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
+      }
+
+      function rgbToCmyk(r, g, b) {
+        if (r === 0 && g === 0 && b === 0) return [0, 0, 0, 100];
+        var c = 1 - r / 255, m = 1 - g / 255, y = 1 - b / 255;
+        var k = Math.min(c, m, y);
+        c = Math.round((c - k) / (1 - k) * 100);
+        m = Math.round((m - k) / (1 - k) * 100);
+        y = Math.round((y - k) / (1 - k) * 100);
+        k = Math.round(k * 100);
+        return [c, m, y, k];
+      }
+
+      function rgbToHex(r, g, b) {
+        return '#' + [r, g, b].map(function(x) { return x.toString(16).padStart(2, '0'); }).join('');
+      }
+
+      function hexToRgb(hex) {
+        hex = hex.replace('#', '');
+        if (hex.length === 3) hex = hex.split('').map(function(c) { return c + c; }).join('');
+        var r = parseInt(hex.substr(0, 2), 16);
+        var g = parseInt(hex.substr(2, 2), 16);
+        var b = parseInt(hex.substr(4, 2), 16);
+        return [r, g, b];
+      }
+
+      function rgbToHsv(r, g, b) {
+        r /= 255; g /= 255; b /= 255;
+        var max = Math.max(r, g, b), min = Math.min(r, g, b);
+        var h, s, v = max;
+        var d = max - min;
+        s = max === 0 ? 0 : d / max;
+        if (max === min) { h = 0; }
+        else {
+          switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+          }
+          h /= 6;
+        }
+        return [h * 360, s, v];
+      }
+
+      function updateColor() {
+        var rgb = hsvToRgb(currentHue, currentSat, currentVal);
+        var hex = rgbToHex(rgb[0], rgb[1], rgb[2]);
+        var hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+        var cmyk = rgbToCmyk(rgb[0], rgb[1], rgb[2]);
+
+        document.getElementById('previewSwatch').style.background = hex;
+        document.getElementById('previewHex').textContent = hex.toUpperCase();
+        document.getElementById('previewRgb').textContent = 'rgb(' + rgb.join(', ') + ')';
+
+        document.getElementById('hexInput').value = hex.toUpperCase();
+        document.getElementById('rgbInput').value = 'rgb(' + rgb.join(', ') + ')';
+        document.getElementById('hslInput').value = 'hsl(' + hsl[0] + ', ' + hsl[1] + '%, ' + hsl[2] + '%)';
+        document.getElementById('cmykInput').value = 'cmyk(' + cmyk.join('%, ') + '%)';
+
+        // Update spectrum background
+        var pureRgb = hsvToRgb(currentHue, 1, 1);
+        var pureHex = rgbToHex(pureRgb[0], pureRgb[1], pureRgb[2]);
+        document.getElementById('spectrum').style.background =
+          'linear-gradient(to right, #fff, ' + pureHex + ')';
+
+        // Update cursors
+        var spectrumEl = document.getElementById('spectrum');
+        var hueBarEl = document.getElementById('hueBar');
+        var sCursor = document.getElementById('spectrumCursor');
+        var hCursor = document.getElementById('hueCursor');
+
+        sCursor.style.left = (currentSat * 100) + '%';
+        sCursor.style.top = ((1 - currentVal) * 100) + '%';
+        sCursor.style.background = hex;
+
+        hCursor.style.left = (currentHue / 360 * 100) + '%';
+
+        // Update contrast checker foreground
+        document.getElementById('fgColor').value = hex;
+        document.getElementById('fgHex').value = hex.toUpperCase();
+        checkContrast();
+      }
+
+      // Spectrum interaction
+      var spectrumEl = document.getElementById('spectrum');
+      function handleSpectrum(e) {
+        var rect = spectrumEl.getBoundingClientRect();
+        var x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        var y = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+        currentSat = x;
+        currentVal = 1 - y;
+        updateColor();
+      }
+      spectrumEl.addEventListener('mousedown', function(e) { isDraggingSpectrum = true; handleSpectrum(e); });
+      document.addEventListener('mousemove', function(e) { if (isDraggingSpectrum) handleSpectrum(e); });
+      document.addEventListener('mouseup', function() {
+        if (isDraggingSpectrum) { isDraggingSpectrum = false; addToPalette(); }
+      });
+
+      // Hue bar interaction
+      var hueBarEl = document.getElementById('hueBar');
+      function handleHue(e) {
+        var rect = hueBarEl.getBoundingClientRect();
+        var x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        currentHue = x * 360;
+        updateColor();
+      }
+      hueBarEl.addEventListener('mousedown', function(e) { isDraggingHue = true; handleHue(e); });
+      document.addEventListener('mousemove', function(e) { if (isDraggingHue) handleHue(e); });
+      document.addEventListener('mouseup', function() {
+        if (isDraggingHue) { isDraggingHue = false; addToPalette(); }
+      });
+
+      // Touch support
+      spectrumEl.addEventListener('touchstart', function(e) { e.preventDefault(); isDraggingSpectrum = true; handleSpectrum(e.touches[0]); });
+      spectrumEl.addEventListener('touchmove', function(e) { e.preventDefault(); if (isDraggingSpectrum) handleSpectrum(e.touches[0]); });
+      spectrumEl.addEventListener('touchend', function() { isDraggingSpectrum = false; addToPalette(); });
+      hueBarEl.addEventListener('touchstart', function(e) { e.preventDefault(); isDraggingHue = true; handleHue(e.touches[0]); });
+      hueBarEl.addEventListener('touchmove', function(e) { e.preventDefault(); if (isDraggingHue) handleHue(e.touches[0]); });
+      hueBarEl.addEventListener('touchend', function() { isDraggingHue = false; addToPalette(); });
+
+      // HEX input
+      document.getElementById('hexInput').addEventListener('change', function() {
+        var val = this.value.trim();
+        if (!val.startsWith('#')) val = '#' + val;
+        if (/^#[0-9a-fA-F]{3,6}$/.test(val)) {
+          var rgb = hexToRgb(val);
+          var hsv = rgbToHsv(rgb[0], rgb[1], rgb[2]);
+          currentHue = hsv[0]; currentSat = hsv[1]; currentVal = hsv[2];
+          updateColor();
+          addToPalette();
+        }
+      });
+
+      // Copy buttons
+      document.querySelectorAll('.color-copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var type = this.dataset.copy;
+          var input = document.getElementById(type + 'Input');
+          navigator.clipboard.writeText(input.value);
+          this.classList.add('tool-action-btn--success');
+          var icon = this.querySelector('i');
+          icon.setAttribute('data-lucide', 'check');
+          lucide.createIcons();
+          var self = this;
+          setTimeout(function() {
+            self.classList.remove('tool-action-btn--success');
+            icon.setAttribute('data-lucide', 'copy');
+            lucide.createIcons();
+          }, 1500);
+        });
+      });
+
+      // Random
+      document.getElementById('btnRandom').addEventListener('click', function() {
+        currentHue = Math.random() * 360;
+        currentSat = 0.3 + Math.random() * 0.7;
+        currentVal = 0.4 + Math.random() * 0.6;
+        updateColor();
+        addToPalette();
+      });
+
+      // Palette
+      function addToPalette() {
+        var hex = document.getElementById('hexInput').value;
+        if (recentColors[0] === hex) return;
+        recentColors.unshift(hex);
+        if (recentColors.length > 20) recentColors.pop();
+        renderPalette();
+      }
+
+      function renderPalette() {
+        var container = document.getElementById('paletteSwatches');
+        if (recentColors.length === 0) {
+          container.innerHTML = '<div style="color:var(--color-text-tertiary);font-size:var(--font-size-xs);">No recent colors</div>';
+          return;
+        }
+        container.innerHTML = recentColors.map(function(c) {
+          return '<div class="color-palette-swatch" style="background:' + c + ';" title="' + c + '" data-color="' + c + '"></div>';
+        }).join('');
+        container.querySelectorAll('.color-palette-swatch').forEach(function(s) {
+          s.addEventListener('click', function() {
+            var rgb = hexToRgb(this.dataset.color);
+            var hsv = rgbToHsv(rgb[0], rgb[1], rgb[2]);
+            currentHue = hsv[0]; currentSat = hsv[1]; currentVal = hsv[2];
+            updateColor();
+          });
+        });
+      }
+
+      // WCAG Contrast
+      function relativeLuminance(r, g, b) {
+        var rs = r / 255, gs = g / 255, bs = b / 255;
+        rs = rs <= 0.03928 ? rs / 12.92 : Math.pow((rs + 0.055) / 1.055, 2.4);
+        gs = gs <= 0.03928 ? gs / 12.92 : Math.pow((gs + 0.055) / 1.055, 2.4);
+        bs = bs <= 0.03928 ? bs / 12.92 : Math.pow((bs + 0.055) / 1.055, 2.4);
+        return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+      }
+
+      function contrastRatio(l1, l2) {
+        var lighter = Math.max(l1, l2), darker = Math.min(l1, l2);
+        return (lighter + 0.05) / (darker + 0.05);
+      }
+
+      function checkContrast() {
+        var fgHex = document.getElementById('fgHex').value.trim();
+        var bgHex = document.getElementById('bgHex').value.trim();
+        if (!/^#[0-9a-fA-F]{6}$/.test(fgHex) || !/^#[0-9a-fA-F]{6}$/.test(bgHex)) return;
+
+        var fg = hexToRgb(fgHex), bg = hexToRgb(bgHex);
+        var fgL = relativeLuminance(fg[0], fg[1], fg[2]);
+        var bgL = relativeLuminance(bg[0], bg[1], bg[2]);
+        var ratio = contrastRatio(fgL, bgL);
+
+        function setResult(id, threshold) {
+          var el = document.getElementById(id);
+          var pass = ratio >= threshold;
+          el.textContent = id.replace('contrast', '') + ': ' + ratio.toFixed(2) + ':1 ' + (pass ? 'Pass' : 'Fail');
+          el.className = 'contrast-result ' + (pass ? 'pass' : 'fail');
+        }
+        setResult('contrastAA', 4.5);
+        setResult('contrastAAA', 7);
+        setResult('contrastAALarge', 3);
+
+        var preview = document.getElementById('contrastPreview');
+        preview.style.background = bgHex;
+        preview.style.color = fgHex;
+      }
+
+      document.getElementById('fgColor').addEventListener('input', function() {
+        document.getElementById('fgHex').value = this.value.toUpperCase();
+        checkContrast();
+      });
+      document.getElementById('bgColor').addEventListener('input', function() {
+        document.getElementById('bgHex').value = this.value.toUpperCase();
+        checkContrast();
+      });
+      document.getElementById('fgHex').addEventListener('change', function() {
+        var val = this.value.trim();
+        if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+          document.getElementById('fgColor').value = val;
+          checkContrast();
+        }
+      });
+      document.getElementById('bgHex').addEventListener('change', function() {
+        var val = this.value.trim();
+        if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+          document.getElementById('bgColor').value = val;
+          checkContrast();
+        }
+      });
+
+      // Init
+      updateColor();
+    })();
+  </script>
+</body>
+</html>

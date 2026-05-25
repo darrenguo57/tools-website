@@ -1,0 +1,87 @@
+{
+  "site": {
+    "title": "ToolBox",
+    "description": "A collection of useful online tools for developers and designers."
+  },
+  "nav": {
+    "home": "Home",
+    "allTools": "All Tools",
+    "blog": "Blog",
+    "search": "Search"
+  },
+  "categories": {
+    "all": "All",
+    "converters": "Converters",
+    "calculators": "Calculators",
+    "imageTools": "Image Tools",
+    "generators": "Generators",
+    "formatters": "Formatters",
+    "crypto": "Crypto",
+    "charts": "Charts",
+    "testers": "Testers"
+  },
+  "buttons": {
+    "copy": "Copy",
+    "download": "Download",
+    "clear": "Clear",
+    "generate": "Generate",
+    "convert": "Convert",
+    "format": "Format",
+    "reset": "Reset",
+    "submit": "Submit",
+    "close": "Close",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "upload": "Upload",
+    "selectFile": "Select File",
+    "paste": "Paste",
+    "swap": "Swap"
+  },
+  "toast": {
+    "copied": "Copied to clipboard",
+    "downloadSuccess": "Download successful",
+    "inputRequired": "Please enter content",
+    "error": "An error occurred",
+    "success": "Operation successful",
+    "cleared": "Content cleared",
+    "generated": "Generated successfully",
+    "converted": "Converted successfully",
+    "formatted": "Formatted successfully"
+  },
+  "search": {
+    "placeholder": "Search tools...",
+    "noResults": "No tools found",
+    "results": "results found"
+  },
+  "theme": {
+    "dark": "Dark Mode",
+    "light": "Light Mode",
+    "toggle": "Toggle Theme"
+  },
+  "breadcrumb": {
+    "home": "Home",
+    "tools": "Tools"
+  },
+  "footer": {
+    "copyright": "ToolBox. All rights reserved.",
+    "builtWith": "Built with"
+  },
+  "common": {
+    "loading": "Loading...",
+    "noData": "No data",
+    "language": "Language",
+    "version": "Version",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "input": "Input",
+    "output": "Output",
+    "options": "Options",
+    "settings": "Settings",
+    "preview": "Preview",
+    "source": "Source",
+    "result": "Result",
+    "details": "Details",
+    "help": "Help"
+  }
+}

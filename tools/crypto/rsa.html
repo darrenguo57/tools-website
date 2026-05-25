@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSA Encrypt/Decrypt - ToolBox</title>
+    <meta name="description" content="Generate RSA key pairs and encrypt/decrypt data online. Supports 512, 1024, 2048-bit keys.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    <style>
+        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .workspace-grid .full-width { grid-column: 1 / -1; }
+        .textarea-wrap { position: relative; }
+        .textarea-wrap textarea {
+            width: 100%; min-height: 140px; padding: 1rem; border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.5rem; font-family: 'Courier New', monospace; font-size: 13px;
+            resize: vertical; background: var(--bg, #fff); color: var(--text, #1e293b);
+            box-sizing: border-box;
+        }
+        .textarea-wrap textarea:focus { outline: none; border-color: var(--primary, #3b82f6); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .btn {
+            padding: 0.5rem 1.25rem; border-radius: 0.5rem; border: none; cursor: pointer;
+            font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: var(--primary, #3b82f6); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover, #2563eb); }
+        .btn-secondary { background: var(--bg-secondary, #f1f5f9); color: var(--text, #1e293b); border: 1px solid var(--border, #e2e8f0); }
+        .btn-secondary:hover { background: var(--bg-tertiary, #e2e8f0); }
+        .btn-success { background: #10b981; color: #fff; }
+        .btn-success:hover { background: #059669; }
+        .btn-danger { background: #ef4444; color: #fff; }
+        .btn-danger:hover { background: #dc2626; }
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem; padding: 0.75rem 1.5rem;
+            background: #1e293b; color: #fff; border-radius: 0.5rem; font-size: 14px;
+            transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 9999;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .tabs { display: flex; gap: 0; margin-bottom: 1rem; border-bottom: 2px solid var(--border, #e2e8f0); }
+        .tab-btn {
+            padding: 0.6rem 1.5rem; border: none; background: none; cursor: pointer;
+            font-size: 14px; font-weight: 500; color: var(--text-muted, #64748b);
+            border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s;
+        }
+        .tab-btn.active { color: var(--primary, #3b82f6); border-bottom-color: var(--primary, #3b82f6); }
+        .tab-btn:hover { color: var(--text, #1e293b); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .option-group { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 0.75rem; }
+        .option-group label { font-weight: 600; font-size: 13px; color: var(--text-muted, #64748b); }
+        .option-group select, .option-group input {
+            padding: 0.5rem 0.75rem; border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.375rem; font-size: 14px; background: var(--bg, #fff);
+            color: var(--text, #1e293b);
+        }
+        .option-group select:focus, .option-group input:focus {
+            outline: none; border-color: var(--primary, #3b82f6);
+        }
+        .key-output {
+            background: var(--bg-secondary, #f8fafc); border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.5rem; padding: 0.75rem; margin-top: 0.5rem; position: relative;
+        }
+        .key-output-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;
+        }
+        .key-output-label { font-weight: 600; font-size: 13px; color: var(--text-muted, #64748b); }
+        .key-output pre {
+            font-family: 'Courier New', monospace; font-size: 12px; word-break: break-all;
+            white-space: pre-wrap; max-height: 120px; overflow-y: auto; color: var(--text, #1e293b);
+        }
+        .copy-btn-sm {
+            background: none; border: none; cursor: pointer; color: var(--primary, #3b82f6);
+            padding: 0.2rem; border-radius: 0.25rem; display: flex; align-items: center;
+        }
+        .copy-btn-sm:hover { background: var(--bg-tertiary, #e2e8f0); }
+        .char-count { font-size: 12px; color: var(--text-muted, #94a3b8); text-align: right; margin-top: 0.25rem; }
+        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo"><i data-lucide="key-round" style="width:28px;height:28px"></i> ToolBox</a>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+            </div>
+            <div class="header-actions">
+                <button class="lang-btn" onclick="I18n.setLang(I18n.currentLang==='en'?'zh':'en')">EN</button>
+                <button class="theme-btn" onclick="document.body.classList.toggle('dark')"><i data-lucide="sun"></i></button>
+            </div>
+        </div>
+    </header>
+    <div class="breadcrumb"><div class="container"><a href="../../index.html">Home</a> / <a href="../../index.html#crypto">Encryption</a> / <span>RSA Encrypt/Decrypt</span></div></div>
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="key-round"></i></div>
+                    <h1>RSA Encrypt / Decrypt</h1>
+                    <p>Generate RSA key pairs and perform encryption/decryption. Supports 512, 1024, and 2048-bit key lengths.</p>
+                </div>
+                <div class="tool-workspace">
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="switchTab('generate')"><i data-lucide="key" style="width:14px;height:14px"></i> Generate Key Pair</button>
+                        <button class="tab-btn" onclick="switchTab('crypt')"><i data-lucide="lock" style="width:14px;height:14px"></i> Encrypt / Decrypt</button>
+                    </div>
+
+                    <!-- Tab 1: Generate Key Pair -->
+                    <div class="tab-content active" id="tab-generate">
+                        <div class="option-group" style="max-width:300px">
+                            <label for="keyLength"><i data-lucide="ruler" style="width:14px;height:14px"></i> Key Length</label>
+                            <select id="keyLength">
+                                <option value="512">512 bits</option>
+                                <option value="1024">1024 bits</option>
+                                <option value="2048" selected>2048 bits</option>
+                            </select>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="generateKeyPair()"><i data-lucide="sparkles" style="width:16px;height:16px"></i> Generate Keys</button>
+                            <button class="btn btn-danger" onclick="clearKeys()"><i data-lucide="trash-2" style="width:16px;height:16px"></i> Clear</button>
+                        </div>
+                        <div class="key-output">
+                            <div class="key-output-header">
+                                <span class="key-output-label">Public Key</span>
+                                <button class="copy-btn-sm" onclick="copyText('publicKey')" title="Copy"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i></button>
+                            </div>
+                            <pre id="publicKey">-</pre>
+                        </div>
+                        <div class="key-output" style="margin-top:0.75rem">
+                            <div class="key-output-header">
+                                <span class="key-output-label">Private Key</span>
+                                <button class="copy-btn-sm" onclick="copyText('privateKey')" title="Copy"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i></button>
+                            </div>
+                            <pre id="privateKey">-</pre>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Encrypt / Decrypt -->
+                    <div class="tab-content" id="tab-crypt">
+                        <div class="workspace-grid">
+                            <div>
+                                <div class="textarea-label"><i data-lucide="key" style="width:16px;height:16px"></i> Key (Public Key for Encrypt / Private Key for Decrypt)</div>
+                                <div class="textarea-wrap">
+                                    <textarea id="cryptKey" placeholder="Paste your public key or private key here..."></textarea>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="textarea-label"><i data-lucide="file-text" style="width:16px;height:16px"></i> Input (Plaintext / Ciphertext)</div>
+                                <div class="textarea-wrap">
+                                    <textarea id="cryptInput" placeholder="Enter plaintext to encrypt or ciphertext to decrypt..."></textarea>
+                                </div>
+                                <div class="char-count"><span id="cryptInputCount">0</span> characters</div>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="rsaEncrypt()"><i data-lucide="lock" style="width:16px;height:16px"></i> Encrypt</button>
+                            <button class="btn btn-success" onclick="rsaDecrypt()"><i data-lucide="unlock" style="width:16px;height:16px"></i> Decrypt</button>
+                            <button class="btn btn-secondary" onclick="copyCryptOutput()"><i data-lucide="copy" style="width:16px;height:16px"></i> Copy</button>
+                            <button class="btn btn-danger" onclick="clearCrypt()"><i data-lucide="trash-2" style="width:16px;height:16px"></i> Clear</button>
+                        </div>
+                        <div>
+                            <div class="textarea-label"><i data-lucide="file-output" style="width:16px;height:16px"></i> Output</div>
+                            <div class="textarea-wrap">
+                                <textarea id="cryptOutput" placeholder="Result will appear here..." readonly></textarea>
+                            </div>
+                            <div class="char-count"><span id="cryptOutputCount">0</span> characters</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ad-slot" style="margin-top:2rem"><div class="ad-placeholder">Advertisement</div></div>
+            </div>
+            <aside class="tool-sidebar">
+                <div class="ad-slot"><div class="ad-placeholder">Advertisement</div></div>
+            </aside>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><p>&copy; 2024 ToolBox. All rights reserved.</p></div></footer>
+    <div class="toast" id="toast"></div>
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsencrypt@3.3.2/bin/jsencrypt.min.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script>
+    lucide.createIcons();
+
+    const cryptInput = document.getElementById('cryptInput');
+    const cryptInputCount = document.getElementById('cryptInputCount');
+    const cryptOutput = document.getElementById('cryptOutput');
+    const cryptOutputCount = document.getElementById('cryptOutputCount');
+
+    cryptInput.addEventListener('input', () => {
+        cryptInputCount.textContent = cryptInput.value.length;
+    });
+
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        if (tab === 'generate') {
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            document.getElementById('tab-generate').classList.add('active');
+        } else {
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            document.getElementById('tab-crypt').classList.add('active');
+        }
+    }
+
+    function generateKeyPair() {
+        const bitLength = parseInt(document.getElementById('keyLength').value);
+        showToast('Generating ' + bitLength + '-bit key pair...');
+        setTimeout(() => {
+            try {
+                const crypt = new JSEncrypt({ default_key_size: bitLength });
+                crypt.getKey();
+                document.getElementById('publicKey').textContent = crypt.getPublicKey();
+                document.getElementById('privateKey').textContent = crypt.getPrivateKey();
+                showToast('Key pair generated successfully');
+            } catch (e) {
+                showToast('Error generating key pair: ' + e.message);
+            }
+        }, 50);
+    }
+
+    function clearKeys() {
+        document.getElementById('publicKey').textContent = '-';
+        document.getElementById('privateKey').textContent = '-';
+    }
+
+    function copyText(id) {
+        const text = document.getElementById(id).textContent;
+        if (!text || text === '-') { showToast('No key to copy'); return; }
+        navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard'));
+    }
+
+    function rsaEncrypt() {
+        const key = document.getElementById('cryptKey').value.trim();
+        const input = cryptInput.value;
+        if (!key) { showToast('Please paste a public key'); return; }
+        if (!input) { showToast('Please enter plaintext to encrypt'); return; }
+
+        try {
+            const crypt = new JSEncrypt();
+            crypt.setPublicKey(key);
+            const encrypted = crypt.encrypt(input);
+            if (encrypted === false) {
+                showToast('Encryption failed - check your public key');
+                cryptOutput.value = '';
+                cryptOutputCount.textContent = '0';
+                return;
+            }
+            cryptOutput.value = encrypted;
+            cryptOutputCount.textContent = cryptOutput.value.length;
+            showToast('Encrypted successfully');
+        } catch (e) {
+            cryptOutput.value = '';
+            cryptOutputCount.textContent = '0';
+            showToast('Encryption error: ' + e.message);
+        }
+    }
+
+    function rsaDecrypt() {
+        const key = document.getElementById('cryptKey').value.trim();
+        const input = cryptInput.value.trim();
+        if (!key) { showToast('Please paste a private key'); return; }
+        if (!input) { showToast('Please enter ciphertext to decrypt'); return; }
+
+        try {
+            const crypt = new JSEncrypt();
+            crypt.setPrivateKey(key);
+            const decrypted = crypt.decrypt(input);
+            if (decrypted === false || decrypted === null) {
+                showToast('Decryption failed - check your private key or ciphertext');
+                cryptOutput.value = '';
+                cryptOutputCount.textContent = '0';
+                return;
+            }
+            cryptOutput.value = decrypted;
+            cryptOutputCount.textContent = cryptOutput.value.length;
+            showToast('Decrypted successfully');
+        } catch (e) {
+            cryptOutput.value = '';
+            cryptOutputCount.textContent = '0';
+            showToast('Decryption error: ' + e.message);
+        }
+    }
+
+    function copyCryptOutput() {
+        if (!cryptOutput.value) { showToast('Nothing to copy'); return; }
+        navigator.clipboard.writeText(cryptOutput.value).then(() => showToast('Copied to clipboard'));
+    }
+
+    function clearCrypt() {
+        cryptInput.value = '';
+        cryptOutput.value = '';
+        document.getElementById('cryptKey').value = '';
+        cryptInputCount.textContent = '0';
+        cryptOutputCount.textContent = '0';
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+    </script>
+</body>
+</html>

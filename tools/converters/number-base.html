@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Base Converter - ToolBox</title>
+    <meta name="description" content="Convert numbers between binary, octal, decimal, and hexadecimal. Supports real-time conversion.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    <style>
+        .converter-card {
+            background: var(--bg, #fff); border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.75rem; padding: 1.5rem;
+        }
+        .input-row {
+            display: flex; gap: 1rem; align-items: flex-end; margin-bottom: 1.5rem; flex-wrap: wrap;
+        }
+        .input-group { flex: 1; min-width: 200px; }
+        .input-group label {
+            display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 14px;
+        }
+        .input-group input, .input-group select {
+            width: 100%; padding: 0.6rem 0.75rem; border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.5rem; font-size: 16px; background: var(--bg, #fff);
+            color: var(--text, #1e293b); box-sizing: border-box;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: none; border-color: var(--primary, #3b82f6);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+        }
+        .results-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+        }
+        .result-item {
+            background: var(--bg-secondary, #f8fafc); border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.5rem; padding: 1rem;
+        }
+        .result-item .result-label {
+            font-size: 12px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.05em; color: var(--text-muted, #94a3b8); margin-bottom: 0.5rem;
+        }
+        .result-item .result-value {
+            font-family: 'Courier New', monospace; font-size: 16px; word-break: break-all;
+            color: var(--text, #1e293b); min-height: 24px;
+        }
+        .result-item .copy-btn {
+            float: right; background: none; border: none; cursor: pointer;
+            color: var(--text-muted, #94a3b8); padding: 2px; transition: color 0.2s;
+        }
+        .result-item .copy-btn:hover { color: var(--primary, #3b82f6); }
+        .error-msg { color: #ef4444; font-size: 13px; margin-top: 0.5rem; display: none; }
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem; padding: 0.75rem 1.5rem;
+            background: #1e293b; color: #fff; border-radius: 0.5rem; font-size: 14px;
+            transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 9999;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        @media (max-width: 768px) { .results-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo"><i data-lucide="hash" style="width:28px;height:28px"></i> ToolBox</a>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+            </div>
+            <div class="header-actions">
+                <button class="lang-btn" onclick="I18n.setLang(I18n.currentLang==='en'?'zh':'en')">EN</button>
+                <button class="theme-btn" onclick="document.body.classList.toggle('dark')"><i data-lucide="sun"></i></button>
+            </div>
+        </div>
+    </header>
+    <div class="breadcrumb"><div class="container"><a href="../../index.html">Home</a> / <a href="../../index.html#converters">Converters</a> / <span>Number Base</span></div></div>
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="hash"></i></div>
+                    <h1>Number Base Converter</h1>
+                    <p>Convert numbers between Binary (2), Octal (8), Decimal (10), and Hexadecimal (16). Real-time conversion as you type.</p>
+                </div>
+                <div class="tool-workspace">
+                    <div class="converter-card">
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="numberInput">Enter Number</label>
+                                <input type="text" id="numberInput" placeholder="e.g. 255, FF, 11111111, 377" autocomplete="off">
+                            </div>
+                            <div class="input-group" style="max-width:180px">
+                                <label for="baseSelect">Input Base</label>
+                                <select id="baseSelect">
+                                    <option value="2">Binary (2)</option>
+                                    <option value="8">Octal (8)</option>
+                                    <option value="10" selected>Decimal (10)</option>
+                                    <option value="16">Hexadecimal (16)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="error-msg" id="errorMsg"></div>
+                        <div class="results-grid">
+                            <div class="result-item">
+                                <div class="result-label">Binary (Base 2) <button class="copy-btn" onclick="copyResult('bin')" title="Copy"><i data-lucide="copy" style="width:14px;height:14px"></i></button></div>
+                                <div class="result-value" id="resultBin">-</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">Octal (Base 8) <button class="copy-btn" onclick="copyResult('oct')" title="Copy"><i data-lucide="copy" style="width:14px;height:14px"></i></button></div>
+                                <div class="result-value" id="resultOct">-</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">Decimal (Base 10) <button class="copy-btn" onclick="copyResult('dec')" title="Copy"><i data-lucide="copy" style="width:14px;height:14px"></i></button></div>
+                                <div class="result-value" id="resultDec">-</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">Hexadecimal (Base 16) <button class="copy-btn" onclick="copyResult('hex')" title="Copy"><i data-lucide="copy" style="width:14px;height:14px"></i></button></div>
+                                <div class="result-value" id="resultHex">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ad-slot" style="margin-top:2rem"><div class="ad-placeholder">Advertisement</div></div>
+            </div>
+            <aside class="tool-sidebar">
+                <div class="ad-slot"><div class="ad-placeholder">Advertisement</div></div>
+            </aside>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><p>&copy; 2024 ToolBox. All rights reserved.</p></div></footer>
+    <div class="toast" id="toast"></div>
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script>
+    lucide.createIcons();
+
+    const numberInput = document.getElementById('numberInput');
+    const baseSelect = document.getElementById('baseSelect');
+    const errorMsg = document.getElementById('errorMsg');
+
+    numberInput.addEventListener('input', convert);
+    baseSelect.addEventListener('change', convert);
+
+    function convert() {
+        const val = numberInput.value.trim();
+        const base = parseInt(baseSelect.value);
+        errorMsg.style.display = 'none';
+
+        if (!val) {
+            document.getElementById('resultBin').textContent = '-';
+            document.getElementById('resultOct').textContent = '-';
+            document.getElementById('resultDec').textContent = '-';
+            document.getElementById('resultHex').textContent = '-';
+            return;
+        }
+
+        // Validate input based on base
+        const patterns = {
+            2: /^[01]+$/,
+            8: /^[0-7]+$/,
+            10: /^[0-9]+$/,
+            16: /^[0-9a-fA-F]+$/
+        };
+
+        if (!patterns[base].test(val)) {
+            const baseNames = { 2: 'binary', 8: 'octal', 10: 'decimal', 16: 'hexadecimal' };
+            errorMsg.textContent = 'Invalid ' + baseNames[base] + ' number';
+            errorMsg.style.display = 'block';
+            return;
+        }
+
+        const decimal = parseInt(val, base);
+        if (isNaN(decimal)) {
+            errorMsg.textContent = 'Invalid number';
+            errorMsg.style.display = 'block';
+            return;
+        }
+
+        document.getElementById('resultBin').textContent = decimal.toString(2);
+        document.getElementById('resultOct').textContent = decimal.toString(8);
+        document.getElementById('resultDec').textContent = decimal.toString(10);
+        document.getElementById('resultHex').textContent = decimal.toString(16).toUpperCase();
+    }
+
+    function copyResult(type) {
+        const map = { bin: 'resultBin', oct: 'resultOct', dec: 'resultDec', hex: 'resultHex' };
+        const text = document.getElementById(map[type]).textContent;
+        if (text === '-') { showToast('No value to copy'); return; }
+        navigator.clipboard.writeText(text).then(() => showToast('Copied: ' + text));
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+    </script>
+</body>
+</html>

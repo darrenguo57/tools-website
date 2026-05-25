@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Formatter & Validator - ToolBox</title>
+  <meta name="description" content="Free online JSON formatter, validator, and minifier. Format, beautify, validate, and minify JSON data with syntax highlighting.">
+  <meta name="keywords" content="JSON formatter, JSON validator, JSON beautifier, JSON minifier, online JSON tool">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="JSON Formatter & Validator - ToolBox">
+  <meta property="og:description" content="Free online JSON formatter, validator, and minifier with syntax highlighting.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/formatters/json-formatter.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="JSON Formatter & Validator - ToolBox">
+  <meta name="twitter:description" content="Free online JSON formatter, validator, and minifier.">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "JSON Formatter & Validator",
+    "url": "https://toolbox.example.com/tools/formatters/json-formatter.html",
+    "description": "Free online JSON formatter, validator, and minifier with syntax highlighting.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    .json-output { font-family: 'Courier New', Courier, monospace; font-size: 13px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+    .json-key { color: #0550ae; }
+    .json-string { color: #0a3069; }
+    .json-number { color: #0550ae; font-weight: 600; }
+    .json-boolean { color: #cf222e; }
+    .json-null { color: #6e7781; font-style: italic; }
+    .json-bracket { color: #24292f; }
+    .json-comma { color: #24292f; }
+    .error-message { color: #cf222e; background: #ffebe9; border: 1px solid #ff8182; border-radius: 8px; padding: 12px 16px; font-size: 13px; margin-top: 8px; display: none; }
+    .error-message.show { display: block; }
+    .success-message { color: #1a7f37; background: #dafbe1; border: 1px solid #3fb950; border-radius: 8px; padding: 12px 16px; font-size: 13px; margin-top: 8px; display: none; }
+    .success-message.show { display: block; }
+    .indent-options { display: flex; gap: 8px; align-items: center; }
+    .indent-options label { font-size: 13px; color: #57606a; }
+    .indent-options select { padding: 4px 8px; border: 1px solid #d0d7de; border-radius: 6px; font-size: 13px; background: #fff; }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo">
+        <i data-lucide="toolbox"></i>
+        <span>ToolBox</span>
+      </a>
+      <div class="navbar-search">
+        <i data-lucide="search"></i>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search tools...">
+      </div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="theme-icon-light"></i>
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+        </button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Layout -->
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item" data-category="all"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item" data-category="converters"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item" data-category="calculators"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item" data-category="image-tools"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item" data-category="generators"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item" data-category="formatters"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item" data-category="crypto"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item" data-category="charts"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item" data-category="testing"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a>
+        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+        <a href="../../index.html?category=formatters">Formatters</a>
+        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+        <span class="breadcrumb-current">JSON Formatter</span>
+      </nav>
+
+      <!-- Tool Header -->
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="braces"></i></div>
+        <div class="tool-header-info">
+          <h1 class="tool-header__title">JSON Formatter & Validator</h1>
+          <p class="tool-header__desc">Format, validate, and minify JSON data with syntax highlighting. Supports custom indentation and error reporting with line numbers.</p>
+          <span class="tool-card-tag">Formatters</span>
+        </div>
+      </section>
+
+      <!-- Tool Content -->
+      <section class="tool-content">
+        <div class="tool-workspace">
+
+          <!-- Input Panel -->
+          <div class="tool-panel">
+            <div class="tool-panel__header">
+              <h3 class="tool-panel__title"><i data-lucide="file-json"></i> Input JSON</h3>
+              <div class="tool-panel__actions">
+                <button class="tool-action-btn" id="btnPaste"><i data-lucide="clipboard-paste"></i> Paste</button>
+                <button class="tool-action-btn tool-action-btn--danger" id="btnClear"><i data-lucide="trash-2"></i> Clear</button>
+              </div>
+            </div>
+            <div class="tool-panel__body">
+              <textarea class="tool-input__field" id="jsonInput" placeholder='Paste your JSON here, e.g. {"name": "John", "age": 30}' style="min-height:280px;"></textarea>
+            </div>
+            <div class="tool-input__options">
+              <div class="tool-input__option indent-options">
+                <label for="indentSize">Indent:</label>
+                <select id="indentSize">
+                  <option value="2">2 Spaces</option>
+                  <option value="4">4 Spaces</option>
+                  <option value="tab">Tab</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="tool-actions">
+            <div class="tool-actions__primary">
+              <button class="btn btn-primary" id="btnFormat"><i data-lucide="align-left"></i> Format</button>
+              <button class="btn btn-primary" id="btnMinify"><i data-lucide="minimize-2"></i> Minify</button>
+              <button class="btn btn-secondary" id="btnValidate"><i data-lucide="check-circle"></i> Validate</button>
+            </div>
+            <div class="tool-actions__secondary">
+              <button class="tool-action-btn" id="btnCopy"><i data-lucide="copy"></i> Copy Result</button>
+            </div>
+          </div>
+
+          <!-- Error / Success Messages -->
+          <div class="error-message" id="errorMsg"></div>
+          <div class="success-message" id="successMsg"></div>
+
+          <!-- Output Panel -->
+          <div class="tool-panel">
+            <div class="tool-panel__header">
+              <h3 class="tool-panel__title"><i data-lucide="file-output"></i> Output</h3>
+              <div class="tool-panel__actions">
+                <button class="tool-action-btn" id="btnCopyOutput"><i data-lucide="copy"></i> Copy</button>
+              </div>
+            </div>
+            <div class="tool-panel__body">
+              <div class="tool-output__content json-output" id="jsonOutput" style="min-height:280px;">
+                <span style="color:#8b949e;">Formatted JSON will appear here...</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Ad -->
+        <div class="tool-sidebar-ad">
+          <div class="ad-slot" id="adSlotRight"><span>Advertisement</span></div>
+        </div>
+      </section>
+
+      <div class="ad-slot" id="adSlotBottom"><span>Advertisement</span></div>
+
+      <!-- How to Use -->
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-info__content">
+          <div class="tool-steps">
+            <div class="tool-step">
+              <div class="tool-step__number">1</div>
+              <div class="tool-step__content">
+                <div class="tool-step__title">Paste your JSON</div>
+                <div class="tool-step__desc">Enter or paste your JSON data into the input area above.</div>
+              </div>
+            </div>
+            <div class="tool-step">
+              <div class="tool-step__number">2</div>
+              <div class="tool-step__content">
+                <div class="tool-step__title">Choose indentation</div>
+                <div class="tool-step__desc">Select your preferred indentation: 2 spaces, 4 spaces, or tab.</div>
+              </div>
+            </div>
+            <div class="tool-step">
+              <div class="tool-step__number">3</div>
+              <div class="tool-step__content">
+                <div class="tool-step__title">Format or Validate</div>
+                <div class="tool-step__desc">Click Format to beautify, Minify to compress, or Validate to check syntax.</div>
+              </div>
+            </div>
+            <div class="tool-step">
+              <div class="tool-step__number">4</div>
+              <div class="tool-step__content">
+                <div class="tool-step__title">Copy the result</div>
+                <div class="tool-step__desc">Click Copy to copy the formatted output to your clipboard.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Related Tools -->
+      <section class="related-tools">
+        <h2>Related Tools</h2>
+        <div class="related-tools-grid">
+          <a href="json-visualizer.html" class="tool-card tool-card-sm">
+            <div class="tool-card-icon"><i data-lucide="network"></i></div>
+            <h3>JSON Visualizer</h3>
+            <span class="tool-card-tag">Formatters</span>
+          </a>
+          <a href="xml-formatter.html" class="tool-card tool-card-sm">
+            <div class="tool-card-icon"><i data-lucide="file-code"></i></div>
+            <h3>XML Formatter</h3>
+            <span class="tool-card-tag">Formatters</span>
+          </a>
+          <a href="sql-formatter.html" class="tool-card tool-card-sm">
+            <div class="tool-card-icon"><i data-lucide="database"></i></div>
+            <h3>SQL Formatter</h3>
+            <span class="tool-card-tag">Formatters</span>
+          </a>
+          <a href="code-formatter.html" class="tool-card tool-card-sm">
+            <div class="tool-card-icon"><i data-lucide="code"></i></div>
+            <h3>Code Formatter</h3>
+            <span class="tool-card-tag">Formatters</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links">
+        <a href="#">About</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact</a>
+      </div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+    (function() {
+      const input = document.getElementById('jsonInput');
+      const output = document.getElementById('jsonOutput');
+      const errorMsg = document.getElementById('errorMsg');
+      const successMsg = document.getElementById('successMsg');
+      const indentSelect = document.getElementById('indentSize');
+      let lastResult = '';
+
+      function getIndent() {
+        const val = indentSelect.value;
+        if (val === 'tab') return '\t';
+        return parseInt(val);
+      }
+
+      function showError(msg) {
+        errorMsg.textContent = msg;
+        errorMsg.classList.add('show');
+        successMsg.classList.remove('show');
+      }
+
+      function showSuccess(msg) {
+        successMsg.textContent = msg;
+        successMsg.classList.add('show');
+        errorMsg.classList.remove('show');
+      }
+
+      function clearMessages() {
+        errorMsg.classList.remove('show');
+        successMsg.classList.remove('show');
+      }
+
+      function syntaxHighlight(json) {
+        if (typeof json !== 'string') json = JSON.stringify(json, null, getIndent());
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(
+          /("(\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+          function(match) {
+            let cls = 'json-number';
+            if (/^"/.test(match)) {
+              if (/:$/.test(match)) {
+                cls = 'json-key';
+              } else {
+                cls = 'json-string';
+              }
+            } else if (/true|false/.test(match)) {
+              cls = 'json-boolean';
+            } else if (/null/.test(match)) {
+              cls = 'json-null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+          }
+        );
+      }
+
+      function parseJSON(str) {
+        try {
+          return { obj: JSON.parse(str), error: null };
+        } catch (e) {
+          const match = e.message.match(/position\s+(\d+)/i);
+          let lineInfo = '';
+          if (match) {
+            const pos = parseInt(match[1]);
+            const lines = str.substring(0, pos).split('\n');
+            lineInfo = ' (Line ' + lines.length + ', Column ' + lines[lines.length - 1].length + ')';
+          }
+          return { obj: null, error: e.message + lineInfo };
+        }
+      }
+
+      document.getElementById('btnFormat').addEventListener('click', function() {
+        clearMessages();
+        const val = input.value.trim();
+        if (!val) { showError('Please enter JSON data.'); return; }
+        const result = parseJSON(val);
+        if (result.error) { showError('Invalid JSON: ' + result.error); output.innerHTML = ''; return; }
+        lastResult = JSON.stringify(result.obj, null, getIndent());
+        output.innerHTML = syntaxHighlight(lastResult);
+        showSuccess('JSON formatted successfully!');
+      });
+
+      document.getElementById('btnMinify').addEventListener('click', function() {
+        clearMessages();
+        const val = input.value.trim();
+        if (!val) { showError('Please enter JSON data.'); return; }
+        const result = parseJSON(val);
+        if (result.error) { showError('Invalid JSON: ' + result.error); output.innerHTML = ''; return; }
+        lastResult = JSON.stringify(result.obj);
+        output.innerHTML = syntaxHighlight(lastResult);
+        showSuccess('JSON minified successfully! Size: ' + lastResult.length + ' characters.');
+      });
+
+      document.getElementById('btnValidate').addEventListener('click', function() {
+        clearMessages();
+        const val = input.value.trim();
+        if (!val) { showError('Please enter JSON data.'); return; }
+        const result = parseJSON(val);
+        if (result.error) {
+          showError('Invalid JSON: ' + result.error);
+          output.innerHTML = '';
+        } else {
+          showSuccess('Valid JSON! Root type: ' + (Array.isArray(result.obj) ? 'Array' : typeof result.obj) + ', Size: ' + JSON.stringify(result.obj).length + ' chars.');
+          lastResult = JSON.stringify(result.obj, null, getIndent());
+          output.innerHTML = syntaxHighlight(lastResult);
+        }
+      });
+
+      document.getElementById('btnCopy').addEventListener('click', copyResult);
+      document.getElementById('btnCopyOutput').addEventListener('click', copyResult);
+
+      function copyResult() {
+        if (!lastResult) { showError('No result to copy.'); return; }
+        navigator.clipboard.writeText(lastResult).then(function() {
+          showSuccess('Copied to clipboard!');
+        }).catch(function() {
+          showError('Failed to copy to clipboard.');
+        });
+      }
+
+      document.getElementById('btnClear').addEventListener('click', function() {
+        input.value = '';
+        output.innerHTML = '<span style="color:#8b949e;">Formatted JSON will appear here...</span>';
+        lastResult = '';
+        clearMessages();
+      });
+
+      document.getElementById('btnPaste').addEventListener('click', function() {
+        navigator.clipboard.readText().then(function(text) {
+          input.value = text;
+        }).catch(function() {
+          showError('Failed to read clipboard. Please paste manually.');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

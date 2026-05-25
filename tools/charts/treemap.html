@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Treemap Generator - ToolBox</title>
+  <meta name="description" content="Create treemap visualizations from hierarchical JSON data. Squarified treemap algorithm with color schemes.">
+  <meta name="keywords" content="treemap generator, hierarchical data visualization, squarified treemap, tree map">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Treemap Generator - ToolBox">
+  <meta property="og:description" content="Create treemaps from hierarchical data. Free and no installation required.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/charts/treemap.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Treemap Generator",
+    "url": "https://toolbox.example.com/tools/charts/treemap.html",
+    "description": "Create treemap visualizations.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    #treemapCanvas { width: 100%; height: 500px; border-radius: var(--radius-md); }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item active"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=charts" class="breadcrumb__link">Charts</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Treemap Generator</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="layout-grid"></i></div>
+        <h1 class="tool-header__title">Treemap Generator</h1>
+        <p class="tool-header__desc">Create treemap visualizations from hierarchical JSON data using the squarified treemap algorithm.</p>
+      </section>
+
+      <section class="tool-workspace">
+
+        <!-- Settings -->
+        <div class="tool-settings">
+          <div class="tool-settings__title">Options</div>
+          <div class="tool-settings__group">
+            <label class="tool-settings__label" for="colorScheme">Color Scheme</label>
+            <select id="colorScheme" class="tool-input__field" style="min-height:auto;padding:8px 12px;max-width:300px;">
+              <option value="vibrant">Vibrant</option>
+              <option value="pastel">Pastel</option>
+              <option value="warm">Warm</option>
+              <option value="cool">Cool</option>
+              <option value="earth">Earth Tones</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Input -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="braces"></i> JSON Data</span>
+            <div class="tool-panel__actions">
+              <button class="btn btn--sm btn--secondary" id="btnSample"><i data-lucide="file-text"></i> Sample Data</button>
+              <button class="btn btn--sm btn--secondary" id="btnFormat"><i data-lucide="align-left"></i> Format</button>
+            </div>
+          </div>
+          <div class="tool-panel__body">
+            <textarea class="tool-input__field" id="jsonInput" rows="14" style="min-height:280px;font-family:var(--font-family-mono);font-size:var(--font-size-xs);line-height:1.6;" placeholder='Enter hierarchical JSON data...'></textarea>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="tool-actions">
+          <div class="tool-actions__primary">
+            <button class="btn btn--primary" id="btnGenerate"><i data-lucide="sparkles"></i> Generate</button>
+          </div>
+          <div class="tool-actions__secondary">
+            <button class="btn btn--secondary" id="btnDownloadPNG"><i data-lucide="download"></i> Download PNG</button>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="eye"></i> Preview</span>
+          </div>
+          <div class="tool-panel__body">
+            <canvas id="treemapCanvas"></canvas>
+          </div>
+        </div>
+
+      </section>
+
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Enter JSON Data</div>
+              <div class="tool-step__desc">Provide hierarchical JSON with "name", "value", and optional "children" fields.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Choose Color Scheme</div>
+              <div class="tool-step__desc">Select a color scheme that fits your data.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Generate & Download</div>
+              <div class="tool-step__desc">Click Generate to render. Download as PNG.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="chart-advanced.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Advanced Charts</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="wordcloud.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Word Cloud</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="mindmap.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Mind Map</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="chart-basic.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Basic Charts</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+  (function() {
+    const canvas = document.getElementById('treemapCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const colorSchemes = {
+      vibrant: ['#3B82F6','#EF4444','#10B981','#F59E0B','#8B5CF6','#EC4899','#06B6D4','#F97316','#6366F1','#14B8A6','#84CC16','#E11D48'],
+      pastel: ['#93C5FD','#FCA5A5','#6EE7B7','#FCD34D','#C4B5FD','#F9A8D4','#67E8F9','#FDBA74','#A5B4FC','#5EEAD4','#BEF264','#FDA4AF'],
+      warm: ['#F97316','#EF4444','#F59E0B','#DC2626','#EA580C','#D97706','#FB923C','#F87171','#FBBF24','#FCA5A5','#B45309','#C2410C'],
+      cool: ['#3B82F6','#06B6D4','#8B5CF6','#0EA5E9','#6366F1','#0891B2','#2563EB','#22D3EE','#7C3AED','#0284C7','#4F46E5','#0E7490'],
+      earth: ['#92400E','#78716C','#065F46','#9A3412','#365314','#713F12','#A16207','#4D7C0F','#B45309','#57534E','#047857','#854D0E']
+    };
+
+    const sampleData = {
+      "name": "Company",
+      "children": [
+        { "name": "Engineering", "children": [
+          { "name": "Frontend", "value": 30 },
+          { "name": "Backend", "value": 35 },
+          { "name": "DevOps", "value": 15 },
+          { "name": "QA", "value": 10 }
+        ]},
+        { "name": "Design", "children": [
+          { "name": "UI/UX", "value": 20 },
+          { "name": "Brand", "value": 10 }
+        ]},
+        { "name": "Marketing", "children": [
+          { "name": "Content", "value": 15 },
+          { "name": "SEO", "value": 10 },
+          { "name": "Social", "value": 12 }
+        ]},
+        { "name": "Sales", "value": 40 },
+        { "name": "HR", "value": 15 },
+        { "name": "Finance", "value": 20 }
+      ]
+    };
+
+    document.getElementById('btnSample').addEventListener('click', () => {
+      document.getElementById('jsonInput').value = JSON.stringify(sampleData, null, 2);
+    });
+
+    document.getElementById('btnFormat').addEventListener('click', () => {
+      try {
+        document.getElementById('jsonInput').value = JSON.stringify(JSON.parse(document.getElementById('jsonInput').value), null, 2);
+      } catch(e) { alert('Invalid JSON'); }
+    });
+
+    function flattenData(node, depth, parentColor) {
+      const scheme = colorSchemes[document.getElementById('colorScheme').value] || colorSchemes.vibrant;
+      if (!node.children || node.children.length === 0) {
+        return [{ name: node.name, value: node.value, depth, color: parentColor || scheme[0] }];
+      }
+      const color = scheme[depth % scheme.length];
+      let items = [];
+      node.children.forEach(child => {
+        items = items.concat(flattenData(child, depth + 1, color));
+      });
+      return items;
+    }
+
+    function squarify(items, rect) {
+      if (items.length === 0) return [];
+      const totalValue = items.reduce((s, i) => s + i.value, 0);
+      if (totalValue === 0) return [];
+
+      const results = [];
+      let remaining = [...items].sort((a, b) => b.value - a.value);
+      let currentRect = { ...rect };
+
+      while (remaining.length > 0) {
+        const isHorizontal = currentRect.w >= currentRect.h;
+        const side = isHorizontal ? currentRect.h : currentRect.w;
+
+        let row = [remaining[0]];
+        let rowSum = remaining[0].value;
+        let worst = worstRatio(row, rowSum, side);
+
+        for (let i = 1; i < remaining.length; i++) {
+          const testRow = [...row, remaining[i]];
+          const testSum = rowSum + remaining[i].value;
+          const testWorst = worstRatio(testRow, testSum, side);
+          if (testWorst <= worst) {
+            row.push(remaining[i]);
+            rowSum = testSum;
+            worst = testWorst;
+          } else break;
+        }
+
+        const fraction = rowSum / totalValue;
+        const rowSize = fraction * (isHorizontal ? currentRect.w : currentRect.h);
+        let offset = 0;
+
+        row.forEach(item => {
+          const itemSize = (item.value / rowSum) * (isHorizontal ? currentRect.h : currentRect.w);
+          const r = isHorizontal
+            ? { x: currentRect.x, y: currentRect.y + offset, w: rowSize, h: itemSize }
+            : { x: currentRect.x + offset, y: currentRect.y, w: itemSize, h: rowSize };
+          results.push({ ...item, rect: r });
+          offset += itemSize;
+        });
+
+        if (isHorizontal) {
+          currentRect.x += rowSize;
+          currentRect.w -= rowSize;
+        } else {
+          currentRect.y += rowSize;
+          currentRect.h -= rowSize;
+        }
+
+        remaining = remaining.slice(row.length);
+      }
+      return results;
+    }
+
+    function worstRatio(row, rowSum, side) {
+      const rowArea = (rowSum / side) * side;
+      const rowW = rowSum / side;
+      let worst = 0;
+      row.forEach(item => {
+        const itemH = item.value / rowW;
+        const ratio = Math.max(rowW / itemH, itemH / rowW);
+        worst = Math.max(worst, ratio);
+      });
+      return worst;
+    }
+
+    function drawTreemap() {
+      const data = JSON.parse(document.getElementById('jsonInput').value);
+      const items = flattenData(data, 0);
+      if (items.length === 0) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      const containerW = canvas.parentElement.getBoundingClientRect().width;
+      canvas.width = containerW * dpr;
+      canvas.height = 500 * dpr;
+      canvas.style.width = containerW + 'px';
+      canvas.style.height = '500px';
+      ctx.scale(dpr, dpr);
+
+      const padding = 4;
+      const rects = squarify(items, { x: padding, y: padding, w: containerW - padding * 2, h: 500 - padding * 2 });
+
+      rects.forEach(item => {
+        const r = item.rect;
+        const gap = 2;
+
+        // Fill
+        ctx.fillStyle = item.color;
+        ctx.beginPath();
+        ctx.roundRect(r.x + gap, r.y + gap, r.w - gap * 2, r.h - gap * 2, 4);
+        ctx.fill();
+
+        // Slightly darker border
+        ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Label
+        if (r.w > 40 && r.h > 20) {
+          ctx.fillStyle = '#fff';
+          ctx.font = (r.w > 80 && r.h > 40 ? '600 ' : '500 ') + Math.min(14, Math.max(9, Math.min(r.w, r.h) / 5)) + 'px Inter, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+
+          const text = item.name;
+          const maxW = r.w - gap * 4;
+          let displayText = text;
+          if (ctx.measureText(text).width > maxW) {
+            while (displayText.length > 1 && ctx.measureText(displayText + '...').width > maxW) {
+              displayText = displayText.slice(0, -1);
+            }
+            displayText += '...';
+          }
+          ctx.fillText(displayText, r.x + r.w / 2, r.y + r.h / 2 - (r.h > 35 ? 6 : 0));
+
+          // Value
+          if (r.w > 60 && r.h > 35) {
+            ctx.fillStyle = 'rgba(255,255,255,0.8)';
+            ctx.font = '400 ' + Math.min(11, Math.max(8, r.h / 8)) + 'px Inter, sans-serif';
+            ctx.fillText(item.value.toString(), r.x + r.w / 2, r.y + r.h / 2 + 10);
+          }
+        }
+      });
+    }
+
+    document.getElementById('btnGenerate').addEventListener('click', () => {
+      try { drawTreemap(); } catch(e) { alert('Error: ' + e.message); }
+    });
+
+    document.getElementById('btnDownloadPNG').addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = 'treemap.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+
+    // Load sample on start
+    document.getElementById('jsonInput').value = JSON.stringify(sampleData, null, 2);
+  })();
+  </script>
+</body>
+</html>

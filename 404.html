@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Page Not Found | ToolBox</title>
+  <meta name="description" content="The page you are looking for does not exist. Explore our free online tools.">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    .error-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 200px);
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .error-code {
+      font-size: 8rem;
+      font-weight: 700;
+      line-height: 1;
+      background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .error-title {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary, #1a1a2e);
+    }
+
+    .error-message {
+      font-size: 1.1rem;
+      color: var(--text-secondary, #6b7280);
+      max-width: 480px;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .error-search {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg-card, #ffffff);
+      border: 2px solid var(--border-color, #e5e7eb);
+      border-radius: 12px;
+      padding: 0.75rem 1.25rem;
+      width: 100%;
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      transition: border-color 0.2s;
+    }
+
+    .error-search:focus-within {
+      border-color: #3B82F6;
+    }
+
+    .error-search input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 1rem;
+      color: var(--text-primary, #1a1a2e);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .error-search input::placeholder {
+      color: var(--text-tertiary, #9ca3af);
+    }
+
+    .error-search button {
+      background: #3B82F6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .error-search button:hover {
+      background: #2563EB;
+    }
+
+    .popular-tools {
+      width: 100%;
+      max-width: 640px;
+    }
+
+    .popular-tools h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-secondary, #6b7280);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .popular-tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .popular-tool-link {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      padding: 0.75rem 1rem;
+      background: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e5e7eb);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text-primary, #1a1a2e);
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .popular-tool-link:hover {
+      border-color: #3B82F6;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    }
+
+    .popular-tool-link i {
+      color: #3B82F6;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .error-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: #3B82F6;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: #2563EB;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      color: var(--text-primary, #1a1a2e);
+      border: 2px solid var(--border-color, #e5e7eb);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: #3B82F6;
+      color: #3B82F6;
+    }
+
+    .countdown-text {
+      margin-top: 1.5rem;
+      font-size: 0.875rem;
+      color: var(--text-tertiary, #9ca3af);
+    }
+
+    .countdown-text span {
+      color: #3B82F6;
+      font-weight: 600;
+    }
+
+    @media (max-width: 640px) {
+      .error-code {
+        font-size: 5rem;
+      }
+      .error-title {
+        font-size: 1.375rem;
+      }
+      .popular-tools-grid {
+        grid-template-columns: 1fr;
+      }
+      .error-actions {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== Navigation ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="navbar-logo">
+        <i data-lucide="toolbox"></i>
+        <span>ToolBox</span>
+      </a>
+
+      <div class="navbar-search">
+        <i data-lucide="search"></i>
+        <input type="text" class="search-input" placeholder="Search tools...">
+      </div>
+
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language">
+          <span class="lang-label">EN</span>
+        </button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="theme-icon-light"></i>
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+        </button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== 404 Error Content ========== -->
+  <div class="error-page">
+    <div class="error-code">404</div>
+    <h1 class="error-title">Page Not Found</h1>
+    <p class="error-message">
+      Sorry, the page you are looking for does not exist or has been moved.
+      Try searching for what you need or explore our popular tools below.
+    </p>
+
+    <!-- Search Box -->
+    <div class="error-search">
+      <i data-lucide="search" style="color: var(--text-tertiary, #9ca3af); width: 20px; height: 20px;"></i>
+      <input type="text" id="errorSearchInput" placeholder="Search for tools...">
+      <button onclick="handleSearch()">Search</button>
+    </div>
+
+    <!-- Popular Tools -->
+    <div class="popular-tools">
+      <h3>Popular Tools</h3>
+      <div class="popular-tools-grid">
+        <a href="tools/converters/json-yaml.html" class="popular-tool-link">
+          <i data-lucide="file-json"></i>
+          <span>JSON to YAML</span>
+        </a>
+        <a href="tools/generators/uuid.html" class="popular-tool-link">
+          <i data-lucide="fingerprint"></i>
+          <span>UUID Generator</span>
+        </a>
+        <a href="tools/generators/qrcode.html" class="popular-tool-link">
+          <i data-lucide="qr-code"></i>
+          <span>QR Code</span>
+        </a>
+        <a href="tools/crypto/hash.html" class="popular-tool-link">
+          <i data-lucide="hash"></i>
+          <span>Hash Generator</span>
+        </a>
+        <a href="tools/image-tools/compress.html" class="popular-tool-link">
+          <i data-lucide="image-minus"></i>
+          <span>Image Compress</span>
+        </a>
+        <a href="tools/formatters/json-formatter.html" class="popular-tool-link">
+          <i data-lucide="braces"></i>
+          <span>JSON Formatter</span>
+        </a>
+        <a href="tools/converters/base64.html" class="popular-tool-link">
+          <i data-lucide="binary"></i>
+          <span>Base64 Encode</span>
+        </a>
+        <a href="tools/generators/password.html" class="popular-tool-link">
+          <i data-lucide="key-round"></i>
+          <span>Password Gen</span>
+        </a>
+        <a href="tools/converters/timestamp.html" class="popular-tool-link">
+          <i data-lucide="clock"></i>
+          <span>Timestamp</span>
+        </a>
+        <a href="tools/charts/chart-basic.html" class="popular-tool-link">
+          <i data-lucide="bar-chart-3"></i>
+          <span>Chart Builder</span>
+        </a>
+        <a href="tools/formatters/code-formatter.html" class="popular-tool-link">
+          <i data-lucide="code-2"></i>
+          <span>Code Formatter</span>
+        </a>
+        <a href="tools/generators/color-palette.html" class="popular-tool-link">
+          <i data-lucide="palette"></i>
+          <span>Color Palette</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="error-actions">
+      <a href="index.html" class="btn-primary">
+        <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+        Go to Homepage
+      </a>
+      <button class="btn-secondary" onclick="history.back()">
+        <i data-lucide="arrow-left" style="width: 18px; height: 18px;"></i>
+        Go Back
+      </button>
+    </div>
+
+    <!-- Auto-redirect Countdown -->
+    <p class="countdown-text">
+      Auto-redirecting to homepage in <span id="countdown">15</span> seconds...
+    </p>
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo">
+            <i data-lucide="toolbox"></i>
+            <span>ToolBox</span>
+          </a>
+          <p>Free online tools for developers and designers. No installation required.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Categories</h4>
+            <ul>
+              <li><a href="tools/converters/base64.html">Converters</a></li>
+              <li><a href="tools/generators/uuid.html">Generators</a></li>
+              <li><a href="tools/formatters/json-formatter.html">Formatters</a></li>
+              <li><a href="tools/crypto/hash.html">Encryption</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Popular</h4>
+            <ul>
+              <li><a href="tools/generators/qrcode.html">QR Code</a></li>
+              <li><a href="tools/image-tools/compress.html">Image Compress</a></li>
+              <li><a href="tools/charts/chart-basic.html">Charts</a></li>
+              <li><a href="tools/generators/password.html">Password</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 ToolBox. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Search functionality
+    function handleSearch() {
+      const query = document.getElementById('errorSearchInput').value.trim();
+      if (query) {
+        window.location.href = 'index.html?search=' + encodeURIComponent(query);
+      }
+    }
+
+    document.getElementById('errorSearchInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        handleSearch();
+      }
+    });
+
+    // Countdown auto-redirect
+    let seconds = 15;
+    const countdownEl = document.getElementById('countdown');
+    const timer = setInterval(() => {
+      seconds--;
+      countdownEl.textContent = seconds;
+      if (seconds <= 0) {
+        clearInterval(timer);
+        window.location.href = 'index.html';
+      }
+    }, 1000);
+
+    // Stop countdown on user interaction
+    document.getElementById('errorSearchInput').addEventListener('focus', () => {
+      clearInterval(timer);
+      document.querySelector('.countdown-text').textContent = 'Auto-redirect paused while searching.';
+    });
+  </script>
+
+</body>
+</html>

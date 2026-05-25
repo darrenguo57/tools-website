@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code Diff - ToolBox</title>
+  <meta name="description" content="Free online code diff tool. Compare two code snippets side by side with line-by-line highlighting of additions, deletions, and modifications.">
+  <meta name="keywords" content="code diff, compare code, text diff, diff online, code comparison">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Code Diff - ToolBox">
+  <meta property="og:description" content="Free online code diff tool with line-by-line comparison.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/formatters/code-diff.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Code Diff - ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Code Diff",
+    "url": "https://toolbox.example.com/tools/formatters/code-diff.html",
+    "description": "Free online code diff tool with line-by-line comparison.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    .diff-container { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--color-border); border-radius: 8px; overflow: hidden; font-family: 'Courier New', Courier, monospace; font-size: 13px; }
+    .diff-side { overflow: auto; max-height: 600px; }
+    .diff-side-header { padding: 8px 12px; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; background: var(--color-bg-secondary); border-bottom: 1px solid var(--color-border); position: sticky; top: 0; z-index: 1; font-family: var(--font-family); }
+    .diff-side-header.left { border-right: 1px solid var(--color-border); }
+    .diff-line { display: flex; min-height: 22px; line-height: 22px; }
+    .diff-line-num { width: 48px; min-width: 48px; text-align: right; padding-right: 8px; color: #8b949e; background: var(--color-bg-secondary); border-right: 1px solid var(--color-border); user-select: none; font-size: 12px; }
+    .diff-line-content { flex: 1; padding: 0 8px; white-space: pre; }
+    .diff-line.equal .diff-line-content { background: transparent; }
+    .diff-line.add .diff-line-content { background: #dafbe1; color: #116329; }
+    .diff-line.add .diff-line-num { background: #acf2bd; color: #116329; }
+    .diff-line.remove .diff-line-content { background: #ffebe9; color: #82071e; }
+    .diff-line.remove .diff-line-num { background: #ff8182; color: #82071e; }
+    .diff-line.modify .diff-line-content { background: #fff8c5; color: #7a5e00; }
+    .diff-line.modify .diff-line-num { background: #ffe066; color: #7a5e00; }
+    .diff-line.empty .diff-line-content { background: #f6f8fa; color: #8b949e; }
+    .diff-stats { display: flex; gap: 16px; padding: 10px 0; font-size: 13px; }
+    .diff-stats .added { color: #116329; font-weight: 600; }
+    .diff-stats .removed { color: #82071e; font-weight: 600; }
+    .diff-stats .modified { color: #7a5e00; font-weight: 600; }
+    .diff-stats .unchanged { color: #57606a; }
+    @media (max-width: 768px) {
+      .diff-container { grid-template-columns: 1fr; }
+      .diff-side-header.left { border-right: none; border-bottom: 1px solid var(--color-border); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a>
+        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+        <a href="../../index.html?category=formatters">Formatters</a>
+        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+        <span class="breadcrumb-current">Code Diff</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="git-compare"></i></div>
+        <div class="tool-header-info">
+          <h1 class="tool-header__title">Code Diff</h1>
+          <p class="tool-header__desc">Compare two code snippets side by side. Highlights added, deleted, and modified lines with line numbers.</p>
+          <span class="tool-card-tag">Formatters</span>
+        </div>
+      </section>
+
+      <section class="tool-content">
+        <div class="tool-workspace">
+
+          <div class="tool-workspace--split">
+            <!-- Left Input -->
+            <div class="tool-panel">
+              <div class="tool-panel__header">
+                <h3 class="tool-panel__title"><i data-lucide="file-text"></i> Original</h3>
+                <div class="tool-panel__actions">
+                  <button class="tool-action-btn" id="btnPasteLeft"><i data-lucide="clipboard-paste"></i> Paste</button>
+                </div>
+              </div>
+              <div class="tool-panel__body">
+                <textarea class="tool-input__field" id="leftInput" placeholder="Paste original code here..." style="min-height:250px;"></textarea>
+              </div>
+            </div>
+
+            <!-- Right Input -->
+            <div class="tool-panel">
+              <div class="tool-panel__header">
+                <h3 class="tool-panel__title"><i data-lucide="file-text"></i> Modified</h3>
+                <div class="tool-panel__actions">
+                  <button class="tool-action-btn" id="btnPasteRight"><i data-lucide="clipboard-paste"></i> Paste</button>
+                </div>
+              </div>
+              <div class="tool-panel__body">
+                <textarea class="tool-input__field" id="rightInput" placeholder="Paste modified code here..." style="min-height:250px;"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="tool-actions">
+            <div class="tool-actions__primary">
+              <button class="btn btn-primary" id="btnCompare"><i data-lucide="git-compare"></i> Compare</button>
+            </div>
+            <div class="tool-actions__secondary">
+              <button class="tool-action-btn" id="btnSwap"><i data-lucide="arrow-left-right"></i> Swap</button>
+              <button class="tool-action-btn tool-action-btn--danger" id="btnClear"><i data-lucide="trash-2"></i> Clear</button>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="diff-stats" id="diffStats" style="display:none;">
+            <span class="added">+ <span id="statAdded">0</span> added</span>
+            <span class="removed">- <span id="statRemoved">0</span> removed</span>
+            <span class="modified">~ <span id="statModified">0</span> modified</span>
+            <span class="unchanged">= <span id="statUnchanged">0</span> unchanged</span>
+          </div>
+
+          <!-- Diff Output -->
+          <div class="tool-panel">
+            <div class="tool-panel__header">
+              <h3 class="tool-panel__title"><i data-lucide="git-diff"></i> Comparison Result</h3>
+            </div>
+            <div class="tool-panel__body" style="padding:0;">
+              <div class="diff-container" id="diffOutput">
+                <div style="grid-column:1/-1;padding:40px;text-align:center;color:#8b949e;">
+                  Click "Compare" to see the differences...
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="tool-sidebar-ad">
+          <div class="ad-slot" id="adSlotRight"><span>Advertisement</span></div>
+        </div>
+      </section>
+
+      <div class="ad-slot" id="adSlotBottom"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-info__content">
+          <div class="tool-steps">
+            <div class="tool-step"><div class="tool-step__number">1</div><div class="tool-step__content"><div class="tool-step__title">Enter original code</div><div class="tool-step__desc">Paste the original code in the left panel.</div></div></div>
+            <div class="tool-step"><div class="tool-step__number">2</div><div class="tool-step__content"><div class="tool-step__title">Enter modified code</div><div class="tool-step__desc">Paste the modified code in the right panel.</div></div></div>
+            <div class="tool-step"><div class="tool-step__number">3</div><div class="tool-step__content"><div class="tool-step__title">Compare</div><div class="tool-step__desc">Click Compare to see line-by-line differences.</div></div></div>
+            <div class="tool-step"><div class="tool-step__number">4</div><div class="tool-step__content"><div class="tool-step__title">Review differences</div><div class="tool-step__desc">Green = added, Red = removed, Yellow = modified.</div></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="related-tools">
+        <h2>Related Tools</h2>
+        <div class="related-tools-grid">
+          <a href="text-diff.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="file-diff"></i></div><h3>Text Diff</h3><span class="tool-card-tag">Formatters</span></a>
+          <a href="json-formatter.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="braces"></i></div><h3>JSON Formatter</h3><span class="tool-card-tag">Formatters</span></a>
+          <a href="code-formatter.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="code"></i></div><h3>Code Formatter</h3><span class="tool-card-tag">Formatters</span></a>
+          <a href="csv-viewer.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="table"></i></div><h3>CSV Viewer</h3><span class="tool-card-tag">Formatters</span></a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+    (function() {
+      const leftInput = document.getElementById('leftInput');
+      const rightInput = document.getElementById('rightInput');
+      const diffOutput = document.getElementById('diffOutput');
+      const diffStats = document.getElementById('diffStats');
+
+      function escapeHtml(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+
+      // LCS-based diff algorithm
+      function computeLCS(a, b) {
+        const m = a.length;
+        const n = b.length;
+        const dp = [];
+        for (let i = 0; i <= m; i++) {
+          dp[i] = [];
+          for (let j = 0; j <= n; j++) {
+            if (i === 0 || j === 0) dp[i][j] = 0;
+            else if (a[i-1] === b[j-1]) dp[i][j] = dp[i-1][j-1] + 1;
+            else dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+          }
+        }
+
+        // Backtrack to get diff
+        const result = [];
+        let i = m, j = n;
+        while (i > 0 || j > 0) {
+          if (i > 0 && j > 0 && a[i-1] === b[j-1]) {
+            result.unshift({ type: 'equal', leftLine: i, rightLine: j, text: a[i-1] });
+            i--; j--;
+          } else if (j > 0 && (i === 0 || dp[i][j-1] >= dp[i-1][j])) {
+            result.unshift({ type: 'add', rightLine: j, text: b[j-1] });
+            j--;
+          } else {
+            result.unshift({ type: 'remove', leftLine: i, text: a[i-1] });
+            i--;
+          }
+        }
+        return result;
+      }
+
+      function computeDiff(leftLines, rightLines) {
+        const lcs = computeLCS(leftLines, rightLines);
+
+        // Group consecutive removes and adds as modifications
+        const grouped = [];
+        let i = 0;
+        while (i < lcs.length) {
+          if (lcs[i].type === 'remove') {
+            const removes = [];
+            const adds = [];
+            while (i < lcs.length && (lcs[i].type === 'remove' || lcs[i].type === 'add')) {
+              if (lcs[i].type === 'remove') removes.push(lcs[i]);
+              else adds.push(lcs[i]);
+              i++;
+            }
+            // Pair removes with adds as modifications
+            const pairs = Math.min(removes.length, adds.length);
+            for (let p = 0; p < pairs; p++) {
+              grouped.push({ type: 'modify', leftLine: removes[p].leftLine, rightLine: adds[p].rightLine, leftText: removes[p].text, rightText: adds[p].text });
+            }
+            for (let p = pairs; p < removes.length; p++) {
+              grouped.push({ type: 'remove', leftLine: removes[p].leftLine, text: removes[p].text });
+            }
+            for (let p = pairs; p < adds.length; p++) {
+              grouped.push({ type: 'add', rightLine: adds[p].rightLine, text: adds[p].text });
+            }
+          } else {
+            grouped.push(lcs[i]);
+            i++;
+          }
+        }
+
+        return grouped;
+      }
+
+      function renderDiff(diff) {
+        let leftHtml = '<div class="diff-side"><div class="diff-side-header left">Original</div>';
+        let rightHtml = '<div class="diff-side"><div class="diff-side-header">Modified</div>';
+
+        let added = 0, removed = 0, modified = 0, unchanged = 0;
+
+        diff.forEach(function(item) {
+          if (item.type === 'equal') {
+            unchanged++;
+            leftHtml += '<div class="diff-line equal"><span class="diff-line-num">' + item.leftLine + '</span><span class="diff-line-content">' + escapeHtml(item.text) + '</span></div>';
+            rightHtml += '<div class="diff-line equal"><span class="diff-line-num">' + item.rightLine + '</span><span class="diff-line-content">' + escapeHtml(item.text) + '</span></div>';
+          } else if (item.type === 'remove') {
+            removed++;
+            leftHtml += '<div class="diff-line remove"><span class="diff-line-num">' + item.leftLine + '</span><span class="diff-line-content">' + escapeHtml(item.text) + '</span></div>';
+            rightHtml += '<div class="diff-line empty"><span class="diff-line-num"></span><span class="diff-line-content"></span></div>';
+          } else if (item.type === 'add') {
+            added++;
+            leftHtml += '<div class="diff-line empty"><span class="diff-line-num"></span><span class="diff-line-content"></span></div>';
+            rightHtml += '<div class="diff-line add"><span class="diff-line-num">' + item.rightLine + '</span><span class="diff-line-content">' + escapeHtml(item.text) + '</span></div>';
+          } else if (item.type === 'modify') {
+            modified++;
+            leftHtml += '<div class="diff-line modify"><span class="diff-line-num">' + item.leftLine + '</span><span class="diff-line-content">' + escapeHtml(item.leftText) + '</span></div>';
+            rightHtml += '<div class="diff-line modify"><span class="diff-line-num">' + item.rightLine + '</span><span class="diff-line-content">' + escapeHtml(item.rightText) + '</span></div>';
+          }
+        });
+
+        leftHtml += '</div>';
+        rightHtml += '</div>';
+
+        diffOutput.innerHTML = leftHtml + rightHtml;
+
+        document.getElementById('statAdded').textContent = added;
+        document.getElementById('statRemoved').textContent = removed;
+        document.getElementById('statModified').textContent = modified;
+        document.getElementById('statUnchanged').textContent = unchanged;
+        diffStats.style.display = 'flex';
+      }
+
+      document.getElementById('btnCompare').addEventListener('click', function() {
+        const left = leftInput.value;
+        const right = rightInput.value;
+        if (!left && !right) return;
+
+        const leftLines = left.split('\n');
+        const rightLines = right.split('\n');
+        const diff = computeDiff(leftLines, rightLines);
+        renderDiff(diff);
+      });
+
+      document.getElementById('btnSwap').addEventListener('click', function() {
+        const tmp = leftInput.value;
+        leftInput.value = rightInput.value;
+        rightInput.value = tmp;
+      });
+
+      document.getElementById('btnClear').addEventListener('click', function() {
+        leftInput.value = '';
+        rightInput.value = '';
+        diffOutput.innerHTML = '<div style="grid-column:1/-1;padding:40px;text-align:center;color:#8b949e;">Click "Compare" to see the differences...</div>';
+        diffStats.style.display = 'none';
+      });
+
+      document.getElementById('btnPasteLeft').addEventListener('click', function() {
+        navigator.clipboard.readText().then(function(text) { leftInput.value = text; }).catch(function() {});
+      });
+
+      document.getElementById('btnPasteRight').addEventListener('click', function() {
+        navigator.clipboard.readText().then(function(text) { rightInput.value = text; }).catch(function() {});
+      });
+    })();
+  </script>
+</body>
+</html>

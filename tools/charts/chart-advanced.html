@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Chart Generator - ToolBox</title>
+  <meta name="description" content="Create advanced charts: heatmap, sankey, funnel, candlestick, sunburst, and boxplot charts with ECharts.">
+  <meta name="keywords" content="advanced chart, heatmap, sankey diagram, funnel chart, candlestick chart, ECharts">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Advanced Chart Generator - ToolBox">
+  <meta property="og:description" content="Create advanced charts with ECharts. Free and no installation required.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/charts/chart-advanced.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Advanced Chart Generator",
+    "url": "https://toolbox.example.com/tools/charts/chart-advanced.html",
+    "description": "Create advanced charts with ECharts.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    #echartPreview { width: 100%; height: 500px; }
+    .sample-btns { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item active"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=charts" class="breadcrumb__link">Charts</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Advanced Chart Generator</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="sparkles"></i></div>
+        <h1 class="tool-header__title">Advanced Chart Generator</h1>
+        <p class="tool-header__desc">Create advanced charts with ECharts: heatmap, sankey, funnel, candlestick, sunburst, and boxplot. Input data in JSON format.</p>
+      </section>
+
+      <section class="tool-workspace">
+
+        <!-- Settings -->
+        <div class="tool-settings">
+          <div class="tool-settings__title">Chart Settings</div>
+          <div class="tool-settings__group">
+            <label class="tool-settings__label" for="chartType">Chart Type</label>
+            <select id="chartType" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+              <option value="heatmap">Heatmap</option>
+              <option value="sankey">Sankey Diagram</option>
+              <option value="funnel">Funnel Chart</option>
+              <option value="candlestick">Candlestick (K-Line)</option>
+              <option value="sunburst">Sunburst Chart</option>
+              <option value="boxplot">Boxplot</option>
+            </select>
+          </div>
+          <div class="tool-settings__group">
+            <label class="tool-settings__label">Sample Data</label>
+            <div class="sample-btns">
+              <button class="btn btn--sm btn--secondary sample-btn" data-type="heatmap">Heatmap Example</button>
+              <button class="btn btn--sm btn--secondary sample-btn" data-type="sankey">Sankey Example</button>
+              <button class="btn btn--sm btn--secondary sample-btn" data-type="funnel">Funnel Example</button>
+              <button class="btn btn--sm btn--secondary sample-btn" data-type="candlestick">K-Line Example</button>
+              <button class="btn btn--sm btn--secondary sample-btn" data-type="sunburst">Sunburst Example</button>
+              <button class="btn btn--sm btn--secondary sample-btn" data-type="boxplot">Boxplot Example</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Input -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="braces"></i> JSON Data</span>
+            <div class="tool-panel__actions">
+              <button class="btn btn--sm btn--secondary" id="btnFormat"><i data-lucide="align-left"></i> Format</button>
+            </div>
+          </div>
+          <div class="tool-panel__body">
+            <textarea class="tool-input__field" id="jsonInput" rows="12" style="min-height:250px;font-family:var(--font-family-mono);font-size:var(--font-size-xs);line-height:1.6;" placeholder="Enter JSON data here..."></textarea>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="tool-actions">
+          <div class="tool-actions__primary">
+            <button class="btn btn--primary" id="btnGenerate"><i data-lucide="sparkles"></i> Generate</button>
+          </div>
+          <div class="tool-actions__secondary">
+            <button class="btn btn--secondary" id="btnDownloadPNG"><i data-lucide="download"></i> Download PNG</button>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="eye"></i> Preview</span>
+          </div>
+          <div class="tool-panel__body">
+            <div id="echartPreview"></div>
+          </div>
+        </div>
+
+      </section>
+
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Select Chart Type</div>
+              <div class="tool-step__desc">Choose from heatmap, sankey, funnel, candlestick, sunburst, or boxplot.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Load Sample or Enter Data</div>
+              <div class="tool-step__desc">Click a sample data button or paste your own JSON data.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Generate Chart</div>
+              <div class="tool-step__desc">Click Generate to render the chart. Download as PNG when ready.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="chart-basic.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Basic Charts</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="treemap.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Treemap</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="flowchart.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Flowchart</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="gantt.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Gantt Chart</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+  (function() {
+    let myChart = null;
+
+    const sampleData = {
+      heatmap: {
+        data: [
+          [0,0,5],[0,1,1],[0,2,0],[0,3,0],[0,4,0],[0,5,0],
+          [1,0,3],[1,1,4],[1,2,2],[1,3,1],[1,4,0],[1,5,1],
+          [2,0,2],[2,1,6],[2,2,8],[2,3,5],[2,4,3],[2,5,2],
+          [3,0,1],[3,1,3],[3,2,7],[3,3,9],[3,4,6],[3,5,4],
+          [4,0,0],[4,1,1],[4,2,3],[4,3,6],[4,4,8],[4,5,5]
+        ],
+        xLabels: ['Mon','Tue','Wed','Thu','Fri','Sat'],
+        yLabels: ['Morning','Noon','Afternoon','Evening','Night']
+      },
+      sankey: {
+        nodes: [{name:'Source A'},{name:'Source B'},{name:'Process 1'},{name:'Process 2'},{name:'Output X'},{name:'Output Y'},{name:'Output Z'}],
+        links: [{source:'Source A',target:'Process 1',value:10},{source:'Source A',target:'Process 2',value:5},{source:'Source B',target:'Process 1',value:8},{source:'Source B',target:'Process 2',value:12},{source:'Process 1',target:'Output X',value:12},{source:'Process 1',target:'Output Y',value:6},{source:'Process 2',target:'Output Y',value:5},{source:'Process 2',target:'Output Z',value:12}]
+      },
+      funnel: [{name:'Visits',value:100},{name:'Inquiries',value:80},{name:'Applications',value:50},{name:'Interviews',value:30},{name:'Offers',value:15},{name:'Hired',value:5}],
+      candlestick: {
+        dates: ['2024-01-02','2024-01-03','2024-01-04','2024-01-05','2024-01-08','2024-01-09','2024-01-10','2024-01-11','2024-01-12','2024-01-15'],
+        values: [[20,34,10,38],[40,35,30,50],[31,38,33,44],[38,40,15,42],[22,33,8,36],[30,28,18,32],[18,25,14,28],[28,32,22,36],[35,40,28,42],[40,48,30,50]]
+      },
+      sunburst: [
+        {name:'Root',children:[{name:'Category A',children:[{name:'A1',value:10},{name:'A2',value:8},{name:'A3',value:5}]},{name:'Category B',children:[{name:'B1',value:12},{name:'B2',value:7}]},{name:'Category C',children:[{name:'C1',value:15},{name:'C2',value:9},{name:'C3',value:6}]}]}
+      ],
+      boxplot: {
+        categories: ['Q1','Q2','Q3','Q4'],
+        data: [[320,360,420,500,620],[280,310,380,450,560],[350,400,460,520,680],[300,340,400,480,600]]
+      }
+    };
+
+    function getSampleJSON(type) {
+      return JSON.stringify(sampleData[type], null, 2);
+    }
+
+    function getOption(type, rawData) {
+      const data = typeof rawData === 'string' ? JSON.parse(rawData) : rawData;
+      switch(type) {
+        case 'heatmap':
+          return {
+            tooltip: { position: 'top' },
+            grid: { top: '10%', bottom: '15%', left: '10%', right: '10%' },
+            xAxis: { type: 'category', data: data.xLabels, splitArea: { show: true } },
+            yAxis: { type: 'category', data: data.yLabels, splitArea: { show: true } },
+            visualMap: { min: 0, max: 10, calculable: true, orient: 'horizontal', left: 'center', bottom: '0%', inRange: { color: ['#EBF5FB','#85C1E9','#2E86C1','#1B4F72'] } },
+            series: [{ name: 'Value', type: 'heatmap', data: data.data, label: { show: true }, emphasis: { itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,0.5)' } } }]
+          };
+        case 'sankey':
+          return {
+            tooltip: { trigger: 'item' },
+            series: [{ type: 'sankey', layout: 'none', emphasis: { focus: 'adjacency' }, lineStyle: { color: 'gradient', curveness: 0.5 }, data: data.nodes, links: data.links }]
+          };
+        case 'funnel':
+          return {
+            tooltip: { trigger: 'item', formatter: '{b}: {c}' },
+            series: [{ type: 'funnel', left: '10%', top: 60, bottom: 60, width: '80%', min: 0, max: 100, sort: 'descending', gap: 4, label: { show: true, position: 'inside', formatter: '{b}\n{c}' }, itemStyle: { borderColor: '#fff', borderWidth: 2 }, data: data }]
+          };
+        case 'candlestick':
+          return {
+            tooltip: { trigger: 'axis', axisPointer: { type: 'cross' } },
+            grid: { left: '10%', right: '10%', bottom: '15%' },
+            xAxis: { type: 'category', data: data.dates },
+            yAxis: { scale: true },
+            series: [{ type: 'candlestick', data: data.values, itemStyle: { color: '#10B981', color0: '#EF4444', borderColor: '#10B981', borderColor0: '#EF4444' } }]
+          };
+        case 'sunburst':
+          return {
+            tooltip: { trigger: 'item' },
+            series: [{ type: 'sunburst', radius: ['15%','90%'], label: { rotate: 'radial', fontSize: 11 }, data: data }]
+          };
+        case 'boxplot':
+          return {
+            tooltip: { trigger: 'item' },
+            grid: { left: '10%', right: '10%', bottom: '15%' },
+            xAxis: { type: 'category', data: data.categories },
+            yAxis: { type: 'value' },
+            series: [{ type: 'boxplot', data: data.data }]
+          };
+        default:
+          return {};
+      }
+    }
+
+    function generate() {
+      const type = document.getElementById('chartType').value;
+      const jsonStr = document.getElementById('jsonInput').value.trim();
+      if (!jsonStr) return;
+
+      try {
+        const option = getOption(type, jsonStr);
+        if (!myChart) myChart = echarts.init(document.getElementById('echartPreview'));
+        myChart.clear();
+        myChart.setOption(option);
+      } catch(e) {
+        alert('Invalid JSON data: ' + e.message);
+      }
+    }
+
+    document.querySelectorAll('.sample-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const type = this.dataset.type;
+        document.getElementById('chartType').value = type;
+        document.getElementById('jsonInput').value = getSampleJSON(type);
+      });
+    });
+
+    document.getElementById('btnFormat').addEventListener('click', () => {
+      try {
+        const obj = JSON.parse(document.getElementById('jsonInput').value);
+        document.getElementById('jsonInput').value = JSON.stringify(obj, null, 2);
+      } catch(e) { alert('Invalid JSON: ' + e.message); }
+    });
+
+    document.getElementById('btnGenerate').addEventListener('click', generate);
+
+    document.getElementById('btnDownloadPNG').addEventListener('click', () => {
+      if (!myChart) return;
+      const url = myChart.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: '#fff' });
+      const link = document.createElement('a');
+      link.download = 'advanced-chart.png';
+      link.href = url;
+      link.click();
+    });
+
+    window.addEventListener('resize', () => { if (myChart) myChart.resize(); });
+
+    // Load default sample
+    document.getElementById('jsonInput').value = getSampleJSON('heatmap');
+  })();
+  </script>
+</body>
+</html>

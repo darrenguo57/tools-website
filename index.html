@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToolBox - Free Online Tools for Developers &amp; Designers</title>
+  <meta name="description" content="A comprehensive collection of free online tools including converters, calculators, image tools, generators, formatters, encryption tools, charts, and more.">
+  <meta name="keywords" content="online tools, developer tools, converter, calculator, image tools, generator, formatter, encryption, charts, Base64, JSON, UUID, QR code">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ToolBox - Free Online Tools for Developers &amp; Designers">
+  <meta property="og:description" content="A comprehensive collection of free online tools including converters, calculators, image tools, generators, formatters, encryption tools, charts, and more.">
+  <meta property="og:url" content="https://toolbox.example.com/">
+  <meta property="og:site_name" content="ToolBox">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="zh_CN">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ToolBox - Free Online Tools">
+  <meta name="twitter:description" content="Free online tools for developers and designers. Convert, calculate, generate, format, and more.">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ToolBox",
+    "url": "https://toolbox.example.com/",
+    "description": "A comprehensive collection of free online tools for developers and designers.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://toolbox.example.com/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/dark.css" media="(prefers-color-scheme: dark)">
+</head>
+<body>
+
+  <!-- ========== Navigation ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="navbar-logo">
+        <i data-lucide="toolbox"></i>
+        <span>ToolBox</span>
+      </a>
+
+      <div class="navbar-search">
+        <i data-lucide="search"></i>
+        <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+      </div>
+
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language">
+          <span class="lang-label">EN</span>
+        </button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="theme-icon-light"></i>
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+        </button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== Main Layout ========== -->
+  <div class="main-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3 data-i18n="sidebar_categories">Categories</h3>
+      </div>
+      <ul class="sidebar-list">
+        <li>
+          <a href="#" class="sidebar-item active" data-category="all">
+            <i data-lucide="layout-grid"></i>
+            <span data-i18n="cat_all">All Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-item" data-category="converters">
+            <i data-lucide="repeat"></i>
+            <span data-i18n="cat_converters">Converters</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-item" data-category="calculators">
+            <i data-lucide="calculator"></i>
+            <span data-i18n="cat_calculators">Calculators</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-item" data-category="image-tools">
+            <i data-lucide="image"></i>
+            <span data-i18n="cat_image_tools">Image Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-item" data-category="generators">
+            <i data-lucide="sparkles"></i>
+            <span data-i18n="cat_generators">Generators</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-item" data-category="formatters">
+            <i data-lucide="braces"></i>
+            <span data-i18n="cat_formatters">Formatters</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-item" data-category="crypto">
+            <i data-lucide="shield"></i>
+            <span data-i18n="cat_crypto">Encryption</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-item" data-category="charts">
+            <i data-lucide="bar-chart-3"></i>
+            <span data-i18n="cat_charts">Charts</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-item" data-category="testing">
+            <i data-lucide="flask-conical"></i>
+            <span data-i18n="cat_testing">Testing</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- Welcome Section -->
+      <section class="welcome-section">
+        <h1 data-i18n="welcome_title">Free Online Tools</h1>
+        <p data-i18n="welcome_desc">A comprehensive collection of free tools for developers, designers, and everyone. No installation required.</p>
+      </section>
+
+      <!-- Tool Cards Grid -->
+      <section class="tools-grid" id="toolsGrid">
+
+        <!-- ===== Converters (8) ===== -->
+        <a href="tools/converters/base64.html" class="tool-card" data-category="converters" data-name-en="Base64 Encode/Decode" data-name-zh="Base64 编解�?>
+          <div class="tool-card-icon"><i data-lucide="arrow-left-right"></i></div>
+          <h3 data-i18n="tool_base64">Base64 Encode/Decode</h3>
+          <p data-i18n="tool_base64_desc">Encode and decode Base64 strings</p>
+          <span class="tool-card-tag" data-i18n="cat_converters">Converters</span>
+        </a>
+
+        <a href="tools/converters/url.html" class="tool-card" data-category="converters" data-name-en="URL Encode/Decode" data-name-zh="URL 编解�?>
+          <div class="tool-card-icon"><i data-lucide="link"></i></div>
+          <h3 data-i18n="tool_url">URL Encode/Decode</h3>
+          <p data-i18n="tool_url_desc">Encode and decode URL components</p>
+          <span class="tool-card-tag" data-i18n="cat_converters">Converters</span>
+        </a>
+
+        <a href="tools/converters/json-yaml.html" class="tool-card" data-category="converters" data-name-en="JSON to YAML" data-name-zh="JSON �?YAML">
+          <div class="tool-card-icon"><i data-lucide="file-json"></i></div>
+          <h3 data-i18n="tool_json_yaml">JSON to YAML</h3>
+          <p data-i18n="tool_json_yaml_desc">Convert between JSON and YAML formats</p>
+          <span class="tool-card-tag" data-i18n="cat_converters">Converters</span>
+        </a>
+
+        <a href="tools/converters/number-base.html" class="tool-card" data-category="converters" data-name-en="Number Base Converter" data-name-zh="进制转换">
+          <div class="tool-card-icon"><i data-lucide="binary"></i></div>
+          <h3 data-i18n="tool_number_base">Number Base Converter</h3>
+          <p data-i18n="tool_number_base_desc">Convert between binary, octal, decimal, and hex</p>
+          <span class="tool-card-tag" data-i18n="cat_converters">Converters</span>
+        </a>
+
+        <a href="tools/converters/unit-converter.html" class="tool-card" data-category="converters" data-name-en="Unit Converter" data-name-zh="单位换算">
+          <div class="tool-card-icon"><i data-lucide="ruler"></i></div>
+          <h3 data-i18n="tool_unit">Unit Converter</h3>
+          <p data-i18n="tool_unit_desc">Convert between various units of measurement</p>
+          <span class="tool-card-tag" data-i18n="cat_converters">Converters</span>
+        </a>
+
+        <a href="tools/converters/timestamp.html" class="tool-card" data-category="converters" data-name-en="Timestamp Converter" data-name-zh="时间戳转�?>
+          <div class="tool-card-icon"><i data-lucide="clock"></i></div>
+          <h3 data-i18n="tool_timestamp">Timestamp Converter</h3>
+          <p data-i18n="tool_timestamp_desc">Convert Unix timestamps to human-readable dates</p>
+          <span class="tool-card-tag" data-i18n="cat_converters">Converters</span>
+        </a>
+
+        <a href="tools/converters/html-entity.html" class="tool-card" data-category="converters" data-name-en="HTML Entities" data-name-zh="HTML 实体">
+          <div class="tool-card-icon"><i data-lucide="code"></i></div>
+          <h3 data-i18n="tool_html_entities">HTML Entities</h3>
+          <p data-i18n="tool_html_entities_desc">Encode and decode HTML entities</p>
+          <span class="tool-card-tag" data-i18n="cat_converters">Converters</span>
+        </a>
+
+        <a href="tools/converters/markdown-html.html" class="tool-card" data-category="converters" data-name-en="Markdown to HTML" data-name-zh="Markdown �?HTML">
+          <div class="tool-card-icon"><i data-lucide="file-text"></i></div>
+          <h3 data-i18n="tool_markdown_html">Markdown to HTML</h3>
+          <p data-i18n="tool_markdown_html_desc">Convert Markdown text to HTML</p>
+          <span class="tool-card-tag" data-i18n="cat_converters">Converters</span>
+        </a>
+
+        <!-- ===== Calculators (6) ===== -->
+        <a href="tools/calculators/standard.html" class="tool-card" data-category="calculators" data-name-en="Standard Calculator" data-name-zh="标准计算�?>
+          <div class="tool-card-icon"><i data-lucide="calculator"></i></div>
+          <h3 data-i18n="tool_calculator_standard">Standard Calculator</h3>
+          <p data-i18n="tool_calculator_standard_desc">Basic arithmetic operations</p>
+          <span class="tool-card-tag" data-i18n="cat_calculators">Calculators</span>
+        </a>
+
+        <a href="tools/calculators/scientific.html" class="tool-card" data-category="calculators" data-name-en="Scientific Calculator" data-name-zh="科学计算�?>
+          <div class="tool-card-icon"><i data-lucide="calculator-variant"></i></div>
+          <h3 data-i18n="tool_calculator_scientific">Scientific Calculator</h3>
+          <p data-i18n="tool_calculator_scientific_desc">Advanced mathematical functions</p>
+          <span class="tool-card-tag" data-i18n="cat_calculators">Calculators</span>
+        </a>
+
+        <a href="tools/calculators/loan.html" class="tool-card" data-category="calculators" data-name-en="Loan Calculator" data-name-zh="贷款计算�?>
+          <div class="tool-card-icon"><i data-lucide="banknote"></i></div>
+          <h3 data-i18n="tool_loan">Loan Calculator</h3>
+          <p data-i18n="tool_loan_desc">Calculate monthly payments and interest</p>
+          <span class="tool-card-tag" data-i18n="cat_calculators">Calculators</span>
+        </a>
+
+        <a href="tools/calculators/bmi.html" class="tool-card" data-category="calculators" data-name-en="BMI Calculator" data-name-zh="BMI 计算�?>
+          <div class="tool-card-icon"><i data-lucide="heart-pulse"></i></div>
+          <h3 data-i18n="tool_bmi">BMI Calculator</h3>
+          <p data-i18n="tool_bmi_desc">Calculate your Body Mass Index</p>
+          <span class="tool-card-tag" data-i18n="cat_calculators">Calculators</span>
+        </a>
+
+        <a href="tools/calculators/age.html" class="tool-card" data-category="calculators" data-name-en="Age Calculator" data-name-zh="年龄计算�?>
+          <div class="tool-card-icon"><i data-lucide="cake"></i></div>
+          <h3 data-i18n="tool_age">Age Calculator</h3>
+          <p data-i18n="tool_age_desc">Calculate exact age from birth date</p>
+          <span class="tool-card-tag" data-i18n="cat_calculators">Calculators</span>
+        </a>
+
+        <a href="tools/calculators/password-strength.html" class="tool-card" data-category="calculators" data-name-en="Password Strength" data-name-zh="密码强度">
+          <div class="tool-card-icon"><i data-lucide="shield-check"></i></div>
+          <h3 data-i18n="tool_password_strength">Password Strength</h3>
+          <p data-i18n="tool_password_strength_desc">Check and analyze password security</p>
+          <span class="tool-card-tag" data-i18n="cat_calculators">Calculators</span>
+        </a>
+
+        <!-- ===== Image Tools (8) ===== -->
+        <a href="tools/image-tools/compress.html" class="tool-card" data-category="image-tools" data-name-en="Image Compress" data-name-zh="图片压缩">
+          <div class="tool-card-icon"><i data-lucide="image-minus"></i></div>
+          <h3 data-i18n="tool_image_compress">Image Compress</h3>
+          <p data-i18n="tool_image_compress_desc">Compress images without losing quality</p>
+          <span class="tool-card-tag" data-i18n="cat_image_tools">Image Tools</span>
+        </a>
+
+        <a href="tools/image-tools/format-convert.html" class="tool-card" data-category="image-tools" data-name-en="Image Format Convert" data-name-zh="格式转换">
+          <div class="tool-card-icon"><i data-lucide="file-image"></i></div>
+          <h3 data-i18n="tool_image_format">Image Format Convert</h3>
+          <p data-i18n="tool_image_format_desc">Convert images between PNG, JPG, WebP, and more</p>
+          <span class="tool-card-tag" data-i18n="cat_image_tools">Image Tools</span>
+        </a>
+
+        <a href="tools/image-tools/base64.html" class="tool-card" data-category="image-tools" data-name-en="Image to Base64" data-name-zh="Base64 转换">
+          <div class="tool-card-icon"><i data-lucide="file-code"></i></div>
+          <h3 data-i18n="tool_image_base64">Image to Base64</h3>
+          <p data-i18n="tool_image_base64_desc">Convert images to Base64 and vice versa</p>
+          <span class="tool-card-tag" data-i18n="cat_image_tools">Image Tools</span>
+        </a>
+
+        <a href="tools/image-tools/crop-rotate.html" class="tool-card" data-category="image-tools" data-name-en="Crop &amp; Rotate" data-name-zh="裁剪旋转">
+          <div class="tool-card-icon"><i data-lucide="crop"></i></div>
+          <h3 data-i18n="tool_image_crop">Crop &amp; Rotate</h3>
+          <p data-i18n="tool_image_crop_desc">Crop and rotate images online</p>
+          <span class="tool-card-tag" data-i18n="cat_image_tools">Image Tools</span>
+        </a>
+
+        <a href="tools/image-tools/filters.html" class="tool-card" data-category="image-tools" data-name-en="Image Filters" data-name-zh="图片滤镜">
+          <div class="tool-card-icon"><i data-lucide="palette"></i></div>
+          <h3 data-i18n="tool_image_filters">Image Filters</h3>
+          <p data-i18n="tool_image_filters_desc">Apply filters and effects to images</p>
+          <span class="tool-card-tag" data-i18n="cat_image_tools">Image Tools</span>
+        </a>
+
+        <a href="tools/image-tools/screenshot.html" class="tool-card" data-category="image-tools" data-name-en="Screenshot Tool" data-name-zh="截图工具">
+          <div class="tool-card-icon"><i data-lucide="camera"></i></div>
+          <h3 data-i18n="tool_screenshot">Screenshot Tool</h3>
+          <p data-i18n="tool_screenshot_desc">Capture and annotate screenshots</p>
+          <span class="tool-card-tag" data-i18n="cat_image_tools">Image Tools</span>
+        </a>
+
+        <a href="tools/image-tools/color-palette.html" class="tool-card" data-category="image-tools" data-name-en="Color Picker" data-name-zh="调色�?>
+          <div class="tool-card-icon"><i data-lucide="pipette"></i></div>
+          <h3 data-i18n="tool_color_picker">Color Picker</h3>
+          <p data-i18n="tool_color_picker_desc">Pick colors from images</p>
+          <span class="tool-card-tag" data-i18n="cat_image_tools">Image Tools</span>
+        </a>
+
+        <a href="tools/image-tools/resize.html" class="tool-card" data-category="image-tools" data-name-en="Image Resize" data-name-zh="尺寸调整">
+          <div class="tool-card-icon"><i data-lucide="maximize"></i></div>
+          <h3 data-i18n="tool_image_resize">Image Resize</h3>
+          <p data-i18n="tool_image_resize_desc">Resize images to any dimension</p>
+          <span class="tool-card-tag" data-i18n="cat_image_tools">Image Tools</span>
+        </a>
+
+        <!-- ===== Generators (8) ===== -->
+        <a href="tools/generators/uuid.html" class="tool-card" data-category="generators" data-name-en="UUID Generator" data-name-zh="UUID 生成�?>
+          <div class="tool-card-icon"><i data-lucide="fingerprint"></i></div>
+          <h3 data-i18n="tool_uuid">UUID Generator</h3>
+          <p data-i18n="tool_uuid_desc">Generate unique UUIDs (v1, v4, v5)</p>
+          <span class="tool-card-tag" data-i18n="cat_generators">Generators</span>
+        </a>
+
+        <a href="tools/generators/nanoid.html" class="tool-card" data-category="generators" data-name-en="NanoID Generator" data-name-zh="NanoID 生成�?>
+          <div class="tool-card-icon"><i data-lucide="hash"></i></div>
+          <h3 data-i18n="tool_nanoid">NanoID Generator</h3>
+          <p data-i18n="tool_nanoid_desc">Generate short, unique, URL-friendly IDs</p>
+          <span class="tool-card-tag" data-i18n="cat_generators">Generators</span>
+        </a>
+
+        <a href="tools/generators/qrcode.html" class="tool-card" data-category="generators" data-name-en="QR Code Generator" data-name-zh="二维码生成器">
+          <div class="tool-card-icon"><i data-lucide="qr-code"></i></div>
+          <h3 data-i18n="tool_qr_code">QR Code Generator</h3>
+          <p data-i18n="tool_qr_code_desc">Generate QR codes from text or URLs</p>
+          <span class="tool-card-tag" data-i18n="cat_generators">Generators</span>
+        </a>
+
+        <a href="tools/generators/password.html" class="tool-card" data-category="generators" data-name-en="Password Generator" data-name-zh="密码生成�?>
+          <div class="tool-card-icon"><i data-lucide="key-round"></i></div>
+          <h3 data-i18n="tool_password">Password Generator</h3>
+          <p data-i18n="tool_password_desc">Generate secure random passwords</p>
+          <span class="tool-card-tag" data-i18n="cat_generators">Generators</span>
+        </a>
+
+        <a href="tools/generators/lorem-ipsum.html" class="tool-card" data-category="generators" data-name-en="Lorem Ipsum" data-name-zh="Lorem Ipsum">
+          <div class="tool-card-icon"><i data-lucide="text-cursor-input"></i></div>
+          <h3 data-i18n="tool_lorem_ipsum">Lorem Ipsum</h3>
+          <p data-i18n="tool_lorem_ipsum_desc">Generate placeholder text for designs</p>
+          <span class="tool-card-tag" data-i18n="cat_generators">Generators</span>
+        </a>
+
+        <a href="tools/generators/random-number.html" class="tool-card" data-category="generators" data-name-en="Random Number" data-name-zh="随机数生成器">
+          <div class="tool-card-icon"><i data-lucide="dice"></i></div>
+          <h3 data-i18n="tool_random_number">Random Number</h3>
+          <p data-i18n="tool_random_number_desc">Generate random numbers with custom range</p>
+          <span class="tool-card-tag" data-i18n="cat_generators">Generators</span>
+        </a>
+
+        <a href="tools/generators/barcode.html" class="tool-card" data-category="generators" data-name-en="Barcode Generator" data-name-zh="条形码生成器">
+          <div class="tool-card-icon"><i data-lucide="barcode"></i></div>
+          <h3 data-i18n="tool_barcode">Barcode Generator</h3>
+          <p data-i18n="tool_barcode_desc">Generate various barcode formats</p>
+          <span class="tool-card-tag" data-i18n="cat_generators">Generators</span>
+        </a>
+
+        <a href="tools/generators/fake-data.html" class="tool-card" data-category="generators" data-name-en="Fake Data Generator" data-name-zh="假数据生成器">
+          <div class="tool-card-icon"><i data-lucide="database"></i></div>
+          <h3 data-i18n="tool_fake_data">Fake Data Generator</h3>
+          <p data-i18n="tool_fake_data_desc">Generate realistic fake data for testing</p>
+          <span class="tool-card-tag" data-i18n="cat_generators">Generators</span>
+        </a>
+
+        <!-- ===== Formatters (8) ===== -->
+        <a href="tools/formatters/json-formatter.html" class="tool-card" data-category="formatters" data-name-en="JSON Formatter" data-name-zh="JSON 格式�?>
+          <div class="tool-card-icon"><i data-lucide="braces"></i></div>
+          <h3 data-i18n="tool_json_format">JSON Formatter</h3>
+          <p data-i18n="tool_json_format_desc">Format, validate, and minify JSON</p>
+          <span class="tool-card-tag" data-i18n="cat_formatters">Formatters</span>
+        </a>
+
+        <a href="tools/formatters/json-visualizer.html" class="tool-card" data-category="formatters" data-name-en="JSON Visualizer" data-name-zh="JSON 可视�?>
+          <div class="tool-card-icon"><i data-lucide="network"></i></div>
+          <h3 data-i18n="tool_json_visual">JSON Visualizer</h3>
+          <p data-i18n="tool_json_visual_desc">Visualize JSON data as interactive tree</p>
+          <span class="tool-card-tag" data-i18n="cat_formatters">Formatters</span>
+        </a>
+
+        <a href="tools/formatters/sql-formatter.html" class="tool-card" data-category="formatters" data-name-en="SQL Formatter" data-name-zh="SQL 格式�?>
+          <div class="tool-card-icon"><i data-lucide="database"></i></div>
+          <h3 data-i18n="tool_sql_format">SQL Formatter</h3>
+          <p data-i18n="tool_sql_format_desc">Format and beautify SQL queries</p>
+          <span class="tool-card-tag" data-i18n="cat_formatters">Formatters</span>
+        </a>
+
+        <a href="tools/formatters/code-formatter.html" class="tool-card" data-category="formatters" data-name-en="Code Formatter" data-name-zh="代码格式�?>
+          <div class="tool-card-icon"><i data-lucide="code-2"></i></div>
+          <h3 data-i18n="tool_code_format">Code Formatter</h3>
+          <p data-i18n="tool_code_format_desc">Format code in multiple languages</p>
+          <span class="tool-card-tag" data-i18n="cat_formatters">Formatters</span>
+        </a>
+
+        <a href="tools/formatters/xml-formatter.html" class="tool-card" data-category="formatters" data-name-en="XML Formatter" data-name-zh="XML 格式�?>
+          <div class="tool-card-icon"><i data-lucide="file-code-2"></i></div>
+          <h3 data-i18n="tool_xml_format">XML Formatter</h3>
+          <p data-i18n="tool_xml_format_desc">Format and validate XML documents</p>
+          <span class="tool-card-tag" data-i18n="cat_formatters">Formatters</span>
+        </a>
+
+        <a href="tools/formatters/csv-viewer.html" class="tool-card" data-category="formatters" data-name-en="CSV Viewer" data-name-zh="CSV 查看�?>
+          <div class="tool-card-icon"><i data-lucide="table"></i></div>
+          <h3 data-i18n="tool_csv_viewer">CSV Viewer</h3>
+          <p data-i18n="tool_csv_viewer_desc">View and edit CSV files online</p>
+          <span class="tool-card-tag" data-i18n="cat_formatters">Formatters</span>
+        </a>
+
+        <a href="tools/formatters/code-compare.html" class="tool-card" data-category="formatters" data-name-en="Code Compare" data-name-zh="代码对比">
+          <div class="tool-card-icon"><i data-lucide="git-compare"></i></div>
+          <h3 data-i18n="tool_code_compare">Code Compare</h3>
+          <p data-i18n="tool_code_compare_desc">Compare two pieces of code side by side</p>
+          <span class="tool-card-tag" data-i18n="cat_formatters">Formatters</span>
+        </a>
+
+        <a href="tools/formatters/text-diff.html" class="tool-card" data-category="formatters" data-name-en="Text Diff" data-name-zh="文本差异">
+          <div class="tool-card-icon"><i data-lucide="diff"></i></div>
+          <h3 data-i18n="tool_text_diff">Text Diff</h3>
+          <p data-i18n="tool_text_diff_desc">Find differences between two texts</p>
+          <span class="tool-card-tag" data-i18n="cat_formatters">Formatters</span>
+        </a>
+
+        <!-- ===== Encryption (6) ===== -->
+        <a href="tools/crypto/hash.html" class="tool-card" data-category="crypto" data-name-en="Hash Generator" data-name-zh="哈希生成�?>
+          <div class="tool-card-icon"><i data-lucide="lock"></i></div>
+          <h3 data-i18n="tool_hash">Hash Generator</h3>
+          <p data-i18n="tool_hash_desc">Generate MD5, SHA-1, SHA-256, SHA-512 hashes</p>
+          <span class="tool-card-tag" data-i18n="cat_crypto">Encryption</span>
+        </a>
+
+        <a href="tools/crypto/base64-crypto.html" class="tool-card" data-category="crypto" data-name-en="Base64 Encrypt" data-name-zh="Base64 加密">
+          <div class="tool-card-icon"><i data-lucide="lock"></i></div>
+          <h3 data-i18n="tool_base64_encrypt">Base64 Encrypt</h3>
+          <p data-i18n="tool_base64_encrypt_desc">Encrypt and decrypt data with Base64</p>
+          <span class="tool-card-tag" data-i18n="cat_crypto">Encryption</span>
+        </a>
+
+        <a href="tools/crypto/aes.html" class="tool-card" data-category="crypto" data-name-en="AES Encrypt/Decrypt" data-name-zh="AES 加解�?>
+          <div class="tool-card-icon"><i data-lucide="shield"></i></div>
+          <h3 data-i18n="tool_aes">AES Encrypt/Decrypt</h3>
+          <p data-i18n="tool_aes_desc">Encrypt and decrypt with AES algorithm</p>
+          <span class="tool-card-tag" data-i18n="cat_crypto">Encryption</span>
+        </a>
+
+        <a href="tools/crypto/rsa.html" class="tool-card" data-category="crypto" data-name-en="RSA Encrypt/Decrypt" data-name-zh="RSA 加解�?>
+          <div class="tool-card-icon"><i data-lucide="key"></i></div>
+          <h3 data-i18n="tool_rsa">RSA Encrypt/Decrypt</h3>
+          <p data-i18n="tool_rsa_desc">Encrypt and decrypt with RSA algorithm</p>
+          <span class="tool-card-tag" data-i18n="cat_crypto">Encryption</span>
+        </a>
+
+        <a href="tools/crypto/url-signature.html" class="tool-card" data-category="crypto" data-name-en="URL Signature" data-name-zh="URL 签名">
+          <div class="tool-card-icon"><i data-lucide="pen-tool"></i></div>
+          <h3 data-i18n="tool_url_signature">URL Signature</h3>
+          <p data-i18n="tool_url_signature_desc">Generate and verify URL signatures</p>
+          <span class="tool-card-tag" data-i18n="cat_crypto">Encryption</span>
+        </a>
+
+        <a href="tools/crypto/hmac.html" class="tool-card" data-category="crypto" data-name-en="HMAC Calculator" data-name-zh="HMAC 计算">
+          <div class="tool-card-icon"><i data-lucide="file-key"></i></div>
+          <h3 data-i18n="tool_hmac">HMAC Calculator</h3>
+          <p data-i18n="tool_hmac_desc">Calculate HMAC signatures for data verification</p>
+          <span class="tool-card-tag" data-i18n="cat_crypto">Encryption</span>
+        </a>
+
+        <!-- ===== Charts (12) ===== -->
+        <a href="tools/charts/chart-basic.html" class="tool-card" data-category="charts" data-name-en="Basic Charts" data-name-zh="基础图表">
+          <div class="tool-card-icon"><i data-lucide="bar-chart-3"></i></div>
+          <h3 data-i18n="tool_chart_basic">Basic Charts</h3>
+          <p data-i18n="tool_chart_basic_desc">Create bar, line, and pie charts</p>
+          <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
+        </a>
+
+        <a href="tools/charts/chart-advanced.html" class="tool-card" data-category="charts" data-name-en="Advanced Charts" data-name-zh="高级图表">
+          <div class="tool-card-icon"><i data-lucide="scatter-chart"></i></div>
+          <h3 data-i18n="tool_chart_advanced">Advanced Charts</h3>
+          <p data-i18n="tool_chart_advanced_desc">Create complex chart types with custom options</p>
+          <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
+        </a>
+
+        <a href="tools/charts/flowchart.html" class="tool-card" data-category="charts" data-name-en="Flowchart" data-name-zh="流程�?>
+          <div class="tool-card-icon"><i data-lucide="git-branch"></i></div>
+          <h3 data-i18n="tool_flowchart">Flowchart</h3>
+          <p data-i18n="tool_flowchart_desc">Design flowcharts and process diagrams</p>
+          <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
+        </a>
+
+        <a href="tools/charts/mindmap.html" class="tool-card" data-category="charts" data-name-en="Mind Map" data-name-zh="思维导图">
+          <div class="tool-card-icon"><i data-lucide="share-2"></i></div>
+          <h3 data-i18n="tool_mind_map">Mind Map</h3>
+          <p data-i18n="tool_mind_map_desc">Create and organize mind maps</p>
+          <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
+        </a>
+
+        <a href="tools/charts/gantt.html" class="tool-card" data-category="charts" data-name-en="Gantt Chart" data-name-zh="甘特�?>
+          <div class="tool-card-icon"><i data-lucide="calendar-range"></i></div>
+          <h3 data-i18n="tool_gantt">Gantt Chart</h3>
+          <p data-i18n="tool_gantt_desc">Create project timelines and Gantt charts</p>
+          <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
+        </a>
+
+        <a href="tools/charts/wordcloud.html" class="tool-card" data-category="charts" data-name-en="Word Cloud" data-name-zh="词云">
+          <div class="tool-card-icon"><i data-lucide="cloud"></i></div>
+          <h3 data-i18n="tool_word_cloud">Word Cloud</h3>
+          <p data-i18n="tool_word_cloud_desc">Generate word clouds from text</p>
+          <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
+        </a>
+
+        <a href="tools/charts/network.html" class="tool-card" data-category="charts" data-name-en="Relation Graph" data-name-zh="关系�?>
+          <div class="tool-card-icon"><i data-lucide="circle-dot"></i></div>
+          <h3 data-i18n="tool_relation">Relation Graph</h3>
+          <p data-i18n="tool_relation_desc">Visualize relationships and connections</p>
+          <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
+        </a>
+
+        <a href="tools/charts/dashboard.html" class="tool-card" data-category="charts" data-name-en="Dashboard" data-name-zh="仪表�?>
+          <div class="tool-card-icon"><i data-lucide="gauge"></i></div>
+          <h3 data-i18n="tool_dashboard">Dashboard</h3>
+          <p data-i18n="tool_dashboard_desc">Create interactive dashboards with gauges</p>
+          <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
+        </a>
+
+        <a href="tools/charts/treemap.html" class="tool-card" data-category="charts" data-name-en="Tree Map" data-name-zh="树状�?>
+          <div class="tool-card-icon"><i data-lucide="list-tree"></i></div>
+          <h3 data-i18n="tool_tree_map">Tree Map</h3>
+          <p data-i18n="tool_tree_map_desc">Visualize hierarchical data as tree maps</p>
+          <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
+        </a>
+
+        <a href="tools/charts/scatter.html" class="tool-card" data-category="charts" data-name-en="Scatter Plot" data-name-zh="散点�?>
+          <div class="tool-card-icon"><i data-lucide="target"></i></div>
+          <h3 data-i18n="tool_scatter">Scatter Plot</h3>
+          <p data-i18n="tool_scatter_desc">Create scatter plots for data analysis</p>
+          <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
+        </a>
+
+        <a href="tools/charts/area-chart.html" class="tool-card" data-category="charts" data-name-en="Area Chart" data-name-zh="面积�?>
+          <div class="tool-card-icon"><i data-lucide="chart-area"></i></div>
+          <h3 data-i18n="tool_area_chart">Area Chart</h3>
+          <p data-i18n="tool_area_chart_desc">Create area charts to show trends</p>
+          <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
+        </a>
+
+        <a href="tools/charts/realtime-chart.html" class="tool-card" data-category="charts" data-name-en="Real-time Chart" data-name-zh="实时图表">
+          <div class="tool-card-icon"><i data-lucide="activity"></i></div>
+          <h3 data-i18n="tool_realtime_chart">Real-time Chart</h3>
+          <p data-i18n="tool_realtime_chart_desc">Create live updating charts</p>
+          <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
+        </a>
+
+        <!-- ===== Testing (4) ===== -->
+        <a href="tools/testers/regex.html" class="tool-card" data-category="testing" data-name-en="Regex Tester" data-name-zh="正则测试">
+          <div class="tool-card-icon"><i data-lucide="brackets"></i></div>
+          <h3 data-i18n="tool_regex">Regex Tester</h3>
+          <p data-i18n="tool_regex_desc">Test and debug regular expressions</p>
+          <span class="tool-card-tag" data-i18n="cat_testing">Testing</span>
+        </a>
+
+        <a href="tools/testers/css-gradient.html" class="tool-card" data-category="testing" data-name-en="CSS Gradient" data-name-zh="CSS 渐变">
+          <div class="tool-card-icon"><i data-lucide="paintbrush"></i></div>
+          <h3 data-i18n="tool_css_gradient">CSS Gradient</h3>
+          <p data-i18n="tool_css_gradient_desc">Design CSS gradients visually</p>
+          <span class="tool-card-tag" data-i18n="cat_testing">Testing</span>
+        </a>
+
+        <a href="tools/testers/color-picker.html" class="tool-card" data-category="testing" data-name-en="Color Picker" data-name-zh="颜色选择�?>
+          <div class="tool-card-icon"><i data-lucide="pipette"></i></div>
+          <h3 data-i18n="tool_color_picker_test">Color Picker</h3>
+          <p data-i18n="tool_color_picker_test_desc">Pick and convert colors between formats</p>
+          <span class="tool-card-tag" data-i18n="cat_testing">Testing</span>
+        </a>
+
+        <a href="tools/testers/performance.html" class="tool-card" data-category="testing" data-name-en="Performance Test" data-name-zh="性能测试">
+          <div class="tool-card-icon"><i data-lucide="zap"></i></div>
+          <h3 data-i18n="tool_performance">Performance Test</h3>
+          <p data-i18n="tool_performance_desc">Test and benchmark JavaScript performance</p>
+          <span class="tool-card-tag" data-i18n="cat_testing">Testing</span>
+        </a>
+
+      </section>
+
+      <!-- Ad Slot -->
+      <div class="ad-slot" id="adSlotBottom">
+        <span data-i18n="ad_label">Advertisement</span>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links">
+        <a href="#" data-i18n="footer_about">About</a>
+        <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="#" data-i18n="footer_terms">Terms of Service</a>
+        <a href="#" data-i18n="footer_contact">Contact</a>
+      </div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Scripts -->
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

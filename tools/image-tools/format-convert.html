@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Format Converter - ToolBox</title>
+    <meta name="description" content="Convert images between PNG, JPEG, WebP, BMP, and GIF formats online. Free and fast.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    <style>
+        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .workspace-grid .full-width { grid-column: 1 / -1; }
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .btn {
+            padding: 0.5rem 1.25rem; border-radius: 0.5rem; border: none; cursor: pointer;
+            font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: var(--primary, #3b82f6); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover, #2563eb); }
+        .btn-secondary { background: var(--bg-secondary, #f1f5f9); color: var(--text, #1e293b); border: 1px solid var(--border, #e2e8f0); }
+        .btn-secondary:hover { background: var(--bg-tertiary, #e2e8f0); }
+        .btn-success { background: #10b981; color: #fff; }
+        .btn-success:hover { background: #059669; }
+        .btn-danger { background: #ef4444; color: #fff; }
+        .btn-danger:hover { background: #dc2626; }
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem; padding: 0.75rem 1.5rem;
+            background: #1e293b; color: #fff; border-radius: 0.5rem; font-size: 14px;
+            transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 9999;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .dropzone {
+            border: 2px dashed var(--border, #e2e8f0); border-radius: 0.75rem;
+            padding: 2.5rem; text-align: center; cursor: pointer; transition: all 0.2s;
+            background: var(--bg-secondary, #f8fafc);
+        }
+        .dropzone:hover, .dropzone.dragover { border-color: var(--primary, #3b82f6); background: rgba(59,130,246,0.05); }
+        .dropzone-icon { width: 48px; height: 48px; color: var(--text-muted, #94a3b8); margin: 0 auto 0.75rem; }
+        .dropzone-text { font-size: 14px; color: var(--text-secondary, #64748b); }
+        .dropzone-hint { font-size: 12px; color: var(--text-muted, #94a3b8); margin-top: 0.25rem; }
+        .options-panel {
+            background: var(--bg-secondary, #f8fafc); border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.75rem; padding: 1rem 1.25rem; margin-bottom: 1rem;
+        }
+        .options-panel h4 { font-size: 14px; font-weight: 600; margin-bottom: 0.75rem; color: var(--text, #1e293b); }
+        .option-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem; }
+        .option-row:last-child { margin-bottom: 0; }
+        .option-label { font-size: 13px; color: var(--text-secondary, #64748b); min-width: 100px; }
+        .option-value { font-size: 13px; font-weight: 600; color: var(--primary, #3b82f6); min-width: 40px; text-align: right; }
+        input[type="range"] { flex: 1; height: 6px; appearance: none; background: var(--border, #e2e8f0); border-radius: 3px; outline: none; cursor: pointer; }
+        input[type="range"]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; background: var(--primary, #3b82f6); border-radius: 50%; cursor: pointer; }
+        select {
+            padding: 0.35rem 0.5rem; border: 1px solid var(--border, #e2e8f0); border-radius: 0.375rem;
+            font-size: 13px; background: var(--bg, #fff); color: var(--text, #1e293b);
+        }
+        .preview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .preview-card {
+            border: 1px solid var(--border, #e2e8f0); border-radius: 0.75rem; overflow: hidden;
+            background: var(--bg, #fff);
+        }
+        .preview-card-header {
+            padding: 0.5rem 0.75rem; font-size: 13px; font-weight: 600;
+            background: var(--bg-secondary, #f8fafc); border-bottom: 1px solid var(--border, #e2e8f0);
+            color: var(--text, #1e293b);
+        }
+        .preview-card-body { padding: 0.75rem; text-align: center; min-height: 200px; display: flex; align-items: center; justify-content: center; }
+        .preview-card-body img { max-width: 100%; max-height: 300px; object-fit: contain; border-radius: 0.25rem; }
+        .result-item {
+            display: flex; align-items: center; justify-content: space-between; padding: 0.75rem;
+            border: 1px solid var(--border, #e2e8f0); border-radius: 0.5rem; margin-bottom: 0.5rem;
+            background: var(--bg, #fff);
+        }
+        .result-item-info { display: flex; align-items: center; gap: 0.75rem; }
+        .result-item-info img { width: 48px; height: 48px; object-fit: cover; border-radius: 0.25rem; }
+        .result-item-name { font-size: 13px; font-weight: 600; color: var(--text, #1e293b); }
+        .result-item-meta { font-size: 12px; color: var(--text-muted, #94a3b8); }
+        .empty-state { text-align: center; padding: 2rem; color: var(--text-muted, #94a3b8); font-size: 14px; }
+        @media (max-width: 768px) { .workspace-grid, .preview-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo"><i data-lucide="image" style="width:28px;height:28px"></i> ToolBox</a>
+            <div class="header-search"><i data-lucide="search"></i><input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools..."></div>
+            <div class="header-actions">
+                <button class="lang-btn" onclick="I18n.setLang(I18n.currentLang==='en'?'zh':'en')">EN</button>
+                <button class="theme-btn" onclick="document.body.classList.toggle('dark')"><i data-lucide="sun"></i></button>
+            </div>
+        </div>
+    </header>
+    <div class="breadcrumb"><div class="container"><a href="../../index.html">Home</a> / <a href="../../index.html#image-tools">Image Tools</a> / <span>Format Converter</span></div></div>
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="repeat"></i></div>
+                    <h1>Image Format Converter</h1>
+                    <p>Convert images between PNG, JPEG, WebP, BMP, and GIF formats. Adjust quality for lossy formats.</p>
+                </div>
+                <div class="tool-workspace">
+                    <div class="dropzone" id="dropzone">
+                        <div class="dropzone-icon"><i data-lucide="upload-cloud"></i></div>
+                        <div class="dropzone-text">Drag & drop images here, or click to select</div>
+                        <div class="dropzone-hint">Supports JPEG, PNG, WebP, BMP, GIF</div>
+                        <input type="file" id="fileInput" accept="image/*" multiple hidden>
+                    </div>
+
+                    <div class="options-panel">
+                        <h4><i data-lucide="settings" style="width:14px;height:14px;display:inline;vertical-align:middle"></i> Conversion Settings</h4>
+                        <div class="option-row">
+                            <span class="option-label">Output Format</span>
+                            <select id="outputFormat">
+                                <option value="image/png">PNG</option>
+                                <option value="image/jpeg">JPEG</option>
+                                <option value="image/webp">WebP</option>
+                                <option value="image/bmp">BMP</option>
+                                <option value="image/gif">GIF</option>
+                            </select>
+                        </div>
+                        <div class="option-row" id="qualityRow">
+                            <span class="option-label">Quality</span>
+                            <input type="range" id="qualitySlider" min="1" max="100" value="90">
+                            <span class="option-value" id="qualityValue">90%</span>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="convertAll()"><i data-lucide="shuffle" style="width:16px;height:16px"></i> Convert</button>
+                        <button class="btn btn-success" id="btnDownloadAll" onclick="downloadAll()" style="display:none"><i data-lucide="download" style="width:16px;height:16px"></i> Download All</button>
+                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2" style="width:16px;height:16px"></i> Clear</button>
+                    </div>
+
+                    <div id="results" class="empty-state">Upload images and select a format to convert</div>
+                </div>
+                <div class="ad-slot" style="margin-top:2rem"><div class="ad-placeholder">Advertisement</div></div>
+            </div>
+            <aside class="tool-sidebar"><div class="ad-slot"><div class="ad-placeholder">Advertisement</div></div></aside>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><p>&copy; 2024 ToolBox. All rights reserved.</p></div></footer>
+    <div class="toast" id="toast"></div>
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script>
+    lucide.createIcons();
+
+    let files = [];
+    let convertedResults = [];
+
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const qualitySlider = document.getElementById('qualitySlider');
+    const qualityValue = document.getElementById('qualityValue');
+    const qualityRow = document.getElementById('qualityRow');
+    const outputFormat = document.getElementById('outputFormat');
+    const results = document.getElementById('results');
+    const btnDownloadAll = document.getElementById('btnDownloadAll');
+
+    qualitySlider.addEventListener('input', () => { qualityValue.textContent = qualitySlider.value + '%'; });
+
+    outputFormat.addEventListener('change', () => {
+        const fmt = outputFormat.value;
+        qualityRow.style.display = (fmt === 'image/jpeg' || fmt === 'image/webp') ? 'flex' : 'none';
+    });
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+    dropzone.addEventListener('drop', e => { e.preventDefault(); dropzone.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+    fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+
+    function handleFiles(inputFiles) {
+        files = Array.from(inputFiles).filter(f => f.type.startsWith('image/'));
+        if (files.length === 0) { showToast('Please select image files'); return; }
+        showToast(files.length + ' file(s) loaded');
+    }
+
+    function clearAll() {
+        files = [];
+        convertedResults = [];
+        results.innerHTML = '<div class="empty-state">Upload images and select a format to convert</div>';
+        btnDownloadAll.style.display = 'none';
+        fileInput.value = '';
+    }
+
+    async function convertAll() {
+        if (files.length === 0) { showToast('Please upload images first'); return; }
+        convertedResults = [];
+        results.innerHTML = '';
+
+        const format = outputFormat.value;
+        const quality = qualitySlider.value / 100;
+        const useQuality = (format === 'image/jpeg' || format === 'image/webp') ? quality : undefined;
+        const ext = format.split('/')[1];
+
+        for (const file of files) {
+            const result = await convertImage(file, format, useQuality, ext);
+            convertedResults.push(result);
+            appendResult(result);
+        }
+
+        btnDownloadAll.style.display = 'inline-flex';
+        showToast('Conversion complete!');
+    }
+
+    function convertImage(file, format, quality, ext) {
+        return new Promise(resolve => {
+            const img = new Image();
+            const url = URL.createObjectURL(file);
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                if (format === 'image/jpeg' || format === 'image/bmp') {
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+                ctx.drawImage(img, 0, 0);
+
+                canvas.toBlob(blob => {
+                    const convertedUrl = URL.createObjectURL(blob);
+                    const baseName = file.name.replace(/\.[^.]+$/, '');
+                    resolve({
+                        originalName: file.name,
+                        newName: baseName + '.' + ext,
+                        originalSize: file.size,
+                        convertedSize: blob.size,
+                        originalUrl: url,
+                        convertedUrl: convertedUrl,
+                        blob: blob,
+                        ext: ext,
+                        width: img.width,
+                        height: img.height
+                    });
+                }, format, quality);
+            };
+            img.src = url;
+        });
+    }
+
+    function appendResult(result) {
+        const item = document.createElement('div');
+        item.className = 'result-item';
+        item.innerHTML = `
+            <div class="result-item-info">
+                <img src="${result.convertedUrl}" alt="${result.newName}">
+                <div>
+                    <div class="result-item-name">${result.newName}</div>
+                    <div class="result-item-meta">${result.width} x ${result.height} | ${formatSize(result.originalSize)} -> ${formatSize(result.convertedSize)}</div>
+                </div>
+            </div>
+            <div style="display:flex;gap:0.5rem">
+                <button class="btn btn-secondary" onclick="previewResult('${result.originalUrl}','${result.convertedUrl}','${result.originalName}','${result.newName}')"><i data-lucide="eye" style="width:14px;height:14px"></i> Preview</button>
+                <button class="btn btn-success" onclick="downloadFile('${result.convertedUrl}','${result.newName}')"><i data-lucide="download" style="width:14px;height:14px"></i> Download</button>
+            </div>
+        `;
+        results.appendChild(item);
+        lucide.createIcons();
+    }
+
+    function previewResult(origUrl, convUrl, origName, convName) {
+        const modal = document.createElement('div');
+        modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem;';
+        modal.onclick = e => { if (e.target === modal) modal.remove(); };
+        modal.innerHTML = `
+            <div style="background:var(--bg,#fff);border-radius:0.75rem;max-width:900px;width:100%;max-height:90vh;overflow:auto;padding:1.5rem;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+                    <h3 style="font-size:16px;font-weight:600;color:var(--text,#1e293b)">Preview</h3>
+                    <button onclick="this.closest('div[style]').parentElement.remove()" style="background:none;border:none;cursor:pointer;font-size:20px;color:var(--text-muted,#94a3b8)">&times;</button>
+                </div>
+                <div class="preview-grid">
+                    <div class="preview-card">
+                        <div class="preview-card-header">Original - ${origName}</div>
+                        <div class="preview-card-body"><img src="${origUrl}" alt="Original"></div>
+                    </div>
+                    <div class="preview-card">
+                        <div class="preview-card-header">Converted - ${convName}</div>
+                        <div class="preview-card-body"><img src="${convUrl}" alt="Converted"></div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+
+    function downloadFile(url, name) {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = name;
+        a.click();
+    }
+
+    function downloadAll() {
+        convertedResults.forEach(r => downloadFile(r.convertedUrl, r.newName));
+        showToast('Downloading all files...');
+    }
+
+    function formatSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+    </script>
+</body>
+</html>

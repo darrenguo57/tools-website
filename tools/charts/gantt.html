@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gantt Chart Generator - ToolBox</title>
+  <meta name="description" content="Create professional Gantt charts online. Add tasks, set dates, track progress, and download as PNG.">
+  <meta name="keywords" content="gantt chart generator, project timeline, task scheduler, project management chart">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Gantt Chart Generator - ToolBox">
+  <meta property="og:description" content="Create Gantt charts online. Free and no installation required.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/charts/gantt.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Gantt Chart Generator",
+    "url": "https://toolbox.example.com/tools/charts/gantt.html",
+    "description": "Create Gantt charts online.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    .task-table { width: 100%; border-collapse: collapse; }
+    .task-table th, .task-table td { padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--color-border-light); font-size: var(--font-size-sm); }
+    .task-table th { font-weight: 600; color: var(--color-text-secondary); background: var(--color-bg-secondary); white-space: nowrap; }
+    .task-table input, .task-table select { width: 100%; padding: 6px 8px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); font-size: var(--font-size-xs); outline: none; }
+    .task-table input:focus { border-color: var(--color-primary); }
+    .task-table input[type="date"] { min-width: 120px; }
+    .task-table input[type="number"] { width: 60px; }
+    .btn-remove-row { background: none; border: none; color: var(--color-error); cursor: pointer; padding: 4px; border-radius: var(--radius-sm); }
+    .btn-remove-row:hover { background: var(--color-error-light); }
+    #ganttCanvas { width: 100%; border-radius: var(--radius-md); }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item active"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=charts" class="breadcrumb__link">Charts</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Gantt Chart Generator</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="gantt-chart"></i></div>
+        <h1 class="tool-header__title">Gantt Chart Generator</h1>
+        <p class="tool-header__desc">Create professional Gantt charts for project planning. Add tasks with dates, progress, and colors. Download as PNG.</p>
+      </section>
+
+      <section class="tool-workspace">
+
+        <!-- Task Input -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="list-todo"></i> Tasks</span>
+            <div class="tool-panel__actions">
+              <button class="btn btn--sm btn--secondary" id="btnAddTask"><i data-lucide="plus"></i> Add Task</button>
+            </div>
+          </div>
+          <div class="tool-panel__body" style="overflow-x:auto;">
+            <table class="task-table" id="taskTable">
+              <thead><tr><th>Task Name</th><th>Start Date</th><th>End Date</th><th>Progress %</th><th>Color</th><th style="width:40px;"></th></tr></thead>
+              <tbody id="taskBody">
+                <tr><td><input type="text" value="Planning" class="task-name"></td><td><input type="date" value="2024-01-01" class="task-start"></td><td><input type="date" value="2024-01-15" class="task-end"></td><td><input type="number" value="100" min="0" max="100" class="task-progress"></td><td><input type="color" value="#3B82F6" class="task-color" style="width:40px;height:32px;border:1px solid var(--color-border);border-radius:var(--radius-md);cursor:pointer;padding:2px;"></td><td><button class="btn-remove-row"><i data-lucide="x" style="width:14px;height:14px;"></i></button></td></tr>
+                <tr><td><input type="text" value="Design" class="task-name"></td><td><input type="date" value="2024-01-10" class="task-start"></td><td><input type="date" value="2024-01-25" class="task-end"></td><td><input type="number" value="75" min="0" max="100" class="task-progress"></td><td><input type="color" value="#10B981" class="task-color" style="width:40px;height:32px;border:1px solid var(--color-border);border-radius:var(--radius-md);cursor:pointer;padding:2px;"></td><td><button class="btn-remove-row"><i data-lucide="x" style="width:14px;height:14px;"></i></button></td></tr>
+                <tr><td><input type="text" value="Development" class="task-name"></td><td><input type="date" value="2024-01-20" class="task-start"></td><td><input type="date" value="2024-02-20" class="task-end"></td><td><input type="number" value="40" min="0" max="100" class="task-progress"></td><td><input type="color" value="#F59E0B" class="task-color" style="width:40px;height:32px;border:1px solid var(--color-border);border-radius:var(--radius-md);cursor:pointer;padding:2px;"></td><td><button class="btn-remove-row"><i data-lucide="x" style="width:14px;height:14px;"></i></button></td></tr>
+                <tr><td><input type="text" value="Testing" class="task-name"></td><td><input type="date" value="2024-02-15" class="task-start"></td><td><input type="date" value="2024-03-01" class="task-end"></td><td><input type="number" value="10" min="0" max="100" class="task-progress"></td><td><input type="color" value="#EF4444" class="task-color" style="width:40px;height:32px;border:1px solid var(--color-border);border-radius:var(--radius-md);cursor:pointer;padding:2px;"></td><td><button class="btn-remove-row"><i data-lucide="x" style="width:14px;height:14px;"></i></button></td></tr>
+                <tr><td><input type="text" value="Deployment" class="task-name"></td><td><input type="date" value="2024-03-01" class="task-start"></td><td><input type="date" value="2024-03-10" class="task-end"></td><td><input type="number" value="0" min="0" max="100" class="task-progress"></td><td><input type="color" value="#8B5CF6" class="task-color" style="width:40px;height:32px;border:1px solid var(--color-border);border-radius:var(--radius-md);cursor:pointer;padding:2px;"></td><td><button class="btn-remove-row"><i data-lucide="x" style="width:14px;height:14px;"></i></button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="tool-actions">
+          <div class="tool-actions__primary">
+            <button class="btn btn--primary" id="btnGenerate"><i data-lucide="sparkles"></i> Generate</button>
+          </div>
+          <div class="tool-actions__secondary">
+            <button class="btn btn--secondary" id="btnDownloadPNG"><i data-lucide="download"></i> Download PNG</button>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="eye"></i> Preview</span>
+          </div>
+          <div class="tool-panel__body" style="overflow-x:auto;">
+            <canvas id="ganttCanvas" height="400"></canvas>
+          </div>
+        </div>
+
+      </section>
+
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Add Tasks</div>
+              <div class="tool-step__desc">Enter task name, start/end dates, progress percentage, and choose a color.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Generate Chart</div>
+              <div class="tool-step__desc">Click Generate to render the Gantt chart.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Download</div>
+              <div class="tool-step__desc">Download the chart as a PNG image.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="flowchart.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Flowchart</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="mindmap.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Mind Map</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="realtime-chart.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Realtime Chart</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="chart-basic.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Basic Charts</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+  (function() {
+    const canvas = document.getElementById('ganttCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function addTaskRow(name, start, end, progress, color) {
+      const tbody = document.getElementById('taskBody');
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td><input type="text" value="'+(name||'')+'" class="task-name"></td><td><input type="date" value="'+(start||'')+'" class="task-start"></td><td><input type="date" value="'+(end||'')+'" class="task-end"></td><td><input type="number" value="'+(progress||0)+'" min="0" max="100" class="task-progress"></td><td><input type="color" value="'+(color||'#3B82F6')+'" class="task-color" style="width:40px;height:32px;border:1px solid var(--color-border);border-radius:var(--radius-md);cursor:pointer;padding:2px;"></td><td><button class="btn-remove-row"><i data-lucide="x" style="width:14px;height:14px;"></i></button></td>';
+      tbody.appendChild(tr);
+      tr.querySelector('.btn-remove-row').addEventListener('click', () => tr.remove());
+      lucide.createIcons();
+    }
+
+    document.getElementById('btnAddTask').addEventListener('click', () => addTaskRow('', '', '', 0, '#3B82F6'));
+    document.querySelectorAll('.btn-remove-row').forEach(btn => {
+      btn.addEventListener('click', function() { this.closest('tr').remove(); });
+    });
+
+    function getTasks() {
+      const tasks = [];
+      document.querySelectorAll('#taskBody tr').forEach(row => {
+        const name = row.querySelector('.task-name').value.trim();
+        const start = row.querySelector('.task-start').value;
+        const end = row.querySelector('.task-end').value;
+        const progress = parseInt(row.querySelector('.task-progress').value) || 0;
+        const color = row.querySelector('.task-color').value;
+        if (name && start && end) tasks.push({ name, start: new Date(start), end: new Date(end), progress, color });
+      });
+      return tasks;
+    }
+
+    function render() {
+      const tasks = getTasks();
+      if (tasks.length === 0) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      const labelW = 160;
+      const headerH = 50;
+      const rowH = 40;
+      const padding = 20;
+      const chartW = Math.max(800, tasks.length * 80 + labelW);
+      const totalH = headerH + tasks.length * rowH + padding * 2;
+
+      canvas.width = chartW * dpr;
+      canvas.height = totalH * dpr;
+      canvas.style.width = chartW + 'px';
+      canvas.style.height = totalH + 'px';
+      ctx.scale(dpr, dpr);
+
+      // Background
+      ctx.fillStyle = '#FAFBFC';
+      ctx.fillRect(0, 0, chartW, totalH);
+
+      // Time range
+      let minDate = new Date(Math.min(...tasks.map(t => t.start.getTime())));
+      let maxDate = new Date(Math.max(...tasks.map(t => t.end.getTime())));
+      minDate.setDate(minDate.getDate() - 2);
+      maxDate.setDate(maxDate.getDate() + 2);
+      const totalDays = (maxDate - minDate) / (1000 * 60 * 60 * 24);
+      const dayW = (chartW - labelW - padding) / totalDays;
+
+      // Header background
+      ctx.fillStyle = '#F1F5F9';
+      ctx.fillRect(0, 0, chartW, headerH);
+
+      // Header text
+      ctx.font = '600 12px Inter, sans-serif';
+      ctx.fillStyle = '#6B7280';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('Task', padding, headerH / 2);
+
+      // Date headers
+      const startDate = new Date(minDate);
+      let col = 0;
+      while (startDate <= maxDate) {
+        const x = labelW + (startDate - minDate) / (1000*60*60*24) * dayW;
+        if (startDate.getDate() === 1 || col === 0) {
+          ctx.fillStyle = '#374151';
+          ctx.font = '600 11px Inter, sans-serif';
+          ctx.fillText(startDate.toLocaleDateString('en', { month: 'short', year: 'numeric' }), x + 4, headerH / 2 - 8);
+        }
+        if (startDate.getDay() === 1) {
+          ctx.fillStyle = '#9CA3AF';
+          ctx.font = '400 10px Inter, sans-serif';
+          ctx.fillText(startDate.toLocaleDateString('en', { day: 'numeric' }), x + 4, headerH / 2 + 8);
+        }
+        startDate.setDate(startDate.getDate() + 1);
+        col++;
+      }
+
+      // Grid lines
+      ctx.strokeStyle = '#E5E7EB';
+      ctx.lineWidth = 0.5;
+      const gridDate = new Date(minDate);
+      while (gridDate <= maxDate) {
+        if (gridDate.getDay() === 1) {
+          const x = labelW + (gridDate - minDate) / (1000*60*60*24) * dayW;
+          ctx.beginPath();
+          ctx.moveTo(x, headerH);
+          ctx.lineTo(x, totalH);
+          ctx.stroke();
+        }
+        gridDate.setDate(gridDate.getDate() + 1);
+      }
+
+      // Task rows
+      tasks.forEach((task, i) => {
+        const y = headerH + i * rowH;
+
+        // Alternating row bg
+        if (i % 2 === 0) {
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, y, chartW, rowH);
+        }
+
+        // Task label
+        ctx.font = '500 13px Inter, sans-serif';
+        ctx.fillStyle = '#1F2937';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(task.name, padding, y + rowH / 2);
+
+        // Task bar
+        const barX = labelW + (task.start - minDate) / (1000*60*60*24) * dayW;
+        const barW = (task.end - task.start) / (1000*60*60*24) * dayW;
+        const barY = y + 10;
+        const barH = rowH - 20;
+
+        // Background bar
+        ctx.fillStyle = task.color + '30';
+        ctx.beginPath();
+        ctx.roundRect(barX, barY, barW, barH, 4);
+        ctx.fill();
+
+        // Progress bar
+        const progressW = barW * (task.progress / 100);
+        ctx.fillStyle = task.color;
+        ctx.beginPath();
+        ctx.roundRect(barX, barY, progressW, barH, 4);
+        ctx.fill();
+
+        // Progress text
+        if (barW > 40) {
+          ctx.fillStyle = '#fff';
+          ctx.font = '600 11px Inter, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(task.progress + '%', barX + progressW / 2, barY + barH / 2);
+        }
+      });
+
+      // Today line
+      const today = new Date();
+      if (today >= minDate && today <= maxDate) {
+        const todayX = labelW + (today - minDate) / (1000*60*60*24) * dayW;
+        ctx.strokeStyle = '#EF4444';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(todayX, headerH);
+        ctx.lineTo(todayX, totalH);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = '#EF4444';
+        ctx.font = '600 10px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Today', todayX, headerH - 5);
+      }
+    }
+
+    document.getElementById('btnGenerate').addEventListener('click', render);
+
+    document.getElementById('btnDownloadPNG').addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = 'gantt-chart.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog - ToolBox</title>
+  <meta name="description" content="Tips, tutorials, and guides on JSON formatting, Base64 encoding, password security, image compression, and more developer tools.">
+  <meta name="keywords" content="blog, developer tutorials, JSON guide, Base64 tutorial, password security, web development tips">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Blog - ToolBox">
+  <meta property="og:description" content="Tips, tutorials, and guides on developer tools and web development.">
+  <meta property="og:url" content="https://toolbox.example.com/blog/">
+  <meta property="og:site_name" content="ToolBox">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Blog - ToolBox">
+  <meta name="twitter:description" content="Tips, tutorials, and guides on developer tools and web development.">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "ToolBox Blog",
+    "url": "https://toolbox.example.com/blog/",
+    "description": "Tips, tutorials, and guides on developer tools and web development.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "ToolBox",
+      "url": "https://toolbox.example.com/"
+    }
+  }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="../assets/css/blog.css">
+</head>
+<body>
+
+  <!-- ========== Navigation ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo">
+        <i data-lucide="toolbox"></i>
+        <span>ToolBox</span>
+      </a>
+
+      <div class="navbar-search">
+        <i data-lucide="search"></i>
+        <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+      </div>
+
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language">
+          <span class="lang-label">EN</span>
+        </button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="theme-icon-light"></i>
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+        </button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== Main Layout ========== -->
+  <div class="main-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3 data-i18n="sidebar_categories">Categories</h3>
+      </div>
+      <ul class="sidebar-list">
+        <li>
+          <a href="../index.html" class="sidebar-item" data-category="all">
+            <i data-lucide="layout-grid"></i>
+            <span data-i18n="cat_all">All Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=converters" class="sidebar-item" data-category="converters">
+            <i data-lucide="repeat"></i>
+            <span data-i18n="cat_converters">Converters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=calculators" class="sidebar-item" data-category="calculators">
+            <i data-lucide="calculator"></i>
+            <span data-i18n="cat_calculators">Calculators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=image-tools" class="sidebar-item" data-category="image-tools">
+            <i data-lucide="image"></i>
+            <span data-i18n="cat_image_tools">Image Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=generators" class="sidebar-item" data-category="generators">
+            <i data-lucide="sparkles"></i>
+            <span data-i18n="cat_generators">Generators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=formatters" class="sidebar-item" data-category="formatters">
+            <i data-lucide="braces"></i>
+            <span data-i18n="cat_formatters">Formatters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=crypto" class="sidebar-item" data-category="crypto">
+            <i data-lucide="shield"></i>
+            <span data-i18n="cat_crypto">Encryption</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=charts" class="sidebar-item" data-category="charts">
+            <i data-lucide="bar-chart-3"></i>
+            <span data-i18n="cat_charts">Charts</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=testing" class="sidebar-item" data-category="testing">
+            <i data-lucide="flask-conical"></i>
+            <span data-i18n="cat_testing">Testing</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- Blog Header -->
+      <section class="blog-header">
+        <h1 class="blog-header__title" data-i18n="blog_title">Blog</h1>
+        <p class="blog-header__desc" data-i18n="blog_desc">Tips, tutorials, and in-depth guides to help you get the most out of developer tools and web technologies.</p>
+      </section>
+
+      <!-- Blog Search -->
+      <div class="blog-search">
+        <svg class="blog-search__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="blog-search__input" id="blogSearchInput" data-i18n-placeholder="blog_search_placeholder" placeholder="Search articles...">
+        <button class="blog-search__clear" id="blogSearchClear" style="display:none;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Tags Filter -->
+      <div class="blog-tags" id="blogTags">
+        <!-- Tags will be rendered by JS -->
+      </div>
+
+      <!-- Article Grid -->
+      <div class="article-grid" id="articleGrid">
+        <!-- Articles will be rendered by JS -->
+      </div>
+
+      <!-- No Results -->
+      <div id="noResults" style="display:none; text-align:center; padding: 60px 20px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 16px; opacity:0.4;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <p style="font-size: var(--font-size-lg); color: var(--color-text-secondary);" data-i18n="blog_no_results">No articles found matching your search.</p>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination">
+        <!-- Pagination will be rendered by JS -->
+      </div>
+
+      <!-- Ad Slot -->
+      <div class="ad-slot" id="adSlotBottom">
+        <span data-i18n="ad_label">Advertisement</span>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links">
+        <a href="#" data-i18n="footer_about">About</a>
+        <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="#" data-i18n="footer_terms">Terms of Service</a>
+        <a href="#" data-i18n="footer_contact">Contact</a>
+      </div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/utils.js"></script>
+
+  <script>
+  (function() {
+    'use strict';
+
+    // ===== Article Data =====
+    const articles = [
+      {
+        id: 'json-formatting-guide',
+        title: 'How to Format JSON Like a Pro',
+        titleZh: 'JSON格式化完全指�?,
+        slug: 'json-formatting-guide',
+        excerpt: 'Learn the best practices for formatting JSON data, including indentation, key sorting, validation, and common error fixing.',
+        excerptZh: '学习JSON数据格式化的最佳实践，包括缩进、键排序、验证和常见错误修复�?,
+        date: '2024-01-15',
+        readTime: 5,
+        tags: ['json', 'formatter'],
+        image: '../assets/images/blog/json-formatting-guide.jpg',
+        file: 'articles/json-formatting-guide.html'
+      },
+      {
+        id: 'base64-encoding-explained',
+        title: 'Base64 Encoding Explained',
+        titleZh: 'Base64编码详解',
+        slug: 'base64-encoding-explained',
+        excerpt: 'A comprehensive guide to Base64 encoding: how it works, when to use it, and common use cases like data URLs and email attachments.',
+        excerptZh: 'Base64编码全面指南：工作原理、使用场景以及数据URL和邮件附件等常见用例�?,
+        date: '2024-01-22',
+        readTime: 6,
+        tags: ['base64', 'converter', 'encoding'],
+        image: '../assets/images/blog/base64-encoding-explained.jpg',
+        file: 'articles/base64-encoding-explained.html'
+      },
+      {
+        id: 'password-security-guide',
+        title: 'Ultimate Guide to Password Security',
+        titleZh: '密码安全终极指南',
+        slug: 'password-security-guide',
+        excerpt: 'Discover what makes a strong password, learn about password entropy, common mistakes, and how to use password generators effectively.',
+        excerptZh: '了解什么是强密码，学习密码熵、常见错误以及如何有效使用密码生成器�?,
+        date: '2024-02-05',
+        readTime: 7,
+        tags: ['password', 'security'],
+        image: '../assets/images/blog/password-security-guide.jpg',
+        file: 'articles/password-security-guide.html'
+      },
+      {
+        id: 'aes-encryption-explained',
+        title: 'Understanding AES Encryption',
+        titleZh: 'AES加密原理详解',
+        slug: 'aes-encryption-explained',
+        excerpt: 'Deep dive into AES encryption: how the algorithm works, key sizes, modes of operation, and practical applications in modern security.',
+        excerptZh: '深入解析AES加密：算法原理、密钥长度、工作模式及现代安全中的实际应用�?,
+        date: '2024-02-18',
+        readTime: 8,
+        tags: ['encryption', 'security', 'aes'],
+        image: '../assets/images/blog/aes-encryption-explained.jpg',
+        file: '#'
+      },
+      {
+        id: 'image-compression-tips',
+        title: 'How to Compress Images Without Losing Quality',
+        titleZh: '无损压缩图片技�?,
+        slug: 'image-compression-tips',
+        excerpt: 'Master the art of image compression: learn about lossy vs lossless compression, format selection, and tools for optimal results.',
+        excerptZh: '掌握图片压缩的艺术：了解有损与无损压缩、格式选择以及获得最佳效果的工具�?,
+        date: '2024-03-01',
+        readTime: 5,
+        tags: ['image', 'compression'],
+        image: '../assets/images/blog/image-compression-tips.jpg',
+        file: '#'
+      },
+      {
+        id: 'regex-beginner-tutorial',
+        title: 'Regular Expressions for Beginners',
+        titleZh: '正则表达式入门教�?,
+        slug: 'regex-beginner-tutorial',
+        excerpt: 'Start your journey with regular expressions: learn basic syntax, common patterns, and practical examples for text matching.',
+        excerptZh: '开始你的正则表达式之旅：学习基本语法、常用模式和文本匹配的实际示例�?,
+        date: '2024-03-15',
+        readTime: 6,
+        tags: ['regex', 'tutorial'],
+        image: '../assets/images/blog/regex-beginner-tutorial.jpg',
+        file: '#'
+      },
+      {
+        id: 'color-theory-web-design',
+        title: 'Color Theory for Web Designers',
+        titleZh: '网页设计师色彩理�?,
+        slug: 'color-theory-web-design',
+        excerpt: 'Essential color theory concepts every web designer should know: color wheels, palettes, contrast ratios, and accessibility considerations.',
+        excerptZh: '每个网页设计师都应该了解的基本色彩理论概念：色轮、调色板、对比度和无障碍考虑�?,
+        date: '2024-04-01',
+        readTime: 5,
+        tags: ['color', 'design'],
+        image: '../assets/images/blog/color-theory-web-design.jpg',
+        file: '#'
+      },
+      {
+        id: 'unit-conversion-cheat-sheet',
+        title: 'Unit Conversion Cheat Sheet',
+        titleZh: '单位换算速查�?,
+        slug: 'unit-conversion-cheat-sheet',
+        excerpt: 'A handy reference for common unit conversions: length, weight, temperature, data storage, and more with quick lookup tables.',
+        excerptZh: '常用单位换算的便捷参考：长度、重量、温度、数据存储等快速查找表�?,
+        date: '2024-04-15',
+        readTime: 4,
+        tags: ['converter', 'reference'],
+        image: '../assets/images/blog/unit-conversion-cheat-sheet.jpg',
+        file: '#'
+      },
+      {
+        id: 'markdown-vs-html-guide',
+        title: 'Markdown vs HTML: When to Use What',
+        titleZh: 'Markdown与HTML选择指南',
+        slug: 'markdown-vs-html-guide',
+        excerpt: 'Compare Markdown and HTML: understand their strengths, weaknesses, and when to use each format for your content.',
+        excerptZh: '比较Markdown和HTML：了解它们的优势、劣势以及何时使用每种格式�?,
+        date: '2024-05-01',
+        readTime: 5,
+        tags: ['markdown', 'html'],
+        image: '../assets/images/blog/markdown-vs-html-guide.jpg',
+        file: '#'
+      },
+      {
+        id: 'data-visualization-best-practices',
+        title: 'Data Visualization Best Practices',
+        titleZh: '数据可视化最佳实�?,
+        slug: 'data-visualization-best-practices',
+        excerpt: 'Learn how to create effective data visualizations: choosing the right chart type, design principles, and common pitfalls to avoid.',
+        excerptZh: '学习如何创建有效的数据可视化：选择正确的图表类型、设计原则和避免常见陷阱�?,
+        date: '2024-05-15',
+        readTime: 6,
+        tags: ['chart', 'visualization'],
+        image: '../assets/images/blog/data-visualization-best-practices.jpg',
+        file: '#'
+      }
+    ];
+
+    // ===== State =====
+    let currentTag = 'all';
+    let currentSearch = '';
+    let currentPage = 1;
+    const articlesPerPage = 6;
+
+    // ===== DOM Elements =====
+    const articleGrid = document.getElementById('articleGrid');
+    const blogTags = document.getElementById('blogTags');
+    const blogSearchInput = document.getElementById('blogSearchInput');
+    const blogSearchClear = document.getElementById('blogSearchClear');
+    const pagination = document.getElementById('pagination');
+    const noResults = document.getElementById('noResults');
+
+    // ===== Utility Functions =====
+    function getLang() {
+      return (document.documentElement.lang || 'en').toLowerCase();
+    }
+
+    function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    function getFilteredArticles() {
+      return articles.filter(function(article) {
+        const lang = getLang();
+        const title = lang === 'zh' ? article.titleZh : article.title;
+        const excerpt = lang === 'zh' ? article.excerptZh : article.excerpt;
+
+        const matchesTag = currentTag === 'all' || article.tags.indexOf(currentTag) !== -1;
+        const searchLower = currentSearch.toLowerCase();
+        const matchesSearch = !currentSearch ||
+          title.toLowerCase().indexOf(searchLower) !== -1 ||
+          excerpt.toLowerCase().indexOf(searchLower) !== -1 ||
+          article.tags.some(function(t) { return t.toLowerCase().indexOf(searchLower) !== -1; });
+
+        return matchesTag && matchesSearch;
+      });
+    }
+
+    // ===== Render Tags =====
+    function renderTags() {
+      var tagCountMap = {};
+      articles.forEach(function(article) {
+        article.tags.forEach(function(tag) {
+          tagCountMap[tag] = (tagCountMap[tag] || 0) + 1;
+        });
+      });
+
+      var tags = Object.keys(tagCountMap).sort();
+      var html = '<button class="blog-tag' + (currentTag === 'all' ? ' blog-tag--active' : '') + '" data-tag="all">All <span class="blog-tag__count">(' + articles.length + ')</span></button>';
+
+      tags.forEach(function(tag) {
+        var isActive = currentTag === tag;
+        html += '<button class="blog-tag' + (isActive ? ' blog-tag--active' : '') + '" data-tag="' + tag + '">' + tag + ' <span class="blog-tag__count">(' + tagCountMap[tag] + ')</span></button>';
+      });
+
+      blogTags.innerHTML = html;
+
+      // Bind tag click events
+      blogTags.querySelectorAll('.blog-tag').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          currentTag = this.getAttribute('data-tag');
+          currentPage = 1;
+          renderTags();
+          renderArticles();
+          renderPagination();
+        });
+      });
+    }
+
+    // ===== Render Articles =====
+    function renderArticles() {
+      var filtered = getFilteredArticles();
+      var totalPages = Math.ceil(filtered.length / articlesPerPage);
+      if (currentPage > totalPages) currentPage = totalPages || 1;
+
+      var start = (currentPage - 1) * articlesPerPage;
+      var end = start + articlesPerPage;
+      var pageArticles = filtered.slice(start, end);
+
+      if (pageArticles.length === 0) {
+        articleGrid.style.display = 'none';
+        noResults.style.display = 'block';
+        return;
+      }
+
+      articleGrid.style.display = '';
+      noResults.style.display = 'none';
+
+      var lang = getLang();
+      var html = '';
+
+      pageArticles.forEach(function(article) {
+        var title = lang === 'zh' ? article.titleZh : article.title;
+        var excerpt = lang === 'zh' ? article.excerptZh : article.excerpt;
+
+        html += '<a href="' + article.file + '" class="article-card">';
+        html += '  <div class="article-card__image">';
+        html += '    <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>';
+        html += '  </div>';
+        html += '  <div class="article-card__body">';
+        html += '    <div class="article-card__meta">';
+        html += '      <span class="article-card__date"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ' + formatDate(article.date) + '</span>';
+        html += '      <span class="article-card__read-time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ' + article.readTime + ' min read</span>';
+        html += '    </div>';
+        html += '    <h2 class="article-card__title">' + title + '</h2>';
+        html += '    <p class="article-card__excerpt">' + excerpt + '</p>';
+        html += '    <div class="article-card__footer">';
+        html += '      <div class="article-card__tags">';
+        article.tags.forEach(function(tag) {
+          html += '        <span class="article-card__tag">' + tag + '</span>';
+        });
+        html += '      </div>';
+        html += '    </div>';
+        html += '  </div>';
+        html += '</a>';
+      });
+
+      articleGrid.innerHTML = html;
+    }
+
+    // ===== Render Pagination =====
+    function renderPagination() {
+      var filtered = getFilteredArticles();
+      var totalPages = Math.ceil(filtered.length / articlesPerPage);
+
+      if (totalPages <= 1) {
+        pagination.style.display = 'none';
+        return;
+      }
+
+      pagination.style.display = '';
+
+      var html = '';
+
+      // Previous button
+      html += '<button class="pagination__btn' + (currentPage === 1 ? ' pagination__btn--disabled' : '') + '" data-page="prev">';
+      html += '  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
+      html += '</button>';
+
+      // Page numbers
+      for (var i = 1; i <= totalPages; i++) {
+        html += '<button class="pagination__btn' + (i === currentPage ? ' pagination__btn--active' : '') + '" data-page="' + i + '">' + i + '</button>';
+      }
+
+      // Next button
+      html += '<button class="pagination__btn' + (currentPage === totalPages ? ' pagination__btn--disabled' : '') + '" data-page="next">';
+      html += '  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
+      html += '</button>';
+
+      pagination.innerHTML = html;
+
+      // Bind pagination events
+      pagination.querySelectorAll('.pagination__btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          if (this.classList.contains('pagination__btn--disabled')) return;
+          var page = this.getAttribute('data-page');
+          if (page === 'prev') {
+            currentPage = Math.max(1, currentPage - 1);
+          } else if (page === 'next') {
+            currentPage = Math.min(totalPages, currentPage + 1);
+          } else {
+            currentPage = parseInt(page, 10);
+          }
+          renderArticles();
+          renderPagination();
+          // Scroll to top of grid
+          articleGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+    }
+
+    // ===== Search =====
+    blogSearchInput.addEventListener('input', function() {
+      currentSearch = this.value.trim();
+      currentPage = 1;
+      blogSearchClear.style.display = currentSearch ? 'flex' : 'none';
+      renderArticles();
+      renderPagination();
+    });
+
+    blogSearchClear.addEventListener('click', function() {
+      blogSearchInput.value = '';
+      currentSearch = '';
+      currentPage = 1;
+      blogSearchClear.style.display = 'none';
+      renderArticles();
+      renderPagination();
+      blogSearchInput.focus();
+    });
+
+    // ===== Language Change Observer =====
+    var langObserver = new MutationObserver(function() {
+      renderArticles();
+      renderTags();
+    });
+    langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+
+    // ===== Init =====
+    renderTags();
+    renderArticles();
+    renderPagination();
+
+  })();
+  </script>
+</body>
+</html>

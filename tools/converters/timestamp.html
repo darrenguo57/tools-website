@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timestamp Converter - ToolBox</title>
+    <meta name="description" content="Convert between Unix timestamps and human-readable dates. Supports seconds, milliseconds, and relative time.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    <style>
+        .converter-card {
+            background: var(--bg, #fff); border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.75rem; padding: 1.5rem;
+        }
+        .section-title {
+            font-weight: 600; font-size: 15px; margin-bottom: 0.75rem;
+            display: flex; align-items: center; gap: 0.5rem;
+            color: var(--text, #1e293b);
+        }
+        .input-row {
+            display: flex; gap: 0.75rem; align-items: flex-end; margin-bottom: 1.5rem; flex-wrap: wrap;
+        }
+        .input-group { flex: 1; min-width: 200px; }
+        .input-group label {
+            display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 13px;
+            color: var(--text-muted, #64748b);
+        }
+        .input-group input, .input-group select {
+            width: 100%; padding: 0.6rem 0.75rem; border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.5rem; font-size: 15px; background: var(--bg, #fff);
+            color: var(--text, #1e293b); box-sizing: border-box;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: none; border-color: var(--primary, #3b82f6);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+        }
+        .btn {
+            padding: 0.6rem 1.25rem; border-radius: 0.5rem; border: none; cursor: pointer;
+            font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .btn-primary { background: var(--primary, #3b82f6); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover, #2563eb); }
+        .btn-secondary { background: var(--bg-secondary, #f1f5f9); color: var(--text, #1e293b); border: 1px solid var(--border, #e2e8f0); }
+        .btn-secondary:hover { background: var(--bg-tertiary, #e2e8f0); }
+        .btn-success { background: #10b981; color: #fff; }
+        .btn-success:hover { background: #059669; }
+        .results-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
+        }
+        .result-item {
+            background: var(--bg-secondary, #f8fafc); border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.5rem; padding: 0.75rem 1rem; cursor: pointer;
+            transition: background 0.2s;
+        }
+        .result-item:hover { background: var(--bg-tertiary, #eef2f7); }
+        .result-item .result-label {
+            font-size: 11px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.05em; color: var(--text-muted, #94a3b8); margin-bottom: 0.25rem;
+        }
+        .result-item .result-value {
+            font-family: 'Courier New', monospace; font-size: 14px;
+            color: var(--text, #1e293b); word-break: break-all;
+        }
+        .live-timestamp {
+            text-align: center; padding: 1rem; background: var(--bg-secondary, #f8fafc);
+            border: 1px solid var(--border, #e2e8f0); border-radius: 0.5rem; margin-bottom: 1.5rem;
+        }
+        .live-timestamp .ts-value {
+            font-size: 24px; font-weight: 700; font-family: 'Courier New', monospace;
+            color: var(--primary, #3b82f6);
+        }
+        .live-timestamp .ts-label {
+            font-size: 12px; color: var(--text-muted, #94a3b8); margin-top: 0.25rem;
+        }
+        .divider { border: none; border-top: 1px solid var(--border, #e2e8f0); margin: 1.5rem 0; }
+        .error-msg { color: #ef4444; font-size: 13px; margin-top: 0.5rem; display: none; }
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem; padding: 0.75rem 1.5rem;
+            background: #1e293b; color: #fff; border-radius: 0.5rem; font-size: 14px;
+            transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 9999;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        @media (max-width: 768px) { .results-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo"><i data-lucide="clock" style="width:28px;height:28px"></i> ToolBox</a>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+            </div>
+            <div class="header-actions">
+                <button class="lang-btn" onclick="I18n.setLang(I18n.currentLang==='en'?'zh':'en')">EN</button>
+                <button class="theme-btn" onclick="document.body.classList.toggle('dark')"><i data-lucide="sun"></i></button>
+            </div>
+        </div>
+    </header>
+    <div class="breadcrumb"><div class="container"><a href="../../index.html">Home</a> / <a href="../../index.html#converters">Converters</a> / <span>Timestamp</span></div></div>
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="clock"></i></div>
+                    <h1>Timestamp Converter</h1>
+                    <p>Convert between Unix timestamps and human-readable date/time formats. Shows current timestamp in real-time.</p>
+                </div>
+                <div class="tool-workspace">
+                    <div class="converter-card">
+                        <!-- Live timestamp -->
+                        <div class="live-timestamp">
+                            <div class="ts-value" id="liveTs">-</div>
+                            <div class="ts-label">Current Unix Timestamp (seconds)</div>
+                        </div>
+
+                        <!-- Timestamp to Date -->
+                        <div class="section-title"><i data-lucide="arrow-right" style="width:16px;height:16px"></i> Timestamp to Date</div>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>Unix Timestamp</label>
+                                <input type="text" id="tsInput" placeholder="e.g. 1700000000">
+                            </div>
+                            <div class="input-group" style="max-width:160px">
+                                <label>Unit</label>
+                                <select id="tsUnit">
+                                    <option value="seconds">Seconds</option>
+                                    <option value="milliseconds">Milliseconds</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" onclick="tsToDate()">Convert</button>
+                            <button class="btn btn-secondary" onclick="setCurrentTs()">Now</button>
+                        </div>
+                        <div class="error-msg" id="tsError"></div>
+                        <div class="results-grid" id="tsResults">
+                            <div class="result-item" onclick="copyResult(this)">
+                                <div class="result-label">ISO 8601</div>
+                                <div class="result-value" id="resIso">-</div>
+                            </div>
+                            <div class="result-item" onclick="copyResult(this)">
+                                <div class="result-label">UTC String</div>
+                                <div class="result-value" id="resUtc">-</div>
+                            </div>
+                            <div class="result-item" onclick="copyResult(this)">
+                                <div class="result-label">Local Time</div>
+                                <div class="result-value" id="resLocal">-</div>
+                            </div>
+                            <div class="result-item" onclick="copyResult(this)">
+                                <div class="result-label">Relative</div>
+                                <div class="result-value" id="resRelative">-</div>
+                            </div>
+                            <div class="result-item" onclick="copyResult(this)">
+                                <div class="result-label">Date Only</div>
+                                <div class="result-value" id="resDate">-</div>
+                            </div>
+                            <div class="result-item" onclick="copyResult(this)">
+                                <div class="result-label">Time Only</div>
+                                <div class="result-value" id="resTime">-</div>
+                            </div>
+                        </div>
+
+                        <hr class="divider">
+
+                        <!-- Date to Timestamp -->
+                        <div class="section-title"><i data-lucide="arrow-left" style="width:16px;height:16px"></i> Date to Timestamp</div>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>Date & Time</label>
+                                <input type="datetime-local" id="dateInput">
+                            </div>
+                            <button class="btn btn-success" onclick="dateToTs()">Convert</button>
+                        </div>
+                        <div class="results-grid" style="margin-top:0.75rem">
+                            <div class="result-item" onclick="copyResult(this)">
+                                <div class="result-label">Seconds</div>
+                                <div class="result-value" id="resSec">-</div>
+                            </div>
+                            <div class="result-item" onclick="copyResult(this)">
+                                <div class="result-label">Milliseconds</div>
+                                <div class="result-value" id="resMs">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ad-slot" style="margin-top:2rem"><div class="ad-placeholder">Advertisement</div></div>
+            </div>
+            <aside class="tool-sidebar">
+                <div class="ad-slot"><div class="ad-placeholder">Advertisement</div></div>
+            </aside>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><p>&copy; 2024 ToolBox. All rights reserved.</p></div></footer>
+    <div class="toast" id="toast"></div>
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script>
+    lucide.createIcons();
+
+    const tsInput = document.getElementById('tsInput');
+    const tsUnit = document.getElementById('tsUnit');
+    const tsError = document.getElementById('tsError');
+    const dateInput = document.getElementById('dateInput');
+
+    // Live timestamp
+    function updateLive() {
+        document.getElementById('liveTs').textContent = Math.floor(Date.now() / 1000);
+    }
+    updateLive();
+    setInterval(updateLive, 1000);
+
+    // Set current timestamp
+    function setCurrentTs() {
+        tsInput.value = Math.floor(Date.now() / 1000);
+        tsUnit.value = 'seconds';
+        tsToDate();
+    }
+
+    // Timestamp to Date
+    function tsToDate() {
+        tsError.style.display = 'none';
+        const val = tsInput.value.trim();
+        if (!val) { tsError.textContent = 'Please enter a timestamp'; tsError.style.display = 'block'; return; }
+
+        const num = Number(val);
+        if (isNaN(num)) { tsError.textContent = 'Invalid number'; tsError.style.display = 'block'; return; }
+
+        let ms = tsUnit.value === 'seconds' ? num * 1000 : num;
+        if (ms < -8640000000000 || ms > 8640000000000) {
+            tsError.textContent = 'Timestamp out of range';
+            tsError.style.display = 'block';
+            return;
+        }
+
+        const date = new Date(ms);
+        if (isNaN(date.getTime())) { tsError.textContent = 'Invalid timestamp'; tsError.style.display = 'block'; return; }
+
+        document.getElementById('resIso').textContent = date.toISOString();
+        document.getElementById('resUtc').textContent = date.toUTCString();
+        document.getElementById('resLocal').textContent = date.toLocaleString();
+        document.getElementById('resRelative').textContent = getRelativeTime(date);
+        document.getElementById('resDate').textContent = date.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('resTime').textContent = date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+
+    function getRelativeTime(date) {
+        const now = new Date();
+        const diff = now - date;
+        const absDiff = Math.abs(diff);
+        const isPast = diff > 0;
+        const prefix = isPast ? '' : 'in ';
+        const suffix = isPast ? ' ago' : '';
+
+        if (absDiff < 60000) return prefix + Math.floor(absDiff / 1000) + ' seconds' + suffix;
+        if (absDiff < 3600000) return prefix + Math.floor(absDiff / 60000) + ' minutes' + suffix;
+        if (absDiff < 86400000) return prefix + Math.floor(absDiff / 3600000) + ' hours' + suffix;
+        if (absDiff < 2592000000) return prefix + Math.floor(absDiff / 86400000) + ' days' + suffix;
+        if (absDiff < 31536000000) return prefix + Math.floor(absDiff / 2592000000) + ' months' + suffix;
+        return prefix + (absDiff / 31536000000).toFixed(1) + ' years' + suffix;
+    }
+
+    // Date to Timestamp
+    function dateToTs() {
+        const val = dateInput.value;
+        if (!val) { showToast('Please select a date'); return; }
+        const date = new Date(val);
+        if (isNaN(date.getTime())) { showToast('Invalid date'); return; }
+        document.getElementById('resSec').textContent = Math.floor(date.getTime() / 1000);
+        document.getElementById('resMs').textContent = date.getTime();
+    }
+
+    // Copy result
+    function copyResult(el) {
+        const text = el.querySelector('.result-value').textContent;
+        if (text === '-') return;
+        navigator.clipboard.writeText(text).then(() => showToast('Copied: ' + text));
+    }
+
+    // Enter key support
+    tsInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') tsToDate(); });
+
+    // Set default date input
+    const now = new Date();
+    const offset = now.getTimezoneOffset();
+    const local = new Date(now.getTime() - offset * 60000);
+    dateInput.value = local.toISOString().slice(0, 16);
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+    </script>
+</body>
+</html>

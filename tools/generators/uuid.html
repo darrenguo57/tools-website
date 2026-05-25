@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UUID Generator - ToolBox</title>
+  <meta name="description" content="Generate unique UUIDs (v1, v4) online. Customize format with uppercase/lowercase and hyphen options.">
+  <meta name="keywords" content="UUID generator, GUID generator, UUID v4, UUID v1, unique identifier">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="UUID Generator - ToolBox">
+  <meta property="og:description" content="Generate unique UUIDs (v1, v4) online. Free and no installation required.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/generators/uuid.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "UUID Generator",
+    "url": "https://toolbox.example.com/tools/generators/uuid.html",
+    "description": "Generate unique UUIDs (v1, v4) online.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo">
+        <i data-lucide="toolbox"></i>
+        <span>ToolBox</span>
+      </a>
+      <div class="navbar-search">
+        <i data-lucide="search"></i>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search tools...">
+      </div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="theme-icon-light"></i>
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+        </button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Layout -->
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item active"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=generators" class="breadcrumb__link">Generators</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">UUID Generator</span>
+      </nav>
+
+      <!-- Tool Header -->
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="fingerprint"></i></div>
+        <h1 class="tool-header__title">UUID Generator</h1>
+        <p class="tool-header__desc">Generate universally unique identifiers (UUIDs) in v1 or v4 format. Customize output with uppercase/lowercase and hyphen options.</p>
+      </section>
+
+      <!-- Tool Content -->
+      <section class="tool-workspace">
+
+        <!-- Settings Panel -->
+        <div class="tool-settings">
+          <div class="tool-settings__title">Options</div>
+          <div class="tool-settings__group">
+            <label class="tool-settings__label" for="uuidVersion">UUID Version</label>
+            <select id="uuidVersion" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+              <option value="v4">v4 (Random)</option>
+              <option value="v1">v1 (Time-based)</option>
+            </select>
+          </div>
+          <div class="tool-settings__group">
+            <label class="tool-settings__label" for="uuidCount">Count (1-100)</label>
+            <input type="number" id="uuidCount" value="1" min="1" max="100" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+          </div>
+          <div class="tool-toggle">
+            <span class="tool-toggle__label">Uppercase</span>
+            <div class="tool-toggle__switch" id="toggleUppercase" role="switch" aria-checked="false" tabindex="0"></div>
+          </div>
+          <div class="tool-toggle">
+            <span class="tool-toggle__label">No Hyphens</span>
+            <div class="tool-toggle__switch" id="toggleNoHyphens" role="switch" aria-checked="false" tabindex="0"></div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="tool-actions">
+          <div class="tool-actions__primary">
+            <button class="btn btn--primary" id="btnGenerate"><i data-lucide="sparkles"></i> Generate</button>
+          </div>
+          <div class="tool-actions__secondary">
+            <button class="btn btn--secondary" id="btnCopyAll"><i data-lucide="copy"></i> Copy All</button>
+            <button class="btn btn--secondary btn--danger" id="btnClear"><i data-lucide="trash-2"></i> Clear</button>
+          </div>
+        </div>
+
+        <!-- Output Panel -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="list"></i> Results</span>
+            <div class="tool-panel__actions">
+              <span id="resultCount" style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);"></span>
+            </div>
+          </div>
+          <div class="tool-panel__body">
+            <div id="uuidResults" class="tool-output__placeholder">
+              <i data-lucide="fingerprint"></i>
+              <span class="tool-output__placeholder-text">Click "Generate" to create UUIDs</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Ad Slot -->
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);">
+        <span>Advertisement</span>
+      </div>
+
+      <!-- How to Use -->
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Choose UUID Version</div>
+              <div class="tool-step__desc">Select v4 (random, recommended) or v1 (time-based) UUID format.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Set Options</div>
+              <div class="tool-step__desc">Adjust count, case, and hyphen preferences.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Generate &amp; Copy</div>
+              <div class="tool-step__desc">Click Generate to create UUIDs. Copy individual or all results.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Related Tools -->
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="nanoid.html" class="tool-card tool-card-sm" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">NanoID Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+          <a href="password.html" class="tool-card tool-card-sm" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Password Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+          <a href="random-number.html" class="tool-card tool-card-sm" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Random Number</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+          <a href="fake-data.html" class="tool-card tool-card-sm" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Fake Data Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links">
+        <a href="#">About</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact</a>
+      </div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+    (function() {
+      // Toggle switches
+      const toggleUppercase = document.getElementById('toggleUppercase');
+      const toggleNoHyphens = document.getElementById('toggleNoHyphens');
+      let uppercase = false;
+      let noHyphens = false;
+
+      function setupToggle(el, callback) {
+        el.addEventListener('click', () => {
+          const active = el.classList.toggle('tool-toggle__switch--active');
+          el.setAttribute('aria-checked', active);
+          callback(active);
+        });
+        el.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
+        });
+      }
+
+      setupToggle(toggleUppercase, (v) => uppercase = v);
+      setupToggle(toggleNoHyphens, (v) => noHyphens = v);
+
+      // UUID generation
+      function generateUUIDv4() {
+        if (crypto.randomUUID) return crypto.randomUUID();
+        // Fallback manual v4
+        const bytes = new Uint8Array(16);
+        crypto.getRandomValues(bytes);
+        bytes[6] = (bytes[6] & 0x0f) | 0x40;
+        bytes[8] = (bytes[8] & 0x3f) | 0x80;
+        const hex = Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+        return hex.slice(0,8) + '-' + hex.slice(8,12) + '-' + hex.slice(12,16) + '-' + hex.slice(16,20) + '-' + hex.slice(20);
+      }
+
+      function generateUUIDv1() {
+        const now = new Date();
+        const timestamp = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
+          now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
+        const timeLow = timestamp & 0xFFFFFFFF;
+        const timeMid = (timestamp >> 32) & 0xFFFF;
+        const timeHi = ((timestamp >> 48) & 0x0FFF) | 0x1000;
+        const clockSeq = ((crypto.getRandomValues(new Uint8Array(2))[0] << 8) | crypto.getRandomValues(new Uint8Array(1))[0]) & 0x3FFF | 0x8000;
+        const node = Array.from(crypto.getRandomValues(new Uint8Array(6)), b => b.toString(16).padStart(2, '0')).join('');
+        const hex = (n, w) => n.toString(16).padStart(w, '0');
+        return hex(timeLow, 8) + '-' + hex(timeMid, 4) + '-' + hex(timeHi, 4) + '-' + hex(clockSeq, 4) + '-' + node;
+      }
+
+      function formatUUID(uuid) {
+        if (noHyphens) uuid = uuid.replace(/-/g, '');
+        if (uppercase) uuid = uuid.toUpperCase();
+        return uuid;
+      }
+
+      const resultsContainer = document.getElementById('uuidResults');
+      const resultCount = document.getElementById('resultCount');
+
+      function renderResults(uuids) {
+        if (uuids.length === 0) {
+          resultsContainer.innerHTML = '<div class="tool-output__placeholder"><i data-lucide="fingerprint"></i><span class="tool-output__placeholder-text">Click "Generate" to create UUIDs</span></div>';
+          resultCount.textContent = '';
+          lucide.createIcons();
+          return;
+        }
+        resultCount.textContent = uuids.length + ' UUID(s)';
+        let html = '<div style="display:flex;flex-direction:column;gap:var(--space-2);">';
+        uuids.forEach((uuid, i) => {
+          html += '<div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);background:var(--color-bg-secondary);border-radius:var(--radius-md);border:1px solid var(--color-border-light);">' +
+            '<code style="flex:1;font-family:var(--font-family-mono);font-size:var(--font-size-sm);color:var(--color-text);word-break:break-all;">' + escapeHtml(uuid) + '</code>' +
+            '<button class="tool-action-btn copy-single-btn" data-uuid="' + escapeHtml(uuid) + '" title="Copy"><i data-lucide="copy"></i></button>' +
+            '</div>';
+        });
+        html += '</div>';
+        resultsContainer.innerHTML = html;
+        lucide.createIcons();
+
+        // Bind copy buttons
+        resultsContainer.querySelectorAll('.copy-single-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            navigator.clipboard.writeText(btn.dataset.uuid).then(() => {
+              btn.classList.add('tool-action-btn--success');
+              btn.innerHTML = '<i data-lucide="check"></i>';
+              lucide.createIcons();
+              setTimeout(() => {
+                btn.classList.remove('tool-action-btn--success');
+                btn.innerHTML = '<i data-lucide="copy"></i>';
+                lucide.createIcons();
+              }, 1500);
+            });
+          });
+        });
+      }
+
+      function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      // Generate
+      document.getElementById('btnGenerate').addEventListener('click', () => {
+        const version = document.getElementById('uuidVersion').value;
+        let count = parseInt(document.getElementById('uuidCount').value) || 1;
+        count = Math.max(1, Math.min(100, count));
+        const uuids = [];
+        for (let i = 0; i < count; i++) {
+          const raw = version === 'v1' ? generateUUIDv1() : generateUUIDv4();
+          uuids.push(formatUUID(raw));
+        }
+        renderResults(uuids);
+      });
+
+      // Copy All
+      document.getElementById('btnCopyAll').addEventListener('click', () => {
+        const codes = resultsContainer.querySelectorAll('code');
+        if (codes.length === 0) return;
+        const text = Array.from(codes).map(c => c.textContent).join('\n');
+        navigator.clipboard.writeText(text);
+      });
+
+      // Clear
+      document.getElementById('btnClear').addEventListener('click', () => {
+        renderResults([]);
+      });
+    })();
+  </script>
+</body>
+</html>

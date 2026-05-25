@@ -1,0 +1,87 @@
+{
+  "site": {
+    "title": "工具箱",
+    "description": "为开发者和设计师提供的一组实用在线工具集合。"
+  },
+  "nav": {
+    "home": "首页",
+    "allTools": "所有工具",
+    "blog": "博客",
+    "search": "搜索"
+  },
+  "categories": {
+    "all": "全部",
+    "converters": "转换工具",
+    "calculators": "计算器",
+    "imageTools": "图片工具",
+    "generators": "生成器",
+    "formatters": "格式化工具",
+    "crypto": "加解密",
+    "charts": "图表工具",
+    "testers": "测试工具"
+  },
+  "buttons": {
+    "copy": "复制",
+    "download": "下载",
+    "clear": "清空",
+    "generate": "生成",
+    "convert": "转换",
+    "format": "格式化",
+    "reset": "重置",
+    "submit": "提交",
+    "close": "关闭",
+    "cancel": "取消",
+    "confirm": "确认",
+    "upload": "上传",
+    "selectFile": "选择文件",
+    "paste": "粘贴",
+    "swap": "交换"
+  },
+  "toast": {
+    "copied": "已复制到剪贴板",
+    "downloadSuccess": "下载成功",
+    "inputRequired": "请输入内容",
+    "error": "发生错误",
+    "success": "操作成功",
+    "cleared": "内容已清空",
+    "generated": "生成成功",
+    "converted": "转换成功",
+    "formatted": "格式化成功"
+  },
+  "search": {
+    "placeholder": "搜索工具...",
+    "noResults": "未找到工具",
+    "results": "个结果"
+  },
+  "theme": {
+    "dark": "深色模式",
+    "light": "浅色模式",
+    "toggle": "切换主题"
+  },
+  "breadcrumb": {
+    "home": "首页",
+    "tools": "工具"
+  },
+  "footer": {
+    "copyright": "工具箱 版权所有",
+    "builtWith": "基于"
+  },
+  "common": {
+    "loading": "加载中...",
+    "noData": "暂无数据",
+    "language": "语言",
+    "version": "版本",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "input": "输入",
+    "output": "输出",
+    "options": "选项",
+    "settings": "设置",
+    "preview": "预览",
+    "source": "源码",
+    "result": "结果",
+    "details": "详情",
+    "help": "帮助"
+  }
+}

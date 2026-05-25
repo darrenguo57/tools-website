@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NanoID Generator - ToolBox</title>
+  <meta name="description" content="Generate short, unique, URL-friendly Nano IDs online. Customize length and character set.">
+  <meta name="keywords" content="NanoID, unique ID generator, short ID, URL-friendly ID, nanoid">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="NanoID Generator - ToolBox">
+  <meta property="og:description" content="Generate short, unique, URL-friendly Nano IDs online.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/generators/nanoid.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "NanoID Generator",
+    "url": "https://toolbox.example.com/tools/generators/nanoid.html",
+    "description": "Generate short, unique, URL-friendly Nano IDs.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item active"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=generators" class="breadcrumb__link">Generators</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">NanoID Generator</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="hash"></i></div>
+        <h1 class="tool-header__title">NanoID Generator</h1>
+        <p class="tool-header__desc">Generate short, unique, URL-friendly IDs using the NanoID algorithm. Customize length and character set for your needs.</p>
+      </section>
+
+      <section class="tool-workspace">
+
+        <div class="tool-settings">
+          <div class="tool-settings__title">Options</div>
+          <div class="tool-settings__group">
+            <label class="tool-settings__label" for="nanoCount">Count (1-100)</label>
+            <input type="number" id="nanoCount" value="1" min="1" max="100" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+          </div>
+          <div class="tool-settings__group">
+            <div class="tool-range">
+              <div class="tool-range__header">
+                <label class="tool-settings__label" for="nanoLength">Length</label>
+                <span class="tool-range__value" id="nanoLengthValue">21</span>
+              </div>
+              <input type="range" id="nanoLength" min="1" max="256" value="21">
+            </div>
+          </div>
+          <div class="tool-settings__group">
+            <label class="tool-settings__label" for="nanoAlphabet">Custom Alphabet (optional)</label>
+            <input type="text" id="nanoAlphabet" class="tool-input__field" style="min-height:auto;padding:8px 12px;" placeholder="Leave empty for default: A-Za-z0-9_-">
+            <span class="tool-settings__hint">Default alphabet: <code>A-Za-z0-9_-</code></span>
+          </div>
+        </div>
+
+        <div class="tool-actions">
+          <div class="tool-actions__primary">
+            <button class="btn btn--primary" id="btnGenerate"><i data-lucide="sparkles"></i> Generate</button>
+          </div>
+          <div class="tool-actions__secondary">
+            <button class="btn btn--secondary" id="btnCopyAll"><i data-lucide="copy"></i> Copy All</button>
+            <button class="btn btn--secondary btn--danger" id="btnClear"><i data-lucide="trash-2"></i> Clear</button>
+          </div>
+        </div>
+
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="list"></i> Results</span>
+            <div class="tool-panel__actions">
+              <span id="resultCount" style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);"></span>
+            </div>
+          </div>
+          <div class="tool-panel__body">
+            <div id="nanoResults" class="tool-output__placeholder">
+              <i data-lucide="hash"></i>
+              <span class="tool-output__placeholder-text">Click "Generate" to create Nano IDs</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Set Length &amp; Count</div>
+              <div class="tool-step__desc">Default length is 21 characters. Adjust using the slider. Set how many IDs to generate.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Custom Alphabet (Optional)</div>
+              <div class="tool-step__desc">Provide a custom character set. Default uses URL-safe characters: A-Z, a-z, 0-9, _, -</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Generate &amp; Copy</div>
+              <div class="tool-step__desc">Click Generate to create IDs. Copy individual IDs or all at once.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="uuid.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">UUID Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+          <a href="password.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Password Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+          <a href="random-number.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Random Number</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+          <a href="fake-data.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Fake Data Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+    (function() {
+      const DEFAULT_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';
+      const lengthSlider = document.getElementById('nanoLength');
+      const lengthValue = document.getElementById('nanoLengthValue');
+      const resultsContainer = document.getElementById('nanoResults');
+      const resultCount = document.getElementById('resultCount');
+
+      lengthSlider.addEventListener('input', () => {
+        lengthValue.textContent = lengthSlider.value;
+      });
+
+      function generateNanoID(length, alphabet) {
+        const mask = (2 << (Math.log(alphabet.length - 1) / Math.LN2)) - 1;
+        const step = Math.ceil(1.6 * mask * length / alphabet.length);
+        let id = '';
+        while (id.length < length) {
+          const bytes = new Uint8Array(step);
+          crypto.getRandomValues(bytes);
+          for (let i = 0; i < step && id.length < length; i++) {
+            const idx = bytes[i] & mask;
+            if (idx < alphabet.length) {
+              id += alphabet[idx];
+            }
+          }
+        }
+        return id;
+      }
+
+      function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      function renderResults(ids) {
+        if (ids.length === 0) {
+          resultsContainer.innerHTML = '<div class="tool-output__placeholder"><i data-lucide="hash"></i><span class="tool-output__placeholder-text">Click "Generate" to create Nano IDs</span></div>';
+          resultCount.textContent = '';
+          lucide.createIcons();
+          return;
+        }
+        resultCount.textContent = ids.length + ' ID(s)';
+        let html = '<div style="display:flex;flex-direction:column;gap:var(--space-2);">';
+        ids.forEach(id => {
+          html += '<div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);background:var(--color-bg-secondary);border-radius:var(--radius-md);border:1px solid var(--color-border-light);">' +
+            '<code style="flex:1;font-family:var(--font-family-mono);font-size:var(--font-size-sm);color:var(--color-text);word-break:break-all;">' + escapeHtml(id) + '</code>' +
+            '<button class="tool-action-btn copy-single-btn" data-id="' + escapeHtml(id) + '" title="Copy"><i data-lucide="copy"></i></button>' +
+            '</div>';
+        });
+        html += '</div>';
+        resultsContainer.innerHTML = html;
+        lucide.createIcons();
+
+        resultsContainer.querySelectorAll('.copy-single-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            navigator.clipboard.writeText(btn.dataset.id).then(() => {
+              btn.classList.add('tool-action-btn--success');
+              btn.innerHTML = '<i data-lucide="check"></i>';
+              lucide.createIcons();
+              setTimeout(() => {
+                btn.classList.remove('tool-action-btn--success');
+                btn.innerHTML = '<i data-lucide="copy"></i>';
+                lucide.createIcons();
+              }, 1500);
+            });
+          });
+        });
+      }
+
+      document.getElementById('btnGenerate').addEventListener('click', () => {
+        const count = Math.max(1, Math.min(100, parseInt(document.getElementById('nanoCount').value) || 1));
+        const length = Math.max(1, parseInt(lengthSlider.value) || 21);
+        const alphabet = document.getElementById('nanoAlphabet').value.trim() || DEFAULT_ALPHABET;
+        if (alphabet.length < 2) {
+          resultsContainer.innerHTML = '<div class="tool-output__content tool-output__error">Alphabet must contain at least 2 characters.</div>';
+          return;
+        }
+        const ids = [];
+        for (let i = 0; i < count; i++) {
+          ids.push(generateNanoID(length, alphabet));
+        }
+        renderResults(ids);
+      });
+
+      document.getElementById('btnCopyAll').addEventListener('click', () => {
+        const codes = resultsContainer.querySelectorAll('code');
+        if (codes.length === 0) return;
+        navigator.clipboard.writeText(Array.from(codes).map(c => c.textContent).join('\n'));
+      });
+
+      document.getElementById('btnClear').addEventListener('click', () => renderResults([]));
+    })();
+  </script>
+</body>
+</html>

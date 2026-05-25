@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AES Encrypt/Decrypt - ToolBox</title>
+    <meta name="description" content="AES encryption and decryption online. Supports CBC, ECB, CTR modes with Pkcs7/NoPadding.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    <style>
+        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .workspace-grid .full-width { grid-column: 1 / -1; }
+        .textarea-wrap { position: relative; }
+        .textarea-wrap textarea {
+            width: 100%; min-height: 180px; padding: 1rem; border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.5rem; font-family: 'Courier New', monospace; font-size: 14px;
+            resize: vertical; background: var(--bg, #fff); color: var(--text, #1e293b);
+            box-sizing: border-box;
+        }
+        .textarea-wrap textarea:focus { outline: none; border-color: var(--primary, #3b82f6); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .btn {
+            padding: 0.5rem 1.25rem; border-radius: 0.5rem; border: none; cursor: pointer;
+            font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: var(--primary, #3b82f6); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover, #2563eb); }
+        .btn-secondary { background: var(--bg-secondary, #f1f5f9); color: var(--text, #1e293b); border: 1px solid var(--border, #e2e8f0); }
+        .btn-secondary:hover { background: var(--bg-tertiary, #e2e8f0); }
+        .btn-success { background: #10b981; color: #fff; }
+        .btn-success:hover { background: #059669; }
+        .btn-danger { background: #ef4444; color: #fff; }
+        .btn-danger:hover { background: #dc2626; }
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem; padding: 0.75rem 1.5rem;
+            background: #1e293b; color: #fff; border-radius: 0.5rem; font-size: 14px;
+            transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 9999;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .options-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem; margin-bottom: 1rem;
+        }
+        .option-group { display: flex; flex-direction: column; gap: 0.3rem; }
+        .option-group label { font-weight: 600; font-size: 13px; color: var(--text-muted, #64748b); }
+        .option-group input, .option-group select {
+            padding: 0.5rem 0.75rem; border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.375rem; font-size: 14px; background: var(--bg, #fff);
+            color: var(--text, #1e293b);
+        }
+        .option-group input:focus, .option-group select:focus {
+            outline: none; border-color: var(--primary, #3b82f6);
+        }
+        .char-count { font-size: 12px; color: var(--text-muted, #94a3b8); text-align: right; margin-top: 0.25rem; }
+        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo"><i data-lucide="shield" style="width:28px;height:28px"></i> ToolBox</a>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+            </div>
+            <div class="header-actions">
+                <button class="lang-btn" onclick="I18n.setLang(I18n.currentLang==='en'?'zh':'en')">EN</button>
+                <button class="theme-btn" onclick="document.body.classList.toggle('dark')"><i data-lucide="sun"></i></button>
+            </div>
+        </div>
+    </header>
+    <div class="breadcrumb"><div class="container"><a href="../../index.html">Home</a> / <a href="../../index.html#crypto">Encryption</a> / <span>AES Encrypt/Decrypt</span></div></div>
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="shield"></i></div>
+                    <h1>AES Encrypt / Decrypt</h1>
+                    <p>Advanced Encryption Standard (AES) encryption and decryption. Supports CBC, ECB, CTR modes with configurable padding and output format.</p>
+                </div>
+                <div class="tool-workspace">
+                    <div class="options-grid">
+                        <div class="option-group">
+                            <label for="secretKey"><i data-lucide="key" style="width:14px;height:14px"></i> Secret Key</label>
+                            <input type="text" id="secretKey" placeholder="Enter your secret key...">
+                        </div>
+                        <div class="option-group">
+                            <label for="aesMode"><i data-lucide="settings" style="width:14px;height:14px"></i> Mode</label>
+                            <select id="aesMode">
+                                <option value="CBC">CBC</option>
+                                <option value="ECB">ECB</option>
+                                <option value="CTR">CTR</option>
+                            </select>
+                        </div>
+                        <div class="option-group">
+                            <label for="aesPadding"><i data-lucide="layers" style="width:14px;height:14px"></i> Padding</label>
+                            <select id="aesPadding">
+                                <option value="Pkcs7">Pkcs7</option>
+                                <option value="NoPadding">NoPadding</option>
+                            </select>
+                        </div>
+                        <div class="option-group">
+                            <label for="outputFormat"><i data-lucide="file-code" style="width:14px;height:14px"></i> Output Format</label>
+                            <select id="outputFormat">
+                                <option value="Base64">Base64</option>
+                                <option value="Hex">Hex</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="workspace-grid">
+                        <div>
+                            <div class="textarea-label"><i data-lucide="file-text" style="width:16px;height:16px"></i> Input (Plaintext / Ciphertext)</div>
+                            <div class="textarea-wrap">
+                                <textarea id="inputArea" placeholder="Enter plaintext to encrypt or ciphertext to decrypt..."></textarea>
+                            </div>
+                            <div class="char-count"><span id="inputCount">0</span> characters</div>
+                        </div>
+                        <div>
+                            <div class="textarea-label"><i data-lucide="file-output" style="width:16px;height:16px"></i> Output</div>
+                            <div class="textarea-wrap">
+                                <textarea id="outputArea" placeholder="Result will appear here..." readonly></textarea>
+                            </div>
+                            <div class="char-count"><span id="outputCount">0</span> characters</div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="encryptAES()"><i data-lucide="lock" style="width:16px;height:16px"></i> Encrypt</button>
+                        <button class="btn btn-success" onclick="decryptAES()"><i data-lucide="unlock" style="width:16px;height:16px"></i> Decrypt</button>
+                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy" style="width:16px;height:16px"></i> Copy</button>
+                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2" style="width:16px;height:16px"></i> Clear</button>
+                    </div>
+                </div>
+                <div class="ad-slot" style="margin-top:2rem"><div class="ad-placeholder">Advertisement</div></div>
+            </div>
+            <aside class="tool-sidebar">
+                <div class="ad-slot"><div class="ad-placeholder">Advertisement</div></div>
+            </aside>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><p>&copy; 2024 ToolBox. All rights reserved.</p></div></footer>
+    <div class="toast" id="toast"></div>
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script>
+    lucide.createIcons();
+
+    const inputArea = document.getElementById('inputArea');
+    const outputArea = document.getElementById('outputArea');
+    const inputCount = document.getElementById('inputCount');
+    const outputCount = document.getElementById('outputCount');
+
+    inputArea.addEventListener('input', () => {
+        inputCount.textContent = inputArea.value.length;
+    });
+
+    function getOptions() {
+        const mode = document.getElementById('aesMode').value;
+        const padding = document.getElementById('aesPadding').value;
+        const format = document.getElementById('outputFormat').value;
+        const key = document.getElementById('secretKey').value;
+        return { mode, padding, format, key };
+    }
+
+    function getModeObj(mode) {
+        switch (mode) {
+            case 'CBC': return CryptoJS.mode.CBC;
+            case 'ECB': return CryptoJS.mode.ECB;
+            case 'CTR': return CryptoJS.mode.CTR;
+            default: return CryptoJS.mode.CBC;
+        }
+    }
+
+    function getPaddingObj(padding) {
+        switch (padding) {
+            case 'Pkcs7': return CryptoJS.pad.Pkcs7;
+            case 'NoPadding': return CryptoJS.pad.NoPadding;
+            default: return CryptoJS.pad.Pkcs7;
+        }
+    }
+
+    function encryptAES() {
+        const { mode, padding, format, key } = getOptions();
+        const input = inputArea.value;
+        if (!input) { showToast('Please enter text to encrypt'); return; }
+        if (!key) { showToast('Please enter a secret key'); return; }
+
+        try {
+            const encrypted = CryptoJS.AES.encrypt(input, key, {
+                mode: getModeObj(mode),
+                padding: getPaddingObj(padding)
+            });
+            outputArea.value = format === 'Base64' ? encrypted.toString() : encrypted.ciphertext.toString(CryptoJS.enc.Hex);
+            outputCount.textContent = outputArea.value.length;
+            showToast('Encrypted successfully');
+        } catch (e) {
+            outputArea.value = '';
+            outputCount.textContent = '0';
+            showToast('Encryption error: ' + e.message);
+        }
+    }
+
+    function decryptAES() {
+        const { mode, padding, format, key } = getOptions();
+        const input = inputArea.value.trim();
+        if (!input) { showToast('Please enter ciphertext to decrypt'); return; }
+        if (!key) { showToast('Please enter a secret key'); return; }
+
+        try {
+            let cipherParams;
+            if (format === 'Base64') {
+                cipherParams = CryptoJS.lib.CipherParams.create({
+                    ciphertext: CryptoJS.enc.Base64.parse(input)
+                });
+            } else {
+                cipherParams = CryptoJS.lib.CipherParams.create({
+                    ciphertext: CryptoJS.enc.Hex.parse(input)
+                });
+            }
+
+            const decrypted = CryptoJS.AES.decrypt(cipherParams, key, {
+                mode: getModeObj(mode),
+                padding: getPaddingObj(padding)
+            });
+
+            const plaintext = decrypted.toString(CryptoJS.enc.Utf8);
+            if (!plaintext) {
+                showToast('Decryption failed - wrong key or corrupted data');
+                outputArea.value = '';
+                outputCount.textContent = '0';
+                return;
+            }
+            outputArea.value = plaintext;
+            outputCount.textContent = outputArea.value.length;
+            showToast('Decrypted successfully');
+        } catch (e) {
+            outputArea.value = '';
+            outputCount.textContent = '0';
+            showToast('Decryption error: ' + e.message);
+        }
+    }
+
+    function copyOutput() {
+        if (!outputArea.value) { showToast('Nothing to copy'); return; }
+        navigator.clipboard.writeText(outputArea.value).then(() => showToast('Copied to clipboard'));
+    }
+
+    function clearAll() {
+        inputArea.value = '';
+        outputArea.value = '';
+        document.getElementById('secretKey').value = '';
+        inputCount.textContent = '0';
+        outputCount.textContent = '0';
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+    </script>
+</body>
+</html>

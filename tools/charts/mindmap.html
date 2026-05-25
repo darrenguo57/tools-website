@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mind Map Generator - ToolBox</title>
+  <meta name="description" content="Create beautiful mind maps from hierarchical text. Canvas-based rendering with expand/collapse support.">
+  <meta name="keywords" content="mind map generator, mind map, brainstorm, hierarchical diagram, tree diagram">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Mind Map Generator - ToolBox">
+  <meta property="og:description" content="Create mind maps from text. Free and no installation required.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/charts/mindmap.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Mind Map Generator",
+    "url": "https://toolbox.example.com/tools/charts/mindmap.html",
+    "description": "Create mind maps from hierarchical text.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    #mindmapCanvas { width: 100%; border-radius: var(--radius-md); cursor: grab; background: #FAFBFC; }
+    #mindmapCanvas:active { cursor: grabbing; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item active"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=charts" class="breadcrumb__link">Charts</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Mind Map Generator</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="brain"></i></div>
+        <h1 class="tool-header__title">Mind Map Generator</h1>
+        <p class="tool-header__desc">Create mind maps from hierarchical text. Use indentation to define levels. Canvas-based rendering with expand/collapse support.</p>
+      </section>
+
+      <section class="tool-workspace">
+
+        <!-- Input -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="text-cursor-input"></i> Hierarchical Text</span>
+            <div class="tool-panel__actions">
+              <button class="btn btn--sm btn--secondary" id="btnSample"><i data-lucide="file-text"></i> Sample Data</button>
+            </div>
+          </div>
+          <div class="tool-panel__body">
+            <textarea class="tool-input__field" id="mindmapInput" rows="12" style="min-height:250px;font-family:var(--font-family-mono);font-size:var(--font-size-sm);line-height:1.8;" placeholder="Enter hierarchical text (use tabs or spaces for indentation)...">Project Planning
+	Requirements
+		User Stories
+		Use Cases
+	Design
+		UI/UX
+		Database
+	Development
+		Frontend
+		Backend
+		API
+	Testing
+		Unit Tests
+		Integration Tests
+	Deployment
+		Staging
+		Production</textarea>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="tool-actions">
+          <div class="tool-actions__primary">
+            <button class="btn btn--primary" id="btnGenerate"><i data-lucide="sparkles"></i> Generate</button>
+          </div>
+          <div class="tool-actions__secondary">
+            <button class="btn btn--secondary" id="btnDownloadPNG"><i data-lucide="download"></i> Download PNG</button>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="eye"></i> Preview</span>
+            <div class="tool-panel__actions">
+              <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Click nodes to expand/collapse</span>
+            </div>
+          </div>
+          <div class="tool-panel__body">
+            <canvas id="mindmapCanvas" height="500"></canvas>
+          </div>
+        </div>
+
+      </section>
+
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Enter Hierarchical Text</div>
+              <div class="tool-step__desc">Use tabs or spaces to indent child items. Each indentation level creates a new branch.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Generate Mind Map</div>
+              <div class="tool-step__desc">Click Generate to render the mind map on canvas.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Interact & Export</div>
+              <div class="tool-step__desc">Click nodes to expand/collapse branches. Download as PNG when ready.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="flowchart.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Flowchart</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="network.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Network Graph</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="treemap.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Treemap</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="chart-basic.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Basic Charts</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+  (function() {
+    const canvas = document.getElementById('mindmapCanvas');
+    const ctx = canvas.getContext('2d');
+    const colors = ['#3B82F6','#10B981','#F59E0B','#EF4444','#8B5CF6','#EC4899','#06B6D4','#F97316'];
+    let treeRoot = null;
+    let allNodes = [];
+
+    const sampleText = 'Project Planning\n\tRequirements\n\t\tUser Stories\n\t\tUse Cases\n\tDesign\n\t\tUI/UX\n\t\tDatabase\n\tDevelopment\n\t\tFrontend\n\t\tBackend\n\t\tAPI\n\tTesting\n\t\tUnit Tests\n\t\tIntegration Tests\n\tDeployment\n\t\tStaging\n\t\tProduction';
+
+    document.getElementById('btnSample').addEventListener('click', () => {
+      document.getElementById('mindmapInput').value = sampleText;
+    });
+
+    function parseText(text) {
+      const lines = text.split('\n').filter(l => l.trim());
+      const root = { text: lines[0].trim(), children: [], collapsed: false, level: 0 };
+      const stack = [{ node: root, indent: -1 }];
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i];
+        const indent = line.search(/\S/);
+        const node = { text: line.trim(), children: [], collapsed: false, level: indent };
+        while (stack.length > 1 && stack[stack.length - 1].indent >= indent) stack.pop();
+        stack[stack.length - 1].node.children.push(node);
+        stack.push({ node, indent });
+      }
+      return root;
+    }
+
+    function layoutTree(node, x, y, hGap, vGap, direction) {
+      node.x = x;
+      node.y = y;
+      node.direction = direction;
+      if (node.collapsed || node.children.length === 0) {
+        node.subtreeHeight = 0;
+        return;
+      }
+      const totalH = (node.children.length - 1) * vGap;
+      let cy = y - totalH / 2;
+      node.children.forEach(child => {
+        layoutTree(child, x + hGap, cy, hGap, vGap, direction);
+        cy += child.subtreeHeight + vGap;
+      });
+      const firstChild = node.children[0];
+      const lastChild = node.children[node.children.length - 1];
+      node.subtreeHeight = (lastChild.y - firstChild.y) + (lastChild.subtreeHeight || 0);
+      const midY = (firstChild.y + lastChild.y) / 2;
+      node.y = midY;
+    }
+
+    function drawNode(node) {
+      const r = node.level === 0 ? 8 : 6;
+      const fontSize = node.level === 0 ? 16 : node.level === 1 ? 14 : 12;
+      const fontWeight = node.level <= 1 ? '600' : '400';
+      ctx.font = fontWeight + ' ' + fontSize + 'px Inter, sans-serif';
+      const textW = ctx.measureText(node.text).width;
+      const padX = 16, padY = 8;
+      const w = textW + padX * 2;
+      const h = fontSize + padY * 2;
+      const color = colors[node.level % colors.length];
+
+      // Draw rounded rect
+      ctx.fillStyle = color + '18';
+      ctx.strokeStyle = color;
+      ctx.lineWidth = node.level === 0 ? 2.5 : 1.5;
+      ctx.beginPath();
+      ctx.roundRect(node.x - w/2, node.y - h/2, w, h, r);
+      ctx.fill();
+      ctx.stroke();
+
+      // Text
+      ctx.fillStyle = node.level === 0 ? '#1F2937' : '#374151';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(node.text, node.x, node.y);
+
+      // Collapse indicator
+      if (node.children.length > 0) {
+        const ix = node.x + w/2 + 10;
+        const iy = node.y;
+        ctx.fillStyle = '#9CA3AF';
+        ctx.beginPath();
+        ctx.arc(ix, iy, 8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 12px Inter, sans-serif';
+        ctx.fillText(node.collapsed ? '+' : '-', ix, iy);
+      }
+
+      node._w = w; node._h = h;
+    }
+
+    function drawConnection(parent, child) {
+      const color = colors[parent.level % colors.length];
+      ctx.strokeStyle = color + '80';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      const sx = parent.x + parent._w/2;
+      const sy = parent.y;
+      const ex = child.x - child._w/2;
+      const ey = child.y;
+      const cpx = (sx + ex) / 2;
+      ctx.moveTo(sx, sy);
+      ctx.bezierCurveTo(cpx, sy, cpx, ey, ex, ey);
+      ctx.stroke();
+    }
+
+    function drawTree(node) {
+      allNodes.push(node);
+      if (!node.collapsed) {
+        node.children.forEach(child => {
+          drawConnection(node, child);
+          drawTree(child);
+        });
+      }
+      drawNode(node);
+    }
+
+    function render() {
+      const text = document.getElementById('mindmapInput').value.trim();
+      if (!text) return;
+      treeRoot = parseText(text);
+      allNodes = [];
+
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = 500 * dpr;
+      canvas.style.height = '500px';
+      ctx.scale(dpr, dpr);
+      ctx.clearRect(0, 0, rect.width, 500);
+
+      layoutTree(treeRoot, 100, 250, 220, 50, 'right');
+      drawTree(treeRoot);
+    }
+
+    canvas.addEventListener('click', function(e) {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      for (const node of allNodes) {
+        if (node.children.length > 0) {
+          const ix = node.x + node._w/2 + 10;
+          const iy = node.y;
+          if (Math.hypot(x - ix, y - iy) < 10) {
+            node.collapsed = !node.collapsed;
+            render();
+            return;
+          }
+        }
+      }
+    });
+
+    document.getElementById('btnGenerate').addEventListener('click', render);
+
+    document.getElementById('btnDownloadPNG').addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = 'mindmap.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+  })();
+  </script>
+</body>
+</html>

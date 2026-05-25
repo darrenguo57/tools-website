@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Area & Stacked Chart Generator - ToolBox</title>
+  <meta name="description" content="Create area charts and stacked area charts with multiple data series. Smooth curves and customizable fill opacity.">
+  <meta name="keywords" content="area chart, stacked chart, stacked area, area graph, data visualization">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Area & Stacked Chart Generator - ToolBox">
+  <meta property="og:description" content="Create area and stacked charts online. Free and no installation required.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/charts/area-chart.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Area & Stacked Chart Generator",
+    "url": "https://toolbox.example.com/tools/charts/area-chart.html",
+    "description": "Create area and stacked charts.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    .series-inputs { display: flex; flex-direction: column; gap: var(--space-3); }
+    .series-row { display: flex; align-items: center; gap: var(--space-3); }
+    .series-row input { flex: 1; padding: 6px 10px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); font-size: var(--font-size-sm); outline: none; }
+    .series-row input:focus { border-color: var(--color-primary); }
+    .series-row input[type="color"] { width: 40px; flex: none; height: 36px; cursor: pointer; padding: 2px; border: 1px solid var(--color-border); border-radius: var(--radius-md); }
+    .chart-preview-container { position: relative; width: 100%; min-height: 400px; display: flex; align-items: center; justify-content: center; }
+    .chart-preview-container canvas { max-width: 100%; max-height: 500px; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item active"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=charts" class="breadcrumb__link">Charts</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Area & Stacked Chart</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="area-chart"></i></div>
+        <h1 class="tool-header__title">Area & Stacked Chart</h1>
+        <p class="tool-header__desc">Create area charts and stacked area charts with multiple data series. Support smooth curves and customizable fill opacity.</p>
+      </section>
+
+      <section class="tool-workspace">
+
+        <!-- Settings -->
+        <div class="tool-settings">
+          <div class="tool-settings__title">Options</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--space-4);">
+            <div class="tool-settings__group">
+              <label class="tool-settings__label" for="chartMode">Mode</label>
+              <select id="chartMode" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+                <option value="stacked">Stacked Area</option>
+                <option value="percentage">Percentage Stack</option>
+                <option value="normal">Normal Area</option>
+              </select>
+            </div>
+            <div class="tool-settings__group">
+              <label class="tool-settings__label" for="smoothCurve">Curve</label>
+              <select id="smoothCurve" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+                <option value="smooth">Smooth (Bezier)</option>
+                <option value="straight">Straight Lines</option>
+                <option value="stepped">Stepped</option>
+              </select>
+            </div>
+            <div class="tool-settings__group">
+              <label class="tool-settings__label" for="fillOpacity">Fill Opacity</label>
+              <input type="range" id="fillOpacity" min="10" max="100" value="50" style="width:100%;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Labels -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="tag"></i> Labels (comma separated)</span>
+          </div>
+          <div class="tool-panel__body">
+            <input type="text" id="labelsInput" class="tool-input__field" style="min-height:auto;padding:8px 12px;" value="Jan, Feb, Mar, Apr, May, Jun, Jul, Aug" placeholder="Label1, Label2, ...">
+          </div>
+        </div>
+
+        <!-- Data Series -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="layers"></i> Data Series</span>
+            <div class="tool-panel__actions">
+              <button class="btn btn--sm btn--secondary" id="btnAddSeries"><i data-lucide="plus"></i> Add Series</button>
+            </div>
+          </div>
+          <div class="tool-panel__body">
+            <div class="series-inputs" id="seriesContainer">
+              <div class="series-row">
+                <input type="text" value="Series A" class="series-name" placeholder="Series name" style="max-width:150px;">
+                <input type="color" value="#3B82F6" class="series-color">
+                <input type="text" value="30, 40, 35, 50, 49, 60, 70, 65" class="series-data" placeholder="Values (comma separated)">
+                <button class="btn-remove-row" title="Remove"><i data-lucide="x" style="width:14px;height:14px;"></i></button>
+              </div>
+              <div class="series-row">
+                <input type="text" value="Series B" class="series-name" placeholder="Series name" style="max-width:150px;">
+                <input type="color" value="#10B981" class="series-color">
+                <input type="text" value="20, 25, 30, 28, 35, 40, 38, 45" class="series-data" placeholder="Values (comma separated)">
+                <button class="btn-remove-row" title="Remove"><i data-lucide="x" style="width:14px;height:14px;"></i></button>
+              </div>
+              <div class="series-row">
+                <input type="text" value="Series C" class="series-name" placeholder="Series name" style="max-width:150px;">
+                <input type="color" value="#F59E0B" class="series-color">
+                <input type="text" value="10, 15, 20, 22, 18, 25, 30, 28" class="series-data" placeholder="Values (comma separated)">
+                <button class="btn-remove-row" title="Remove"><i data-lucide="x" style="width:14px;height:14px;"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="tool-actions">
+          <div class="tool-actions__primary">
+            <button class="btn btn--primary" id="btnGenerate"><i data-lucide="sparkles"></i> Generate</button>
+          </div>
+          <div class="tool-actions__secondary">
+            <button class="btn btn--secondary" id="btnDownloadPNG"><i data-lucide="download"></i> Download PNG</button>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="eye"></i> Preview</span>
+          </div>
+          <div class="tool-panel__body">
+            <div class="chart-preview-container">
+              <div id="chartPlaceholder" class="tool-output__placeholder">
+                <i data-lucide="area-chart"></i>
+                <span class="tool-output__placeholder-text">Click "Generate" to create the chart</span>
+              </div>
+              <canvas id="chartCanvas" style="display:none;"></canvas>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Set Labels</div>
+              <div class="tool-step__desc">Enter X-axis labels separated by commas.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Add Data Series</div>
+              <div class="tool-step__desc">Add series with name, color, and values.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Configure & Generate</div>
+              <div class="tool-step__desc">Choose stacking mode, curve type, and opacity. Click Generate.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="chart-basic.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Basic Charts</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="scatter.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Scatter Chart</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="realtime-chart.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Realtime Chart</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="chart-advanced.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Advanced Charts</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+  (function() {
+    let chartInstance = null;
+
+    function addSeriesRow(name, color, data) {
+      const container = document.getElementById('seriesContainer');
+      const row = document.createElement('div');
+      row.className = 'series-row';
+      row.innerHTML = '<input type="text" value="'+(name||'')+'" class="series-name" placeholder="Series name" style="max-width:150px;"><input type="color" value="'+(color||'#3B82F6')+'" class="series-color"><input type="text" value="'+(data||'')+'" class="series-data" placeholder="Values (comma separated)"><button class="btn-remove-row" title="Remove"><i data-lucide="x" style="width:14px;height:14px;"></i></button>';
+      container.appendChild(row);
+      row.querySelector('.btn-remove-row').addEventListener('click', () => row.remove());
+      lucide.createIcons();
+    }
+
+    document.getElementById('btnAddSeries').addEventListener('click', () => addSeriesRow('', '#3B82F6', ''));
+    document.querySelectorAll('.btn-remove-row').forEach(btn => {
+      btn.addEventListener('click', function() { this.closest('.series-row').remove(); });
+    });
+
+    function generate() {
+      const labels = document.getElementById('labelsInput').value.split(',').map(s => s.trim()).filter(Boolean);
+      const mode = document.getElementById('chartMode').value;
+      const curve = document.getElementById('smoothCurve').value;
+      const opacity = parseInt(document.getElementById('fillOpacity').value) / 100;
+
+      const datasets = [];
+      document.querySelectorAll('.series-row').forEach(row => {
+        const name = row.querySelector('.series-name').value.trim();
+        const color = row.querySelector('.series-color').value;
+        const values = row.querySelector('.series-data').value.split(',').map(s => parseFloat(s.trim())).filter(v => !isNaN(v));
+        if (name && values.length > 0) {
+          const tension = curve === 'smooth' ? 0.4 : 0;
+          const stepped = curve === 'stepped' ? 'before' : false;
+          datasets.push({
+            label: name,
+            data: values,
+            borderColor: color,
+            backgroundColor: color + Math.round(opacity * 255).toString(16).padStart(2, '0'),
+            borderWidth: 2,
+            fill: true,
+            tension: tension,
+            stepped: stepped,
+            pointBackgroundColor: color,
+            pointRadius: 4,
+            pointHoverRadius: 7
+          });
+        }
+      });
+
+      if (labels.length === 0 || datasets.length === 0) return;
+
+      document.getElementById('chartPlaceholder').style.display = 'none';
+      const canvas = document.getElementById('chartCanvas');
+      canvas.style.display = 'block';
+      if (chartInstance) chartInstance.destroy();
+
+      const isStacked = mode !== 'normal';
+      const isPercentage = mode === 'percentage';
+
+      chartInstance = new Chart(canvas, {
+        type: 'line',
+        data: { labels, datasets },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { position: 'top', labels: { usePointStyle: true, padding: 20, font: { family: 'Inter', size: 13 } } },
+            tooltip: { backgroundColor: 'rgba(0,0,0,0.8)', titleFont: { family: 'Inter' }, bodyFont: { family: 'Inter' }, cornerRadius: 8, padding: 12 }
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { font: { family: 'Inter', size: 12 } }, stacked: isStacked },
+            y: {
+              beginAtZero: true,
+              stacked: isStacked,
+              max: isPercentage ? 100 : undefined,
+              grid: { color: 'rgba(0,0,0,0.06)' },
+              ticks: {
+                font: { family: 'Inter', size: 12 },
+                callback: isPercentage ? function(v) { return v + '%'; } : undefined
+              }
+            }
+          }
+        }
+      });
+    }
+
+    document.getElementById('btnGenerate').addEventListener('click', generate);
+
+    document.getElementById('btnDownloadPNG').addEventListener('click', () => {
+      if (!chartInstance) return;
+      const link = document.createElement('a');
+      link.download = 'area-chart.png';
+      link.href = document.getElementById('chartCanvas').toDataURL('image/png', 1.0);
+      link.click();
+    });
+  })();
+  </script>
+</body>
+</html>

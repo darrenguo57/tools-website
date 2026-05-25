@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQL Formatter - ToolBox</title>
+  <meta name="description" content="Free online SQL formatter. Beautify and minify SQL queries with keyword casing and indentation options.">
+  <meta name="keywords" content="SQL formatter, SQL beautifier, SQL minifier, format SQL online">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SQL Formatter - ToolBox">
+  <meta property="og:description" content="Free online SQL formatter and beautifier.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/formatters/sql-formatter.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="SQL Formatter - ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "SQL Formatter",
+    "url": "https://toolbox.example.com/tools/formatters/sql-formatter.html",
+    "description": "Free online SQL formatter and beautifier.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    .sql-output { font-family: 'Courier New', Courier, monospace; font-size: 13px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+    .sql-keyword { color: #cf222e; font-weight: 600; }
+    .sql-function { color: #8250df; }
+    .sql-string { color: #0a3069; }
+    .sql-number { color: #0550ae; }
+    .sql-comment { color: #6e7781; font-style: italic; }
+    .sql-operator { color: #cf222e; }
+    .indent-options { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .indent-options label { font-size: 13px; color: #57606a; }
+    .indent-options select { padding: 4px 8px; border: 1px solid #d0d7de; border-radius: 6px; font-size: 13px; background: #fff; }
+    .success-message { color: #1a7f37; background: #dafbe1; border: 1px solid #3fb950; border-radius: 8px; padding: 12px 16px; font-size: 13px; margin-top: 8px; display: none; }
+    .success-message.show { display: block; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a>
+        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+        <a href="../../index.html?category=formatters">Formatters</a>
+        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+        <span class="breadcrumb-current">SQL Formatter</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="database"></i></div>
+        <div class="tool-header-info">
+          <h1 class="tool-header__title">SQL Formatter</h1>
+          <p class="tool-header__desc">Format and beautify SQL queries with keyword casing, proper indentation, and line breaks. Supports SELECT, INSERT, UPDATE, DELETE, and more.</p>
+          <span class="tool-card-tag">Formatters</span>
+        </div>
+      </section>
+
+      <section class="tool-content">
+        <div class="tool-workspace">
+          <div class="tool-panel">
+            <div class="tool-panel__header">
+              <h3 class="tool-panel__title"><i data-lucide="file-text"></i> Input SQL</h3>
+              <div class="tool-panel__actions">
+                <button class="tool-action-btn" id="btnPaste"><i data-lucide="clipboard-paste"></i> Paste</button>
+                <button class="tool-action-btn tool-action-btn--danger" id="btnClear"><i data-lucide="trash-2"></i> Clear</button>
+              </div>
+            </div>
+            <div class="tool-panel__body">
+              <textarea class="tool-input__field" id="sqlInput" placeholder="Paste your SQL query here, e.g. SELECT id, name FROM users WHERE age > 18 ORDER BY name;" style="min-height:220px;"></textarea>
+            </div>
+            <div class="tool-input__options">
+              <div class="tool-input__option indent-options">
+                <label for="keywordCase">Keywords:</label>
+                <select id="keywordCase">
+                  <option value="upper">UPPERCASE</option>
+                  <option value="lower">lowercase</option>
+                </select>
+                <label for="indentSize">Indent:</label>
+                <select id="indentSize">
+                  <option value="2">2 Spaces</option>
+                  <option value="4">4 Spaces</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-actions">
+            <div class="tool-actions__primary">
+              <button class="btn btn-primary" id="btnFormat"><i data-lucide="align-left"></i> Format</button>
+              <button class="btn btn-primary" id="btnMinify"><i data-lucide="minimize-2"></i> Minify</button>
+            </div>
+            <div class="tool-actions__secondary">
+              <button class="tool-action-btn" id="btnCopy"><i data-lucide="copy"></i> Copy Result</button>
+            </div>
+          </div>
+
+          <div class="success-message" id="successMsg"></div>
+
+          <div class="tool-panel">
+            <div class="tool-panel__header">
+              <h3 class="tool-panel__title"><i data-lucide="file-output"></i> Output</h3>
+              <div class="tool-panel__actions">
+                <button class="tool-action-btn" id="btnCopyOutput"><i data-lucide="copy"></i> Copy</button>
+              </div>
+            </div>
+            <div class="tool-panel__body">
+              <div class="tool-output__content sql-output" id="sqlOutput" style="min-height:220px;">
+                <span style="color:#8b949e;">Formatted SQL will appear here...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-sidebar-ad">
+          <div class="ad-slot" id="adSlotRight"><span>Advertisement</span></div>
+        </div>
+      </section>
+
+      <div class="ad-slot" id="adSlotBottom"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-info__content">
+          <div class="tool-steps">
+            <div class="tool-step"><div class="tool-step__number">1</div><div class="tool-step__content"><div class="tool-step__title">Paste your SQL</div><div class="tool-step__desc">Enter or paste your SQL query into the input area.</div></div></div>
+            <div class="tool-step"><div class="tool-step__number">2</div><div class="tool-step__content"><div class="tool-step__title">Choose options</div><div class="tool-step__desc">Select keyword casing (UPPER/lower) and indentation size.</div></div></div>
+            <div class="tool-step"><div class="tool-step__number">3</div><div class="tool-step__content"><div class="tool-step__title">Format or Minify</div><div class="tool-step__desc">Click Format to beautify or Minify to compress your SQL.</div></div></div>
+            <div class="tool-step"><div class="tool-step__number">4</div><div class="tool-step__content"><div class="tool-step__title">Copy the result</div><div class="tool-step__desc">Click Copy to copy the formatted SQL to your clipboard.</div></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="related-tools">
+        <h2>Related Tools</h2>
+        <div class="related-tools-grid">
+          <a href="json-formatter.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="braces"></i></div><h3>JSON Formatter</h3><span class="tool-card-tag">Formatters</span></a>
+          <a href="code-formatter.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="code"></i></div><h3>Code Formatter</h3><span class="tool-card-tag">Formatters</span></a>
+          <a href="xml-formatter.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="file-code"></i></div><h3>XML Formatter</h3><span class="tool-card-tag">Formatters</span></a>
+          <a href="csv-viewer.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="table"></i></div><h3>CSV Viewer</h3><span class="tool-card-tag">Formatters</span></a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+    (function() {
+      const input = document.getElementById('sqlInput');
+      const output = document.getElementById('sqlOutput');
+      const successMsg = document.getElementById('successMsg');
+      let lastResult = '';
+
+      const KEYWORDS = ['SELECT','FROM','WHERE','AND','OR','NOT','IN','LIKE','BETWEEN','IS','NULL','ORDER','BY','GROUP','HAVING','LIMIT','OFFSET','INSERT','INTO','VALUES','UPDATE','SET','DELETE','CREATE','TABLE','DROP','ALTER','ADD','COLUMN','INDEX','JOIN','INNER','LEFT','RIGHT','OUTER','FULL','ON','AS','DISTINCT','UNION','ALL','EXISTS','CASE','WHEN','THEN','ELSE','END','ASC','DESC','COUNT','SUM','AVG','MIN','MAX','IF','BEGIN','COMMIT','ROLLBACK','PRIMARY','KEY','FOREIGN','REFERENCES','CONSTRAINT','DEFAULT','CHECK','UNIQUE','VARCHAR','INT','INTEGER','TEXT','BOOLEAN','DATE','TIMESTAMP','FLOAT','DOUBLE','DECIMAL','NOT NULL','AUTO_INCREMENT','WITH','RECURSIVE','OVER','PARTITION','WINDOW','ROW_NUMBER','RANK','DENSE_RANK','LEAD','LAG','FIRST_VALUE','LAST_VALUE','COALESCE','CAST','CONVERT','TRUNCATE','MERGE','USING','MATCHED','EXCEPT','INTERSECT','ANY','SOME','NATURAL','CROSS','LATERAL','FETCH','NEXT','ROWS','ONLY','TOP','OUTPUT','RETURNING','CONFLICT','DO','NOTHING','EXCLUDE','REPLACE','ILIKE','SIMILAR','TO','TRUE','FALSE','UNKNOWN','ESCAPE','COLLATE','NOCASE','DEFERRABLE','DEFERRED','IMMEDIATE','INITIALLY','CASCADE','RESTRICT','NO','ACTION','TRIGGER','BEFORE','AFTER','EACH','ROW','STATEMENT','EXECUTE','LANGUAGE','PLPGSQL','RETURNS','VOID','REPLACE','FUNCTION','PROCEDURE','RETURNS','TRIGGER','VIEW','MATERIALIZED','GRANT','REVOKE','SCHEMA','DATABASE','IF','EXISTS','TEMPORARY','TEMP','UNLOGGED','LOGGED','INHERIT','OF','TYPE','ENUM','SERIAL','BIGSERIAL','SMALLSERIAL','GENERATED','ALWAYS','IDENTITY','SEQUENCE','OWNED','NONE','CYCLE','CACHE','START','INCREMENT','MINVALUE','MAXVALUE','RESTART'];
+
+      const FUNCTIONS = ['COUNT','SUM','AVG','MIN','MAX','COALESCE','NULLIF','CAST','CONVERT','CONCAT','SUBSTRING','TRIM','UPPER','LOWER','LENGTH','REPLACE','ROUND','FLOOR','CEIL','ABS','NOW','CURRENT_DATE','CURRENT_TIMESTAMP','DATE_TRUNC','EXTRACT','DATE_PART','ARRAY_AGG','STRING_AGG','ROW_NUMBER','RANK','DENSE_RANK','LEAD','LAG','FIRST_VALUE','LAST_VALUE','NTILE','PERCENT_RANK','CUME_DIST','LAG','LEAD','GENERATE_SERIES','UNNEST','ARRAY'];
+
+      function getIndent() { return parseInt(document.getElementById('indentSize').value); }
+      function getCase() { return document.getElementById('keywordCase').value; }
+
+      function escapeHtml(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+
+      function formatSQL(sql) {
+        const indent = getIndent();
+        const kwCase = getCase();
+        const spaces = ' '.repeat(indent);
+
+        // Normalize whitespace
+        sql = sql.replace(/\s+/g, ' ').trim();
+
+        // Split by semicolons for multi-statement
+        const statements = sql.split(';').filter(s => s.trim());
+        let formatted = '';
+
+        statements.forEach(function(stmt, si) {
+          let s = stmt.trim();
+          if (!s) return;
+
+          // Extract strings to protect them
+          const strings = [];
+          s = s.replace(/'[^']*'/g, function(match) {
+            strings.push(match);
+            return '__STR' + (strings.length - 1) + '__';
+          });
+
+          // Apply keyword casing
+          KEYWORDS.forEach(function(kw) {
+            const re = new RegExp('\\b' + kw + '\\b', 'gi');
+            s = s.replace(re, function(m) {
+              return kwCase === 'upper' ? kw.toUpperCase() : kw.toLowerCase();
+            });
+          });
+
+          // Major clauses that start on new lines
+          const majorClauses = ['SELECT','FROM','WHERE','ORDER BY','GROUP BY','HAVING','LIMIT','OFFSET','SET','VALUES','INTO','UNION ALL','UNION','EXCEPT','INTERSECT','INSERT','UPDATE','DELETE','CREATE TABLE','DROP TABLE','ALTER TABLE','JOIN','INNER JOIN','LEFT JOIN','RIGHT JOIN','FULL JOIN','LEFT OUTER JOIN','RIGHT OUTER JOIN','FULL OUTER JOIN','CROSS JOIN','NATURAL JOIN','ON','AND','OR'];
+
+          // Sort by length descending to match longer phrases first
+          majorClauses.sort(function(a, b) { return b.length - a.length; });
+
+          // Add newlines before major clauses
+          majorClauses.forEach(function(clause) {
+            const escaped = clause.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const re = new RegExp('\\s+(' + escaped + ')\\b', 'gi');
+            s = s.replace(re, '\n' + clause.toUpperCase());
+          });
+
+          // Indent after SELECT
+          s = s.replace(/^(SELECT)\b/i, function(m, sel) {
+            return sel.toUpperCase() + '\n' + spaces;
+          });
+
+          // Indent sub-clauses
+          s = s.replace(/\n(AND|OR)\b/gi, '\n' + spaces + '$1');
+          s = s.replace(/\n(SET)\b/gi, '\n$1');
+
+          // Indent after FROM, JOIN, WHERE
+          s = s.replace(/\n(FROM|JOIN|INNER JOIN|LEFT JOIN|RIGHT JOIN|FULL JOIN|LEFT OUTER JOIN|RIGHT OUTER JOIN|FULL OUTER JOIN|CROSS JOIN|NATURAL JOIN|WHERE|ORDER BY|GROUP BY|HAVING|LIMIT|OFFSET|INTO|VALUES)\b/gi, '\n$1');
+
+          // Comma separation on new lines for SELECT columns
+          const lines = s.split('\n');
+          let inSelect = false;
+          let result = [];
+          lines.forEach(function(line) {
+            if (/^\s*SELECT\b/i.test(line)) {
+              inSelect = true;
+              // Split columns by comma
+              const afterSelect = line.replace(/^\s*SELECT\s+/i, '');
+              const cols = afterSelect.split(',');
+              if (cols.length > 1) {
+                result.push('SELECT');
+                cols.forEach(function(col, i) {
+                  result.push(spaces + col.trim() + (i < cols.length - 1 ? ',' : ''));
+                });
+              } else {
+                result.push(line);
+              }
+            } else if (/^\s*(FROM|WHERE|ORDER|GROUP|HAVING|LIMIT|OFFSET|SET|VALUES|JOIN|INNER|LEFT|RIGHT|FULL|CROSS|NATURAL|UNION|EXCEPT|INTERSECT|INSERT|UPDATE|DELETE|CREATE|DROP|ALTER|INTO)\b/i.test(line)) {
+              inSelect = false;
+              result.push(line);
+            } else if (inSelect && line.includes(',')) {
+              const parts = line.split(',');
+              parts.forEach(function(part, i) {
+                result.push(spaces + part.trim() + (i < parts.length - 1 ? ',' : ''));
+              });
+            } else {
+              result.push(line);
+            }
+          });
+
+          s = result.join('\n');
+
+          // Restore strings
+          strings.forEach(function(str, i) {
+            s = s.replace('__STR' + i + '__', str);
+          });
+
+          formatted += s;
+          if (si < statements.length - 1) formatted += ';\n\n';
+        });
+
+        return formatted;
+      }
+
+      function minifySQL(sql) {
+        // Remove comments
+        sql = sql.replace(/--.*$/gm, '');
+        sql = sql.replace(/\/\*[\s\S]*?\*\//g, '');
+        // Normalize whitespace
+        sql = sql.replace(/\s+/g, ' ').trim();
+        return sql;
+      }
+
+      function highlightSQL(sql) {
+        const escaped = escapeHtml(sql);
+        // Highlight strings
+        let result = escaped.replace(/'[^']*'/g, '<span class="sql-string">$&</span>');
+        // Highlight numbers
+        result = result.replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="sql-number">$1</span>');
+        // Highlight keywords
+        KEYWORDS.forEach(function(kw) {
+          const re = new RegExp('\\b(' + kw + ')\\b', 'gi');
+          result = result.replace(re, '<span class="sql-keyword">$1</span>');
+        });
+        // Highlight functions
+        FUNCTIONS.forEach(function(fn) {
+          const re = new RegExp('\\b(' + fn + ')\\s*\\(', 'gi');
+          result = result.replace(re, '<span class="sql-function">$1</span>(');
+        });
+        return result;
+      }
+
+      document.getElementById('btnFormat').addEventListener('click', function() {
+        const val = input.value.trim();
+        if (!val) { output.innerHTML = '<span style="color:#cf222e;">Please enter SQL.</span>'; return; }
+        lastResult = formatSQL(val);
+        output.innerHTML = highlightSQL(lastResult);
+        successMsg.textContent = 'SQL formatted successfully!';
+        successMsg.classList.add('show');
+      });
+
+      document.getElementById('btnMinify').addEventListener('click', function() {
+        const val = input.value.trim();
+        if (!val) { output.innerHTML = '<span style="color:#cf222e;">Please enter SQL.</span>'; return; }
+        lastResult = minifySQL(val);
+        output.innerHTML = highlightSQL(lastResult);
+        successMsg.textContent = 'SQL minified! Size: ' + lastResult.length + ' characters.';
+        successMsg.classList.add('show');
+      });
+
+      function copyResult() {
+        if (!lastResult) return;
+        navigator.clipboard.writeText(lastResult).then(function() {
+          successMsg.textContent = 'Copied to clipboard!';
+          successMsg.classList.add('show');
+        });
+      }
+
+      document.getElementById('btnCopy').addEventListener('click', copyResult);
+      document.getElementById('btnCopyOutput').addEventListener('click', copyResult);
+
+      document.getElementById('btnClear').addEventListener('click', function() {
+        input.value = '';
+        output.innerHTML = '<span style="color:#8b949e;">Formatted SQL will appear here...</span>';
+        lastResult = '';
+        successMsg.classList.remove('show');
+      });
+
+      document.getElementById('btnPaste').addEventListener('click', function() {
+        navigator.clipboard.readText().then(function(text) { input.value = text; }).catch(function() {});
+      });
+    })();
+  </script>
+</body>
+</html>

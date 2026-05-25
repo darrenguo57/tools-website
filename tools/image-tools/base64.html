@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Base64 Converter - ToolBox</title>
+    <meta name="description" content="Convert images to Base64 strings and decode Base64 back to images. Free online tool.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    <style>
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .btn {
+            padding: 0.5rem 1.25rem; border-radius: 0.5rem; border: none; cursor: pointer;
+            font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: var(--primary, #3b82f6); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover, #2563eb); }
+        .btn-secondary { background: var(--bg-secondary, #f1f5f9); color: var(--text, #1e293b); border: 1px solid var(--border, #e2e8f0); }
+        .btn-secondary:hover { background: var(--bg-tertiary, #e2e8f0); }
+        .btn-success { background: #10b981; color: #fff; }
+        .btn-success:hover { background: #059669; }
+        .btn-danger { background: #ef4444; color: #fff; }
+        .btn-danger:hover { background: #dc2626; }
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem; padding: 0.75rem 1.5rem;
+            background: #1e293b; color: #fff; border-radius: 0.5rem; font-size: 14px;
+            transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 9999;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .tabs {
+            display: flex; gap: 0; border-bottom: 2px solid var(--border, #e2e8f0); margin-bottom: 1.5rem;
+        }
+        .tab-btn {
+            padding: 0.75rem 1.5rem; border: none; background: none; cursor: pointer;
+            font-size: 14px; font-weight: 500; color: var(--text-muted, #94a3b8);
+            border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s;
+            display: flex; align-items: center; gap: 0.4rem;
+        }
+        .tab-btn.active { color: var(--primary, #3b82f6); border-bottom-color: var(--primary, #3b82f6); }
+        .tab-btn:hover { color: var(--text, #1e293b); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .dropzone {
+            border: 2px dashed var(--border, #e2e8f0); border-radius: 0.75rem;
+            padding: 2.5rem; text-align: center; cursor: pointer; transition: all 0.2s;
+            background: var(--bg-secondary, #f8fafc); margin-bottom: 1rem;
+        }
+        .dropzone:hover, .dropzone.dragover { border-color: var(--primary, #3b82f6); background: rgba(59,130,246,0.05); }
+        .dropzone-icon { width: 48px; height: 48px; color: var(--text-muted, #94a3b8); margin: 0 auto 0.75rem; }
+        .dropzone-text { font-size: 14px; color: var(--text-secondary, #64748b); }
+        .dropzone-hint { font-size: 12px; color: var(--text-muted, #94a3b8); margin-top: 0.25rem; }
+        .preview-area {
+            border: 1px solid var(--border, #e2e8f0); border-radius: 0.75rem; padding: 1rem;
+            margin-bottom: 1rem; text-align: center; min-height: 100px;
+            background: var(--bg, #fff);
+        }
+        .preview-area img { max-width: 100%; max-height: 300px; object-fit: contain; border-radius: 0.25rem; }
+        .textarea-wrap textarea {
+            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.5rem; font-family: 'Courier New', monospace; font-size: 13px;
+            resize: vertical; background: var(--bg, #fff); color: var(--text, #1e293b);
+            box-sizing: border-box; word-break: break-all;
+        }
+        .textarea-wrap textarea:focus { outline: none; border-color: var(--primary, #3b82f6); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 14px; color: var(--text, #1e293b); }
+        .info-badge {
+            display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.5rem;
+            background: var(--bg-secondary, #f1f5f9); border-radius: 0.25rem; font-size: 12px;
+            color: var(--text-muted, #94a3b8); margin-top: 0.5rem;
+        }
+        .empty-state { text-align: center; padding: 2rem; color: var(--text-muted, #94a3b8); font-size: 14px; }
+        @media (max-width: 768px) { .tabs { overflow-x: auto; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo"><i data-lucide="image" style="width:28px;height:28px"></i> ToolBox</a>
+            <div class="header-search"><i data-lucide="search"></i><input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools..."></div>
+            <div class="header-actions">
+                <button class="lang-btn" onclick="I18n.setLang(I18n.currentLang==='en'?'zh':'en')">EN</button>
+                <button class="theme-btn" onclick="document.body.classList.toggle('dark')"><i data-lucide="sun"></i></button>
+            </div>
+        </div>
+    </header>
+    <div class="breadcrumb"><div class="container"><a href="../../index.html">Home</a> / <a href="../../index.html#image-tools">Image Tools</a> / <span>Base64 Converter</span></div></div>
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="binary"></i></div>
+                    <h1>Image Base64 Converter</h1>
+                    <p>Convert images to Base64 encoded strings or decode Base64 strings back to images.</p>
+                </div>
+                <div class="tool-workspace">
+                    <!-- Tabs -->
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="switchTab('img2base64')"><i data-lucide="image" style="width:16px;height:16px"></i> Image to Base64</button>
+                        <button class="tab-btn" onclick="switchTab('base642img')"><i data-lucide="file-code" style="width:16px;height:16px"></i> Base64 to Image</button>
+                    </div>
+
+                    <!-- Tab 1: Image to Base64 -->
+                    <div class="tab-content active" id="tab-img2base64">
+                        <div class="dropzone" id="dropzone">
+                            <div class="dropzone-icon"><i data-lucide="upload-cloud"></i></div>
+                            <div class="dropzone-text">Drag & drop an image here, or click to select</div>
+                            <div class="dropzone-hint">Supports JPEG, PNG, WebP, GIF, BMP, SVG</div>
+                            <input type="file" id="fileInput" accept="image/*" hidden>
+                        </div>
+
+                        <div class="preview-area" id="imgPreview">
+                            <div class="empty-state">Image preview will appear here</div>
+                        </div>
+
+                        <div class="info-badge" id="imgInfo" style="display:none">
+                            <i data-lucide="info" style="width:12px;height:12px"></i>
+                            <span id="imgInfoText"></span>
+                        </div>
+
+                        <div style="margin-top:1rem">
+                            <div class="textarea-label"><i data-lucide="code" style="width:16px;height:16px"></i> Base64 String</div>
+                            <div class="textarea-wrap">
+                                <textarea id="base64Output" readonly placeholder="Base64 string will appear here..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="copyBase64()"><i data-lucide="copy" style="width:16px;height:16px"></i> Copy Base64</button>
+                            <button class="btn btn-secondary" onclick="copyDataUrl()"><i data-lucide="link" style="width:16px;height:16px"></i> Copy Data URL</button>
+                            <button class="btn btn-secondary" onclick="copyImgTag()"><i data-lucide="code" style="width:16px;height:16px"></i> Copy &lt;img&gt; Tag</button>
+                            <button class="btn btn-danger" onclick="clearImg2Base64()"><i data-lucide="trash-2" style="width:16px;height:16px"></i> Clear</button>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Base64 to Image -->
+                    <div class="tab-content" id="tab-base642img">
+                        <div style="margin-bottom:1rem">
+                            <div class="textarea-label"><i data-lucide="file-code" style="width:16px;height:16px"></i> Base64 String</div>
+                            <div class="textarea-wrap">
+                                <textarea id="base64Input" placeholder="Paste Base64 string here... (with or without data:image/...;base64, prefix)"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="decodeBase64()"><i data-lucide="image" style="width:16px;height:16px"></i> Decode to Image</button>
+                            <button class="btn btn-danger" onclick="clearBase642Img()"><i data-lucide="trash-2" style="width:16px;height:16px"></i> Clear</button>
+                        </div>
+
+                        <div class="preview-area" id="decodedPreview" style="margin-top:1rem">
+                            <div class="empty-state">Decoded image will appear here</div>
+                        </div>
+
+                        <div class="info-badge" id="decodedInfo" style="display:none">
+                            <i data-lucide="info" style="width:12px;height:12px"></i>
+                            <span id="decodedInfoText"></span>
+                        </div>
+
+                        <div class="btn-group" id="decodedActions" style="display:none">
+                            <button class="btn btn-success" onclick="downloadDecoded()"><i data-lucide="download" style="width:16px;height:16px"></i> Download Image</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="ad-slot" style="margin-top:2rem"><div class="ad-placeholder">Advertisement</div></div>
+            </div>
+            <aside class="tool-sidebar"><div class="ad-slot"><div class="ad-placeholder">Advertisement</div></div></aside>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><p>&copy; 2024 ToolBox. All rights reserved.</p></div></footer>
+    <div class="toast" id="toast"></div>
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script>
+    lucide.createIcons();
+
+    let currentDataUrl = '';
+    let currentFileName = '';
+    let decodedDataUrl = '';
+    let decodedMimeType = '';
+
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+
+    // Tab switching
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+            btn.classList.toggle('active', (tab === 'img2base64' && i === 0) || (tab === 'base642img' && i === 1));
+        });
+        document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+        document.getElementById('tab-' + tab).classList.add('active');
+    }
+
+    // Image to Base64
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+    dropzone.addEventListener('drop', e => { e.preventDefault(); dropzone.classList.remove('dragover'); handleFile(e.dataTransfer.files[0]); });
+    fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
+
+    function handleFile(file) {
+        if (!file || !file.type.startsWith('image/')) { showToast('Please select an image file'); return; }
+        currentFileName = file.name;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            currentDataUrl = e.target.result;
+            const base64Str = currentDataUrl.split(',')[1];
+
+            document.getElementById('imgPreview').innerHTML = `<img src="${currentDataUrl}" alt="Preview">`;
+            document.getElementById('base64Output').value = base64Str;
+            document.getElementById('imgInfo').style.display = 'inline-flex';
+            document.getElementById('imgInfoText').textContent = `${file.name} | ${formatSize(file.size)} | ${base64Str.length.toLocaleString()} chars`;
+            lucide.createIcons();
+            showToast('Image converted to Base64');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function copyBase64() {
+        const val = document.getElementById('base64Output').value;
+        if (!val) { showToast('No Base64 string to copy'); return; }
+        copyToClipboard(val);
+    }
+
+    function copyDataUrl() {
+        if (!currentDataUrl) { showToast('No data URL to copy'); return; }
+        copyToClipboard(currentDataUrl);
+    }
+
+    function copyImgTag() {
+        if (!currentDataUrl) { showToast('No image to copy'); return; }
+        copyToClipboard(`<img src="${currentDataUrl}" alt="${currentFileName}">`);
+    }
+
+    function clearImg2Base64() {
+        currentDataUrl = '';
+        currentFileName = '';
+        document.getElementById('imgPreview').innerHTML = '<div class="empty-state">Image preview will appear here</div>';
+        document.getElementById('base64Output').value = '';
+        document.getElementById('imgInfo').style.display = 'none';
+        fileInput.value = '';
+    }
+
+    // Base64 to Image
+    function decodeBase64() {
+        let input = document.getElementById('base64Input').value.trim();
+        if (!input) { showToast('Please paste a Base64 string'); return; }
+
+        // Add data URL prefix if missing
+        let dataUrl = input;
+        if (!input.startsWith('data:image')) {
+            // Try to detect format
+            let mimeType = 'image/png';
+            if (input.startsWith('/9j/')) mimeType = 'image/jpeg';
+            else if (input.startsWith('iVBOR')) mimeType = 'image/png';
+            else if (input.startsWith('R0lGOD')) mimeType = 'image/gif';
+            else if (input.startsWith('UklGR')) mimeType = 'image/webp';
+            dataUrl = `data:${mimeType};base64,${input}`;
+        }
+
+        decodedDataUrl = dataUrl;
+        decodedMimeType = dataUrl.match(/data:(image\/\w+)/)?.[1] || 'image/png';
+
+        const img = new Image();
+        img.onload = () => {
+            document.getElementById('decodedPreview').innerHTML = `<img src="${dataUrl}" alt="Decoded">`;
+            document.getElementById('decodedInfo').style.display = 'inline-flex';
+            document.getElementById('decodedInfoText').textContent = `${img.width} x ${img.height} | ${decodedMimeType} | ${formatSize(Math.round(dataUrl.length * 0.75))}`;
+            document.getElementById('decodedActions').style.display = 'flex';
+            lucide.createIcons();
+            showToast('Base64 decoded to image');
+        };
+        img.onerror = () => { showToast('Invalid Base64 string or unsupported format'); };
+        img.src = dataUrl;
+    }
+
+    function downloadDecoded() {
+        if (!decodedDataUrl) { showToast('No image to download'); return; }
+        const ext = decodedMimeType.split('/')[1] || 'png';
+        const a = document.createElement('a');
+        a.href = decodedDataUrl;
+        a.download = 'decoded_image.' + ext;
+        a.click();
+        showToast('Image downloaded');
+    }
+
+    function clearBase642Img() {
+        decodedDataUrl = '';
+        decodedMimeType = '';
+        document.getElementById('base64Input').value = '';
+        document.getElementById('decodedPreview').innerHTML = '<div class="empty-state">Decoded image will appear here</div>';
+        document.getElementById('decodedInfo').style.display = 'none';
+        document.getElementById('decodedActions').style.display = 'none';
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard'))
+            .catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = text; document.body.appendChild(ta); ta.select();
+                document.execCommand('copy'); document.body.removeChild(ta);
+                showToast('Copied to clipboard');
+            });
+    }
+
+    function formatSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+    </script>
+</body>
+</html>

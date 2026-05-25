@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Entity Encoder/Decoder - ToolBox</title>
+    <meta name="description" content="Encode and decode HTML entities online. Convert special characters to HTML entities and back.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    <style>
+        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .textarea-wrap textarea {
+            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.5rem; font-family: 'Courier New', monospace; font-size: 14px;
+            resize: vertical; background: var(--bg, #fff); color: var(--text, #1e293b);
+            box-sizing: border-box;
+        }
+        .textarea-wrap textarea:focus { outline: none; border-color: var(--primary, #3b82f6); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .btn {
+            padding: 0.5rem 1.25rem; border-radius: 0.5rem; border: none; cursor: pointer;
+            font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: var(--primary, #3b82f6); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover, #2563eb); }
+        .btn-secondary { background: var(--bg-secondary, #f1f5f9); color: var(--text, #1e293b); border: 1px solid var(--border, #e2e8f0); }
+        .btn-secondary:hover { background: var(--bg-tertiary, #e2e8f0); }
+        .btn-success { background: #10b981; color: #fff; }
+        .btn-success:hover { background: #059669; }
+        .btn-danger { background: #ef4444; color: #fff; }
+        .btn-danger:hover { background: #dc2626; }
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem; padding: 0.75rem 1.5rem;
+            background: #1e293b; color: #fff; border-radius: 0.5rem; font-size: 14px;
+            transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 9999;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .char-count { font-size: 12px; color: var(--text-muted, #94a3b8); text-align: right; margin-top: 0.25rem; }
+        .encode-options { display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center; flex-wrap: wrap; }
+        .encode-options label { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; font-size: 14px; }
+        .encode-options input[type="checkbox"] { accent-color: var(--primary, #3b82f6); }
+        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo"><i data-lucide="code" style="width:28px;height:28px"></i> ToolBox</a>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+            </div>
+            <div class="header-actions">
+                <button class="lang-btn" onclick="I18n.setLang(I18n.currentLang==='en'?'zh':'en')">EN</button>
+                <button class="theme-btn" onclick="document.body.classList.toggle('dark')"><i data-lucide="sun"></i></button>
+            </div>
+        </div>
+    </header>
+    <div class="breadcrumb"><div class="container"><a href="../../index.html">Home</a> / <a href="../../index.html#converters">Converters</a> / <span>HTML Entity</span></div></div>
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="code"></i></div>
+                    <h1>HTML Entity Encoder / Decoder</h1>
+                    <p>Encode special characters to HTML entities or decode HTML entities back to characters. Supports named, numeric, and hexadecimal entities.</p>
+                </div>
+                <div class="tool-workspace">
+                    <div class="encode-options">
+                        <span style="font-weight:600">Encode Options:</span>
+                        <label><input type="checkbox" id="optNamed" checked> Use named entities</label>
+                        <label><input type="checkbox" id="optNumeric"> Use numeric entities</label>
+                        <label><input type="checkbox" id="optNonAscii"> Encode non-ASCII characters</label>
+                    </div>
+                    <div class="workspace-grid">
+                        <div>
+                            <div class="textarea-label"><i data-lucide="file-text" style="width:16px;height:16px"></i> Input</div>
+                            <div class="textarea-wrap">
+                                <textarea id="inputArea" placeholder="Enter text or HTML entities..."></textarea>
+                            </div>
+                            <div class="char-count"><span id="inputCount">0</span> characters</div>
+                        </div>
+                        <div>
+                            <div class="textarea-label"><i data-lucide="file-output" style="width:16px;height:16px"></i> Output</div>
+                            <div class="textarea-wrap">
+                                <textarea id="outputArea" placeholder="Result will appear here..." readonly></textarea>
+                            </div>
+                            <div class="char-count"><span id="outputCount">0</span> characters</div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="encodeEntities()"><i data-lucide="arrow-right" style="width:16px;height:16px"></i> Encode</button>
+                        <button class="btn btn-success" onclick="decodeEntities()"><i data-lucide="arrow-left" style="width:16px;height:16px"></i> Decode</button>
+                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy" style="width:16px;height:16px"></i> Copy</button>
+                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2" style="width:16px;height:16px"></i> Clear</button>
+                    </div>
+                </div>
+                <div class="ad-slot" style="margin-top:2rem"><div class="ad-placeholder">Advertisement</div></div>
+            </div>
+            <aside class="tool-sidebar">
+                <div class="ad-slot"><div class="ad-placeholder">Advertisement</div></div>
+            </aside>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><p>&copy; 2024 ToolBox. All rights reserved.</p></div></footer>
+    <div class="toast" id="toast"></div>
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script>
+    lucide.createIcons();
+
+    const inputArea = document.getElementById('inputArea');
+    const outputArea = document.getElementById('outputArea');
+    const inputCount = document.getElementById('inputCount');
+    const outputCount = document.getElementById('outputCount');
+
+    inputArea.addEventListener('input', () => { inputCount.textContent = inputArea.value.length; });
+
+    // Named HTML entities map
+    const namedEntities = {
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;',
+        ' ': '&nbsp;', '\u00A0': '&nbsp;',
+        '\u00A9': '&copy;', '\u00AE': '&reg;', '\u2122': '&trade;',
+        '\u00AB': '&laquo;', '\u00BB': '&raquo;',
+        '\u2013': '&ndash;', '\u2014': '&mdash;',
+        '\u2018': '&lsquo;', '\u2019': '&rsquo;',
+        '\u201C': '&ldquo;', '\u201D': '&rdquo;',
+        '\u2022': '&bull;', '\u2026': '&hellip;',
+        '\u00B0': '&deg;', '\u00B1': '&plusmn;',
+        '\u00D7': '&times;', '\u00F7': '&divide;',
+        '\u00BC': '&frac14;', '\u00BD': '&frac12;', '\u00BE': '&frac34;',
+        '\u20AC': '&euro;', '\u00A3': '&pound;', '\u00A5': '&yen;', '\u00A2': '&cent;',
+        '\u2190': '&larr;', '\u2191': '&uarr;', '\u2192': '&rarr;', '\u2193': '&darr;',
+        '\u2660': '&spades;', '\u2665': '&hearts;', '\u2666': '&diams;', '\u2663': '&clubs;',
+        '\u2212': '&minus;'
+    };
+
+    // Reverse map for decoding
+    const namedToChar = {};
+    for (const [char, entity] of Object.entries(namedEntities)) {
+        namedToChar[entity] = char;
+    }
+
+    function encodeEntities() {
+        const input = inputArea.value;
+        if (!input) { showToast('Please enter text to encode'); return; }
+
+        const useNamed = document.getElementById('optNamed').checked;
+        const useNumeric = document.getElementById('optNumeric').checked;
+        const encodeNonAscii = document.getElementById('optNonAscii').checked;
+
+        let result = '';
+        for (let i = 0; i < input.length; i++) {
+            const char = input[i];
+            const code = input.charCodeAt(i);
+
+            if (useNamed && namedEntities[char]) {
+                result += namedEntities[char];
+            } else if (useNumeric && (code > 127 || '&<>"\''.includes(char))) {
+                result += '&#' + code + ';';
+            } else if (encodeNonAscii && code > 127) {
+                if (useNamed && namedEntities[char]) {
+                    result += namedEntities[char];
+                } else {
+                    result += '&#' + code + ';';
+                }
+            } else if ('&<>"'.includes(char)) {
+                // Always encode essential HTML chars
+                result += namedEntities[char] || ('&#' + code + ';');
+            } else {
+                result += char;
+            }
+        }
+
+        outputArea.value = result;
+        outputCount.textContent = result.length;
+        showToast('Encoded successfully');
+    }
+
+    function decodeEntities() {
+        const input = inputArea.value;
+        if (!input) { showToast('Please enter HTML entities to decode'); return; }
+
+        let result = input;
+
+        // Decode named entities
+        result = result.replace(/&[a-zA-Z]+;/g, (entity) => {
+            if (namedToChar[entity]) return namedToChar[entity];
+            // Try using a temporary element for unknown named entities
+            const textarea = document.createElement('textarea');
+            textarea.innerHTML = entity;
+            return textarea.value;
+        });
+
+        // Decode decimal numeric entities &#123;
+        result = result.replace(/&#(\d+);/g, (match, code) => {
+            return String.fromCharCode(parseInt(code, 10));
+        });
+
+        // Decode hexadecimal numeric entities &#x1F4A9;
+        result = result.replace(/&#x([0-9a-fA-F]+);/g, (match, code) => {
+            return String.fromCharCode(parseInt(code, 16));
+        });
+
+        outputArea.value = result;
+        outputCount.textContent = result.length;
+        showToast('Decoded successfully');
+    }
+
+    function copyOutput() {
+        if (!outputArea.value) { showToast('Nothing to copy'); return; }
+        navigator.clipboard.writeText(outputArea.value).then(() => showToast('Copied to clipboard'));
+    }
+
+    function clearAll() {
+        inputArea.value = '';
+        outputArea.value = '';
+        inputCount.textContent = '0';
+        outputCount.textContent = '0';
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+    </script>
+</body>
+</html>

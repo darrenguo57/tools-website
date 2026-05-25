@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barcode Generator - ToolBox</title>
+  <meta name="description" content="Generate barcodes in CODE128, EAN-13, and UPC formats. Customize width, height, and display options.">
+  <meta name="keywords" content="barcode generator, CODE128, EAN-13, UPC, barcode online">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Barcode Generator - ToolBox">
+  <meta property="og:description" content="Generate barcodes in multiple formats online.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/generators/barcode.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Barcode Generator",
+    "url": "https://toolbox.example.com/tools/generators/barcode.html",
+    "description": "Generate barcodes in CODE128, EAN-13, and UPC formats.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item active"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=generators" class="breadcrumb__link">Generators</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Barcode Generator</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="barcode"></i></div>
+        <h1 class="tool-header__title">Barcode Generator</h1>
+        <p class="tool-header__desc">Generate barcodes in CODE128, EAN-13, and UPC formats. Customize dimensions and text display options.</p>
+      </section>
+
+      <section class="tool-workspace">
+
+        <!-- Input -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="text-cursor-input"></i> Input</span>
+          </div>
+          <div class="tool-panel__body">
+            <input type="text" id="barcodeInput" class="tool-input__field" style="min-height:auto;padding:8px 12px;" placeholder="Enter text or number..." value="Hello-123">
+            <span class="tool-settings__hint" style="display:block;margin-top:var(--space-2);">EAN-13: 12-13 digits | UPC: 11-12 digits | CODE128: any text</span>
+          </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="tool-settings">
+          <div class="tool-settings__title">Options</div>
+          <div class="tool-settings__group">
+            <label class="tool-settings__label" for="barcodeFormat">Format</label>
+            <select id="barcodeFormat" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+              <option value="CODE128" selected>CODE128 (Any text)</option>
+              <option value="EAN13">EAN-13 (12-13 digits)</option>
+              <option value="UPC">UPC (11-12 digits)</option>
+            </select>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+            <div class="tool-settings__group">
+              <label class="tool-settings__label" for="barcodeWidth">Bar Width (1-4)</label>
+              <input type="number" id="barcodeWidth" value="2" min="1" max="4" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+            </div>
+            <div class="tool-settings__group">
+              <label class="tool-settings__label" for="barcodeHeight">Height (px)</label>
+              <input type="number" id="barcodeHeight" value="100" min="40" max="300" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+            </div>
+          </div>
+          <div class="tool-toggle">
+            <span class="tool-toggle__label">Show Text</span>
+            <div class="tool-toggle__switch tool-toggle__switch--active" id="toggleShowText" role="switch" aria-checked="true" tabindex="0"></div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="tool-actions">
+          <div class="tool-actions__primary">
+            <button class="btn btn--primary" id="btnGenerate"><i data-lucide="sparkles"></i> Generate</button>
+          </div>
+          <div class="tool-actions__secondary">
+            <button class="btn btn--secondary" id="btnDownload"><i data-lucide="download"></i> Download PNG</button>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="image"></i> Preview</span>
+          </div>
+          <div class="tool-panel__body" style="display:flex;align-items:center;justify-content:center;min-height:200px;overflow:auto;">
+            <div id="barcodePreview" class="tool-output__placeholder">
+              <i data-lucide="barcode"></i>
+              <span class="tool-output__placeholder-text">Enter text and click "Generate"</span>
+            </div>
+            <svg id="barcodeSvg" style="display:none;max-width:100%;"></svg>
+          </div>
+        </div>
+
+      </section>
+
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Enter Input</div>
+              <div class="tool-step__desc">Type text for CODE128, or digits for EAN-13/UPC formats.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Choose Format &amp; Options</div>
+              <div class="tool-step__desc">Select barcode format, adjust bar width, height, and text display.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Generate &amp; Download</div>
+              <div class="tool-step__desc">Click Generate to create the barcode. Download as PNG image.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="qrcode.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">QR Code Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+          <a href="uuid.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">UUID Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+          <a href="nanoid.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">NanoID Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+          <a href="password.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Password Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+    (function() {
+      let showText = true;
+      const toggleEl = document.getElementById('toggleShowText');
+      toggleEl.addEventListener('click', () => {
+        showText = !showText;
+        toggleEl.classList.toggle('tool-toggle__switch--active', showText);
+        toggleEl.setAttribute('aria-checked', showText);
+      });
+      toggleEl.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleEl.click(); } });
+
+      const preview = document.getElementById('barcodePreview');
+      const svg = document.getElementById('barcodeSvg');
+
+      function generateBarcode() {
+        const input = document.getElementById('barcodeInput').value.trim();
+        if (!input) {
+          preview.style.display = 'flex';
+          svg.style.display = 'none';
+          return;
+        }
+
+        const format = document.getElementById('barcodeFormat').value;
+        const width = Math.max(1, Math.min(4, parseInt(document.getElementById('barcodeWidth').value) || 2));
+        const height = Math.max(40, Math.min(300, parseInt(document.getElementById('barcodeHeight').value) || 100));
+
+        try {
+          JsBarcode(svg, input, {
+            format: format,
+            width: width,
+            height: height,
+            displayValue: showText,
+            fontSize: 16,
+            margin: 10,
+            background: '#FFFFFF',
+            lineColor: '#000000'
+          });
+          preview.style.display = 'none';
+          svg.style.display = 'block';
+        } catch (e) {
+          preview.style.display = 'flex';
+          preview.innerHTML = '<span class="tool-output__placeholder-text" style="color:var(--color-error);">Error: ' + e.message + '</span>';
+          svg.style.display = 'none';
+        }
+      }
+
+      document.getElementById('btnGenerate').addEventListener('click', generateBarcode);
+
+      document.getElementById('btnDownload').addEventListener('click', () => {
+        if (svg.style.display === 'none') return;
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        img.onload = function() {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0);
+          const link = document.createElement('a');
+          link.download = 'barcode.png';
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+        };
+        img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+      });
+
+      // Auto-generate on Enter
+      document.getElementById('barcodeInput').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') generateBarcode();
+      });
+    })();
+  </script>
+</body>
+</html>

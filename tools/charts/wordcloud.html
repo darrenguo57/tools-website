@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Cloud Generator - ToolBox</title>
+  <meta name="description" content="Generate beautiful word clouds from text. Customize colors, shapes, and word count. Download as PNG.">
+  <meta name="keywords" content="word cloud generator, tag cloud, wordle, text visualization">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Word Cloud Generator - ToolBox">
+  <meta property="og:description" content="Generate word clouds from text. Free and no installation required.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/charts/wordcloud.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Word Cloud Generator",
+    "url": "https://toolbox.example.com/tools/charts/wordcloud.html",
+    "description": "Generate word clouds from text.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    #wordcloudCanvas { width: 100%; height: 500px; border-radius: var(--radius-md); background: #FAFBFC; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item active"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=charts" class="breadcrumb__link">Charts</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Word Cloud Generator</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="cloud"></i></div>
+        <h1 class="tool-header__title">Word Cloud Generator</h1>
+        <p class="tool-header__desc">Generate beautiful word clouds from text or weighted word lists. Customize colors, shapes, and word count.</p>
+      </section>
+
+      <section class="tool-workspace">
+
+        <!-- Settings -->
+        <div class="tool-settings">
+          <div class="tool-settings__title">Options</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--space-4);">
+            <div class="tool-settings__group">
+              <label class="tool-settings__label" for="maxWords">Max Words</label>
+              <input type="number" id="maxWords" value="100" min="10" max="500" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+            </div>
+            <div class="tool-settings__group">
+              <label class="tool-settings__label" for="colorScheme">Color Scheme</label>
+              <select id="colorScheme" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+                <option value="random">Random Colors</option>
+                <option value="blue">Blue</option>
+                <option value="green">Green</option>
+                <option value="warm">Warm</option>
+                <option value="cool">Cool</option>
+                <option value="dark">Dark</option>
+              </select>
+            </div>
+            <div class="tool-settings__group">
+              <label class="tool-settings__label" for="shape">Shape</label>
+              <select id="shape" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+                <option value="circle">Circle</option>
+                <option value="square">Square</option>
+                <option value="heart">Heart</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="text-cursor-input"></i> Text Input</span>
+            <div class="tool-panel__actions">
+              <button class="btn btn--sm btn--secondary" id="btnSample"><i data-lucide="file-text"></i> Sample</button>
+            </div>
+          </div>
+          <div class="tool-panel__body">
+            <textarea class="tool-input__field" id="textInput" rows="8" style="min-height:180px;" placeholder="Enter text here, or use 'word:weight' format (one per line)...">JavaScript:50
+Python:45
+TypeScript:40
+React:38
+Vue:35
+Angular:30
+Node.js:35
+HTML:25
+CSS:25
+Docker:20
+Kubernetes:18
+AWS:22
+Git:28
+SQL:20
+MongoDB:15
+Redis:12
+GraphQL:15
+REST:20
+WebSocket:10
+WebAssembly:8
+Tailwind:18
+Next.js:22
+Svelte:12
+Rust:15
+Go:18
+Java:20
+C++:15
+Swift:10
+Flutter:12
+Dart:8</textarea>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="tool-actions">
+          <div class="tool-actions__primary">
+            <button class="btn btn--primary" id="btnGenerate"><i data-lucide="sparkles"></i> Generate</button>
+          </div>
+          <div class="tool-actions__secondary">
+            <button class="btn btn--secondary" id="btnDownloadPNG"><i data-lucide="download"></i> Download PNG</button>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="eye"></i> Preview</span>
+          </div>
+          <div class="tool-panel__body" style="display:flex;justify-content:center;">
+            <canvas id="wordcloudCanvas"></canvas>
+          </div>
+        </div>
+
+      </section>
+
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Enter Text</div>
+              <div class="tool-step__desc">Paste plain text or use "word:weight" format (one per line).</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Configure Options</div>
+              <div class="tool-step__desc">Set max words, color scheme, and shape.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Generate & Download</div>
+              <div class="tool-step__desc">Click Generate to create the word cloud, then download as PNG.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="chart-basic.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Basic Charts</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="treemap.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Treemap</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="network.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Network Graph</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="mindmap.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Mind Map</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/wordcloud@1.2.2/src/wordcloud2.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+  (function() {
+    const sampleText = 'JavaScript:50\nPython:45\nTypeScript:40\nReact:38\nVue:35\nAngular:30\nNode.js:35\nHTML:25\nCSS:25\nDocker:20\nKubernetes:18\nAWS:22\nGit:28\nSQL:20\nMongoDB:15\nRedis:12\nGraphQL:15\nREST:20\nWebSocket:10\nWebAssembly:8\nTailwind:18\nNext.js:22\nSvelte:12\nRust:15\nGo:18\nJava:20\nC++:15\nSwift:10\nFlutter:12\nDart:8';
+
+    document.getElementById('btnSample').addEventListener('click', () => {
+      document.getElementById('textInput').value = sampleText;
+    });
+
+    const colorSchemes = {
+      random: null,
+      blue: ['#1E3A5F','#2563EB','#3B82F6','#60A5FA','#93C5FD','#BFDBFE','#DBEAFE'],
+      green: ['#064E3B','#059669','#10B981','#34D399','#6EE7B7','#A7F3D0','#D1FAE5'],
+      warm: ['#7C2D12','#DC2626','#EF4444','#F97316','#F59E0B','#FBBF24','#FDE68A'],
+      cool: ['#1E3A5F','#0E7490','#06B6D4','#22D3EE','#67E8F9','#A5F3FC','#8B5CF6'],
+      dark: ['#111827','#1F2937','#374151','#4B5563','#6B7280','#9CA3AF','#D1D5DB']
+    };
+
+    function parseInput(text) {
+      const lines = text.trim().split('\n').filter(l => l.trim());
+      const weighted = [];
+      const plain = {};
+
+      lines.forEach(line => {
+        const match = line.match(/^(.+?):(\d+(?:\.\d+)?)$/);
+        if (match) {
+          weighted.push([match[1].trim(), parseFloat(match[2])]);
+        } else {
+          const words = line.trim().split(/\s+/);
+          words.forEach(w => {
+            const word = w.toLowerCase().replace(/[^a-zA-Z0-9\u4e00-\u9fff]/g, '');
+            if (word.length > 1) plain[word] = (plain[word] || 0) + 1;
+          });
+        }
+      });
+
+      if (weighted.length > 0) return weighted;
+      return Object.entries(plain).sort((a, b) => b[1] - a[1]);
+    }
+
+    function getShapeMask(shape, w, h) {
+      if (shape === 'circle') {
+        return function(x, y) {
+          const cx = w/2, cy = h/2, r = Math.min(w,h)/2 - 10;
+          return Math.pow(x-cx,2)/Math.pow(r,2) + Math.pow(y-cy,2)/Math.pow(r,2) <= 1;
+        };
+      }
+      if (shape === 'heart') {
+        return function(x, y) {
+          const cx = w/2, cy = h/2;
+          const nx = (x - cx) / (w * 0.3);
+          const ny = -(y - cy) / (h * 0.3) + 0.4;
+          return Math.pow(nx*nx + ny*ny - 1, 3) - nx*nx * ny*ny*ny <= 0;
+        };
+      }
+      return null; // square (default)
+    }
+
+    function generate() {
+      const text = document.getElementById('textInput').value.trim();
+      if (!text) return;
+
+      const list = parseInput(text);
+      const maxWords = parseInt(document.getElementById('maxWords').value) || 100;
+      const scheme = document.getElementById('colorScheme').value;
+      const shape = document.getElementById('shape').value;
+
+      const trimmed = list.slice(0, maxWords);
+
+      const canvasEl = document.getElementById('wordcloudCanvas');
+      const containerW = canvasEl.parentElement.getBoundingClientRect().width - 40;
+      canvasEl.width = containerW;
+      canvasEl.height = 500;
+
+      const options = {
+        list: trimmed,
+        gridSize: Math.round(16 * containerW / 1024),
+        weightFactor: function(size) { return Math.max(12, size * containerW / 400); },
+        fontFamily: 'Inter, sans-serif',
+        fontWeight: function(word, weight) { return weight > 30 ? '700' : weight > 15 ? '600' : '400'; },
+        color: colorSchemes[scheme] || function() {
+          const hue = Math.floor(Math.random() * 360);
+          return 'hsl(' + hue + ', 70%, 50%)';
+        },
+        rotateRatio: 0.3,
+        rotationSteps: 2,
+        backgroundColor: '#FAFBFC',
+        drawOutOfBound: false,
+        shrinkToFit: true
+      };
+
+      if (shape !== 'square') {
+        options.shape = getShapeMask(shape, containerW, 500);
+      }
+
+      WordCloud(canvasEl, options);
+    }
+
+    document.getElementById('btnGenerate').addEventListener('click', generate);
+
+    document.getElementById('btnDownloadPNG').addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = 'wordcloud.png';
+      link.href = document.getElementById('wordcloudCanvas').toDataURL('image/png');
+      link.click();
+    });
+  })();
+  </script>
+</body>
+</html>

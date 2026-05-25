@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lorem Ipsum Generator - ToolBox</title>
+  <meta name="description" content="Generate Lorem Ipsum placeholder text. Choose paragraphs, sentences, or words.">
+  <meta name="keywords" content="Lorem Ipsum, placeholder text, dummy text, lipsum generator">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Lorem Ipsum Generator - ToolBox">
+  <meta property="og:description" content="Generate Lorem Ipsum placeholder text online.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/generators/lorem-ipsum.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Lorem Ipsum Generator",
+    "url": "https://toolbox.example.com/tools/generators/lorem-ipsum.html",
+    "description": "Generate Lorem Ipsum placeholder text.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item active"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=generators" class="breadcrumb__link">Generators</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Lorem Ipsum Generator</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="text-cursor-input"></i></div>
+        <h1 class="tool-header__title">Lorem Ipsum Generator</h1>
+        <p class="tool-header__desc">Generate placeholder text for your designs and layouts. Choose paragraphs, sentences, or words with customizable count.</p>
+      </section>
+
+      <section class="tool-workspace">
+
+        <div class="tool-settings">
+          <div class="tool-settings__title">Options</div>
+          <div class="tool-settings__group">
+            <label class="tool-settings__label" for="loremType">Type</label>
+            <select id="loremType" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+              <option value="paragraphs">Paragraphs</option>
+              <option value="sentences">Sentences</option>
+              <option value="words">Words</option>
+            </select>
+          </div>
+          <div class="tool-settings__group">
+            <label class="tool-settings__label" for="loremCount">Count</label>
+            <input type="number" id="loremCount" value="3" min="1" max="100" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+          </div>
+          <div class="tool-toggle">
+            <span class="tool-toggle__label">Start with "Lorem ipsum..."</span>
+            <div class="tool-toggle__switch tool-toggle__switch--active" id="toggleLoremStart" role="switch" aria-checked="true" tabindex="0"></div>
+          </div>
+        </div>
+
+        <div class="tool-actions">
+          <div class="tool-actions__primary">
+            <button class="btn btn--primary" id="btnGenerate"><i data-lucide="sparkles"></i> Generate</button>
+          </div>
+          <div class="tool-actions__secondary">
+            <button class="btn btn--secondary" id="btnCopy"><i data-lucide="copy"></i> Copy</button>
+          </div>
+        </div>
+
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="file-text"></i> Output</span>
+          </div>
+          <div class="tool-panel__body">
+            <div id="loremOutput" class="tool-output__content" style="min-height:200px;line-height:var(--line-height-relaxed);">
+              <span style="color:var(--color-text-tertiary);">Click "Generate" to create Lorem Ipsum text.</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Choose Type &amp; Count</div>
+              <div class="tool-step__desc">Select paragraphs, sentences, or words. Set how many to generate.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Generate</div>
+              <div class="tool-step__desc">Click Generate to create placeholder text. Optionally start with "Lorem ipsum...".</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Copy</div>
+              <div class="tool-step__desc">Click Copy to copy the generated text to your clipboard.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="fake-data.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Fake Data Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+          <a href="random-number.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Random Number</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+          <a href="uuid.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">UUID Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+          <a href="password.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Password Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+    (function() {
+      const WORDS = 'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum'.split(' ');
+
+      const LOREM_START = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+
+      let startWithLorem = true;
+
+      const toggleEl = document.getElementById('toggleLoremStart');
+      toggleEl.addEventListener('click', () => {
+        startWithLorem = !startWithLorem;
+        toggleEl.classList.toggle('tool-toggle__switch--active', startWithLorem);
+        toggleEl.setAttribute('aria-checked', startWithLorem);
+      });
+      toggleEl.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleEl.click(); } });
+
+      function randomWord() {
+        return WORDS[Math.floor(Math.random() * WORDS.length)];
+      }
+
+      function generateSentence(minWords, maxWords) {
+        const len = minWords + Math.floor(Math.random() * (maxWords - minWords + 1));
+        let words = [];
+        for (let i = 0; i < len; i++) words.push(randomWord());
+        words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1);
+        return words.join(' ') + '.';
+      }
+
+      function generateParagraph() {
+        const sentenceCount = 4 + Math.floor(Math.random() * 4);
+        let sentences = [];
+        for (let i = 0; i < sentenceCount; i++) {
+          sentences.push(generateSentence(6, 15));
+        }
+        return sentences.join(' ');
+      }
+
+      function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      const output = document.getElementById('loremOutput');
+
+      document.getElementById('btnGenerate').addEventListener('click', () => {
+        const type = document.getElementById('loremType').value;
+        let count = parseInt(document.getElementById('loremCount').value) || 1;
+        count = Math.max(1, Math.min(100, count));
+        let result = '';
+
+        if (type === 'paragraphs') {
+          let paragraphs = [];
+          for (let i = 0; i < count; i++) paragraphs.push(generateParagraph());
+          if (startWithLorem && paragraphs.length > 0) {
+            paragraphs[0] = LOREM_START + ' ' + paragraphs[0].replace(/^.*?\.\s*/, '');
+          }
+          result = paragraphs.map(p => '<p style="margin-bottom:var(--space-4);">' + escapeHtml(p) + '</p>').join('');
+        } else if (type === 'sentences') {
+          let sentences = [];
+          for (let i = 0; i < count; i++) sentences.push(generateSentence(6, 15));
+          if (startWithLorem && sentences.length > 0) {
+            sentences[0] = LOREM_START;
+          }
+          result = escapeHtml(sentences.join(' '));
+        } else {
+          let words = [];
+          for (let i = 0; i < count; i++) words.push(randomWord());
+          if (startWithLorem && words.length >= 2) {
+            words[0] = 'lorem';
+            words[1] = 'ipsum';
+          }
+          result = escapeHtml(words.join(' '));
+        }
+
+        output.innerHTML = result;
+      });
+
+      document.getElementById('btnCopy').addEventListener('click', () => {
+        const text = output.innerText || output.textContent;
+        if (!text || text.startsWith('Click "Generate"')) return;
+        navigator.clipboard.writeText(text);
+      });
+    })();
+  </script>
+</body>
+</html>

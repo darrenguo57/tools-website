@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Number Generator - ToolBox</title>
+  <meta name="description" content="Generate random numbers with custom range. Support integers, decimals, unique values, and history.">
+  <meta name="keywords" content="random number generator, RNG, random integers, random decimals, dice roller">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Random Number Generator - ToolBox">
+  <meta property="og:description" content="Generate random numbers with custom range online.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/generators/random-number.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Random Number Generator",
+    "url": "https://toolbox.example.com/tools/generators/random-number.html",
+    "description": "Generate random numbers with custom range.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    .number-display { display:flex;flex-wrap:wrap;gap:var(--space-3); }
+    .number-chip { display:inline-flex;align-items:center;padding:var(--space-2) var(--space-4);background:var(--color-primary-light);color:var(--color-primary);border-radius:var(--radius-full);font-family:var(--font-family-mono);font-size:var(--font-size-base);font-weight:var(--font-weight-semibold); }
+    .history-item { display:flex;align-items:center;justify-content:space-between;padding:var(--space-3);background:var(--color-bg-secondary);border:1px solid var(--color-border-light);border-radius:var(--radius-md); }
+    .history-item code { font-family:var(--font-family-mono);font-size:var(--font-size-sm);color:var(--color-text); }
+    .history-item span { font-size:var(--font-size-xs);color:var(--color-text-tertiary); }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item active"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=generators" class="breadcrumb__link">Generators</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Random Number Generator</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="dice"></i></div>
+        <h1 class="tool-header__title">Random Number Generator</h1>
+        <p class="tool-header__desc">Generate random numbers within a custom range. Support integers and decimals, with options for unique values and history tracking.</p>
+      </section>
+
+      <section class="tool-workspace">
+
+        <div class="tool-settings">
+          <div class="tool-settings__title">Options</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+            <div class="tool-settings__group">
+              <label class="tool-settings__label" for="rngMin">Minimum</label>
+              <input type="number" id="rngMin" value="1" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+            </div>
+            <div class="tool-settings__group">
+              <label class="tool-settings__label" for="rngMax">Maximum</label>
+              <input type="number" id="rngMax" value="100" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+            </div>
+          </div>
+          <div class="tool-settings__group">
+            <label class="tool-settings__label" for="rngCount">Count</label>
+            <input type="number" id="rngCount" value="1" min="1" max="1000" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+          </div>
+          <div class="tool-settings__group">
+            <label class="tool-settings__label" for="rngDecimals">Decimal Places</label>
+            <input type="number" id="rngDecimals" value="0" min="0" max="10" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+          </div>
+          <div class="tool-toggle">
+            <span class="tool-toggle__label">Allow Duplicates</span>
+            <div class="tool-toggle__switch tool-toggle__switch--active" id="toggleDuplicates" role="switch" aria-checked="true" tabindex="0"></div>
+          </div>
+        </div>
+
+        <div class="tool-actions">
+          <div class="tool-actions__primary">
+            <button class="btn btn--primary" id="btnGenerate"><i data-lucide="dice"></i> Generate</button>
+          </div>
+          <div class="tool-actions__secondary">
+            <button class="btn btn--secondary" id="btnCopy"><i data-lucide="copy"></i> Copy</button>
+            <button class="btn btn--secondary" id="btnClearHistory"><i data-lucide="trash-2"></i> Clear History</button>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="hash"></i> Results</span>
+          </div>
+          <div class="tool-panel__body">
+            <div id="rngResults" class="tool-output__placeholder">
+              <i data-lucide="dice"></i>
+              <span class="tool-output__placeholder-text">Click "Generate" to create random numbers</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- History -->
+        <div class="tool-panel" id="historyPanel" style="display:none;">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="history"></i> History</span>
+          </div>
+          <div class="tool-panel__body">
+            <div id="historyList" style="display:flex;flex-direction:column;gap:var(--space-2);max-height:300px;overflow-y:auto;"></div>
+          </div>
+        </div>
+
+      </section>
+
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Set Range</div>
+              <div class="tool-step__desc">Enter minimum and maximum values for the random number range.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Configure Options</div>
+              <div class="tool-step__desc">Set count, decimal places, and whether duplicates are allowed.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Generate &amp; Review</div>
+              <div class="tool-step__desc">Click Generate. Results are shown with a history of previous generations.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="uuid.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">UUID Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+          <a href="password.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Password Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+          <a href="nanoid.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">NanoID Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+          <a href="fake-data.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Fake Data Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+    (function() {
+      let allowDuplicates = true;
+      const history = [];
+
+      const toggleEl = document.getElementById('toggleDuplicates');
+      toggleEl.addEventListener('click', () => {
+        allowDuplicates = !allowDuplicates;
+        toggleEl.classList.toggle('tool-toggle__switch--active', allowDuplicates);
+        toggleEl.setAttribute('aria-checked', allowDuplicates);
+      });
+      toggleEl.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleEl.click(); } });
+
+      function generateRandomNumber(min, max, decimals) {
+        const range = max - min;
+        if (decimals === 0) {
+          const arr = new Uint32Array(1);
+          crypto.getRandomValues(arr);
+          return Math.floor(arr[0] / (0xFFFFFFFF + 1) * (range + 1)) + min;
+        } else {
+          const arr = new Uint32Array(1);
+          crypto.getRandomValues(arr);
+          const val = (arr[0] / (0xFFFFFFFF + 1)) * range + min;
+          return parseFloat(val.toFixed(decimals));
+        }
+      }
+
+      function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      const resultsContainer = document.getElementById('rngResults');
+      const historyPanel = document.getElementById('historyPanel');
+      const historyList = document.getElementById('historyList');
+
+      document.getElementById('btnGenerate').addEventListener('click', () => {
+        let min = parseFloat(document.getElementById('rngMin').value);
+        let max = parseFloat(document.getElementById('rngMax').value);
+        let count = parseInt(document.getElementById('rngCount').value) || 1;
+        const decimals = parseInt(document.getElementById('rngDecimals').value) || 0;
+
+        if (isNaN(min) || isNaN(max)) {
+          resultsContainer.innerHTML = '<div class="tool-output__content tool-output__error">Please enter valid min and max values.</div>';
+          return;
+        }
+        if (min > max) { [min, max] = [max, min]; }
+
+        count = Math.max(1, Math.min(1000, count));
+
+        if (!allowDuplicates && decimals === 0 && count > (max - min + 1)) {
+          resultsContainer.innerHTML = '<div class="tool-output__content tool-output__error">Cannot generate ' + count + ' unique integers in range [' + min + ', ' + max + ']. Range only has ' + (max - min + 1) + ' values.</div>';
+          return;
+        }
+
+        const numbers = [];
+        const usedSet = new Set();
+
+        while (numbers.length < count) {
+          const num = generateRandomNumber(min, max, decimals);
+          if (!allowDuplicates && decimals === 0) {
+            if (usedSet.has(num)) continue;
+            usedSet.add(num);
+          }
+          numbers.push(num);
+        }
+
+        // Render results
+        let html = '<div class="number-display">';
+        numbers.forEach(n => {
+          html += '<span class="number-chip">' + escapeHtml(String(n)) + '</span>';
+        });
+        html += '</div>';
+        resultsContainer.innerHTML = html;
+
+        // Add to history
+        const entry = { numbers: numbers.slice(), min, max, decimals, time: new Date().toLocaleTimeString() };
+        history.unshift(entry);
+        if (history.length > 20) history.pop();
+        renderHistory();
+      });
+
+      function renderHistory() {
+        if (history.length === 0) {
+          historyPanel.style.display = 'none';
+          return;
+        }
+        historyPanel.style.display = 'block';
+        let html = '';
+        history.forEach((entry, i) => {
+          const nums = entry.numbers.length <= 10 ? entry.numbers.join(', ') : entry.numbers.slice(0, 10).join(', ') + ' ... (+' + (entry.numbers.length - 10) + ' more)';
+          html += '<div class="history-item"><div><code>' + escapeHtml(nums) + '</code><br><span>[' + entry.min + ' - ' + entry.max + '] at ' + entry.time + '</span></div></div>';
+        });
+        historyList.innerHTML = html;
+      }
+
+      document.getElementById('btnCopy').addEventListener('click', () => {
+        const chips = resultsContainer.querySelectorAll('.number-chip');
+        if (chips.length === 0) return;
+        navigator.clipboard.writeText(Array.from(chips).map(c => c.textContent).join(', '));
+      });
+
+      document.getElementById('btnClearHistory').addEventListener('click', () => {
+        history.length = 0;
+        renderHistory();
+      });
+    })();
+  </script>
+</body>
+</html>

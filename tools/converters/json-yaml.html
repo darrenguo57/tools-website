@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON to YAML Converter - ToolBox</title>
+    <meta name="description" content="Convert between JSON and YAML formats online. Simple and fast bidirectional conversion.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    <style>
+        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .textarea-wrap textarea {
+            width: 100%; min-height: 300px; padding: 1rem; border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.5rem; font-family: 'Courier New', monospace; font-size: 14px;
+            resize: vertical; background: var(--bg, #fff); color: var(--text, #1e293b);
+            box-sizing: border-box;
+        }
+        .textarea-wrap textarea:focus { outline: none; border-color: var(--primary, #3b82f6); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .btn {
+            padding: 0.5rem 1.25rem; border-radius: 0.5rem; border: none; cursor: pointer;
+            font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: var(--primary, #3b82f6); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover, #2563eb); }
+        .btn-secondary { background: var(--bg-secondary, #f1f5f9); color: var(--text, #1e293b); border: 1px solid var(--border, #e2e8f0); }
+        .btn-secondary:hover { background: var(--bg-tertiary, #e2e8f0); }
+        .btn-success { background: #10b981; color: #fff; }
+        .btn-success:hover { background: #059669; }
+        .btn-danger { background: #ef4444; color: #fff; }
+        .btn-danger:hover { background: #dc2626; }
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem; padding: 0.75rem 1.5rem;
+            background: #1e293b; color: #fff; border-radius: 0.5rem; font-size: 14px;
+            transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 9999;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .error-msg { color: #ef4444; font-size: 13px; margin-top: 0.5rem; display: none; }
+        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo"><i data-lucide="file-json" style="width:28px;height:28px"></i> ToolBox</a>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+            </div>
+            <div class="header-actions">
+                <button class="lang-btn" onclick="I18n.setLang(I18n.currentLang==='en'?'zh':'en')">EN</button>
+                <button class="theme-btn" onclick="document.body.classList.toggle('dark')"><i data-lucide="sun"></i></button>
+            </div>
+        </div>
+    </header>
+    <div class="breadcrumb"><div class="container"><a href="../../index.html">Home</a> / <a href="../../index.html#converters">Converters</a> / <span>JSON / YAML</span></div></div>
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="file-json"></i></div>
+                    <h1>JSON / YAML Converter</h1>
+                    <p>Convert between JSON and YAML formats. Supports nested objects, arrays, and common data types.</p>
+                </div>
+                <div class="tool-workspace">
+                    <div class="workspace-grid">
+                        <div>
+                            <div class="textarea-label"><i data-lucide="braces" style="width:16px;height:16px"></i> JSON</div>
+                            <div class="textarea-wrap">
+                                <textarea id="jsonArea" placeholder='{"key": "value", "number": 42}'></textarea>
+                            </div>
+                            <div class="error-msg" id="jsonError"></div>
+                        </div>
+                        <div>
+                            <div class="textarea-label"><i data-lucide="file-text" style="width:16px;height:16px"></i> YAML</div>
+                            <div class="textarea-wrap">
+                                <textarea id="yamlArea" placeholder="key: value&#10;number: 42"></textarea>
+                            </div>
+                            <div class="error-msg" id="yamlError"></div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="jsonToYaml()"><i data-lucide="arrow-right" style="width:16px;height:16px"></i> JSON &rarr; YAML</button>
+                        <button class="btn btn-success" onclick="yamlToJson()"><i data-lucide="arrow-left" style="width:16px;height:16px"></i> YAML &rarr; JSON</button>
+                        <button class="btn btn-secondary" onclick="copyYaml()"><i data-lucide="copy" style="width:16px;height:16px"></i> Copy YAML</button>
+                        <button class="btn btn-secondary" onclick="copyJson()"><i data-lucide="copy" style="width:16px;height:16px"></i> Copy JSON</button>
+                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2" style="width:16px;height:16px"></i> Clear</button>
+                    </div>
+                </div>
+                <div class="ad-slot" style="margin-top:2rem"><div class="ad-placeholder">Advertisement</div></div>
+            </div>
+            <aside class="tool-sidebar">
+                <div class="ad-slot"><div class="ad-placeholder">Advertisement</div></div>
+            </aside>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><p>&copy; 2024 ToolBox. All rights reserved.</p></div></footer>
+    <div class="toast" id="toast"></div>
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script>
+    lucide.createIcons();
+
+    const jsonArea = document.getElementById('jsonArea');
+    const yamlArea = document.getElementById('yamlArea');
+    const jsonError = document.getElementById('jsonError');
+    const yamlError = document.getElementById('yamlError');
+
+    function showError(el, msg) { el.textContent = msg; el.style.display = 'block'; }
+    function hideError(el) { el.style.display = 'none'; }
+
+    // ========== JSON -> YAML ==========
+    function jsonToYaml() {
+        hideError(jsonError);
+        hideError(yamlError);
+        const input = jsonArea.value.trim();
+        if (!input) { showError(jsonError, 'Please enter JSON data'); return; }
+        try {
+            const obj = JSON.parse(input);
+            yamlArea.value = objToYaml(obj, 0);
+            showToast('Converted JSON to YAML');
+        } catch (e) {
+            showError(jsonError, 'Invalid JSON: ' + e.message);
+        }
+    }
+
+    function objToYaml(obj, indent) {
+        if (obj === null) return 'null';
+        if (typeof obj !== 'object') return scalarToYaml(obj);
+        if (Array.isArray(obj)) return arrayToYaml(obj, indent);
+        return objectToYaml(obj, indent);
+    }
+
+    function scalarToYaml(val) {
+        if (typeof val === 'string') {
+            if (val === '' || val === 'true' || val === 'false' || val === 'null' ||
+                /^[\d.+-]/.test(val) || /[:#{}[\],&*?|>!%@`]/.test(val) ||
+                val.includes('\n') || val.startsWith(' ') || val.endsWith(' ')) {
+                return '"' + val.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n') + '"';
+            }
+            return val;
+        }
+        if (typeof val === 'boolean') return val.toString();
+        if (typeof val === 'number') return isFinite(val) ? val.toString() : 'null';
+        return 'null';
+    }
+
+    function objectToYaml(obj, indent) {
+        const pad = '  '.repeat(indent);
+        const lines = [];
+        for (const key of Object.keys(obj)) {
+            const val = obj[key];
+            const yamlKey = /^[a-zA-Z0-9_-]+$/.test(key) ? key : '"' + key.replace(/"/g, '\\"') + '"';
+            if (val !== null && typeof val === 'object' && !Array.isArray(val) && Object.keys(val).length > 0) {
+                lines.push(pad + yamlKey + ':');
+                lines.push(objToYaml(val, indent + 1));
+            } else {
+                lines.push(pad + yamlKey + ': ' + objToYaml(val, indent + 1));
+            }
+        }
+        return lines.join('\n');
+    }
+
+    function arrayToYaml(arr, indent) {
+        if (arr.length === 0) return '[]';
+        const pad = '  '.repeat(indent);
+        const lines = [];
+        for (const item of arr) {
+            if (item !== null && typeof item === 'object' && !Array.isArray(item)) {
+                lines.push(pad + '-');
+                const innerPad = '  '.repeat(indent + 1);
+                for (const key of Object.keys(item)) {
+                    const val = item[key];
+                    const yamlKey = /^[a-zA-Z0-9_-]+$/.test(key) ? key : '"' + key.replace(/"/g, '\\"') + '"';
+                    if (val !== null && typeof val === 'object' && !Array.isArray(val) && Object.keys(val).length > 0) {
+                        lines.push(innerPad + yamlKey + ':');
+                        lines.push(objToYaml(val, indent + 2));
+                    } else {
+                        lines.push(innerPad + yamlKey + ': ' + objToYaml(val, indent + 2));
+                    }
+                }
+            } else if (Array.isArray(item)) {
+                lines.push(pad + '-');
+                lines.push(objToYaml(item, indent + 1));
+            } else {
+                lines.push(pad + '- ' + scalarToYaml(item));
+            }
+        }
+        return lines.join('\n');
+    }
+
+    // ========== YAML -> JSON ==========
+    function yamlToJson() {
+        hideError(jsonError);
+        hideError(yamlError);
+        const input = yamlArea.value.trim();
+        if (!input) { showError(yamlError, 'Please enter YAML data'); return; }
+        try {
+            const obj = parseYaml(input);
+            jsonArea.value = JSON.stringify(obj, null, 2);
+            showToast('Converted YAML to JSON');
+        } catch (e) {
+            showError(yamlError, 'Invalid YAML: ' + e.message);
+        }
+    }
+
+    function parseYaml(input) {
+        const lines = input.replace(/\r\n/g, '\n').split('\n');
+        return parseBlock(lines, 0, 0).value;
+    }
+
+    function getIndent(line) {
+        const match = line.match(/^(\s*)/);
+        return match ? match[1].length : 0;
+    }
+
+    function parseBlock(lines, startIdx, baseIndent) {
+        const result = {};
+        let i = startIdx;
+        while (i < lines.length) {
+            const line = lines[i];
+            if (line.trim() === '' || line.trim().startsWith('#')) { i++; continue; }
+            const indent = getIndent(line);
+            if (indent < baseIndent) break;
+            if (indent > baseIndent) { i++; continue; }
+            const trimmed = line.trim();
+            // Array item
+            if (trimmed.startsWith('- ')) {
+                break;
+            }
+            const colonIdx = trimmed.indexOf(':');
+            if (colonIdx === -1) { i++; continue; }
+            const key = trimmed.substring(0, colonIdx).trim().replace(/^["']|["']$/g, '');
+            const rest = trimmed.substring(colonIdx + 1).trim();
+            if (rest === '' || rest === '|' || rest === '>') {
+                // Check for block value or nested content
+                const nextIdx = i + 1;
+                if (nextIdx < lines.length) {
+                    const nextLine = lines[nextIdx];
+                    const nextIndent = getIndent(nextLine);
+                    if (nextIndent > baseIndent && nextLine.trim() !== '') {
+                        if (nextLine.trim().startsWith('- ')) {
+                            const arrResult = parseArray(lines, nextIdx, nextIndent);
+                            result[key] = arrResult.value;
+                            i = arrResult.nextIdx;
+                            continue;
+                        } else {
+                            const nested = parseBlock(lines, nextIdx, nextIndent);
+                            result[key] = nested.value;
+                            i = nested.nextIdx;
+                            continue;
+                        }
+                    }
+                }
+                result[key] = null;
+            } else {
+                result[key] = parseScalar(rest);
+            }
+            i++;
+        }
+        return { value: result, nextIdx: i };
+    }
+
+    function parseArray(lines, startIdx, baseIndent) {
+        const result = [];
+        let i = startIdx;
+        while (i < lines.length) {
+            const line = lines[i];
+            if (line.trim() === '' || line.trim().startsWith('#')) { i++; continue; }
+            const indent = getIndent(line);
+            if (indent < baseIndent) break;
+            if (indent > baseIndent) { i++; continue; }
+            const trimmed = line.trim();
+            if (!trimmed.startsWith('- ')) break;
+            const rest = trimmed.substring(2).trim();
+            if (rest === '') {
+                // Check for nested object or array
+                const nextIdx = i + 1;
+                if (nextIdx < lines.length) {
+                    const nextLine = lines[nextIdx];
+                    const nextIndent = getIndent(nextLine);
+                    if (nextIndent > baseIndent && nextLine.trim() !== '') {
+                        if (nextLine.trim().startsWith('- ')) {
+                            const arrResult = parseArray(lines, nextIdx, nextIndent);
+                            result.push(arrResult.value);
+                            i = arrResult.nextIdx;
+                            continue;
+                        } else {
+                            const nested = parseBlock(lines, nextIdx, nextIndent);
+                            result.push(nested.value);
+                            i = nested.nextIdx;
+                            continue;
+                        }
+                    }
+                }
+                result.push(null);
+            } else {
+                const colonIdx = rest.indexOf(':');
+                if (colonIdx !== -1 && rest.substring(colonIdx + 1).trim() === '') {
+                    // Inline object start
+                    const key = rest.substring(0, colonIdx).trim().replace(/^["']|["']$/g, '');
+                    const nextIdx = i + 1;
+                    if (nextIdx < lines.length) {
+                        const nextLine = lines[nextIdx];
+                        const nextIndent = getIndent(nextLine);
+                        if (nextIndent > baseIndent && nextLine.trim() !== '') {
+                            const nested = parseBlock(lines, nextIdx, nextIndent);
+                            const obj = {};
+                            obj[key] = nested.value;
+                            result.push(obj);
+                            i = nested.nextIdx;
+                            continue;
+                        }
+                    }
+                    const obj = {};
+                    obj[key] = null;
+                    result.push(obj);
+                } else {
+                    result.push(parseScalar(rest));
+                }
+            }
+            i++;
+        }
+        return { value: result, nextIdx: i };
+    }
+
+    function parseScalar(val) {
+        val = val.trim();
+        if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+            return val.slice(1, -1).replace(/\\n/g, '\n').replace(/\\t/g, '\t').replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+        }
+        if (val === 'null' || val === '~') return null;
+        if (val === 'true') return true;
+        if (val === 'false') return false;
+        if (val === '[]') return [];
+        if (val === '{}') return {};
+        // Number
+        if (/^-?\d+$/.test(val)) return parseInt(val, 10);
+        if (/^-?\d+\.\d+$/.test(val)) return parseFloat(val);
+        if (/^-?\d+(\.\d+)?[eE][+-]?\d+$/.test(val)) return parseFloat(val);
+        // Inline array [a, b, c]
+        if (val.startsWith('[') && val.endsWith(']')) {
+            const inner = val.slice(1, -1).trim();
+            if (inner === '') return [];
+            return inner.split(',').map(s => parseScalar(s.trim()));
+        }
+        // Inline object {a: b, c: d}
+        if (val.startsWith('{') && val.endsWith('}')) {
+            const inner = val.slice(1, -1).trim();
+            if (inner === '') return {};
+            const obj = {};
+            inner.split(',').forEach(pair => {
+                const colonIdx = pair.indexOf(':');
+                if (colonIdx !== -1) {
+                    obj[pair.substring(0, colonIdx).trim()] = parseScalar(pair.substring(colonIdx + 1));
+                }
+            });
+            return obj;
+        }
+        return val;
+    }
+
+    function copyYaml() {
+        if (!yamlArea.value) { showToast('Nothing to copy'); return; }
+        navigator.clipboard.writeText(yamlArea.value).then(() => showToast('YAML copied'));
+    }
+
+    function copyJson() {
+        if (!jsonArea.value) { showToast('Nothing to copy'); return; }
+        navigator.clipboard.writeText(jsonArea.value).then(() => showToast('JSON copied'));
+    }
+
+    function clearAll() {
+        jsonArea.value = '';
+        yamlArea.value = '';
+        hideError(jsonError);
+        hideError(yamlError);
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+    </script>
+</body>
+</html>

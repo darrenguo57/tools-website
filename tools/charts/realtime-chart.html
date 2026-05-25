@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Realtime Data Chart - ToolBox</title>
+  <meta name="description" content="Create realtime scrolling charts with simulated data sources: sine wave, random, and incremental.">
+  <meta name="keywords" content="realtime chart, live chart, streaming data, dynamic chart, monitoring dashboard">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Realtime Data Chart - ToolBox">
+  <meta property="og:description" content="Create realtime scrolling charts. Free and no installation required.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/charts/realtime-chart.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Realtime Data Chart",
+    "url": "https://toolbox.example.com/tools/charts/realtime-chart.html",
+    "description": "Create realtime scrolling charts.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    .chart-preview-container { position: relative; width: 100%; min-height: 400px; display: flex; align-items: center; justify-content: center; }
+    .chart-preview-container canvas { max-width: 100%; max-height: 500px; }
+    .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: var(--radius-full); font-size: var(--font-size-xs); font-weight: 600; }
+    .status-badge.running { background: #D1FAE5; color: #059669; }
+    .status-badge.paused { background: #FEF3C7; color: #D97706; }
+    .status-badge.stopped { background: #FEE2E2; color: #DC2626; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .status-dot.running { background: #10B981; animation: pulse 1.5s infinite; }
+    .status-dot.paused { background: #F59E0B; }
+    .status-dot.stopped { background: #EF4444; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item active"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=charts" class="breadcrumb__link">Charts</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Realtime Data Chart</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="activity"></i></div>
+        <h1 class="tool-header__title">Realtime Data Chart</h1>
+        <p class="tool-header__desc">Create realtime scrolling charts with simulated data sources. Choose from sine wave, random noise, or incremental patterns.</p>
+      </section>
+
+      <section class="tool-workspace">
+
+        <!-- Settings -->
+        <div class="tool-settings">
+          <div class="tool-settings__title">Configuration</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--space-4);">
+            <div class="tool-settings__group">
+              <label class="tool-settings__label" for="dataSource">Data Source</label>
+              <select id="dataSource" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+                <option value="sine">Sine Wave</option>
+                <option value="random">Random Noise</option>
+                <option value="incremental">Incremental</option>
+              </select>
+            </div>
+            <div class="tool-settings__group">
+              <label class="tool-settings__label" for="chartType">Chart Type</label>
+              <select id="chartType" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+                <option value="line">Line Chart</option>
+                <option value="bar">Bar Chart</option>
+              </select>
+            </div>
+            <div class="tool-settings__group">
+              <label class="tool-settings__label" for="maxPoints">Max Data Points</label>
+              <select id="maxPoints" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+                <option value="20">20</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+              </select>
+            </div>
+          </div>
+          <div class="tool-settings__group" style="margin-top:var(--space-4);">
+            <label class="tool-settings__label" for="updateSpeed">Update Speed: <span id="speedValue">500</span>ms</label>
+            <input type="range" id="updateSpeed" min="100" max="2000" step="100" value="500" style="width:100%;max-width:400px;">
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="tool-actions">
+          <div class="tool-actions__primary">
+            <button class="btn btn--primary" id="btnStart"><i data-lucide="play"></i> Start</button>
+            <button class="btn btn--secondary" id="btnPause" disabled><i data-lucide="pause"></i> Pause</button>
+            <button class="btn btn--secondary" id="btnReset"><i data-lucide="rotate-ccw"></i> Reset</button>
+          </div>
+          <div class="tool-actions__secondary">
+            <span class="status-badge stopped" id="statusBadge"><span class="status-dot stopped"></span> Stopped</span>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);margin-left:var(--space-2);" id="pointCount">0 points</span>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="eye"></i> Live Preview</span>
+          </div>
+          <div class="tool-panel__body">
+            <div class="chart-preview-container">
+              <canvas id="chartCanvas"></canvas>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Configure Settings</div>
+              <div class="tool-step__desc">Choose data source, chart type, max points, and update speed.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Start Streaming</div>
+              <div class="tool-step__desc">Click Start to begin the realtime data feed. Pause or reset anytime.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Observe</div>
+              <div class="tool-step__desc">Watch the chart scroll in real-time with new data points.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="chart-basic.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Basic Charts</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="area-chart.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Area Chart</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="scatter.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Scatter Chart</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="gauge.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Gauge Chart</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+  (function() {
+    let chartInstance = null;
+    let intervalId = null;
+    let tick = 0;
+    let dataPoints = [];
+    let labels = [];
+    let isRunning = false;
+
+    const speedSlider = document.getElementById('updateSpeed');
+    const speedValue = document.getElementById('speedValue');
+    speedSlider.addEventListener('input', () => {
+      speedValue.textContent = speedSlider.value;
+      if (isRunning) {
+        clearInterval(intervalId);
+        intervalId = setInterval(addDataPoint, parseInt(speedSlider.value));
+      }
+    });
+
+    function getStatus() {
+      return isRunning ? 'running' : (tick > 0 ? 'paused' : 'stopped');
+    }
+
+    function updateStatus() {
+      const status = getStatus();
+      const badge = document.getElementById('statusBadge');
+      badge.className = 'status-badge ' + status;
+      badge.innerHTML = '<span class="status-dot ' + status + '"></span> ' + status.charAt(0).toUpperCase() + status.slice(1);
+      document.getElementById('pointCount').textContent = dataPoints.length + ' points';
+    }
+
+    function generateValue() {
+      const source = document.getElementById('dataSource').value;
+      switch(source) {
+        case 'sine':
+          return Math.sin(tick * 0.2) * 50 + 50 + (Math.random() - 0.5) * 10;
+        case 'random':
+          return Math.random() * 100;
+        case 'incremental':
+          return (tick * 2 % 100) + (Math.random() - 0.5) * 5;
+        default:
+          return Math.random() * 100;
+      }
+    }
+
+    function initChart() {
+      const canvas = document.getElementById('chartCanvas');
+      const type = document.getElementById('chartType').value;
+      if (chartInstance) chartInstance.destroy();
+
+      chartInstance = new Chart(canvas, {
+        type: type,
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Live Data',
+            data: dataPoints,
+            borderColor: '#3B82F6',
+            backgroundColor: type === 'bar' ? '#3B82F680' : '#3B82F620',
+            borderWidth: 2,
+            fill: type === 'line',
+            tension: 0.4,
+            pointRadius: type === 'line' ? 0 : undefined,
+            pointHoverRadius: type === 'line' ? 5 : undefined,
+            borderRadius: type === 'bar' ? 4 : undefined
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          animation: { duration: 200 },
+          plugins: {
+            legend: { display: false },
+            tooltip: { backgroundColor: 'rgba(0,0,0,0.8)', titleFont: { family: 'Inter' }, bodyFont: { family: 'Inter' }, cornerRadius: 8, padding: 12 }
+          },
+          scales: {
+            x: { display: false },
+            y: { min: 0, max: 110, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { font: { family: 'Inter', size: 11 } } }
+          }
+        }
+      });
+    }
+
+    function addDataPoint() {
+      const maxPts = parseInt(document.getElementById('maxPoints').value);
+      tick++;
+      const value = generateValue();
+
+      dataPoints.push(value);
+      labels.push(tick.toString());
+
+      if (dataPoints.length > maxPts) {
+        dataPoints.shift();
+        labels.shift();
+      }
+
+      chartInstance.update('none');
+      updateStatus();
+    }
+
+    function start() {
+      if (isRunning) return;
+      isRunning = true;
+      document.getElementById('btnStart').disabled = true;
+      document.getElementById('btnPause').disabled = false;
+      initChart();
+      intervalId = setInterval(addDataPoint, parseInt(speedSlider.value));
+      updateStatus();
+    }
+
+    function pause() {
+      isRunning = false;
+      clearInterval(intervalId);
+      intervalId = null;
+      document.getElementById('btnStart').disabled = false;
+      document.getElementById('btnPause').disabled = true;
+      updateStatus();
+    }
+
+    function reset() {
+      pause();
+      tick = 0;
+      dataPoints = [];
+      labels = [];
+      if (chartInstance) chartInstance.destroy();
+      chartInstance = null;
+      updateStatus();
+    }
+
+    document.getElementById('btnStart').addEventListener('click', start);
+    document.getElementById('btnPause').addEventListener('click', pause);
+    document.getElementById('btnReset').addEventListener('click', reset);
+
+    // Re-init chart type change when running
+    document.getElementById('chartType').addEventListener('change', () => {
+      if (isRunning || tick > 0) {
+        initChart();
+      }
+    });
+
+    updateStatus();
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code Formatter (HTML/CSS/JS) - ToolBox</title>
+  <meta name="description" content="Free online code formatter for HTML, CSS, and JavaScript. Beautify and minify your code with proper indentation.">
+  <meta name="keywords" content="code formatter, HTML formatter, CSS formatter, JavaScript formatter, beautify code">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Code Formatter - ToolBox">
+  <meta property="og:description" content="Free online code formatter for HTML, CSS, and JavaScript.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/formatters/code-formatter.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Code Formatter - ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Code Formatter",
+    "url": "https://toolbox.example.com/tools/formatters/code-formatter.html",
+    "description": "Free online code formatter for HTML, CSS, and JavaScript.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    .code-output { font-family: 'Courier New', Courier, monospace; font-size: 13px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+    .success-message { color: #1a7f37; background: #dafbe1; border: 1px solid #3fb950; border-radius: 8px; padding: 12px 16px; font-size: 13px; margin-top: 8px; display: none; }
+    .success-message.show { display: block; }
+    .error-message { color: #cf222e; background: #ffebe9; border: 1px solid #ff8182; border-radius: 8px; padding: 12px 16px; font-size: 13px; margin-top: 8px; display: none; }
+    .error-message.show { display: block; }
+    .indent-options { display: flex; gap: 12px; align-items: center; }
+    .indent-options label { font-size: 13px; color: #57606a; }
+    .indent-options select { padding: 4px 8px; border: 1px solid #d0d7de; border-radius: 6px; font-size: 13px; background: #fff; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a>
+        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+        <a href="../../index.html?category=formatters">Formatters</a>
+        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+        <span class="breadcrumb-current">Code Formatter</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="code"></i></div>
+        <div class="tool-header-info">
+          <h1 class="tool-header__title">Code Formatter</h1>
+          <p class="tool-header__desc">Format and beautify HTML, CSS, and JavaScript code with proper indentation and structure.</p>
+          <span class="tool-card-tag">Formatters</span>
+        </div>
+      </section>
+
+      <section class="tool-content">
+        <div class="tool-workspace">
+
+          <!-- Language Tabs -->
+          <div class="tool-tabs">
+            <button class="tool-tabs__item tool-tabs__item--active" data-lang="html"><i data-lucide="file-code"></i> HTML</button>
+            <button class="tool-tabs__item" data-lang="css"><i data-lucide="palette"></i> CSS</button>
+            <button class="tool-tabs__item" data-lang="javascript"><i data-lucide="file-json"></i> JavaScript</button>
+          </div>
+
+          <div class="tool-panel">
+            <div class="tool-panel__header">
+              <h3 class="tool-panel__title"><i data-lucide="file-text"></i> Input <span id="langLabel">HTML</span></h3>
+              <div class="tool-panel__actions">
+                <button class="tool-action-btn" id="btnPaste"><i data-lucide="clipboard-paste"></i> Paste</button>
+                <button class="tool-action-btn tool-action-btn--danger" id="btnClear"><i data-lucide="trash-2"></i> Clear</button>
+              </div>
+            </div>
+            <div class="tool-panel__body">
+              <textarea class="tool-input__field" id="codeInput" placeholder="Paste your HTML code here..." style="min-height:220px;"></textarea>
+            </div>
+            <div class="tool-input__options">
+              <div class="tool-input__option indent-options">
+                <label for="indentSize">Indent:</label>
+                <select id="indentSize">
+                  <option value="2">2 Spaces</option>
+                  <option value="4">4 Spaces</option>
+                  <option value="tab">Tab</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-actions">
+            <div class="tool-actions__primary">
+              <button class="btn btn-primary" id="btnFormat"><i data-lucide="align-left"></i> Format</button>
+              <button class="btn btn-primary" id="btnMinify"><i data-lucide="minimize-2"></i> Minify</button>
+            </div>
+            <div class="tool-actions__secondary">
+              <button class="tool-action-btn" id="btnCopy"><i data-lucide="copy"></i> Copy Result</button>
+            </div>
+          </div>
+
+          <div class="error-message" id="errorMsg"></div>
+          <div class="success-message" id="successMsg"></div>
+
+          <div class="tool-panel">
+            <div class="tool-panel__header">
+              <h3 class="tool-panel__title"><i data-lucide="file-output"></i> Output</h3>
+              <div class="tool-panel__actions">
+                <button class="tool-action-btn" id="btnCopyOutput"><i data-lucide="copy"></i> Copy</button>
+              </div>
+            </div>
+            <div class="tool-panel__body">
+              <div class="tool-output__content code-output" id="codeOutput" style="min-height:220px;">
+                <span style="color:#8b949e;">Formatted code will appear here...</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="tool-sidebar-ad">
+          <div class="ad-slot" id="adSlotRight"><span>Advertisement</span></div>
+        </div>
+      </section>
+
+      <div class="ad-slot" id="adSlotBottom"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-info__content">
+          <div class="tool-steps">
+            <div class="tool-step"><div class="tool-step__number">1</div><div class="tool-step__content"><div class="tool-step__title">Select language</div><div class="tool-step__desc">Choose HTML, CSS, or JavaScript from the tabs.</div></div></div>
+            <div class="tool-step"><div class="tool-step__number">2</div><div class="tool-step__content"><div class="tool-step__title">Paste your code</div><div class="tool-step__desc">Enter or paste your code into the input area.</div></div></div>
+            <div class="tool-step"><div class="tool-step__number">3</div><div class="tool-step__content"><div class="tool-step__title">Format or Minify</div><div class="tool-step__desc">Click Format to beautify or Minify to compress.</div></div></div>
+            <div class="tool-step"><div class="tool-step__number">4</div><div class="tool-step__content"><div class="tool-step__title">Copy the result</div><div class="tool-step__desc">Click Copy to copy the formatted code.</div></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="related-tools">
+        <h2>Related Tools</h2>
+        <div class="related-tools-grid">
+          <a href="json-formatter.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="braces"></i></div><h3>JSON Formatter</h3><span class="tool-card-tag">Formatters</span></a>
+          <a href="sql-formatter.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="database"></i></div><h3>SQL Formatter</h3><span class="tool-card-tag">Formatters</span></a>
+          <a href="xml-formatter.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="file-code"></i></div><h3>XML Formatter</h3><span class="tool-card-tag">Formatters</span></a>
+          <a href="code-diff.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="git-compare"></i></div><h3>Code Diff</h3><span class="tool-card-tag">Formatters</span></a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+    (function() {
+      let currentLang = 'html';
+      const input = document.getElementById('codeInput');
+      const output = document.getElementById('codeOutput');
+      const errorMsg = document.getElementById('errorMsg');
+      const successMsg = document.getElementById('successMsg');
+      const langLabel = document.getElementById('langLabel');
+      let lastResult = '';
+
+      function getIndent() {
+        const val = document.getElementById('indentSize').value;
+        return val === 'tab' ? '\t' : ' '.repeat(parseInt(val));
+      }
+
+      function escapeHtml(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+
+      // Tab switching
+      document.querySelectorAll('.tool-tabs__item').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+          document.querySelectorAll('.tool-tabs__item').forEach(function(t) { t.classList.remove('tool-tabs__item--active'); });
+          this.classList.add('tool-tabs__item--active');
+          currentLang = this.getAttribute('data-lang');
+          langLabel.textContent = currentLang === 'javascript' ? 'JavaScript' : currentLang.toUpperCase();
+          const placeholders = { html: 'Paste your HTML code here...', css: 'Paste your CSS code here...', javascript: 'Paste your JavaScript code here...' };
+          input.placeholder = placeholders[currentLang];
+        });
+      });
+
+      // HTML Formatter
+      function formatHTML(code) {
+        const indent = getIndent();
+        // Remove existing whitespace
+        code = code.replace(/>\s+</g, '><').trim();
+        let formatted = '';
+        let level = 0;
+        const selfClosing = /^<(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)\b/i;
+        const closingTag = /^<\//;
+        const openingTag = /^<[a-zA-Z]/;
+
+        // Split into tokens
+        const tokens = code.match(/(<[^>]+>|[^<]+)/g) || [];
+        tokens.forEach(function(token) {
+          token = token.trim();
+          if (!token) return;
+
+          if (closingTag.test(token)) {
+            level = Math.max(0, level - 1);
+            formatted += indent.repeat(level) + token + '\n';
+          } else if (selfClosing.test(token)) {
+            formatted += indent.repeat(level) + token + '\n';
+          } else if (openingTag.test(token)) {
+            formatted += indent.repeat(level) + token + '\n';
+            if (!token.endsWith('/>')) level++;
+          } else {
+            // Text content
+            const text = token.replace(/\s+/g, ' ').trim();
+            if (text) {
+              formatted += indent.repeat(level) + text + '\n';
+            }
+          }
+        });
+
+        return formatted.trim();
+      }
+
+      // CSS Formatter
+      function formatCSS(code) {
+        const indent = getIndent();
+        // Remove extra whitespace
+        code = code.replace(/\s*{\s*/g, ' {\n').replace(/\s*}\s*/g, '\n}\n\n').replace(/;\s*/g, ';\n');
+        const lines = code.split('\n');
+        let formatted = '';
+        let inBlock = false;
+
+        lines.forEach(function(line) {
+          line = line.trim();
+          if (!line) return;
+
+          if (line.endsWith('{')) {
+            formatted += line + '\n';
+            inBlock = true;
+          } else if (line === '}') {
+            formatted += line + '\n';
+            inBlock = false;
+          } else if (inBlock) {
+            formatted += indent + line + '\n';
+          } else {
+            formatted += line + '\n';
+          }
+        });
+
+        return formatted.trim();
+      }
+
+      // JS Formatter
+      function formatJS(code) {
+        const indent = getIndent();
+        // Simple brace-based indentation
+        let formatted = '';
+        let level = 0;
+        let inString = false;
+        let stringChar = '';
+        let inComment = false;
+        let inLineComment = false;
+
+        // Process character by character
+        let i = 0;
+        while (i < code.length) {
+          // Handle line comments
+          if (!inString && !inComment && code[i] === '/' && code[i+1] === '/') {
+            let end = code.indexOf('\n', i);
+            if (end === -1) end = code.length;
+            let comment = code.substring(i, end);
+            formatted += indent.repeat(level) + comment + '\n';
+            i = end;
+            continue;
+          }
+
+          // Handle block comments
+          if (!inString && !inLineComment && code[i] === '/' && code[i+1] === '*') {
+            let end = code.indexOf('*/', i + 2);
+            if (end === -1) end = code.length - 2;
+            let comment = code.substring(i, end + 2);
+            formatted += indent.repeat(level) + comment + '\n';
+            i = end + 2;
+            continue;
+          }
+
+          // Handle strings
+          if (!inComment && !inLineComment && (code[i] === '"' || code[i] === "'" || code[i] === '`')) {
+            if (!inString) {
+              inString = true;
+              stringChar = code[i];
+              formatted += code[i];
+              i++;
+              continue;
+            } else if (code[i] === stringChar && code[i-1] !== '\\') {
+              inString = false;
+              formatted += code[i];
+              i++;
+              continue;
+            }
+          }
+
+          if (inString || inLineComment) {
+            formatted += code[i];
+            i++;
+            continue;
+          }
+
+          // Handle braces
+          if (code[i] === '{') {
+            formatted = formatted.trimEnd() + ' {\n';
+            level++;
+            i++;
+            continue;
+          }
+          if (code[i] === '}') {
+            level = Math.max(0, level - 1);
+            formatted = formatted.trimEnd() + '\n' + indent.repeat(level) + '}\n';
+            i++;
+            continue;
+          }
+          if (code[i] === ';') {
+            formatted += ';\n';
+            i++;
+            // Skip whitespace
+            while (i < code.length && code[i] === ' ' || code[i] === '\t' || code[i] === '\r' || code[i] === '\n') i++;
+            continue;
+          }
+
+          formatted += code[i];
+          i++;
+        }
+
+        // Indent each line
+        const lines = formatted.split('\n');
+        let result = [];
+        lines.forEach(function(line) {
+          line = line.trim();
+          if (!line) return;
+          if (line === '{' || line === '}') {
+            result.push(line);
+          } else if (line.endsWith('{')) {
+            result.push(line);
+          } else {
+            result.push(indent.repeat(level) + line);
+          }
+        });
+
+        // Re-process with proper indentation
+        let finalResult = [];
+        let lvl = 0;
+        result.forEach(function(line) {
+          if (line === '}') {
+            lvl = Math.max(0, lvl - 1);
+            finalResult.push(indent.repeat(lvl) + line);
+          } else if (line.endsWith('{')) {
+            finalResult.push(indent.repeat(lvl) + line);
+            lvl++;
+          } else {
+            finalResult.push(indent.repeat(lvl) + line);
+          }
+        });
+
+        return finalResult.join('\n').trim();
+      }
+
+      function minifyCode(code) {
+        if (currentLang === 'html') {
+          return code.replace(/>\s+</g, '><').replace(/\s+/g, ' ').trim();
+        } else if (currentLang === 'css') {
+          return code.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s*{\s*/g, '{').replace(/\s*}\s*/g, '}').replace(/\s*:\s*/g, ':').replace(/\s*;\s*/g, ';').replace(/\s*,\s*/g, ',').trim();
+        } else {
+          return code.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ').trim();
+        }
+      }
+
+      document.getElementById('btnFormat').addEventListener('click', function() {
+        errorMsg.classList.remove('show');
+        successMsg.classList.remove('show');
+        const val = input.value.trim();
+        if (!val) { errorMsg.textContent = 'Please enter code.'; errorMsg.classList.add('show'); return; }
+        try {
+          if (currentLang === 'html') lastResult = formatHTML(val);
+          else if (currentLang === 'css') lastResult = formatCSS(val);
+          else lastResult = formatJS(val);
+          output.textContent = lastResult;
+          successMsg.textContent = (currentLang === 'javascript' ? 'JavaScript' : currentLang.toUpperCase()) + ' formatted successfully!';
+          successMsg.classList.add('show');
+        } catch (e) {
+          errorMsg.textContent = 'Error: ' + e.message;
+          errorMsg.classList.add('show');
+        }
+      });
+
+      document.getElementById('btnMinify').addEventListener('click', function() {
+        errorMsg.classList.remove('show');
+        successMsg.classList.remove('show');
+        const val = input.value.trim();
+        if (!val) { errorMsg.textContent = 'Please enter code.'; errorMsg.classList.add('show'); return; }
+        lastResult = minifyCode(val);
+        output.textContent = lastResult;
+        successMsg.textContent = 'Minified! Size: ' + lastResult.length + ' characters.';
+        successMsg.classList.add('show');
+      });
+
+      function copyResult() {
+        if (!lastResult) return;
+        navigator.clipboard.writeText(lastResult).then(function() {
+          successMsg.textContent = 'Copied to clipboard!';
+          successMsg.classList.add('show');
+        });
+      }
+      document.getElementById('btnCopy').addEventListener('click', copyResult);
+      document.getElementById('btnCopyOutput').addEventListener('click', copyResult);
+
+      document.getElementById('btnClear').addEventListener('click', function() {
+        input.value = '';
+        output.innerHTML = '<span style="color:#8b949e;">Formatted code will appear here...</span>';
+        lastResult = '';
+        errorMsg.classList.remove('show');
+        successMsg.classList.remove('show');
+      });
+
+      document.getElementById('btnPaste').addEventListener('click', function() {
+        navigator.clipboard.readText().then(function(text) { input.value = text; }).catch(function() {});
+      });
+    })();
+  </script>
+</body>
+</html>

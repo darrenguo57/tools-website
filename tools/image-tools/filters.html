@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Filters - ToolBox</title>
+    <meta name="description" content="Apply filters to images online. Grayscale, sepia, blur, brightness, contrast, saturation, invert, and vintage effects.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    <style>
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .btn {
+            padding: 0.5rem 1.25rem; border-radius: 0.5rem; border: none; cursor: pointer;
+            font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: var(--primary, #3b82f6); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover, #2563eb); }
+        .btn-secondary { background: var(--bg-secondary, #f1f5f9); color: var(--text, #1e293b); border: 1px solid var(--border, #e2e8f0); }
+        .btn-secondary:hover { background: var(--bg-tertiary, #e2e8f0); }
+        .btn-success { background: #10b981; color: #fff; }
+        .btn-success:hover { background: #059669; }
+        .btn-danger { background: #ef4444; color: #fff; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-warning { background: #f59e0b; color: #fff; }
+        .btn-warning:hover { background: #d97706; }
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem; padding: 0.75rem 1.5rem;
+            background: #1e293b; color: #fff; border-radius: 0.5rem; font-size: 14px;
+            transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 9999;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .dropzone {
+            border: 2px dashed var(--border, #e2e8f0); border-radius: 0.75rem;
+            padding: 2.5rem; text-align: center; cursor: pointer; transition: all 0.2s;
+            background: var(--bg-secondary, #f8fafc);
+        }
+        .dropzone:hover, .dropzone.dragover { border-color: var(--primary, #3b82f6); background: rgba(59,130,246,0.05); }
+        .dropzone-icon { width: 48px; height: 48px; color: var(--text-muted, #94a3b8); margin: 0 auto 0.75rem; }
+        .dropzone-text { font-size: 14px; color: var(--text-secondary, #64748b); }
+        .dropzone-hint { font-size: 12px; color: var(--text-muted, #94a3b8); margin-top: 0.25rem; }
+        .editor-layout { display: grid; grid-template-columns: 1fr 300px; gap: 1rem; }
+        .canvas-area {
+            border: 1px solid var(--border, #e2e8f0); border-radius: 0.75rem; overflow: hidden;
+            background: repeating-conic-gradient(#e5e7eb 0% 25%, #fff 0% 50%) 50% / 20px 20px;
+            display: flex; align-items: center; justify-content: center; min-height: 400px;
+        }
+        .canvas-area canvas { display: block; max-width: 100%; max-height: 500px; }
+        .filters-panel {
+            background: var(--bg-secondary, #f8fafc); border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.75rem; padding: 1rem; overflow-y: auto; max-height: 520px;
+        }
+        .filters-panel h4 { font-size: 14px; font-weight: 600; margin-bottom: 1rem; color: var(--text, #1e293b); display: flex; align-items: center; gap: 0.4rem; }
+        .filter-item { margin-bottom: 0.75rem; }
+        .filter-label {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 13px; color: var(--text, #1e293b); margin-bottom: 0.25rem;
+        }
+        .filter-value { font-size: 12px; font-weight: 600; color: var(--primary, #3b82f6); }
+        .filter-item input[type="range"] {
+            width: 100%; height: 6px; appearance: none; background: var(--border, #e2e8f0);
+            border-radius: 3px; outline: none; cursor: pointer;
+        }
+        .filter-item input[type="range"]::-webkit-slider-thumb {
+            appearance: none; width: 16px; height: 16px; background: var(--primary, #3b82f6);
+            border-radius: 50%; cursor: pointer;
+        }
+        .preset-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 1rem; }
+        .preset-btn {
+            padding: 0.4rem; border: 1px solid var(--border, #e2e8f0); border-radius: 0.375rem;
+            background: var(--bg, #fff); color: var(--text, #1e293b); cursor: pointer;
+            font-size: 11px; text-align: center; transition: all 0.2s;
+        }
+        .preset-btn:hover { border-color: var(--primary, #3b82f6); color: var(--primary, #3b82f6); }
+        .preset-btn.active { border-color: var(--primary, #3b82f6); background: rgba(59,130,246,0.1); color: var(--primary, #3b82f6); }
+        .empty-state { text-align: center; padding: 2rem; color: var(--text-muted, #94a3b8); font-size: 14px; }
+        @media (max-width: 768px) { .editor-layout { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo"><i data-lucide="image" style="width:28px;height:28px"></i> ToolBox</a>
+            <div class="header-search"><i data-lucide="search"></i><input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools..."></div>
+            <div class="header-actions">
+                <button class="lang-btn" onclick="I18n.setLang(I18n.currentLang==='en'?'zh':'en')">EN</button>
+                <button class="theme-btn" onclick="document.body.classList.toggle('dark')"><i data-lucide="sun"></i></button>
+            </div>
+        </div>
+    </header>
+    <div class="breadcrumb"><div class="container"><a href="../../index.html">Home</a> / <a href="../../index.html#image-tools">Image Tools</a> / <span>Image Filters</span></div></div>
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="sliders-horizontal"></i></div>
+                    <h1>Image Filters</h1>
+                    <p>Apply various filters to your images with real-time preview. Adjust brightness, contrast, saturation, and more.</p>
+                </div>
+                <div class="tool-workspace">
+                    <div class="dropzone" id="dropzone">
+                        <div class="dropzone-icon"><i data-lucide="upload-cloud"></i></div>
+                        <div class="dropzone-text">Drag & drop an image here, or click to select</div>
+                        <div class="dropzone-hint">Supports JPEG, PNG, WebP, GIF, BMP</div>
+                        <input type="file" id="fileInput" accept="image/*" hidden>
+                    </div>
+
+                    <div id="editorArea" style="display:none">
+                        <div class="editor-layout">
+                            <!-- Canvas Preview -->
+                            <div class="canvas-area">
+                                <canvas id="previewCanvas"></canvas>
+                            </div>
+
+                            <!-- Filters Panel -->
+                            <div class="filters-panel">
+                                <h4><i data-lucide="sliders-horizontal" style="width:14px;height:14px"></i> Adjustments</h4>
+
+                                <div class="filter-item">
+                                    <div class="filter-label"><span>Brightness</span><span class="filter-value" id="brightnessVal">100%</span></div>
+                                    <input type="range" id="brightness" min="0" max="200" value="100" oninput="updateFilter()">
+                                </div>
+                                <div class="filter-item">
+                                    <div class="filter-label"><span>Contrast</span><span class="filter-value" id="contrastVal">100%</span></div>
+                                    <input type="range" id="contrast" min="0" max="200" value="100" oninput="updateFilter()">
+                                </div>
+                                <div class="filter-item">
+                                    <div class="filter-label"><span>Saturation</span><span class="filter-value" id="saturateVal">100%</span></div>
+                                    <input type="range" id="saturate" min="0" max="200" value="100" oninput="updateFilter()">
+                                </div>
+                                <div class="filter-item">
+                                    <div class="filter-label"><span>Grayscale</span><span class="filter-value" id="grayscaleVal">0%</span></div>
+                                    <input type="range" id="grayscale" min="0" max="100" value="0" oninput="updateFilter()">
+                                </div>
+                                <div class="filter-item">
+                                    <div class="filter-label"><span>Sepia</span><span class="filter-value" id="sepiaVal">0%</span></div>
+                                    <input type="range" id="sepia" min="0" max="100" value="0" oninput="updateFilter()">
+                                </div>
+                                <div class="filter-item">
+                                    <div class="filter-label"><span>Blur</span><span class="filter-value" id="blurVal">0px</span></div>
+                                    <input type="range" id="blur" min="0" max="20" value="0" oninput="updateFilter()">
+                                </div>
+                                <div class="filter-item">
+                                    <div class="filter-label"><span>Hue Rotate</span><span class="filter-value" id="hueRotateVal">0deg</span></div>
+                                    <input type="range" id="hueRotate" min="0" max="360" value="0" oninput="updateFilter()">
+                                </div>
+                                <div class="filter-item">
+                                    <div class="filter-label"><span>Invert</span><span class="filter-value" id="invertVal">0%</span></div>
+                                    <input type="range" id="invert" min="0" max="100" value="0" oninput="updateFilter()">
+                                </div>
+                                <div class="filter-item">
+                                    <div class="filter-label"><span>Opacity</span><span class="filter-value" id="opacityVal">100%</span></div>
+                                    <input type="range" id="opacity" min="0" max="100" value="100" oninput="updateFilter()">
+                                </div>
+
+                                <h4 style="margin-top:1rem"><i data-lucide="palette" style="width:14px;height:14px"></i> Presets</h4>
+                                <div class="preset-grid">
+                                    <button class="preset-btn" onclick="applyPreset('none')">None</button>
+                                    <button class="preset-btn" onclick="applyPreset('grayscale')">Grayscale</button>
+                                    <button class="preset-btn" onclick="applyPreset('sepia')">Sepia</button>
+                                    <button class="preset-btn" onclick="applyPreset('vintage')">Vintage</button>
+                                    <button class="preset-btn" onclick="applyPreset('warm')">Warm</button>
+                                    <button class="preset-btn" onclick="applyPreset('cool')">Cool</button>
+                                    <button class="preset-btn" onclick="applyPreset('dramatic')">Dramatic</button>
+                                    <button class="preset-btn" onclick="applyPreset('fade')">Fade</button>
+                                    <button class="preset-btn" onclick="applyPreset('invert')">Invert</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="btn-group" style="margin-top:1rem">
+                            <button class="btn btn-primary" onclick="applyFilter()"><i data-lucide="check" style="width:16px;height:16px"></i> Apply</button>
+                            <button class="btn btn-secondary" onclick="resetFilters()"><i data-lucide="undo-2" style="width:16px;height:16px"></i> Reset</button>
+                            <button class="btn btn-success" onclick="downloadResult()"><i data-lucide="download" style="width:16px;height:16px"></i> Download</button>
+                            <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2" style="width:16px;height:16px"></i> Clear</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="ad-slot" style="margin-top:2rem"><div class="ad-placeholder">Advertisement</div></div>
+            </div>
+            <aside class="tool-sidebar"><div class="ad-slot"><div class="ad-placeholder">Advertisement</div></div></aside>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><p>&copy; 2024 ToolBox. All rights reserved.</p></div></footer>
+    <div class="toast" id="toast"></div>
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script>
+    lucide.createIcons();
+
+    let originalImage = null;
+    let fileName = 'image';
+    let filterApplied = false;
+
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const canvas = document.getElementById('previewCanvas');
+    const ctx = canvas.getContext('2d');
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+    dropzone.addEventListener('drop', e => { e.preventDefault(); dropzone.classList.remove('dragover'); handleFile(e.dataTransfer.files[0]); });
+    fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
+
+    function handleFile(file) {
+        if (!file || !file.type.startsWith('image/')) { showToast('Please select an image file'); return; }
+        fileName = file.name.replace(/\.[^.]+$/, '');
+        const img = new Image();
+        img.onload = () => {
+            originalImage = img;
+            filterApplied = false;
+            dropzone.style.display = 'none';
+            document.getElementById('editorArea').style.display = 'block';
+            resetFilters();
+            showToast('Image loaded');
+        };
+        img.src = URL.createObjectURL(file);
+    }
+
+    function getFilterString() {
+        const b = document.getElementById('brightness').value;
+        const c = document.getElementById('contrast').value;
+        const s = document.getElementById('saturate').value;
+        const g = document.getElementById('grayscale').value;
+        const sp = document.getElementById('sepia').value;
+        const bl = document.getElementById('blur').value;
+        const h = document.getElementById('hueRotate').value;
+        const inv = document.getElementById('invert').value;
+        const o = document.getElementById('opacity').value;
+        return `brightness(${b}%) contrast(${c}%) saturate(${s}%) grayscale(${g}%) sepia(${sp}%) blur(${bl}px) hue-rotate(${h}deg) invert(${inv}%) opacity(${o}%)`;
+    }
+
+    function updateFilter() {
+        if (!originalImage) return;
+
+        // Update value displays
+        document.getElementById('brightnessVal').textContent = document.getElementById('brightness').value + '%';
+        document.getElementById('contrastVal').textContent = document.getElementById('contrast').value + '%';
+        document.getElementById('saturateVal').textContent = document.getElementById('saturate').value + '%';
+        document.getElementById('grayscaleVal').textContent = document.getElementById('grayscale').value + '%';
+        document.getElementById('sepiaVal').textContent = document.getElementById('sepia').value + '%';
+        document.getElementById('blurVal').textContent = document.getElementById('blur').value + 'px';
+        document.getElementById('hueRotateVal').textContent = document.getElementById('hueRotate').value + 'deg';
+        document.getElementById('invertVal').textContent = document.getElementById('invert').value + '%';
+        document.getElementById('opacityVal').textContent = document.getElementById('opacity').value + '%';
+
+        renderPreview();
+    }
+
+    function renderPreview() {
+        if (!originalImage) return;
+        const maxW = canvas.parentElement.clientWidth || 600;
+        const maxH = 500;
+        const scale = Math.min(maxW / originalImage.width, maxH / originalImage.height, 1);
+        canvas.width = Math.round(originalImage.width * scale);
+        canvas.height = Math.round(originalImage.height * scale);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.filter = getFilterString();
+        ctx.drawImage(originalImage, 0, 0, canvas.width, canvas.height);
+        ctx.filter = 'none';
+    }
+
+    function applyPreset(name) {
+        const presets = {
+            none: { brightness: 100, contrast: 100, saturate: 100, grayscale: 0, sepia: 0, blur: 0, hueRotate: 0, invert: 0, opacity: 100 },
+            grayscale: { brightness: 100, contrast: 100, saturate: 0, grayscale: 100, sepia: 0, blur: 0, hueRotate: 0, invert: 0, opacity: 100 },
+            sepia: { brightness: 100, contrast: 100, saturate: 100, grayscale: 0, sepia: 80, blur: 0, hueRotate: 0, invert: 0, opacity: 100 },
+            vintage: { brightness: 110, contrast: 85, saturate: 70, grayscale: 0, sepia: 40, blur: 0, hueRotate: 0, invert: 0, opacity: 90 },
+            warm: { brightness: 105, contrast: 105, saturate: 130, grayscale: 0, sepia: 20, blur: 0, hueRotate: 0, invert: 0, opacity: 100 },
+            cool: { brightness: 100, contrast: 110, saturate: 90, grayscale: 0, sepia: 0, blur: 0, hueRotate: 180, invert: 0, opacity: 100 },
+            dramatic: { brightness: 90, contrast: 150, saturate: 120, grayscale: 0, sepia: 0, blur: 0, hueRotate: 0, invert: 0, opacity: 100 },
+            fade: { brightness: 120, contrast: 80, saturate: 60, grayscale: 0, sepia: 10, blur: 0, hueRotate: 0, invert: 0, opacity: 85 },
+            invert: { brightness: 100, contrast: 100, saturate: 100, grayscale: 0, sepia: 0, blur: 0, hueRotate: 0, invert: 100, opacity: 100 }
+        };
+
+        const p = presets[name];
+        if (!p) return;
+
+        document.getElementById('brightness').value = p.brightness;
+        document.getElementById('contrast').value = p.contrast;
+        document.getElementById('saturate').value = p.saturate;
+        document.getElementById('grayscale').value = p.grayscale;
+        document.getElementById('sepia').value = p.sepia;
+        document.getElementById('blur').value = p.blur;
+        document.getElementById('hueRotate').value = p.hueRotate;
+        document.getElementById('invert').value = p.invert;
+        document.getElementById('opacity').value = p.opacity;
+
+        document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        updateFilter();
+    }
+
+    function applyFilter() {
+        if (!originalImage) { showToast('No image loaded'); return; }
+
+        // Render at full resolution with filters
+        const fullCanvas = document.createElement('canvas');
+        fullCanvas.width = originalImage.width;
+        fullCanvas.height = originalImage.height;
+        const fullCtx = fullCanvas.getContext('2d');
+        fullCtx.filter = getFilterString();
+        fullCtx.drawImage(originalImage, 0, 0);
+
+        // Create new image from filtered result
+        const img = new Image();
+        img.onload = () => {
+            originalImage = img;
+            filterApplied = true;
+            resetFilters();
+            showToast('Filter applied');
+        };
+        img.src = fullCanvas.toDataURL();
+    }
+
+    function resetFilters() {
+        document.getElementById('brightness').value = 100;
+        document.getElementById('contrast').value = 100;
+        document.getElementById('saturate').value = 100;
+        document.getElementById('grayscale').value = 0;
+        document.getElementById('sepia').value = 0;
+        document.getElementById('blur').value = 0;
+        document.getElementById('hueRotate').value = 0;
+        document.getElementById('invert').value = 0;
+        document.getElementById('opacity').value = 100;
+        document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+        updateFilter();
+    }
+
+    function downloadResult() {
+        if (!originalImage) { showToast('No image to download'); return; }
+
+        const fullCanvas = document.createElement('canvas');
+        fullCanvas.width = originalImage.width;
+        fullCanvas.height = originalImage.height;
+        const fullCtx = fullCanvas.getContext('2d');
+        fullCtx.filter = getFilterString();
+        fullCtx.drawImage(originalImage, 0, 0);
+
+        const link = document.createElement('a');
+        link.download = fileName + '_filtered.png';
+        link.href = fullCanvas.toDataURL('image/png');
+        link.click();
+        showToast('Image downloaded');
+    }
+
+    function clearAll() {
+        originalImage = null;
+        filterApplied = false;
+        dropzone.style.display = '';
+        document.getElementById('editorArea').style.display = 'none';
+        fileInput.value = '';
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+    </script>
+</body>
+</html>

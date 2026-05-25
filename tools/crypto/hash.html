@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hash Generator - ToolBox</title>
+    <meta name="description" content="Generate MD5, SHA-1, SHA-256, SHA-384, SHA-512 hashes online. Real-time hash calculation with copy support.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    <style>
+        .workspace-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+        .textarea-wrap { position: relative; }
+        .textarea-wrap textarea {
+            width: 100%; min-height: 160px; padding: 1rem; border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.5rem; font-family: 'Courier New', monospace; font-size: 14px;
+            resize: vertical; background: var(--bg, #fff); color: var(--text, #1e293b);
+            box-sizing: border-box;
+        }
+        .textarea-wrap textarea:focus { outline: none; border-color: var(--primary, #3b82f6); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .btn {
+            padding: 0.5rem 1.25rem; border-radius: 0.5rem; border: none; cursor: pointer;
+            font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: var(--primary, #3b82f6); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover, #2563eb); }
+        .btn-secondary { background: var(--bg-secondary, #f1f5f9); color: var(--text, #1e293b); border: 1px solid var(--border, #e2e8f0); }
+        .btn-secondary:hover { background: var(--bg-tertiary, #e2e8f0); }
+        .btn-danger { background: #ef4444; color: #fff; }
+        .btn-danger:hover { background: #dc2626; }
+        .hash-results { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem; }
+        .hash-item {
+            background: var(--bg-secondary, #f8fafc); border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.5rem; padding: 0.75rem 1rem;
+        }
+        .hash-item-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;
+        }
+        .hash-item-label { font-weight: 600; font-size: 13px; color: var(--text-muted, #64748b); text-transform: uppercase; letter-spacing: 0.5px; }
+        .hash-item-value {
+            font-family: 'Courier New', monospace; font-size: 13px; word-break: break-all;
+            color: var(--text, #1e293b); background: var(--bg, #fff); padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem; border: 1px solid var(--border, #e2e8f0); min-height: 2.5rem;
+        }
+        .hash-item-copy {
+            background: none; border: none; cursor: pointer; color: var(--primary, #3b82f6);
+            padding: 0.25rem; border-radius: 0.25rem; display: flex; align-items: center;
+        }
+        .hash-item-copy:hover { background: var(--bg-tertiary, #e2e8f0); }
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem; padding: 0.75rem 1.5rem;
+            background: #1e293b; color: #fff; border-radius: 0.5rem; font-size: 14px;
+            transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 9999;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .char-count { font-size: 12px; color: var(--text-muted, #94a3b8); text-align: right; margin-top: 0.25rem; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo"><i data-lucide="hash" style="width:28px;height:28px"></i> ToolBox</a>
+            <div class="header-search">
+                <i data-lucide="search"></i>
+                <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+            </div>
+            <div class="header-actions">
+                <button class="lang-btn" onclick="I18n.setLang(I18n.currentLang==='en'?'zh':'en')">EN</button>
+                <button class="theme-btn" onclick="document.body.classList.toggle('dark')"><i data-lucide="sun"></i></button>
+            </div>
+        </div>
+    </header>
+    <div class="breadcrumb"><div class="container"><a href="../../index.html">Home</a> / <a href="../../index.html#crypto">Encryption</a> / <span>Hash Generator</span></div></div>
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="hash"></i></div>
+                    <h1>Hash Generator</h1>
+                    <p>Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes from any text input in real time.</p>
+                </div>
+                <div class="tool-workspace">
+                    <div class="workspace-grid">
+                        <div>
+                            <div class="textarea-label"><i data-lucide="file-text" style="width:16px;height:16px"></i> Input Text</div>
+                            <div class="textarea-wrap">
+                                <textarea id="inputArea" placeholder="Enter text to generate hashes..."></textarea>
+                            </div>
+                            <div class="char-count"><span id="inputCount">0</span> characters</div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="calculateHashes()"><i data-lucide="refresh-cw" style="width:16px;height:16px"></i> Calculate</button>
+                        <button class="btn btn-secondary" onclick="copyAllHashes()"><i data-lucide="copy" style="width:16px;height:16px"></i> Copy All</button>
+                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2" style="width:16px;height:16px"></i> Clear</button>
+                    </div>
+                    <div class="hash-results" id="hashResults">
+                        <div class="hash-item">
+                            <div class="hash-item-header">
+                                <span class="hash-item-label">MD5</span>
+                                <button class="hash-item-copy" onclick="copyHash('md5')" title="Copy"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i></button>
+                            </div>
+                            <div class="hash-item-value" id="md5">-</div>
+                        </div>
+                        <div class="hash-item">
+                            <div class="hash-item-header">
+                                <span class="hash-item-label">SHA-1</span>
+                                <button class="hash-item-copy" onclick="copyHash('sha1')" title="Copy"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i></button>
+                            </div>
+                            <div class="hash-item-value" id="sha1">-</div>
+                        </div>
+                        <div class="hash-item">
+                            <div class="hash-item-header">
+                                <span class="hash-item-label">SHA-256</span>
+                                <button class="hash-item-copy" onclick="copyHash('sha256')" title="Copy"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i></button>
+                            </div>
+                            <div class="hash-item-value" id="sha256">-</div>
+                        </div>
+                        <div class="hash-item">
+                            <div class="hash-item-header">
+                                <span class="hash-item-label">SHA-384</span>
+                                <button class="hash-item-copy" onclick="copyHash('sha384')" title="Copy"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i></button>
+                            </div>
+                            <div class="hash-item-value" id="sha384">-</div>
+                        </div>
+                        <div class="hash-item">
+                            <div class="hash-item-header">
+                                <span class="hash-item-label">SHA-512</span>
+                                <button class="hash-item-copy" onclick="copyHash('sha512')" title="Copy"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i></button>
+                            </div>
+                            <div class="hash-item-value" id="sha512">-</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ad-slot" style="margin-top:2rem"><div class="ad-placeholder">Advertisement</div></div>
+            </div>
+            <aside class="tool-sidebar">
+                <div class="ad-slot"><div class="ad-placeholder">Advertisement</div></div>
+            </aside>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><p>&copy; 2024 ToolBox. All rights reserved.</p></div></footer>
+    <div class="toast" id="toast"></div>
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script>
+    lucide.createIcons();
+
+    const inputArea = document.getElementById('inputArea');
+    const inputCount = document.getElementById('inputCount');
+    let debounceTimer;
+
+    inputArea.addEventListener('input', () => {
+        inputCount.textContent = inputArea.value.length;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(calculateHashes, 300);
+    });
+
+    function calculateHashes() {
+        const input = inputArea.value;
+        if (!input) {
+            ['md5', 'sha1', 'sha256', 'sha384', 'sha512'].forEach(id => {
+                document.getElementById(id).textContent = '-';
+            });
+            return;
+        }
+        document.getElementById('md5').textContent = CryptoJS.MD5(input).toString();
+        document.getElementById('sha1').textContent = CryptoJS.SHA1(input).toString();
+        document.getElementById('sha256').textContent = CryptoJS.SHA256(input).toString();
+        document.getElementById('sha384').textContent = CryptoJS.SHA384(input).toString();
+        document.getElementById('sha512').textContent = CryptoJS.SHA512(input).toString();
+    }
+
+    function copyHash(id) {
+        const value = document.getElementById(id).textContent;
+        if (!value || value === '-') { showToast('No hash to copy'); return; }
+        navigator.clipboard.writeText(value).then(() => showToast('Copied to clipboard'));
+    }
+
+    function copyAllHashes() {
+        const input = inputArea.value;
+        if (!input) { showToast('No hashes to copy'); return; }
+        const all = [
+            'MD5: ' + CryptoJS.MD5(input).toString(),
+            'SHA-1: ' + CryptoJS.SHA1(input).toString(),
+            'SHA-256: ' + CryptoJS.SHA256(input).toString(),
+            'SHA-384: ' + CryptoJS.SHA384(input).toString(),
+            'SHA-512: ' + CryptoJS.SHA512(input).toString()
+        ].join('\n');
+        navigator.clipboard.writeText(all).then(() => showToast('All hashes copied'));
+    }
+
+    function clearAll() {
+        inputArea.value = '';
+        inputCount.textContent = '0';
+        ['md5', 'sha1', 'sha256', 'sha384', 'sha512'].forEach(id => {
+            document.getElementById(id).textContent = '-';
+        });
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+    </script>
+</body>
+</html>

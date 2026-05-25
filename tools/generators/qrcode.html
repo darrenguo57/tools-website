@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator - ToolBox</title>
+  <meta name="description" content="Generate QR codes from text or URLs. Customize size, colors, and error correction level. Download as PNG.">
+  <meta name="keywords" content="QR code generator, QR code, barcode, create QR code, QR code online">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="QR Code Generator - ToolBox">
+  <meta property="og:description" content="Generate QR codes from text or URLs. Free and no installation required.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/generators/qrcode.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "QR Code Generator",
+    "url": "https://toolbox.example.com/tools/generators/qrcode.html",
+    "description": "Generate QR codes from text or URLs.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item active"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=generators" class="breadcrumb__link">Generators</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">QR Code Generator</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="qr-code"></i></div>
+        <h1 class="tool-header__title">QR Code Generator</h1>
+        <p class="tool-header__desc">Generate QR codes from any text or URL. Customize size, colors, and error correction level. Download as PNG or copy to clipboard.</p>
+      </section>
+
+      <section class="tool-workspace">
+
+        <!-- Input Panel -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="text-cursor-input"></i> Input</span>
+          </div>
+          <div class="tool-panel__body">
+            <textarea class="tool-input__field" id="qrInput" rows="3" placeholder="Enter text or URL..." style="min-height:100px;">https://example.com</textarea>
+          </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="tool-settings">
+          <div class="tool-settings__title">Options</div>
+          <div class="tool-settings__group">
+            <div class="tool-range">
+              <div class="tool-range__header">
+                <label class="tool-settings__label" for="qrSize">Size (px)</label>
+                <span class="tool-range__value" id="qrSizeValue">256</span>
+              </div>
+              <input type="range" id="qrSize" min="128" max="512" step="16" value="256">
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+            <div class="tool-settings__group">
+              <label class="tool-settings__label" for="qrFgColor">Foreground Color</label>
+              <div style="display:flex;align-items:center;gap:var(--space-2);">
+                <input type="color" id="qrFgColor" value="#000000" style="width:40px;height:36px;border:1px solid var(--color-border);border-radius:var(--radius-md);cursor:pointer;padding:2px;">
+                <input type="text" id="qrFgText" value="#000000" class="tool-input__field" style="min-height:auto;padding:8px 12px;flex:1;" maxlength="7">
+              </div>
+            </div>
+            <div class="tool-settings__group">
+              <label class="tool-settings__label" for="qrBgColor">Background Color</label>
+              <div style="display:flex;align-items:center;gap:var(--space-2);">
+                <input type="color" id="qrBgColor" value="#FFFFFF" style="width:40px;height:36px;border:1px solid var(--color-border);border-radius:var(--radius-md);cursor:pointer;padding:2px;">
+                <input type="text" id="qrBgText" value="#FFFFFF" class="tool-input__field" style="min-height:auto;padding:8px 12px;flex:1;" maxlength="7">
+              </div>
+            </div>
+          </div>
+          <div class="tool-settings__group">
+            <label class="tool-settings__label" for="qrErrorLevel">Error Correction Level</label>
+            <select id="qrErrorLevel" class="tool-input__field" style="min-height:auto;padding:8px 12px;">
+              <option value="L">L - Low (7%)</option>
+              <option value="M" selected>M - Medium (15%)</option>
+              <option value="Q">Q - Quartile (25%)</option>
+              <option value="H">H - High (30%)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="tool-actions">
+          <div class="tool-actions__primary">
+            <button class="btn btn--primary" id="btnGenerate"><i data-lucide="sparkles"></i> Generate</button>
+          </div>
+          <div class="tool-actions__secondary">
+            <button class="btn btn--secondary" id="btnDownload"><i data-lucide="download"></i> Download PNG</button>
+            <button class="btn btn--secondary" id="btnCopyClipboard"><i data-lucide="clipboard-copy"></i> Copy to Clipboard</button>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="image"></i> Preview</span>
+          </div>
+          <div class="tool-panel__body" style="display:flex;align-items:center;justify-content:center;min-height:300px;">
+            <div id="qrPreview" class="tool-output__placeholder">
+              <i data-lucide="qr-code"></i>
+              <span class="tool-output__placeholder-text">Enter text and click "Generate"</span>
+            </div>
+            <canvas id="qrCanvas" style="display:none;max-width:100%;border-radius:var(--radius-md);"></canvas>
+          </div>
+        </div>
+
+      </section>
+
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Enter Content</div>
+              <div class="tool-step__desc">Type or paste any text, URL, email, phone number, or other content.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Customize Options</div>
+              <div class="tool-step__desc">Adjust size, colors, and error correction level as needed.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Generate &amp; Save</div>
+              <div class="tool-step__desc">Click Generate to create the QR code. Download as PNG or copy to clipboard.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="barcode.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Barcode Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+          <a href="uuid.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">UUID Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+          <a href="nanoid.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">NanoID Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+          <a href="password.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Password Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Generators</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+    (function() {
+      const sizeSlider = document.getElementById('qrSize');
+      const sizeValue = document.getElementById('qrSizeValue');
+      const fgColor = document.getElementById('qrFgColor');
+      const bgColor = document.getElementById('qrBgColor');
+      const fgText = document.getElementById('qrFgText');
+      const bgText = document.getElementById('qrBgText');
+      const preview = document.getElementById('qrPreview');
+      const canvas = document.getElementById('qrCanvas');
+
+      sizeSlider.addEventListener('input', () => sizeValue.textContent = sizeSlider.value);
+
+      fgColor.addEventListener('input', () => fgText.value = fgColor.value.toUpperCase());
+      bgColor.addEventListener('input', () => bgText.value = bgColor.value.toUpperCase());
+      fgText.addEventListener('change', () => { if (/^#[0-9A-Fa-f]{6}$/.test(fgText.value)) fgColor.value = fgText.value; });
+      bgText.addEventListener('change', () => { if (/^#[0-9A-Fa-f]{6}$/.test(bgText.value)) bgColor.value = bgText.value; });
+
+      function getOptions() {
+        return {
+          width: parseInt(sizeSlider.value),
+          margin: 2,
+          color: {
+            dark: fgColor.value,
+            light: bgColor.value
+          },
+          errorCorrectionLevel: document.getElementById('qrErrorLevel').value
+        };
+      }
+
+      function generateQR() {
+        const text = document.getElementById('qrInput').value.trim();
+        if (!text) {
+          preview.style.display = 'flex';
+          canvas.style.display = 'none';
+          return;
+        }
+        QRCode.toCanvas(canvas, text, getOptions(), function(error) {
+          if (error) {
+            preview.style.display = 'flex';
+            preview.innerHTML = '<span class="tool-output__placeholder-text" style="color:var(--color-error);">Error: ' + error.message + '</span>';
+            canvas.style.display = 'none';
+            return;
+          }
+          preview.style.display = 'none';
+          canvas.style.display = 'block';
+        });
+      }
+
+      document.getElementById('btnGenerate').addEventListener('click', generateQR);
+
+      document.getElementById('btnDownload').addEventListener('click', () => {
+        if (canvas.style.display === 'none') return;
+        const link = document.createElement('a');
+        link.download = 'qrcode.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+
+      document.getElementById('btnCopyClipboard').addEventListener('click', async () => {
+        if (canvas.style.display === 'none') return;
+        try {
+          const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+          await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        } catch (e) {
+          // Fallback: copy as data URL
+          try {
+            await navigator.clipboard.writeText(canvas.toDataURL('image/png'));
+          } catch (e2) { /* ignore */ }
+        }
+      });
+
+      // Auto-generate on Enter in textarea
+      document.getElementById('qrInput').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); generateQR(); }
+      });
+    })();
+  </script>
+</body>
+</html>

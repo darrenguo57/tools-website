@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Age Calculator - ToolBox</title>
+  <meta name="description" content="Free online age calculator. Find your exact age, zodiac sign, Chinese zodiac, and birthday countdown.">
+  <meta name="keywords" content="age calculator, birthday, zodiac sign, Chinese zodiac, age in days">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Age Calculator - ToolBox">
+  <meta property="og:description" content="Free online age calculator with zodiac signs.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/calculators/age.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Age Calculator",
+    "url": "https://toolbox.example.com/tools/calculators/age.html",
+    "description": "Free online age calculator.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    .age-input-area { display:flex;gap:var(--space-4);align-items:end;flex-wrap:wrap; }
+    .age-results-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-4);margin-top:var(--space-6); }
+    .age-result-card {
+      background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);
+      padding:var(--space-5);
+    }
+    .age-result-card .label { font-size:var(--font-size-sm);color:var(--color-text-tertiary);margin-bottom:var(--space-2);display:flex;align-items:center;gap:var(--space-2); }
+    .age-result-card .label svg { width:16px;height:16px; }
+    .age-result-card .value { font-size:var(--font-size-2xl);font-weight:var(--font-weight-bold);color:var(--color-text); }
+    .age-result-card .sub { font-size:var(--font-size-sm);color:var(--color-text-secondary);margin-top:var(--space-1); }
+    .age-result-card.highlight { border-color:var(--color-primary);background:var(--color-primary-light); }
+    .age-result-card.highlight .value { color:var(--color-primary); }
+    .age-zodiac-grid { display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);margin-top:var(--space-6); }
+    .age-zodiac-card {
+      background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);
+      padding:var(--space-5);text-align:center;
+    }
+    .age-zodiac-card .zodiac-symbol { font-size:var(--font-size-4xl);margin-bottom:var(--space-2); }
+    .age-zodiac-card .zodiac-name { font-size:var(--font-size-lg);font-weight:var(--font-weight-semibold);color:var(--color-text); }
+    .age-zodiac-card .zodiac-desc { font-size:var(--font-size-sm);color:var(--color-text-tertiary);margin-top:var(--space-1); }
+    .age-countdown {
+      background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);
+      padding:var(--space-5);margin-top:var(--space-6);text-align:center;
+    }
+    .age-countdown .countdown-label { font-size:var(--font-size-sm);color:var(--color-text-tertiary);margin-bottom:var(--space-3); }
+    .age-countdown .countdown-grid { display:flex;justify-content:center;gap:var(--space-4); }
+    .age-countdown .countdown-item { text-align:center; }
+    .age-countdown .countdown-num { font-size:var(--font-size-2xl);font-weight:var(--font-weight-bold);color:var(--color-primary); }
+    .age-countdown .countdown-unit { font-size:var(--font-size-xs);color:var(--color-text-tertiary); }
+    @media(max-width:640px) {
+      .age-results-grid { grid-template-columns:1fr; }
+      .age-zodiac-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item active"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=calculators" class="breadcrumb__link">Calculators</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Age Calculator</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="cake"></i></div>
+        <h1 class="tool-header__title">Age Calculator</h1>
+        <p class="tool-header__desc">Calculate your exact age in years, months, and days. Discover your zodiac sign, Chinese zodiac, and birthday countdown.</p>
+      </section>
+
+      <section class="tool-workspace">
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="calendar"></i> Date of Birth</span>
+          </div>
+          <div class="tool-panel__body">
+            <div class="age-input-area">
+              <div class="form-group" style="flex:1;">
+                <label class="form-label" for="birthDate">Your Birth Date</label>
+                <input type="date" id="birthDate" class="form-input">
+              </div>
+              <div class="btn-group">
+                <button class="btn btn--primary" id="btnCalculate"><i data-lucide="calculator"></i> Calculate</button>
+                <button class="btn btn--secondary" id="btnReset"><i data-lucide="rotate-ccw"></i> Reset</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="ageResults" style="display:none;">
+          <div class="age-results-grid">
+            <div class="age-result-card highlight">
+              <div class="label"><i data-lucide="user"></i> Your Age</div>
+              <div class="value" id="exactAge">-</div>
+              <div class="sub" id="exactAgeSub"></div>
+            </div>
+            <div class="age-result-card">
+              <div class="label"><i data-lucide="calendar-days"></i> Total Days</div>
+              <div class="value" id="totalDays">0</div>
+              <div class="sub" id="totalDaysSub"></div>
+            </div>
+            <div class="age-result-card">
+              <div class="label"><i data-lucide="clock"></i> Total Hours</div>
+              <div class="value" id="totalHours">0</div>
+            </div>
+            <div class="age-result-card">
+              <div class="label"><i data-lucide="timer"></i> Total Minutes</div>
+              <div class="value" id="totalMinutes">0</div>
+            </div>
+          </div>
+
+          <div class="age-zodiac-grid">
+            <div class="age-zodiac-card">
+              <div class="zodiac-symbol" id="zodiacSymbol">&#9800;</div>
+              <div class="zodiac-name" id="zodiacName">Aries</div>
+              <div class="zodiac-desc" id="zodiacDesc">March 21 - April 19</div>
+            </div>
+            <div class="age-zodiac-card">
+              <div class="zodiac-symbol" id="chineseZodiacSymbol">&#128054;</div>
+              <div class="zodiac-name" id="chineseZodiacName">Dragon</div>
+              <div class="zodiac-desc" id="chineseZodiacElement">Wood Dragon</div>
+            </div>
+          </div>
+
+          <div class="age-countdown">
+            <div class="countdown-label"><i data-lucide="gift" style="width:16px;height:16px;display:inline;vertical-align:middle;margin-right:4px;"></i> Next Birthday Countdown</div>
+            <div class="countdown-grid">
+              <div class="countdown-item">
+                <div class="countdown-num" id="countdownDays">0</div>
+                <div class="countdown-unit">Days</div>
+              </div>
+              <div class="countdown-item">
+                <div class="countdown-num" id="countdownHours">0</div>
+                <div class="countdown-unit">Hours</div>
+              </div>
+              <div class="countdown-item">
+                <div class="countdown-num" id="countdownMinutes">0</div>
+                <div class="countdown-unit">Minutes</div>
+              </div>
+              <div class="countdown-item">
+                <div class="countdown-num" id="countdownSeconds">0</div>
+                <div class="countdown-unit">Seconds</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Enter Birth Date</div>
+              <div class="tool-step__desc">Select your date of birth using the date picker.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Calculate Age</div>
+              <div class="tool-step__desc">Click Calculate to see your exact age, total days, hours, and minutes lived.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Discover More</div>
+              <div class="tool-step__desc">View your zodiac sign, Chinese zodiac animal, and live birthday countdown.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="standard.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Standard Calculator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Calculators</span>
+          </a>
+          <a href="bmi.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">BMI Calculator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Calculators</span>
+          </a>
+          <a href="loan.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Loan Calculator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Calculators</span>
+          </a>
+          <a href="scientific.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Scientific Calculator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Calculators</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+    (function() {
+      const zodiacSigns = [
+        { name: 'Capricorn', symbol: '\u2651', start: [1,1], end: [1,19] },
+        { name: 'Aquarius', symbol: '\u2652', start: [1,20], end: [2,18] },
+        { name: 'Pisces', symbol: '\u2653', start: [2,19], end: [3,20] },
+        { name: 'Aries', symbol: '\u2648', start: [3,21], end: [4,19] },
+        { name: 'Taurus', symbol: '\u2649', start: [4,20], end: [5,20] },
+        { name: 'Gemini', symbol: '\u264A', start: [5,21], end: [6,20] },
+        { name: 'Cancer', symbol: '\u264B', start: [6,21], end: [7,22] },
+        { name: 'Leo', symbol: '\u264C', start: [7,23], end: [8,22] },
+        { name: 'Virgo', symbol: '\u264D', start: [8,23], end: [9,22] },
+        { name: 'Libra', symbol: '\u264E', start: [9,23], end: [10,22] },
+        { name: 'Scorpio', symbol: '\u264F', start: [10,23], end: [11,21] },
+        { name: 'Sagittarius', symbol: '\u2650', start: [11,22], end: [12,21] },
+        { name: 'Capricorn', symbol: '\u2651', start: [12,22], end: [12,31] }
+      ];
+
+      const chineseZodiacs = [
+        { name: 'Rat', symbol: '\uD83D\uDC00' },
+        { name: 'Ox', symbol: '\uD83D\uDC02' },
+        { name: 'Tiger', symbol: '\uD83D\uDC05' },
+        { name: 'Rabbit', symbol: '\uD83D\uDC07' },
+        { name: 'Dragon', symbol: '\uD83D\uDC09' },
+        { name: 'Snake', symbol: '\uD83D\uDC0D' },
+        { name: 'Horse', symbol: '\uD83D\uDC0E' },
+        { name: 'Goat', symbol: '\uD83D\uDC10' },
+        { name: 'Monkey', symbol: '\uD83D\uDC12' },
+        { name: 'Rooster', symbol: '\uD83D\uDC14' },
+        { name: 'Dog', symbol: '\uD83D\uDC15' },
+        { name: 'Pig', symbol: '\uD83D\uDC16' }
+      ];
+
+      const elements = ['Wood', 'Fire', 'Earth', 'Metal', 'Water'];
+
+      function getZodiac(month, day) {
+        for (var i = 0; i < zodiacSigns.length; i++) {
+          var z = zodiacSigns[i];
+          var md = month * 100 + day;
+          var startMd = z.start[0] * 100 + z.start[1];
+          var endMd = z.end[0] * 100 + z.end[1];
+          if (md >= startMd && md <= endMd) return z;
+        }
+        return zodiacSigns[0];
+      }
+
+      function getChineseZodiac(year) {
+        var idx = (year - 4) % 12;
+        if (idx < 0) idx += 12;
+        var elementIdx = Math.floor(((year - 4) % 10) / 2);
+        if (elementIdx < 0) elementIdx += 5;
+        return {
+          name: chineseZodiacs[idx].name,
+          symbol: chineseZodiacs[idx].symbol,
+          element: elements[elementIdx]
+        };
+      }
+
+      function formatNumber(n) {
+        return n.toLocaleString();
+      }
+
+      let countdownInterval = null;
+
+      function calculate() {
+        var birthStr = document.getElementById('birthDate').value;
+        if (!birthStr) { alert('Please select your birth date.'); return; }
+
+        var birthDate = new Date(birthStr);
+        var now = new Date();
+
+        if (birthDate > now) { alert('Birth date cannot be in the future.'); return; }
+
+        // Exact age
+        var years = now.getFullYear() - birthDate.getFullYear();
+        var months = now.getMonth() - birthDate.getMonth();
+        var days = now.getDate() - birthDate.getDate();
+
+        if (days < 0) {
+          months--;
+          var prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+          days += prevMonth.getDate();
+        }
+        if (months < 0) {
+          years--;
+          months += 12;
+        }
+
+        document.getElementById('exactAge').textContent = years + ' years, ' + months + ' months';
+        document.getElementById('exactAgeSub').textContent = years + ' years, ' + months + ' months, ' + days + ' days';
+
+        // Total time
+        var diffMs = now - birthDate;
+        var totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        var totalHours = Math.floor(diffMs / (1000 * 60 * 60));
+        var totalMinutes = Math.floor(diffMs / (1000 * 60));
+
+        document.getElementById('totalDays').textContent = formatNumber(totalDays);
+        document.getElementById('totalDaysSub').textContent = 'Approximately ' + formatNumber(Math.round(totalDays / 365.25)) + ' years';
+        document.getElementById('totalHours').textContent = formatNumber(totalHours);
+        document.getElementById('totalMinutes').textContent = formatNumber(totalMinutes);
+
+        // Zodiac
+        var zodiac = getZodiac(birthDate.getMonth() + 1, birthDate.getDate());
+        document.getElementById('zodiacSymbol').textContent = zodiac.symbol;
+        document.getElementById('zodiacName').textContent = zodiac.name;
+        var z = getZodiac(birthDate.getMonth() + 1, birthDate.getDate());
+        var zIdx = zodiacSigns.findIndex(function(s) { return s.name === z.name; });
+        if (zIdx >= 0) {
+          document.getElementById('zodiacDesc').textContent = zodiacSigns[zIdx].start[0] + '/' + zodiacSigns[zIdx].start[1] + ' - ' + zodiacSigns[zIdx].end[0] + '/' + zodiacSigns[zIdx].end[1];
+        }
+
+        // Chinese zodiac
+        var chinese = getChineseZodiac(birthDate.getFullYear());
+        document.getElementById('chineseZodiacSymbol').textContent = chinese.symbol;
+        document.getElementById('chineseZodiacName').textContent = chinese.name;
+        document.getElementById('chineseZodiacElement').textContent = chinese.element + ' ' + chinese.name + ' (' + birthDate.getFullYear() + ')';
+
+        // Birthday countdown
+        if (countdownInterval) clearInterval(countdownInterval);
+        function updateCountdown() {
+          var now2 = new Date();
+          var nextBirthday = new Date(now2.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+          if (nextBirthday <= now2) {
+            nextBirthday = new Date(now2.getFullYear() + 1, birthDate.getMonth(), birthDate.getDate());
+          }
+          var diff = nextBirthday - now2;
+          var cdDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+          var cdHours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var cdMinutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          var cdSeconds = Math.floor((diff % (1000 * 60)) / 1000);
+          document.getElementById('countdownDays').textContent = cdDays;
+          document.getElementById('countdownHours').textContent = cdHours;
+          document.getElementById('countdownMinutes').textContent = cdMinutes;
+          document.getElementById('countdownSeconds').textContent = cdSeconds;
+        }
+        updateCountdown();
+        countdownInterval = setInterval(updateCountdown, 1000);
+
+        document.getElementById('ageResults').style.display = 'block';
+      }
+
+      document.getElementById('btnCalculate').addEventListener('click', calculate);
+
+      document.getElementById('btnReset').addEventListener('click', function() {
+        document.getElementById('birthDate').value = '';
+        document.getElementById('ageResults').style.display = 'none';
+        if (countdownInterval) clearInterval(countdownInterval);
+      });
+    })();
+  </script>
+</body>
+</html>

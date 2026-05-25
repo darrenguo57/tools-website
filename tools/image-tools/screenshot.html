@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Screenshot - ToolBox</title>
+    <meta name="description" content="Capture HTML code as an image. Paste HTML code and render it to a downloadable screenshot.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dark.css">
+    <link rel="stylesheet" href="../../assets/css/tools.css">
+    <style>
+        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
+        .btn {
+            padding: 0.5rem 1.25rem; border-radius: 0.5rem; border: none; cursor: pointer;
+            font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 0.4rem;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: var(--primary, #3b82f6); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover, #2563eb); }
+        .btn-secondary { background: var(--bg-secondary, #f1f5f9); color: var(--text, #1e293b); border: 1px solid var(--border, #e2e8f0); }
+        .btn-secondary:hover { background: var(--bg-tertiary, #e2e8f0); }
+        .btn-success { background: #10b981; color: #fff; }
+        .btn-success:hover { background: #059669; }
+        .btn-danger { background: #ef4444; color: #fff; }
+        .btn-danger:hover { background: #dc2626; }
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem; padding: 0.75rem 1.5rem;
+            background: #1e293b; color: #fff; border-radius: 0.5rem; font-size: 14px;
+            transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 9999;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .workspace-grid .full-width { grid-column: 1 / -1; }
+        .textarea-wrap textarea {
+            width: 100%; min-height: 300px; padding: 1rem; border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.5rem; font-family: 'Courier New', monospace; font-size: 13px;
+            resize: vertical; background: var(--bg, #fff); color: var(--text, #1e293b);
+            box-sizing: border-box; line-height: 1.5;
+        }
+        .textarea-wrap textarea:focus { outline: none; border-color: var(--primary, #3b82f6); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 14px; color: var(--text, #1e293b); }
+        .options-panel {
+            background: var(--bg-secondary, #f8fafc); border: 1px solid var(--border, #e2e8f0);
+            border-radius: 0.75rem; padding: 1rem 1.25rem; margin-bottom: 1rem;
+        }
+        .options-panel h4 { font-size: 14px; font-weight: 600; margin-bottom: 0.75rem; color: var(--text, #1e293b); }
+        .option-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem; }
+        .option-row:last-child { margin-bottom: 0; }
+        .option-label { font-size: 13px; color: var(--text-secondary, #64748b); min-width: 120px; }
+        select, input[type="number"] {
+            padding: 0.35rem 0.5rem; border: 1px solid var(--border, #e2e8f0); border-radius: 0.375rem;
+            font-size: 13px; background: var(--bg, #fff); color: var(--text, #1e293b);
+        }
+        .preview-area {
+            border: 1px solid var(--border, #e2e8f0); border-radius: 0.75rem; overflow: hidden;
+            background: #fff; min-height: 300px;
+        }
+        .preview-area iframe { width: 100%; border: none; }
+        .preview-area img { max-width: 100%; display: block; }
+        .preview-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.5rem 0.75rem; background: var(--bg-secondary, #f8fafc);
+            border-bottom: 1px solid var(--border, #e2e8f0); font-size: 13px; font-weight: 600;
+            color: var(--text, #1e293b);
+        }
+        .preview-body { padding: 0; overflow: auto; max-height: 500px; }
+        .info-box {
+            background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 0.5rem; padding: 0.75rem 1rem; margin-bottom: 1rem;
+            font-size: 13px; color: var(--text-secondary, #64748b); line-height: 1.5;
+        }
+        .info-box strong { color: var(--primary, #3b82f6); }
+        .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted, #94a3b8); font-size: 14px; }
+        .loading { text-align: center; padding: 2rem; color: var(--text-muted, #94a3b8); }
+        .loading::after { content: ''; display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border, #e2e8f0); border-top-color: var(--primary, #3b82f6); border-radius: 50%; animation: spin 0.8s linear infinite; margin-left: 0.5rem; vertical-align: middle; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../../index.html" class="logo"><i data-lucide="image" style="width:28px;height:28px"></i> ToolBox</a>
+            <div class="header-search"><i data-lucide="search"></i><input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools..."></div>
+            <div class="header-actions">
+                <button class="lang-btn" onclick="I18n.setLang(I18n.currentLang==='en'?'zh':'en')">EN</button>
+                <button class="theme-btn" onclick="document.body.classList.toggle('dark')"><i data-lucide="sun"></i></button>
+            </div>
+        </div>
+    </header>
+    <div class="breadcrumb"><div class="container"><a href="../../index.html">Home</a> / <a href="../../index.html#image-tools">Image Tools</a> / <span>HTML Screenshot</span></div></div>
+    <main class="tool-page">
+        <div class="container tool-layout">
+            <div class="tool-main">
+                <div class="tool-header">
+                    <div class="tool-icon"><i data-lucide="camera"></i></div>
+                    <h1>HTML Screenshot</h1>
+                    <p>Enter HTML code and capture it as an image. Uses html2canvas for client-side rendering.</p>
+                </div>
+                <div class="tool-workspace">
+                    <div class="info-box">
+                        <strong>How it works:</strong> Paste your HTML code below, preview it in the iframe, then capture it as a PNG image.
+                        The tool uses html2canvas to render the HTML content client-side. External resources (images, fonts, CSS) may not render if blocked by CORS.
+                    </div>
+
+                    <div class="workspace-grid">
+                        <div>
+                            <div class="textarea-label"><i data-lucide="code" style="width:16px;height:16px"></i> HTML Code</div>
+                            <div class="textarea-wrap">
+                                <textarea id="htmlInput" placeholder="Enter your HTML code here...&#10;&#10;Example:&#10;<div style='padding:40px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;text-align:center;border-radius:12px'>&#10;  <h1>Hello World</h1>&#10;  <p>This is a screenshot example</p>&#10;</div>"></textarea>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="textarea-label"><i data-lucide="eye" style="width:16px;height:16px"></i> Preview / Screenshot</div>
+                            <div class="preview-area" id="previewArea">
+                                <div class="preview-header">
+                                    <span>Preview</span>
+                                    <span id="previewStatus" style="font-weight:400;font-size:12px;color:var(--text-muted,#94a3b8)">Waiting for input...</span>
+                                </div>
+                                <div class="preview-body" id="previewBody">
+                                    <div class="empty-state" id="emptyState">Enter HTML code and click Preview to see the result</div>
+                                    <iframe id="previewFrame" style="display:none" sandbox="allow-same-origin"></iframe>
+                                    <div id="screenshotResult" style="display:none"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="options-panel">
+                        <h4><i data-lucide="settings" style="width:14px;height:14px;display:inline;vertical-align:middle"></i> Capture Settings</h4>
+                        <div class="option-row">
+                            <span class="option-label">Capture Width</span>
+                            <input type="number" id="captureWidth" value="800" min="200" max="2000">
+                            <span style="font-size:12px;color:var(--text-muted,#94a3b8)">px</span>
+                        </div>
+                        <div class="option-row">
+                            <span class="option-label">Scale</span>
+                            <select id="captureScale">
+                                <option value="1">1x</option>
+                                <option value="2" selected>2x (Retina)</option>
+                                <option value="3">3x</option>
+                            </select>
+                        </div>
+                        <div class="option-row">
+                            <span class="option-label">Background</span>
+                            <select id="captureBg">
+                                <option value="#ffffff">White</option>
+                                <option value="transparent">Transparent</option>
+                                <option value="#f8fafc">Light Gray</option>
+                                <option value="#1e293b">Dark</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="previewHTML()"><i data-lucide="eye" style="width:16px;height:16px"></i> Preview</button>
+                        <button class="btn btn-primary" onclick="captureScreenshot()"><i data-lucide="camera" style="width:16px;height:16px"></i> Capture</button>
+                        <button class="btn btn-success" id="btnDownload" onclick="downloadScreenshot()" style="display:none"><i data-lucide="download" style="width:16px;height:16px"></i> Download</button>
+                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2" style="width:16px;height:16px"></i> Clear</button>
+                    </div>
+                </div>
+                <div class="ad-slot" style="margin-top:2rem"><div class="ad-placeholder">Advertisement</div></div>
+            </div>
+            <aside class="tool-sidebar"><div class="ad-slot"><div class="ad-placeholder">Advertisement</div></div></aside>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><p>&copy; 2024 ToolBox. All rights reserved.</p></div></footer>
+    <div class="toast" id="toast"></div>
+    <script src="https://unpkg.com/lucide@0.453.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script>
+    lucide.createIcons();
+
+    let screenshotDataUrl = null;
+
+    function previewHTML() {
+        const html = document.getElementById('htmlInput').value.trim();
+        if (!html) { showToast('Please enter HTML code'); return; }
+
+        const frame = document.getElementById('previewFrame');
+        const empty = document.getElementById('emptyState');
+        const result = document.getElementById('screenshotResult');
+
+        empty.style.display = 'none';
+        result.style.display = 'none';
+        frame.style.display = 'block';
+
+        const width = parseInt(document.getElementById('captureWidth').value) || 800;
+        frame.style.width = '100%';
+        frame.style.height = '400px';
+
+        const doc = frame.contentDocument || frame.contentWindow.document;
+        doc.open();
+        doc.write(`<!DOCTYPE html><html><head><style>body{margin:0;padding:0;font-family:Inter,-apple-system,sans-serif;}</style></head><body>${html}</body></html>`);
+        doc.close();
+
+        document.getElementById('previewStatus').textContent = 'Preview loaded';
+        showToast('Preview updated');
+    }
+
+    async function captureScreenshot() {
+        const html = document.getElementById('htmlInput').value.trim();
+        if (!html) { showToast('Please enter HTML code first'); return; }
+
+        document.getElementById('previewStatus').textContent = 'Capturing...';
+        document.getElementById('previewStatus').className = 'loading';
+
+        try {
+            // Create a temporary container to render
+            const container = document.createElement('div');
+            container.style.width = (parseInt(document.getElementById('captureWidth').value) || 800) + 'px';
+            container.style.position = 'absolute';
+            container.style.left = '-9999px';
+            container.style.top = '0';
+            container.style.background = document.getElementById('captureBg').value;
+            container.innerHTML = html;
+            document.body.appendChild(container);
+
+            const scale = parseInt(document.getElementById('captureScale').value) || 2;
+            const canvas = await html2canvas(container, {
+                scale: scale,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: document.getElementById('captureBg').value === 'transparent' ? null : document.getElementById('captureBg').value,
+                logging: false
+            });
+
+            document.body.removeChild(container);
+
+            screenshotDataUrl = canvas.toDataURL('image/png');
+
+            // Show result
+            const frame = document.getElementById('previewFrame');
+            const empty = document.getElementById('emptyState');
+            const result = document.getElementById('screenshotResult');
+
+            frame.style.display = 'none';
+            empty.style.display = 'none';
+            result.style.display = 'block';
+            result.innerHTML = `<img src="${screenshotDataUrl}" alt="Screenshot" style="max-width:100%">`;
+
+            document.getElementById('previewStatus').textContent = 'Screenshot captured';
+            document.getElementById('previewStatus').className = '';
+            document.getElementById('previewStatus').style.fontWeight = '400';
+            document.getElementById('previewStatus').style.fontSize = '12px';
+            document.getElementById('previewStatus').style.color = 'var(--text-muted,#94a3b8)';
+            document.getElementById('btnDownload').style.display = 'inline-flex';
+
+            showToast('Screenshot captured successfully');
+        } catch (err) {
+            document.getElementById('previewStatus').textContent = 'Error: ' + err.message;
+            document.getElementById('previewStatus').className = '';
+            showToast('Capture failed: ' + err.message);
+        }
+    }
+
+    function downloadScreenshot() {
+        if (!screenshotDataUrl) { showToast('No screenshot to download'); return; }
+        const a = document.createElement('a');
+        a.href = screenshotDataUrl;
+        a.download = 'screenshot_' + Date.now() + '.png';
+        a.click();
+        showToast('Screenshot downloaded');
+    }
+
+    function clearAll() {
+        document.getElementById('htmlInput').value = '';
+        document.getElementById('previewFrame').style.display = 'none';
+        document.getElementById('emptyState').style.display = '';
+        document.getElementById('screenshotResult').style.display = 'none';
+        document.getElementById('btnDownload').style.display = 'none';
+        screenshotDataUrl = null;
+        document.getElementById('previewStatus').textContent = 'Waiting for input...';
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+    </script>
+</body>
+</html>

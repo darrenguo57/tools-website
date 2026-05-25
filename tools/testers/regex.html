@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regex Tester - ToolBox</title>
+  <meta name="description" content="Free online regular expression tester. Test regex patterns with real-time matching, highlighting, and group capture.">
+  <meta name="keywords" content="regex tester, regular expression, pattern matching, regex online, regexp">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Regex Tester - ToolBox">
+  <meta property="og:description" content="Free online regex tester with real-time matching.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/testers/regex.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Regex Tester",
+    "url": "https://toolbox.example.com/tools/testers/regex.html",
+    "description": "Free online regex tester.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    .regex-input-row { display:flex;gap:var(--space-3);align-items:center;flex-wrap:wrap; }
+    .regex-pattern-input {
+      flex:1;min-width:200px;padding:var(--space-3) var(--space-4);border:1px solid var(--color-border);
+      border-radius:var(--radius-lg);background:var(--color-surface);color:var(--color-text);
+      font-family:var(--font-family-mono);font-size:var(--font-size-base);outline:none;
+    }
+    .regex-pattern-input:focus { border-color:var(--color-border-focus);box-shadow:0 0 0 3px rgba(59,130,246,0.15); }
+    .regex-flags { display:flex;gap:var(--space-2); }
+    .regex-flag-btn {
+      width:36px;height:36px;border-radius:var(--radius-md);border:1px solid var(--color-border);
+      background:var(--color-surface);color:var(--color-text-secondary);font-family:var(--font-family-mono);
+      font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);cursor:pointer;
+      transition:all var(--transition-fast);display:flex;align-items:center;justify-content:center;
+    }
+    .regex-flag-btn.active { background:var(--color-primary);color:var(--color-text-inverse);border-color:var(--color-primary); }
+    .regex-flag-btn:hover:not(.active) { background:var(--color-bg-tertiary); }
+    .regex-highlight-area {
+      min-height:120px;padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);
+      background:var(--color-surface);color:var(--color-text);font-family:var(--font-family-mono);
+      font-size:var(--font-size-sm);line-height:1.8;white-space:pre-wrap;word-break:break-word;
+      overflow:auto;resize:vertical;
+    }
+    .regex-highlight-area mark { background:var(--color-warning-light);color:var(--color-text);border-radius:2px;padding:1px 0;border-bottom:2px solid var(--color-warning); }
+    .regex-match-list { margin-top:var(--space-4); }
+    .regex-match-item {
+      display:flex;align-items:flex-start;gap:var(--space-3);padding:var(--space-3);
+      border:1px solid var(--color-border-light);border-radius:var(--radius-md);margin-bottom:var(--space-2);
+      font-family:var(--font-family-mono);font-size:var(--font-size-sm);
+    }
+    .regex-match-index { color:var(--color-text-tertiary);min-width:60px;flex-shrink:0;font-size:var(--font-size-xs);padding-top:2px; }
+    .regex-match-value { color:var(--color-primary);font-weight:var(--font-weight-medium);word-break:break-all; }
+    .regex-match-groups { color:var(--color-text-secondary);font-size:var(--font-size-xs);margin-top:var(--space-1); }
+    .regex-templates { display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-4); }
+    .regex-template-btn {
+      padding:var(--space-2) var(--space-3);border-radius:var(--radius-full);font-size:var(--font-size-xs);
+      font-weight:var(--font-weight-medium);border:1px solid var(--color-border);background:var(--color-surface);
+      color:var(--color-text-secondary);cursor:pointer;transition:all var(--transition-fast);
+    }
+    .regex-template-btn:hover { background:var(--color-primary-light);color:var(--color-primary);border-color:var(--color-primary); }
+    .regex-error { color:var(--color-error);font-size:var(--font-size-sm);margin-top:var(--space-2);padding:var(--space-2) var(--space-3);background:var(--color-error-light);border-radius:var(--radius-md);display:none; }
+    .regex-stats { display:flex;gap:var(--space-4);margin-top:var(--space-3);font-size:var(--font-size-sm);color:var(--color-text-tertiary); }
+    .regex-stats strong { color:var(--color-primary); }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item active"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=testing" class="breadcrumb__link">Testing</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Regex Tester</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="regex"></i></div>
+        <h1 class="tool-header__title">Regular Expression Tester</h1>
+        <p class="tool-header__desc">Test and debug regular expressions in real time. See matches highlighted, view capture groups, and use common templates.</p>
+      </section>
+
+      <section class="tool-workspace">
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="code-2"></i> Pattern</span>
+          </div>
+          <div class="tool-panel__body">
+            <div class="regex-input-row">
+              <span style="color:var(--color-text-tertiary);font-family:var(--font-family-mono);font-size:var(--font-size-lg);">/</span>
+              <input type="text" id="regexPattern" class="regex-pattern-input" value="(\w+)@(\w+)\.(\w+)" placeholder="Enter regex pattern...">
+              <span style="color:var(--color-text-tertiary);font-family:var(--font-family-mono);font-size:var(--font-size-lg);">/</span>
+              <div class="regex-flags">
+                <button class="regex-flag-btn active" data-flag="g" title="Global">g</button>
+                <button class="regex-flag-btn" data-flag="i" title="Case insensitive">i</button>
+                <button class="regex-flag-btn" data-flag="m" title="Multiline">m</button>
+                <button class="regex-flag-btn" data-flag="s" title="Dotall">s</button>
+              </div>
+            </div>
+            <div class="regex-error" id="regexError"></div>
+          </div>
+        </div>
+
+        <div class="tool-panel" style="margin-top:var(--space-4);">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="file-text"></i> Test String</span>
+          </div>
+          <div class="tool-panel__body">
+            <textarea id="testString" class="form-textarea" style="font-family:var(--font-family-mono);min-height:120px;" placeholder="Enter test string here...">Contact us at hello@example.com or support@toolbox.org for more info. Also reach out to admin@mail.co</textarea>
+          </div>
+        </div>
+
+        <div class="tool-panel" style="margin-top:var(--space-4);">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="highlighter"></i> Match Results</span>
+          </div>
+          <div class="tool-panel__body">
+            <div class="regex-stats" id="regexStats"></div>
+            <div class="regex-highlight-area" id="highlightArea"></div>
+          </div>
+        </div>
+
+        <div class="tool-panel" style="margin-top:var(--space-4);">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="list"></i> Match Details</span>
+          </div>
+          <div class="tool-panel__body">
+            <div class="regex-match-list" id="matchList">
+              <div style="color:var(--color-text-tertiary);font-size:var(--font-size-sm);text-align:center;padding:var(--space-4);">Enter a pattern to see matches</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-panel" style="margin-top:var(--space-4);">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="bookmark"></i> Common Patterns</span>
+          </div>
+          <div class="tool-panel__body">
+            <div class="regex-templates">
+              <button class="regex-template-btn" data-pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" data-test="user@example.com">Email</button>
+              <button class="regex-template-btn" data-pattern="https?://[^\s]+" data-test="Visit https://example.com/path?q=1 for more">URL</button>
+              <button class="regex-template-btn" data-pattern="^1[3-9]\d{9}$" data-test="13812345678">Phone (CN)</button>
+              <button class="regex-template-btn" data-pattern="\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b" data-test="Server at 192.168.1.1 and 10.0.0.1">IP Address</button>
+              <button class="regex-template-btn" data-pattern="#([0-9a-fA-F]{3}){1,2}\b" data-test="Colors: #fff #FF5733 #00ff00">Hex Color</button>
+              <button class="regex-template-btn" data-pattern="\d{4}[-/]\d{2}[-/]\d{2}" data-test="Dates: 2024-01-15 and 2023/12/31">Date (YYYY-MM-DD)</button>
+              <button class="regex-template-btn" data-pattern="<[^>]+>" data-test="<div class='test'>Hello <b>world</b></div>">HTML Tags</button>
+              <button class="regex-template-btn" data-pattern="^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}" data-test="2024-01-15T10:30:00Z">ISO DateTime</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Enter Pattern</div>
+              <div class="tool-step__desc">Type your regular expression pattern and select flags (g, i, m, s).</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Enter Test String</div>
+              <div class="tool-step__desc">Input the text you want to test against the pattern.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">View Results</div>
+              <div class="tool-step__desc">Matches are highlighted in real time. See detailed match info including index and capture groups.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="css-gradient.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">CSS Gradient Generator</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Testing</span>
+          </a>
+          <a href="color-picker.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Color Picker</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Testing</span>
+          </a>
+          <a href="performance.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Performance Test</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Testing</span>
+          </a>
+          <a href="../formatters/json-formatter.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">JSON Formatter</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Formatters</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+    (function() {
+      var patternInput = document.getElementById('regexPattern');
+      var testInput = document.getElementById('testString');
+      var highlightArea = document.getElementById('highlightArea');
+      var matchList = document.getElementById('matchList');
+      var regexStats = document.getElementById('regexStats');
+      var regexError = document.getElementById('regexError');
+      var flags = { g: true, i: false, m: false, s: false };
+
+      function escapeHtml(str) {
+        var div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      function getFlagsString() {
+        var f = '';
+        for (var k in flags) { if (flags[k]) f += k; }
+        return f;
+      }
+
+      function runTest() {
+        var pattern = patternInput.value;
+        var testStr = testInput.value;
+
+        if (!pattern) {
+          highlightArea.innerHTML = escapeHtml(testStr);
+          matchList.innerHTML = '<div style="color:var(--color-text-tertiary);font-size:var(--font-size-sm);text-align:center;padding:var(--space-4);">Enter a pattern to see matches</div>';
+          regexStats.innerHTML = '';
+          regexError.style.display = 'none';
+          return;
+        }
+
+        try {
+          var regex = new RegExp(pattern, getFlagsString());
+          regexError.style.display = 'none';
+
+          // Highlight
+          var highlighted = escapeHtml(testStr);
+          var matches = [];
+          var match;
+
+          if (flags.g) {
+            var tempRegex = new RegExp(pattern, getFlagsString());
+            while ((match = tempRegex.exec(testStr)) !== null) {
+              matches.push({ value: match[0], index: match.index, groups: match.slice(1) });
+              if (match[0].length === 0) { tempRegex.lastIndex++; }
+            }
+          } else {
+            match = regex.exec(testStr);
+            if (match) {
+              matches.push({ value: match[0], index: match.index, groups: match.slice(1) });
+            }
+          }
+
+          // Build highlighted text (reverse order to preserve indices)
+          if (matches.length > 0) {
+            var parts = [];
+            var lastIndex = 0;
+            matches.forEach(function(m) {
+              if (m.index >= lastIndex) {
+                parts.push(escapeHtml(testStr.slice(lastIndex, m.index)));
+                parts.push('<mark>' + escapeHtml(m.value) + '</mark>');
+                lastIndex = m.index + m.value.length;
+              }
+            });
+            parts.push(escapeHtml(testStr.slice(lastIndex)));
+            highlighted = parts.join('');
+          }
+
+          highlightArea.innerHTML = highlighted;
+
+          // Stats
+          regexStats.innerHTML = '<span>Matches: <strong>' + matches.length + '</strong></span>';
+
+          // Match list
+          if (matches.length === 0) {
+            matchList.innerHTML = '<div style="color:var(--color-text-tertiary);font-size:var(--font-size-sm);text-align:center;padding:var(--space-4);">No matches found</div>';
+          } else {
+            var html = '';
+            matches.forEach(function(m, i) {
+              html += '<div class="regex-match-item">';
+              html += '<div class="regex-match-index">Match ' + (i + 1) + '<br>Index: ' + m.index + '</div>';
+              html += '<div><div class="regex-match-value">"' + escapeHtml(m.value) + '"</div>';
+              if (m.groups.length > 0) {
+                html += '<div class="regex-match-groups">';
+                m.groups.forEach(function(g, gi) {
+                  if (g !== undefined) {
+                    html += 'Group ' + (gi + 1) + ': "' + escapeHtml(g) + '" ';
+                  }
+                });
+                html += '</div>';
+              }
+              html += '</div></div>';
+            });
+            matchList.innerHTML = html;
+          }
+
+        } catch (e) {
+          regexError.textContent = e.message;
+          regexError.style.display = 'block';
+          highlightArea.innerHTML = escapeHtml(testStr);
+          matchList.innerHTML = '';
+          regexStats.innerHTML = '';
+        }
+      }
+
+      // Flag toggles
+      document.querySelectorAll('.regex-flag-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var flag = this.dataset.flag;
+          flags[flag] = !flags[flag];
+          this.classList.toggle('active', flags[flag]);
+          runTest();
+        });
+      });
+
+      // Template buttons
+      document.querySelectorAll('.regex-template-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          patternInput.value = this.dataset.pattern;
+          testInput.value = this.dataset.test;
+          runTest();
+        });
+      });
+
+      // Real-time testing
+      patternInput.addEventListener('input', runTest);
+      testInput.addEventListener('input', runTest);
+
+      // Initial run
+      runTest();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Gradient Generator - ToolBox</title>
+  <meta name="description" content="Free online CSS gradient generator. Create linear, radial, and conic gradients with live preview and copyable CSS code.">
+  <meta name="keywords" content="CSS gradient generator, linear gradient, radial gradient, conic gradient, CSS">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="CSS Gradient Generator - ToolBox">
+  <meta property="og:description" content="Free online CSS gradient generator.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/testers/css-gradient.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "CSS Gradient Generator",
+    "url": "https://toolbox.example.com/tools/testers/css-gradient.html",
+    "description": "Free online CSS gradient generator.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    .grad-layout { display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6); }
+    .grad-preview {
+      width:100%;height:320px;border-radius:var(--radius-xl);border:1px solid var(--color-border);
+      position:relative;overflow:hidden;
+    }
+    .grad-preview-inner { width:100%;height:100%;transition:background 0.3s; }
+    .grad-controls { display:flex;flex-direction:column;gap:var(--space-4); }
+    .grad-type-tabs { display:flex;gap:var(--space-2); }
+    .grad-type-btn {
+      flex:1;padding:var(--space-3);border-radius:var(--radius-md);font-size:var(--font-size-sm);
+      font-weight:var(--font-weight-medium);border:1px solid var(--color-border);background:var(--color-surface);
+      color:var(--color-text-secondary);cursor:pointer;transition:all var(--transition-fast);text-align:center;
+    }
+    .grad-type-btn.active { background:var(--color-primary);color:var(--color-text-inverse);border-color:var(--color-primary); }
+    .grad-type-btn:hover:not(.active) { background:var(--color-bg-tertiary); }
+    .grad-stops { display:flex;flex-direction:column;gap:var(--space-2); }
+    .grad-stop-row { display:flex;align-items:center;gap:var(--space-2); }
+    .grad-stop-row input[type="color"] { width:40px;height:36px;border:1px solid var(--color-border);border-radius:var(--radius-md);cursor:pointer;padding:2px;background:var(--color-surface); }
+    .grad-stop-row input[type="range"] { flex:1;height:6px; }
+    .grad-stop-row input[type="number"] { width:60px;padding:var(--space-1) var(--space-2);border:1px solid var(--color-border);border-radius:var(--radius-md);font-size:var(--font-size-xs);background:var(--color-surface);color:var(--color-text);text-align:center; }
+    .grad-stop-row .stop-pos { font-size:var(--font-size-xs);color:var(--color-text-tertiary);min-width:30px;text-align:right; }
+    .grad-remove-btn {
+      width:32px;height:32px;border-radius:var(--radius-md);border:none;background:var(--color-error-light);
+      color:var(--color-error);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--transition-fast);
+    }
+    .grad-remove-btn:hover { background:var(--color-error);color:var(--color-text-inverse); }
+    .grad-options { display:flex;flex-direction:column;gap:var(--space-3); }
+    .grad-option-row { display:flex;align-items:center;gap:var(--space-3); }
+    .grad-option-row label { font-size:var(--font-size-sm);color:var(--color-text-secondary);min-width:80px; }
+    .grad-option-row input[type="range"] { flex:1; }
+    .grad-option-row .option-val { font-size:var(--font-size-sm);color:var(--color-primary);font-weight:var(--font-weight-medium);min-width:40px;text-align:right; }
+    .grad-code-area {
+      margin-top:var(--space-4);background:var(--color-bg-secondary);border:1px solid var(--color-border);
+      border-radius:var(--radius-lg);padding:var(--space-4);font-family:var(--font-family-mono);
+      font-size:var(--font-size-sm);color:var(--color-text);position:relative;word-break:break-all;line-height:1.6;
+    }
+    .grad-code-area .copy-btn {
+      position:absolute;top:var(--space-2);right:var(--space-2);
+    }
+    @media(max-width:768px) {
+      .grad-layout { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item active"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=testing" class="breadcrumb__link">Testing</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">CSS Gradient Generator</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="palette"></i></div>
+        <h1 class="tool-header__title">CSS Gradient Generator</h1>
+        <p class="tool-header__desc">Create beautiful CSS gradients with live preview. Supports linear, radial, and conic gradient types.</p>
+      </section>
+
+      <section class="tool-workspace">
+        <div class="grad-layout">
+          <div>
+            <div class="grad-preview">
+              <div class="grad-preview-inner" id="preview"></div>
+            </div>
+            <div class="grad-code-area" id="codeOutput">
+              <button class="tool-action-btn copy-btn" id="btnCopy"><i data-lucide="copy"></i></button>
+              <code id="cssCode">background: linear-gradient(90deg, #3B82F6, #8B5CF6);</code>
+            </div>
+          </div>
+
+          <div class="grad-controls">
+            <div class="grad-type-tabs">
+              <button class="grad-type-btn active" data-type="linear">Linear</button>
+              <button class="grad-type-btn" data-type="radial">Radial</button>
+              <button class="grad-type-btn" data-type="conic">Conic</button>
+            </div>
+
+            <div class="grad-options" id="gradOptions">
+              <div class="grad-option-row" id="angleRow">
+                <label>Angle</label>
+                <input type="range" id="gradAngle" min="0" max="360" value="90">
+                <span class="option-val" id="angleVal">90&deg;</span>
+              </div>
+              <div class="grad-option-row" id="shapeRow" style="display:none;">
+                <label>Shape</label>
+                <select id="gradShape" class="form-select" style="flex:1;">
+                  <option value="circle">Circle</option>
+                  <option value="ellipse">Ellipse</option>
+                </select>
+              </div>
+              <div class="grad-option-row" id="posRow" style="display:none;">
+                <label>Position</label>
+                <select id="gradPosition" class="form-select" style="flex:1;">
+                  <option value="center">Center</option>
+                  <option value="top">Top</option>
+                  <option value="bottom">Bottom</option>
+                  <option value="left">Left</option>
+                  <option value="right">Right</option>
+                  <option value="top left">Top Left</option>
+                  <option value="top right">Top Right</option>
+                  <option value="bottom left">Bottom Left</option>
+                  <option value="bottom right">Bottom Right</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-2);">
+                <span style="font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);color:var(--color-text);">Color Stops</span>
+                <button class="tool-action-btn" id="btnAddStop"><i data-lucide="plus"></i> Add Stop</button>
+              </div>
+              <div class="grad-stops" id="stopsContainer"></div>
+            </div>
+
+            <div class="btn-group">
+              <button class="btn btn--secondary" id="btnRandom"><i data-lucide="shuffle"></i> Random</button>
+              <button class="btn btn--secondary" id="btnCopy2"><i data-lucide="copy"></i> Copy CSS</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Choose Gradient Type</div>
+              <div class="tool-step__desc">Select linear, radial, or conic gradient type.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Configure Stops</div>
+              <div class="tool-step__desc">Add, remove, or adjust color stops. Each stop has a color and position (0-100%).</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Copy CSS</div>
+              <div class="tool-step__desc">Click Copy CSS to copy the generated gradient code to your clipboard.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="regex.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Regex Tester</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Testing</span>
+          </a>
+          <a href="color-picker.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Color Picker</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Testing</span>
+          </a>
+          <a href="performance.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Performance Test</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Testing</span>
+          </a>
+          <a href="../image-tools/color-palette.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Color Palette</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Image Tools</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+    (function() {
+      var gradType = 'linear';
+      var stops = [
+        { color: '#3B82F6', position: 0 },
+        { color: '#8B5CF6', position: 100 }
+      ];
+
+      var preview = document.getElementById('preview');
+      var cssCodeEl = document.getElementById('cssCode');
+      var stopsContainer = document.getElementById('stopsContainer');
+
+      function randomColor() {
+        return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+      }
+
+      function renderStops() {
+        var html = '';
+        stops.forEach(function(stop, i) {
+          html += '<div class="grad-stop-row" data-index="' + i + '">';
+          html += '<input type="color" value="' + stop.color + '" class="stop-color">';
+          html += '<input type="range" min="0" max="100" value="' + stop.position + '" class="stop-range">';
+          html += '<span class="stop-pos">' + stop.position + '%</span>';
+          if (stops.length > 2) {
+            html += '<button class="grad-remove-btn" data-index="' + i + '"><i data-lucide="x" style="width:14px;height:14px;"></i></button>';
+          }
+          html += '</div>';
+        });
+        stopsContainer.innerHTML = html;
+        lucide.createIcons();
+
+        stopsContainer.querySelectorAll('.stop-color').forEach(function(input) {
+          input.addEventListener('input', function() {
+            var idx = parseInt(this.closest('.grad-stop-row').dataset.index);
+            stops[idx].color = this.value;
+            updateGradient();
+          });
+        });
+        stopsContainer.querySelectorAll('.stop-range').forEach(function(input) {
+          input.addEventListener('input', function() {
+            var idx = parseInt(this.closest('.grad-stop-row').dataset.index);
+            stops[idx].position = parseInt(this.value);
+            this.nextElementSibling.textContent = this.value + '%';
+            updateGradient();
+          });
+        });
+        stopsContainer.querySelectorAll('.grad-remove-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var idx = parseInt(this.dataset.index);
+            stops.splice(idx, 1);
+            renderStops();
+            updateGradient();
+          });
+        });
+      }
+
+      function updateGradient() {
+        var stopsStr = stops.map(function(s) { return s.color + ' ' + s.position + '%'; }).join(', ');
+        var cssValue;
+
+        if (gradType === 'linear') {
+          var angle = document.getElementById('gradAngle').value;
+          cssValue = 'linear-gradient(' + angle + 'deg, ' + stopsStr + ')';
+        } else if (gradType === 'radial') {
+          var shape = document.getElementById('gradShape').value;
+          var pos = document.getElementById('gradPosition').value;
+          cssValue = 'radial-gradient(' + shape + ' at ' + pos + ', ' + stopsStr + ')';
+        } else {
+          var pos2 = document.getElementById('gradPosition').value;
+          var angle2 = document.getElementById('gradAngle').value;
+          cssValue = 'conic-gradient(from ' + angle2 + 'deg at ' + pos2 + ', ' + stopsStr + ')';
+        }
+
+        preview.style.background = cssValue;
+        cssCodeEl.textContent = 'background: ' + cssValue + ';';
+      }
+
+      // Type tabs
+      document.querySelectorAll('.grad-type-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.grad-type-btn').forEach(function(b) { b.classList.remove('active'); });
+          this.classList.add('active');
+          gradType = this.dataset.type;
+
+          document.getElementById('angleRow').style.display = (gradType === 'radial') ? 'none' : 'flex';
+          document.getElementById('shapeRow').style.display = (gradType === 'radial') ? 'flex' : 'none';
+          document.getElementById('posRow').style.display = (gradType === 'linear') ? 'none' : 'flex';
+
+          updateGradient();
+        });
+      });
+
+      // Angle
+      document.getElementById('gradAngle').addEventListener('input', function() {
+        document.getElementById('angleVal').innerHTML = this.value + '&deg;';
+        updateGradient();
+      });
+
+      // Shape & Position
+      document.getElementById('gradShape').addEventListener('change', updateGradient);
+      document.getElementById('gradPosition').addEventListener('change', updateGradient);
+
+      // Add stop
+      document.getElementById('btnAddStop').addEventListener('click', function() {
+        var lastPos = stops[stops.length - 1].position;
+        var newPos = Math.min(100, lastPos + Math.round((100 - lastPos) / 2));
+        stops.push({ color: randomColor(), position: newPos });
+        renderStops();
+        updateGradient();
+      });
+
+      // Random
+      document.getElementById('btnRandom').addEventListener('click', function() {
+        stops = [];
+        var numStops = 2 + Math.floor(Math.random() * 3);
+        for (var i = 0; i < numStops; i++) {
+          stops.push({
+            color: randomColor(),
+            position: Math.round(i / (numStops - 1) * 100)
+          });
+        }
+        document.getElementById('gradAngle').value = Math.floor(Math.random() * 360);
+        document.getElementById('angleVal').innerHTML = document.getElementById('gradAngle').value + '&deg;';
+        renderStops();
+        updateGradient();
+      });
+
+      // Copy
+      function copyCss() {
+        navigator.clipboard.writeText(cssCodeEl.textContent);
+        var btn = document.getElementById('btnCopy');
+        btn.classList.add('tool-action-btn--success');
+        btn.innerHTML = '<i data-lucide="check"></i>';
+        lucide.createIcons();
+        setTimeout(function() {
+          btn.classList.remove('tool-action-btn--success');
+          btn.innerHTML = '<i data-lucide="copy"></i>';
+          lucide.createIcons();
+        }, 1500);
+      }
+      document.getElementById('btnCopy').addEventListener('click', copyCss);
+      document.getElementById('btnCopy2').addEventListener('click', copyCss);
+
+      // Init
+      renderStops();
+      updateGradient();
+    })();
+  </script>
+</body>
+</html>

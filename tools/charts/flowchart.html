@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flowchart Generator - ToolBox</title>
+  <meta name="description" content="Create flowcharts, sequence diagrams, class diagrams, state diagrams, and ER diagrams using Mermaid syntax.">
+  <meta name="keywords" content="flowchart generator, mermaid, sequence diagram, class diagram, ER diagram, state diagram">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Flowchart Generator - ToolBox">
+  <meta property="og:description" content="Create flowcharts with Mermaid.js. Free and no installation required.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/charts/flowchart.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Flowchart Generator",
+    "url": "https://toolbox.example.com/tools/charts/flowchart.html",
+    "description": "Create flowcharts with Mermaid.js.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    .template-btns { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+    #mermaidPreview { display: flex; justify-content: center; padding: var(--space-4); overflow: auto; min-height: 300px; }
+    #mermaidPreview svg { max-width: 100%; height: auto; }
+    .ref-toggle { cursor: pointer; color: var(--color-primary); font-size: var(--font-size-sm); font-weight: 500; display: flex; align-items: center; gap: var(--space-1); }
+    .ref-content { display: none; margin-top: var(--space-3); padding: var(--space-4); background: var(--color-bg-secondary); border-radius: var(--radius-lg); font-size: var(--font-size-xs); font-family: var(--font-family-mono); line-height: 1.8; white-space: pre-wrap; }
+    .ref-content.open { display: block; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item active"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html" class="breadcrumb__link">Home</a>
+        <span class="breadcrumb__separator">/</span>
+        <a href="../../index.html?category=charts" class="breadcrumb__link">Charts</a>
+        <span class="breadcrumb__separator">/</span>
+        <span class="breadcrumb__current">Flowchart Generator</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="git-branch"></i></div>
+        <h1 class="tool-header__title">Flowchart Generator</h1>
+        <p class="tool-header__desc">Create flowcharts, sequence diagrams, class diagrams, state diagrams, and ER diagrams using Mermaid syntax. Real-time preview with SVG/PNG export.</p>
+      </section>
+
+      <section class="tool-workspace">
+
+        <!-- Templates -->
+        <div class="tool-settings">
+          <div class="tool-settings__title">Templates</div>
+          <div class="template-btns">
+            <button class="btn btn--sm btn--secondary tpl-btn" data-tpl="flowchart">Flowchart</button>
+            <button class="btn btn--sm btn--secondary tpl-btn" data-tpl="sequence">Sequence Diagram</button>
+            <button class="btn btn--sm btn--secondary tpl-btn" data-tpl="class">Class Diagram</button>
+            <button class="btn btn--sm btn--secondary tpl-btn" data-tpl="state">State Diagram</button>
+            <button class="btn btn--sm btn--secondary tpl-btn" data-tpl="er">ER Diagram</button>
+          </div>
+          <div style="margin-top:var(--space-4);">
+            <span class="ref-toggle" id="refToggle"><i data-lucide="chevron-right" style="width:16px;height:16px;"></i> Syntax Reference</span>
+            <div class="ref-content" id="refContent">Flowchart:
+  graph TD
+    A[Start] --> B{Decision}
+    B -->|Yes| C[Action 1]
+    B -->|No| D[Action 2]
+    C --> E[End]
+    D --> E
+
+Sequence:
+  sequenceDiagram
+    participant A as Alice
+    participant B as Bob
+    A->>B: Hello Bob
+    B-->>A: Hi Alice
+
+Class:
+  classDiagram
+    class Animal {
+      +String name
+      +makeSound()
+    }
+    class Dog {
+      +fetch()
+    }
+    Animal <|-- Dog
+
+State:
+  stateDiagram-v2
+    [*] --> Idle
+    Idle --> Processing : Start
+    Processing --> Done : Complete
+    Done --> [*]
+
+ER:
+  erDiagram
+    CUSTOMER ||--o{ ORDER : places
+    ORDER ||--|{ LINE-ITEM : contains
+    CUSTOMER {
+      string name
+      string email
+    }</div>
+          </div>
+        </div>
+
+        <!-- Input -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="code-2"></i> Mermaid Syntax</span>
+          </div>
+          <div class="tool-panel__body">
+            <textarea class="tool-input__field" id="mermaidInput" rows="14" style="min-height:300px;font-family:var(--font-family-mono);font-size:var(--font-size-sm);line-height:1.7;" placeholder="Enter Mermaid syntax here...">graph TD
+    A[Start] --> B{Is it working?}
+    B -->|Yes| C[Great!]
+    B -->|No| D[Debug]
+    D --> B
+    C --> E[Deploy]
+    E --> F((End))</textarea>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="tool-actions">
+          <div class="tool-actions__primary">
+            <button class="btn btn--primary" id="btnRender"><i data-lucide="play"></i> Render</button>
+          </div>
+          <div class="tool-actions__secondary">
+            <button class="btn btn--secondary" id="btnDownloadSVG"><i data-lucide="file-image"></i> Download SVG</button>
+            <button class="btn btn--secondary" id="btnDownloadPNG"><i data-lucide="download"></i> Download PNG</button>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="tool-panel">
+          <div class="tool-panel__header">
+            <span class="tool-panel__title"><i data-lucide="eye"></i> Preview</span>
+          </div>
+          <div class="tool-panel__body">
+            <div id="mermaidPreview">
+              <div class="tool-output__placeholder">
+                <i data-lucide="git-branch"></i>
+                <span class="tool-output__placeholder-text">Click "Render" to generate the diagram</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <div class="ad-slot ad-slot--inline" style="margin-top:var(--space-8);"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Choose a Template</div>
+              <div class="tool-step__desc">Select a template or write your own Mermaid syntax.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Edit the Syntax</div>
+              <div class="tool-step__desc">Modify the diagram by editing the Mermaid code in the editor.</div>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <div class="tool-step__title">Render & Export</div>
+              <div class="tool-step__desc">Click Render to preview. Download as SVG or PNG.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-info" style="border-top:1px solid var(--color-border);padding-top:var(--space-8);">
+        <h2 class="tool-info__title">Related Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-top:var(--space-4);">
+          <a href="mindmap.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Mind Map</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="network.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Network Graph</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="gantt.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Gantt Chart</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+          <a href="chart-basic.html" style="padding:var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;">
+            <div style="font-weight:600;color:var(--color-text);">Basic Charts</div>
+            <span style="font-size:var(--font-size-xs);color:var(--color-text-tertiary);">Charts</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+  (function() {
+    mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
+
+    const templates = {
+      flowchart: 'graph TD\n    A[Start] --> B{Is it working?}\n    B -->|Yes| C[Great!]\n    B -->|No| D[Debug]\n    D --> B\n    C --> E[Deploy]\n    E --> F((End))',
+      sequence: 'sequenceDiagram\n    participant U as User\n    participant F as Frontend\n    participant B as Backend\n    participant D as Database\n    U->>F: Click Login\n    F->>B: POST /api/login\n    B->>D: Query user\n    D-->>B: User data\n    B-->>F: JWT Token\n    F-->>U: Redirect to Dashboard',
+      class: 'classDiagram\n    class Animal {\n        +String name\n        +int age\n        +makeSound() void\n    }\n    class Dog {\n        +String breed\n        +fetch() void\n        +bark() void\n    }\n    class Cat {\n        +String color\n        +purr() void\n        +scratch() void\n    }\n    Animal <|-- Dog\n    Animal <|-- Cat',
+      state: 'stateDiagram-v2\n    [*] --> Idle\n    Idle --> Loading : Submit\n    Loading --> Success : OK\n    Loading --> Error : Fail\n    Success --> Idle : Reset\n    Error --> Loading : Retry\n    Success --> [*]',
+      er: 'erDiagram\n    CUSTOMER ||--o{ ORDER : places\n    ORDER ||--|{ LINE_ITEM : contains\n    PRODUCT ||--o{ LINE_ITEM : "ordered in"\n    CUSTOMER {\n        int id PK\n        string name\n        string email\n    }\n    ORDER {\n        int id PK\n        date created\n        string status\n    }\n    PRODUCT {\n        int id PK\n        string name\n        float price\n    }'
+    };
+
+    document.querySelectorAll('.tpl-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.getElementById('mermaidInput').value = templates[this.dataset.tpl];
+      });
+    });
+
+    document.getElementById('refToggle').addEventListener('click', function() {
+      const content = document.getElementById('refContent');
+      content.classList.toggle('open');
+    });
+
+    let renderCount = 0;
+    async function renderDiagram() {
+      const code = document.getElementById('mermaidInput').value.trim();
+      if (!code) return;
+      const preview = document.getElementById('mermaidPreview');
+      try {
+        renderCount++;
+        const id = 'mermaid-svg-' + renderCount;
+        const { svg } = await mermaid.render(id, code);
+        preview.innerHTML = svg;
+      } catch(e) {
+        preview.innerHTML = '<div style="color:var(--color-error);padding:var(--space-4);">Error: ' + e.message + '</div>';
+      }
+    }
+
+    document.getElementById('btnRender').addEventListener('click', renderDiagram);
+
+    document.getElementById('btnDownloadSVG').addEventListener('click', () => {
+      const svg = document.querySelector('#mermaidPreview svg');
+      if (!svg) return;
+      const blob = new Blob([svg.outerHTML], { type: 'image/svg+xml' });
+      const link = document.createElement('a');
+      link.download = 'flowchart.svg';
+      link.href = URL.createObjectURL(blob);
+      link.click();
+    });
+
+    document.getElementById('btnDownloadPNG').addEventListener('click', () => {
+      const svg = document.querySelector('#mermaidPreview svg');
+      if (!svg) return;
+      const svgData = new XMLSerializer().serializeToString(svg);
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      img.onload = function() {
+        canvas.width = img.width * 2;
+        canvas.height = img.height * 2;
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.scale(2, 2);
+        ctx.drawImage(img, 0, 0);
+        const link = document.createElement('a');
+        link.download = 'flowchart.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      };
+      img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+    });
+  })();
+  </script>
+</body>
+</html>

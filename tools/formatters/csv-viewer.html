@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSV Viewer - ToolBox</title>
+  <meta name="description" content="Free online CSV viewer. Upload or paste CSV data and view it as a sortable table. Supports auto-detection of delimiters.">
+  <meta name="keywords" content="CSV viewer, CSV parser, CSV to table, view CSV online, CSV reader">
+  <meta name="author" content="ToolBox">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="CSV Viewer - ToolBox">
+  <meta property="og:description" content="Free online CSV viewer with table display.">
+  <meta property="og:url" content="https://toolbox.example.com/tools/formatters/csv-viewer.html">
+  <meta property="og:site_name" content="ToolBox">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="CSV Viewer - ToolBox">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "CSV Viewer",
+    "url": "https://toolbox.example.com/tools/formatters/csv-viewer.html",
+    "description": "Free online CSV viewer with table display and delimiter auto-detection.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/tools.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+
+  <style>
+    .csv-table-container { overflow-x: auto; max-height: 500px; overflow-y: auto; border: 1px solid var(--color-border); border-radius: 8px; }
+    .csv-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .csv-table thead { position: sticky; top: 0; z-index: 1; }
+    .csv-table th { background: var(--color-bg-secondary); color: var(--color-text); font-weight: 600; text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--color-border); white-space: nowrap; cursor: pointer; user-select: none; }
+    .csv-table th:hover { background: var(--color-border); }
+    .csv-table th .sort-icon { margin-left: 4px; opacity: 0.4; font-size: 11px; }
+    .csv-table th.sorted .sort-icon { opacity: 1; }
+    .csv-table td { padding: 8px 14px; border-bottom: 1px solid var(--color-border-light); white-space: nowrap; max-width: 300px; overflow: hidden; text-overflow: ellipsis; }
+    .csv-table tr:hover td { background: var(--color-primary-light); }
+    .csv-table tr:nth-child(even) td { background: var(--color-bg-secondary); }
+    .csv-table tr:nth-child(even):hover td { background: var(--color-primary-light); }
+    .csv-stats { display: flex; gap: 16px; padding: 10px 0; font-size: 13px; color: #57606a; }
+    .csv-stats strong { color: var(--color-text); }
+    .file-info { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--color-bg-secondary); border-radius: 6px; font-size: 13px; color: var(--color-text-secondary); margin-top: 8px; }
+    .file-info .file-name { font-weight: 500; color: var(--color-text); }
+    .tab-buttons { display: flex; gap: 8px; margin-bottom: 12px; }
+    .tab-btn { padding: 6px 14px; border: 1px solid var(--color-border); border-radius: 6px; font-size: 13px; cursor: pointer; background: var(--color-bg); color: var(--color-text-secondary); }
+    .tab-btn.active { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+    .success-message { color: #1a7f37; background: #dafbe1; border: 1px solid #3fb950; border-radius: 8px; padding: 12px 16px; font-size: 13px; margin-top: 8px; display: none; }
+    .success-message.show { display: block; }
+    .error-message { color: #cf222e; background: #ffebe9; border: 1px solid #ff8182; border-radius: 8px; padding: 12px 16px; font-size: 13px; margin-top: 8px; display: none; }
+    .error-message.show { display: block; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo"><i data-lucide="toolbox"></i><span>ToolBox</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" id="searchInput" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language"><span class="lang-label">EN</span></button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header"><h3>Categories</h3></div>
+      <ul class="sidebar-list">
+        <li><a href="../../index.html" class="sidebar-item"><i data-lucide="layout-grid"></i><span>All Tools</span></a></li>
+        <li><a href="../../index.html?category=converters" class="sidebar-item"><i data-lucide="repeat"></i><span>Converters</span></a></li>
+        <li><a href="../../index.html?category=calculators" class="sidebar-item"><i data-lucide="calculator"></i><span>Calculators</span></a></li>
+        <li><a href="../../index.html?category=image-tools" class="sidebar-item"><i data-lucide="image"></i><span>Image Tools</span></a></li>
+        <li><a href="../../index.html?category=generators" class="sidebar-item"><i data-lucide="sparkles"></i><span>Generators</span></a></li>
+        <li><a href="../../index.html?category=formatters" class="sidebar-item"><i data-lucide="braces"></i><span>Formatters</span></a></li>
+        <li><a href="../../index.html?category=crypto" class="sidebar-item"><i data-lucide="shield"></i><span>Encryption</span></a></li>
+        <li><a href="../../index.html?category=charts" class="sidebar-item"><i data-lucide="bar-chart-3"></i><span>Charts</span></a></li>
+        <li><a href="../../index.html?category=testing" class="sidebar-item"><i data-lucide="flask-conical"></i><span>Testing</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content tool-page">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a>
+        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+        <a href="../../index.html?category=formatters">Formatters</a>
+        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+        <span class="breadcrumb-current">CSV Viewer</span>
+      </nav>
+
+      <section class="tool-header">
+        <div class="tool-header__icon"><i data-lucide="table"></i></div>
+        <div class="tool-header-info">
+          <h1 class="tool-header__title">CSV Viewer</h1>
+          <p class="tool-header__desc">Upload or paste CSV data and view it as a sortable, scrollable table. Auto-detects delimiters (comma, tab, semicolon).</p>
+          <span class="tool-card-tag">Formatters</span>
+        </div>
+      </section>
+
+      <section class="tool-content">
+        <div class="tool-workspace">
+
+          <!-- Input Mode Tabs -->
+          <div class="tab-buttons">
+            <button class="tab-btn active" data-mode="upload" id="tabUpload"><i data-lucide="upload" style="width:14px;height:14px;display:inline;vertical-align:-2px;"></i> Upload File</button>
+            <button class="tab-btn" data-mode="paste" id="tabPaste"><i data-lucide="clipboard-paste" style="width:14px;height:14px;display:inline;vertical-align:-2px;"></i> Paste Text</button>
+          </div>
+
+          <!-- Upload Area -->
+          <div class="tool-panel" id="uploadPanel">
+            <div class="tool-panel__body">
+              <div class="tool-dropzone" id="dropZone">
+                <i data-lucide="upload-cloud" class="tool-dropzone__icon"></i>
+                <div class="tool-dropzone__text">Drag & drop a CSV file here, or click to browse</div>
+                <div class="tool-dropzone__hint">Supports .csv, .tsv, .txt files</div>
+                <input type="file" id="fileInput" accept=".csv,.tsv,.txt" style="display:none;">
+              </div>
+              <div class="file-info" id="fileInfo" style="display:none;">
+                <i data-lucide="file" style="width:16px;height:16px;"></i>
+                <span class="file-name" id="fileName"></span>
+                <span id="fileSize"></span>
+                <button class="tool-action-btn tool-action-btn--danger" id="btnRemoveFile" style="margin-left:auto;"><i data-lucide="x"></i> Remove</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paste Area -->
+          <div class="tool-panel" id="pastePanel" style="display:none;">
+            <div class="tool-panel__body">
+              <textarea class="tool-input__field" id="csvInput" placeholder="Paste your CSV data here, e.g.&#10;Name,Age,City&#10;John,30,New York&#10;Jane,25,London" style="min-height:180px;"></textarea>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="tool-actions">
+            <div class="tool-actions__primary">
+              <button class="btn btn-primary" id="btnParse"><i data-lucide="table"></i> Parse</button>
+            </div>
+            <div class="tool-actions__secondary">
+              <button class="tool-action-btn" id="btnCopyTSV"><i data-lucide="copy"></i> Copy as TSV</button>
+              <button class="tool-action-btn" id="btnDownload"><i data-lucide="download"></i> Download CSV</button>
+            </div>
+          </div>
+
+          <div class="error-message" id="errorMsg"></div>
+
+          <!-- Stats -->
+          <div class="csv-stats" id="csvStats" style="display:none;">
+            <span>Rows: <strong id="statRows">0</strong></span>
+            <span>Columns: <strong id="statCols">0</strong></span>
+            <span>Delimiter: <strong id="statDelimiter">,</strong></span>
+            <span>Encoding: <strong>UTF-8</strong></span>
+          </div>
+
+          <!-- Table Output -->
+          <div class="tool-panel">
+            <div class="tool-panel__header">
+              <h3 class="tool-panel__title"><i data-lucide="grid-3x3"></i> Table View</h3>
+            </div>
+            <div class="tool-panel__body" style="padding:0;">
+              <div class="csv-table-container" id="tableContainer">
+                <div style="padding:40px;text-align:center;color:#8b949e;">
+                  <i data-lucide="table" style="width:40px;height:40px;margin:0 auto 12px;display:block;opacity:0.5;"></i>
+                  Table will appear after parsing CSV data...
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="tool-sidebar-ad">
+          <div class="ad-slot" id="adSlotRight"><span>Advertisement</span></div>
+        </div>
+      </section>
+
+      <div class="ad-slot" id="adSlotBottom"><span>Advertisement</span></div>
+
+      <section class="tool-info">
+        <h2 class="tool-info__title">How to Use</h2>
+        <div class="tool-info__content">
+          <div class="tool-steps">
+            <div class="tool-step"><div class="tool-step__number">1</div><div class="tool-step__content"><div class="tool-step__title">Upload or paste</div><div class="tool-step__desc">Upload a CSV file or paste CSV text directly.</div></div></div>
+            <div class="tool-step"><div class="tool-step__number">2</div><div class="tool-step__content"><div class="tool-step__title">Parse</div><div class="tool-step__desc">Click Parse to convert CSV into a table view.</div></div></div>
+            <div class="tool-step"><div class="tool-step__number">3</div><div class="tool-step__content"><div class="tool-step__title">Sort columns</div><div class="tool-step__desc">Click column headers to sort ascending/descending.</div></div></div>
+            <div class="tool-step"><div class="tool-step__number">4</div><div class="tool-step__content"><div class="tool-step__title">Export</div><div class="tool-step__desc">Copy as TSV or download as CSV file.</div></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="related-tools">
+        <h2>Related Tools</h2>
+        <div class="related-tools-grid">
+          <a href="json-formatter.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="braces"></i></div><h3>JSON Formatter</h3><span class="tool-card-tag">Formatters</span></a>
+          <a href="json-visualizer.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="network"></i></div><h3>JSON Visualizer</h3><span class="tool-card-tag">Formatters</span></a>
+          <a href="xml-formatter.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="file-code"></i></div><h3>XML Formatter</h3><span class="tool-card-tag">Formatters</span></a>
+          <a href="code-diff.html" class="tool-card tool-card-sm"><div class="tool-card-icon"><i data-lucide="git-compare"></i></div><h3>Code Diff</h3><span class="tool-card-tag">Formatters</span></a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links"><a href="#">About</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact</a></div>
+      <p class="footer-copyright">&copy; 2024 ToolBox. All rights reserved.</p>
+    </div>
+  </footer>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/app.js"></script>
+
+  <script>
+    (function() {
+      let csvData = [];
+      let csvHeaders = [];
+      let csvDelimiter = ',';
+      let currentMode = 'upload';
+      let sortCol = -1;
+      let sortAsc = true;
+
+      const dropZone = document.getElementById('dropZone');
+      const fileInput = document.getElementById('fileInput');
+      const fileInfo = document.getElementById('fileInfo');
+      const tableContainer = document.getElementById('tableContainer');
+      const errorMsg = document.getElementById('errorMsg');
+      const csvStats = document.getElementById('csvStats');
+
+      // Tab switching
+      document.getElementById('tabUpload').addEventListener('click', function() {
+        currentMode = 'upload';
+        document.getElementById('tabUpload').classList.add('active');
+        document.getElementById('tabPaste').classList.remove('active');
+        document.getElementById('uploadPanel').style.display = '';
+        document.getElementById('pastePanel').style.display = 'none';
+      });
+
+      document.getElementById('tabPaste').addEventListener('click', function() {
+        currentMode = 'paste';
+        document.getElementById('tabPaste').classList.add('active');
+        document.getElementById('tabUpload').classList.remove('active');
+        document.getElementById('pastePanel').style.display = '';
+        document.getElementById('uploadPanel').style.display = 'none';
+      });
+
+      // File upload
+      dropZone.addEventListener('click', function() { fileInput.click(); });
+      dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.classList.add('tool-dropzone--active'); });
+      dropZone.addEventListener('dragleave', function() { dropZone.classList.remove('tool-dropzone--active'); });
+      dropZone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        dropZone.classList.remove('tool-dropzone--active');
+        if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+      });
+      fileInput.addEventListener('change', function() { if (fileInput.files.length) handleFile(fileInput.files[0]); });
+
+      function handleFile(file) {
+        document.getElementById('fileName').textContent = file.name;
+        document.getElementById('fileSize').textContent = '(' + (file.size / 1024).toFixed(1) + ' KB)';
+        fileInfo.style.display = 'flex';
+        dropZone.style.display = 'none';
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('csvInput').value = e.target.result;
+        };
+        reader.readAsText(file);
+      }
+
+      document.getElementById('btnRemoveFile').addEventListener('click', function() {
+        fileInput.value = '';
+        fileInfo.style.display = 'none';
+        dropZone.style.display = '';
+        document.getElementById('csvInput').value = '';
+      });
+
+      // Detect delimiter
+      function detectDelimiter(text) {
+        const firstLine = text.split('\n')[0];
+        const counts = { ',': 0, '\t': 0, ';': 0, '|': 0 };
+        for (let i = 0; i < firstLine.length; i++) {
+          if (firstLine[i] in counts) counts[firstLine[i]]++;
+        }
+        let max = ',';
+        for (let d in counts) {
+          if (counts[d] > counts[max]) max = d;
+        }
+        return max;
+      }
+
+      // Parse CSV
+      function parseCSV(text, delimiter) {
+        const rows = [];
+        let current = '';
+        let inQuotes = false;
+        let row = [];
+
+        for (let i = 0; i < text.length; i++) {
+          const ch = text[i];
+          if (inQuotes) {
+            if (ch === '"' && text[i + 1] === '"') {
+              current += '"';
+              i++;
+            } else if (ch === '"') {
+              inQuotes = false;
+            } else {
+              current += ch;
+            }
+          } else {
+            if (ch === '"') {
+              inQuotes = true;
+            } else if (ch === delimiter) {
+              row.push(current.trim());
+              current = '';
+            } else if (ch === '\n' || ch === '\r') {
+              if (ch === '\r' && text[i + 1] === '\n') i++;
+              row.push(current.trim());
+              if (row.some(function(c) { return c !== ''; })) rows.push(row);
+              row = [];
+              current = '';
+            } else {
+              current += ch;
+            }
+          }
+        }
+        // Last field
+        row.push(current.trim());
+        if (row.some(function(c) { return c !== ''; })) rows.push(row);
+
+        return rows;
+      }
+
+      function renderTable() {
+        if (csvData.length === 0) return;
+
+        csvHeaders = csvData[0];
+        const bodyRows = csvData.slice(1);
+
+        let html = '<table class="csv-table"><thead><tr>';
+        csvHeaders.forEach(function(h, i) {
+          const sorted = sortCol === i ? ' sorted' : '';
+          const icon = sortCol === i ? (sortAsc ? ' &#9650;' : ' &#9660;') : ' &#8597;';
+          html += '<th class="' + sorted + '" data-col="' + i + '">' + escapeHtml(h) + '<span class="sort-icon">' + icon + '</span></th>';
+        });
+        html += '</tr></thead><tbody>';
+
+        bodyRows.forEach(function(row) {
+          html += '<tr>';
+          csvHeaders.forEach(function(_, i) {
+            const val = row[i] !== undefined ? row[i] : '';
+            html += '<td title="' + escapeHtml(val) + '">' + escapeHtml(val) + '</td>';
+          });
+          html += '</tr>';
+        });
+
+        html += '</tbody></table>';
+        tableContainer.innerHTML = html;
+
+        // Sort events
+        tableContainer.querySelectorAll('th').forEach(function(th) {
+          th.addEventListener('click', function() {
+            const col = parseInt(this.getAttribute('data-col'));
+            if (sortCol === col) {
+              sortAsc = !sortAsc;
+            } else {
+              sortCol = col;
+              sortAsc = true;
+            }
+            sortData();
+            renderTable();
+          });
+        });
+      }
+
+      function sortData() {
+        if (sortCol < 0) return;
+        const headers = csvData[0];
+        const body = csvData.slice(1);
+        body.sort(function(a, b) {
+          let va = a[sortCol] || '';
+          let vb = b[sortCol] || '';
+          // Try numeric sort
+          const na = parseFloat(va);
+          const nb = parseFloat(vb);
+          if (!isNaN(na) && !isNaN(nb)) {
+            return sortAsc ? na - nb : nb - na;
+          }
+          va = va.toLowerCase();
+          vb = vb.toLowerCase();
+          if (va < vb) return sortAsc ? -1 : 1;
+          if (va > vb) return sortAsc ? 1 : -1;
+          return 0;
+        });
+        csvData = [headers].concat(body);
+      }
+
+      function escapeHtml(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      // Parse button
+      document.getElementById('btnParse').addEventListener('click', function() {
+        errorMsg.classList.remove('show');
+        let text = '';
+        if (currentMode === 'upload') {
+          text = document.getElementById('csvInput').value;
+        } else {
+          text = document.getElementById('csvInput').value;
+        }
+        if (!text.trim()) { errorMsg.textContent = 'Please upload a file or paste CSV data.'; errorMsg.classList.add('show'); return; }
+
+        csvDelimiter = detectDelimiter(text);
+        csvData = parseCSV(text, csvDelimiter);
+
+        if (csvData.length < 1) { errorMsg.textContent = 'Could not parse CSV data.'; errorMsg.classList.add('show'); return; }
+
+        sortCol = -1;
+        renderTable();
+
+        document.getElementById('statRows').textContent = csvData.length - 1;
+        document.getElementById('statCols').textContent = csvData[0].length;
+        document.getElementById('statDelimiter').textContent = csvDelimiter === '\t' ? 'Tab' : csvDelimiter;
+        csvStats.style.display = 'flex';
+      });
+
+      // Copy as TSV
+      document.getElementById('btnCopyTSV').addEventListener('click', function() {
+        if (csvData.length === 0) { errorMsg.textContent = 'No data to copy. Parse CSV first.'; errorMsg.classList.add('show'); return; }
+        const tsv = csvData.map(function(row) { return row.join('\t'); }).join('\n');
+        navigator.clipboard.writeText(tsv).then(function() {
+          errorMsg.classList.remove('show');
+        }).catch(function() { errorMsg.textContent = 'Failed to copy.'; errorMsg.classList.add('show'); });
+      });
+
+      // Download CSV
+      document.getElementById('btnDownload').addEventListener('click', function() {
+        if (csvData.length === 0) { errorMsg.textContent = 'No data to download. Parse CSV first.'; errorMsg.classList.add('show'); return; }
+        const csv = csvData.map(function(row) {
+          return row.map(function(cell) {
+            if (cell.includes(',') || cell.includes('"') || cell.includes('\n')) {
+              return '"' + cell.replace(/"/g, '""') + '"';
+            }
+            return cell;
+          }).join(',');
+        }).join('\n');
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    })();
+  </script>
+</body>
+</html>
