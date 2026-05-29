@@ -23,23 +23,183 @@
     <link rel="stylesheet" href="../../assets/css/tools.css">
     
     <style>
-        /* Tool Page Custom Styles */
-        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .workspace-grid .full-width { grid-column: 1 / -1; }
-        .textarea-wrap { position: relative; }
-        .textarea-wrap textarea, .textarea-wrap input {
-            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
-            resize: vertical; background: var(--color-bg); color: var(--color-text);
-            box-sizing: border-box;
+        .age-container {
+            max-width: 600px;
+            margin: 0 auto;
         }
-        .textarea-wrap input { min-height: auto; resize: none; }
-        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
-        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
-        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
-        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+        .age-input-section {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .age-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .age-form-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-text);
+        }
+        .age-form-input {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-size: 1rem;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .age-form-input:focus {
+            outline: none;
+            border-color: var(--color-border-focus);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+        .age-btn-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+        .age-result-section {
+            display: none;
+        }
+        .age-result-section.visible {
+            display: block;
+        }
+        .age-main-result {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .age-main-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        .age-main-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 0.25rem;
+        }
+        .age-main-sub {
+            font-size: 1.125rem;
+            color: var(--color-text-secondary);
+        }
+        .age-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        @media (max-width: 480px) {
+            .age-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .age-stat-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: 1.25rem;
+            text-align: center;
+        }
+        .age-stat-label {
+            font-size: 0.75rem;
+            color: var(--color-text-tertiary);
+            margin-bottom: 0.25rem;
+        }
+        .age-stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-text);
+        }
+        .age-stat-sub {
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+        }
+        .age-zodiac-section {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .age-zodiac-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 1rem;
+        }
+        .age-zodiac-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .age-zodiac-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--color-bg-tertiary);
+            border-radius: var(--radius-lg);
+        }
+        .age-zodiac-symbol {
+            font-size: 2rem;
+        }
+        .age-zodiac-info {
+            flex: 1;
+        }
+        .age-zodiac-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text);
+        }
+        .age-zodiac-date {
+            font-size: 0.75rem;
+            color: var(--color-text-tertiary);
+        }
+        .age-countdown-section {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .age-countdown-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 1rem;
+        }
+        .age-countdown-grid {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+        .age-countdown-item {
+            text-align: center;
+        }
+        .age-countdown-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            background: var(--color-bg-tertiary);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-lg);
+            min-width: 70px;
+        }
+        .age-countdown-label {
+            font-size: 0.75rem;
+            color: var(--color-text-tertiary);
+            margin-top: 0.25rem;
+        }
     </style>
 </head>
 <body>
@@ -82,32 +242,90 @@
                 
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
-                    <div class="workspace-grid">
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                    <div class="age-container">
+                        <div class="age-input-section">
+                            <div class="age-form-group">
+                                <label class="age-form-label" for="birthDate">Date of Birth</label>
+                                <input type="date" id="birthDate" class="age-form-input">
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                            
+                            <div class="age-btn-group">
+                                <button id="btnCalculate" class="btn btn-primary">
+                                    <i data-lucide="calculator"></i>
+                                    Calculate Age
+                                </button>
+                                <button id="btnReset" class="btn btn-secondary">
+                                    <i data-lucide="rotate-ccw"></i>
+                                    Reset
+                                </button>
                             </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+                        
+                        <div class="age-result-section" id="ageResults">
+                            <div class="age-main-result">
+                                <div class="age-main-icon">&#127874;</div>
+                                <div class="age-main-value" id="exactAge">-</div>
+                                <div class="age-main-sub" id="exactAgeSub">-</div>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            
+                            <div class="age-grid">
+                                <div class="age-stat-card">
+                                    <div class="age-stat-label">Total Days</div>
+                                    <div class="age-stat-value" id="totalDays">-</div>
+                                    <div class="age-stat-sub" id="totalDaysSub">-</div>
+                                </div>
+                                <div class="age-stat-card">
+                                    <div class="age-stat-label">Total Hours</div>
+                                    <div class="age-stat-value" id="totalHours">-</div>
+                                </div>
+                                <div class="age-stat-card">
+                                    <div class="age-stat-label">Total Minutes</div>
+                                    <div class="age-stat-value" id="totalMinutes">-</div>
+                                </div>
                             </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                            
+                            <div class="age-zodiac-section">
+                                <div class="age-zodiac-title">Zodiac Signs</div>
+                                <div class="age-zodiac-grid">
+                                    <div class="age-zodiac-card">
+                                        <div class="age-zodiac-symbol" id="zodiacSymbol">-</div>
+                                        <div class="age-zodiac-info">
+                                            <div class="age-zodiac-name" id="zodiacName">-</div>
+                                            <div class="age-zodiac-date" id="zodiacDesc">-</div>
+                                        </div>
+                                    </div>
+                                    <div class="age-zodiac-card">
+                                        <div class="age-zodiac-symbol" id="chineseZodiacSymbol">-</div>
+                                        <div class="age-zodiac-info">
+                                            <div class="age-zodiac-name" id="chineseZodiacName">-</div>
+                                            <div class="age-zodiac-date" id="chineseZodiacElement">-</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="age-countdown-section">
+                                <div class="age-countdown-title">Next Birthday Countdown</div>
+                                <div class="age-countdown-grid">
+                                    <div class="age-countdown-item">
+                                        <div class="age-countdown-value" id="countdownDays">-</div>
+                                        <div class="age-countdown-label">Days</div>
+                                    </div>
+                                    <div class="age-countdown-item">
+                                        <div class="age-countdown-value" id="countdownHours">-</div>
+                                        <div class="age-countdown-label">Hours</div>
+                                    </div>
+                                    <div class="age-countdown-item">
+                                        <div class="age-countdown-value" id="countdownMinutes">-</div>
+                                        <div class="age-countdown-label">Minutes</div>
+                                    </div>
+                                    <div class="age-countdown-item">
+                                        <div class="age-countdown-value" id="countdownSeconds">-</div>
+                                        <div class="age-countdown-label">Seconds</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
                 </div>
                 
@@ -151,178 +369,154 @@
     <script src="../../assets/js/app.js"></script>
     
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
+    (function() {
+        const zodiacSigns = [
+            { name: 'Capricorn', symbol: '&#9810;', start: [1, 1], end: [1, 19] },
+            { name: 'Aquarius', symbol: '&#9811;', start: [1, 20], end: [2, 18] },
+            { name: 'Pisces', symbol: '&#9812;', start: [2, 19], end: [3, 20] },
+            { name: 'Aries', symbol: '&#9800;', start: [3, 21], end: [4, 19] },
+            { name: 'Taurus', symbol: '&#9801;', start: [4, 20], end: [5, 20] },
+            { name: 'Gemini', symbol: '&#9802;', start: [5, 21], end: [6, 20] },
+            { name: 'Cancer', symbol: '&#9803;', start: [6, 21], end: [7, 22] },
+            { name: 'Leo', symbol: '&#9804;', start: [7, 23], end: [8, 22] },
+            { name: 'Virgo', symbol: '&#9805;', start: [8, 23], end: [9, 22] },
+            { name: 'Libra', symbol: '&#9806;', start: [9, 23], end: [10, 22] },
+            { name: 'Scorpio', symbol: '&#9807;', start: [10, 23], end: [11, 21] },
+            { name: 'Sagittarius', symbol: '&#9808;', start: [11, 22], end: [12, 21] },
+            { name: 'Capricorn', symbol: '&#9810;', start: [12, 22], end: [12, 31] }
+        ];
+        
+        const chineseZodiacs = [
+            { name: 'Rat', symbol: '&#128001;' },
+            { name: 'Ox', symbol: '&#128002;' },
+            { name: 'Tiger', symbol: '&#128003;' },
+            { name: 'Rabbit', symbol: '&#128004;' },
+            { name: 'Dragon', symbol: '&#128005;' },
+            { name: 'Snake', symbol: '&#128006;' },
+            { name: 'Horse', symbol: '&#128007;' },
+            { name: 'Goat', symbol: '&#128008;' },
+            { name: 'Monkey', symbol: '&#128009;' },
+            { name: 'Rooster', symbol: '&#128010;' },
+            { name: 'Dog', symbol: '&#128011;' },
+            { name: 'Pig', symbol: '&#128012;' }
+        ];
+        
+        const elements = ['Metal', 'Water', 'Wood', 'Fire', 'Earth'];
+        
+        let countdownInterval = null;
+        
+        function getZodiac(month, day) {
+            for (var i = 0; i < zodiacSigns.length; i++) {
+                var z = zodiacSigns[i];
+                var md = month * 100 + day;
+                var startMd = z.start[0] * 100 + z.start[1];
+                var endMd = z.end[0] * 100 + z.end[1];
+                if (md >= startMd && md <= endMd) return z;
+            }
+            return zodiacSigns[0];
         }
-        if (typeof I18n !== 'undefined') {
-            I18n.init();
+        
+        function getChineseZodiac(year) {
+            var idx = (year - 4) % 12;
+            if (idx < 0) idx += 12;
+            var elementIdx = Math.floor(((year - 4) % 10) / 2);
+            if (elementIdx < 0) elementIdx += 5;
+            return {
+                name: chineseZodiacs[idx].name,
+                symbol: chineseZodiacs[idx].symbol,
+                element: elements[elementIdx]
+            };
         }
-    });
-    
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        if (toast) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
+        
+        function formatNumber(n) {
+            return n.toLocaleString();
         }
-    }
-    
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
+        
+        function calculate() {
+            var birthStr = document.getElementById('birthDate').value;
+            if (!birthStr) { alert('Please select your birth date.'); return; }
+            
+            var birthDate = new Date(birthStr);
+            var now = new Date();
+            
+            if (birthDate > now) { alert('Birth date cannot be in the future.'); return; }
+            
+            // Exact age
+            var years = now.getFullYear() - birthDate.getFullYear();
+            var months = now.getMonth() - birthDate.getMonth();
+            var days = now.getDate() - birthDate.getDate();
+            
+            if (days < 0) {
+                months--;
+                var prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                days += prevMonth.getDate();
+            }
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+            
+            document.getElementById('exactAge').textContent = years + ' years, ' + months + ' months';
+            document.getElementById('exactAgeSub').textContent = years + ' years, ' + months + ' months, ' + days + ' days';
+            
+            // Total time
+            var diffMs = now - birthDate;
+            var totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            var totalHours = Math.floor(diffMs / (1000 * 60 * 60));
+            var totalMinutes = Math.floor(diffMs / (1000 * 60));
+            
+            document.getElementById('totalDays').textContent = formatNumber(totalDays);
+            document.getElementById('totalDaysSub').textContent = '~' + formatNumber(Math.round(totalDays / 365.25)) + ' years';
+            document.getElementById('totalHours').textContent = formatNumber(totalHours);
+            document.getElementById('totalMinutes').textContent = formatNumber(totalMinutes);
+            
+            // Zodiac
+            var zodiac = getZodiac(birthDate.getMonth() + 1, birthDate.getDate());
+            document.getElementById('zodiacSymbol').innerHTML = zodiac.symbol;
+            document.getElementById('zodiacName').textContent = zodiac.name;
+            var zIdx = zodiacSigns.findIndex(function(s) { return s.name === zodiac.name; });
+            if (zIdx >= 0) {
+                document.getElementById('zodiacDesc').textContent = zodiacSigns[zIdx].start[0] + '/' + zodiacSigns[zIdx].start[1] + ' - ' + zodiacSigns[zIdx].end[0] + '/' + zodiacSigns[zIdx].end[1];
+            }
+            
+            // Chinese zodiac
+            var chinese = getChineseZodiac(birthDate.getFullYear());
+            document.getElementById('chineseZodiacSymbol').innerHTML = chinese.symbol;
+            document.getElementById('chineseZodiacName').textContent = chinese.name;
+            document.getElementById('chineseZodiacElement').textContent = chinese.element + ' ' + chinese.name + ' (' + birthDate.getFullYear() + ')';
+            
+            // Birthday countdown
+            if (countdownInterval) clearInterval(countdownInterval);
+            function updateCountdown() {
+                var now2 = new Date();
+                var nextBirthday = new Date(now2.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+                if (nextBirthday <= now2) {
+                    nextBirthday = new Date(now2.getFullYear() + 1, birthDate.getMonth(), birthDate.getDate());
+                }
+                var diff = nextBirthday - now2;
+                var cdDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+                var cdHours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var cdMinutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                var cdSeconds = Math.floor((diff % (1000 * 60)) / 1000);
+                document.getElementById('countdownDays').textContent = cdDays;
+                document.getElementById('countdownHours').textContent = cdHours;
+                document.getElementById('countdownMinutes').textContent = cdMinutes;
+                document.getElementById('countdownSeconds').textContent = cdSeconds;
+            }
+            updateCountdown();
+            countdownInterval = setInterval(updateCountdown, 1000);
+            
+            document.getElementById('ageResults').classList.add('visible');
         }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        
+        document.getElementById('btnCalculate').addEventListener('click', calculate);
+        
+        document.getElementById('btnReset').addEventListener('click', function() {
+            document.getElementById('birthDate').value = '';
+            document.getElementById('ageResults').classList.remove('visible');
+            if (countdownInterval) clearInterval(countdownInterval);
         });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
-    function getZodiac(month, day) {
-        for (var i = 0; i < zodiacSigns.length; i++) {
-          var z = zodiacSigns[i];
-          var md = month * 100 + day;
-          var startMd = z.start[0] * 100 + z.start[1];
-          var endMd = z.end[0] * 100 + z.end[1];
-          if (md >= startMd && md <= endMd) return z;
-        }
-        return zodiacSigns[0];
-      }
-
-      function getChineseZodiac(year) {
-        var idx = (year - 4) % 12;
-        if (idx < 0) idx += 12;
-        var elementIdx = Math.floor(((year - 4) % 10) / 2);
-        if (elementIdx < 0) elementIdx += 5;
-        return {
-          name: chineseZodiacs[idx].name,
-          symbol: chineseZodiacs[idx].symbol,
-          element: elements[elementIdx]
-        };
-      }
-
-      function formatNumber(n) {
-        return n.toLocaleString();
-      }
-
-      let countdownInterval = null;
-
-      function calculate() {
-        var birthStr = document.getElementById('birthDate').value;
-        if (!birthStr) { alert('Please select your birth date.'); return; }
-
-        var birthDate = new Date(birthStr);
-        var now = new Date();
-
-        if (birthDate > now) { alert('Birth date cannot be in the future.'); return; }
-
-        // Exact age
-        var years = now.getFullYear() - birthDate.getFullYear();
-        var months = now.getMonth() - birthDate.getMonth();
-        var days = now.getDate() - birthDate.getDate();
-
-        if (days < 0) {
-          months--;
-          var prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-          days += prevMonth.getDate();
-        }
-        if (months < 0) {
-          years--;
-          months += 12;
-        }
-
-        document.getElementById('exactAge').textContent = years + ' years, ' + months + ' months';
-        document.getElementById('exactAgeSub').textContent = years + ' years, ' + months + ' months, ' + days + ' days';
-
-        // Total time
-        var diffMs = now - birthDate;
-        var totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-        var totalHours = Math.floor(diffMs / (1000 * 60 * 60));
-        var totalMinutes = Math.floor(diffMs / (1000 * 60));
-
-        document.getElementById('totalDays').textContent = formatNumber(totalDays);
-        document.getElementById('totalDaysSub').textContent = 'Approximately ' + formatNumber(Math.round(totalDays / 365.25)) + ' years';
-        document.getElementById('totalHours').textContent = formatNumber(totalHours);
-        document.getElementById('totalMinutes').textContent = formatNumber(totalMinutes);
-
-        // Zodiac
-        var zodiac = getZodiac(birthDate.getMonth() + 1, birthDate.getDate());
-        document.getElementById('zodiacSymbol').textContent = zodiac.symbol;
-        document.getElementById('zodiacName').textContent = zodiac.name;
-        var z = getZodiac(birthDate.getMonth() + 1, birthDate.getDate());
-        var zIdx = zodiacSigns.findIndex(function(s) { return s.name === z.name; });
-        if (zIdx >= 0) {
-          document.getElementById('zodiacDesc').textContent = zodiacSigns[zIdx].start[0] + '/' + zodiacSigns[zIdx].start[1] + ' - ' + zodiacSigns[zIdx].end[0] + '/' + zodiacSigns[zIdx].end[1];
-        }
-
-        // Chinese zodiac
-        var chinese = getChineseZodiac(birthDate.getFullYear());
-        document.getElementById('chineseZodiacSymbol').textContent = chinese.symbol;
-        document.getElementById('chineseZodiacName').textContent = chinese.name;
-        document.getElementById('chineseZodiacElement').textContent = chinese.element + ' ' + chinese.name + ' (' + birthDate.getFullYear() + ')';
-
-        // Birthday countdown
-        if (countdownInterval) clearInterval(countdownInterval);
-        function updateCountdown() {
-          var now2 = new Date();
-          var nextBirthday = new Date(now2.getFullYear(), birthDate.getMonth(), birthDate.getDate());
-          if (nextBirthday <= now2) {
-            nextBirthday = new Date(now2.getFullYear() + 1, birthDate.getMonth(), birthDate.getDate());
-          }
-          var diff = nextBirthday - now2;
-          var cdDays = Math.floor(diff / (1000 * 60 * 60 * 24));
-          var cdHours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          var cdMinutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-          var cdSeconds = Math.floor((diff % (1000 * 60)) / 1000);
-          document.getElementById('countdownDays').textContent = cdDays;
-          document.getElementById('countdownHours').textContent = cdHours;
-          document.getElementById('countdownMinutes').textContent = cdMinutes;
-          document.getElementById('countdownSeconds').textContent = cdSeconds;
-        }
-        updateCountdown();
-        countdownInterval = setInterval(updateCountdown, 1000);
-
-        document.getElementById('ageResults').style.display = 'block';
-      }
-
-      document.getElementById('btnCalculate').addEventListener('click', calculate);
-
-      document.getElementById('btnReset').addEventListener('click', function() {
-        document.getElementById('birthDate').value = '';
-        document.getElementById('ageResults').style.display = 'none';
-        if (countdownInterval) clearInterval(countdownInterval);
-      });
     })();
-  </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
     </script>
 </body>
 </html>

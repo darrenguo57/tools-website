@@ -5,41 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UUID Generator - ToolBox</title>
     <meta name="description" content="Generate unique IDs">
-    
+
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
     <link rel="stylesheet" href="../../assets/css/tools.css">
-    
+
     <style>
         /* Tool Page Custom Styles */
-        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .workspace-grid .full-width { grid-column: 1 / -1; }
-        .textarea-wrap { position: relative; }
-        .textarea-wrap textarea, .textarea-wrap input {
-            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
-            resize: vertical; background: var(--color-bg); color: var(--color-text);
-            box-sizing: border-box;
+        .uuid-options { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); border: 1px solid var(--color-border-light); }
+        .uuid-option { display: flex; flex-direction: column; gap: 0.25rem; }
+        .uuid-option label { font-size: var(--font-size-sm); color: var(--color-text-secondary); font-weight: 500; }
+        .uuid-option select, .uuid-option input { padding: 0.5rem 0.75rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); font-size: var(--font-size-sm); min-width: 120px; }
+        .uuid-option select:focus, .uuid-option input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .toggle-row { display: flex; gap: 1.5rem; margin-top: 0.5rem; }
+        .tool-toggle { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+        .tool-toggle__switch { width: 44px; height: 24px; background: var(--color-border); border-radius: 12px; position: relative; transition: background 0.2s; }
+        .tool-toggle__switch::after { content: ''; position: absolute; width: 18px; height: 18px; background: white; border-radius: 50%; top: 3px; left: 3px; transition: transform 0.2s; }
+        .tool-toggle__switch--active { background: var(--color-primary); }
+        .tool-toggle__switch--active::after { transform: translateX(20px); }
+        .tool-toggle__label { font-size: var(--font-size-sm); color: var(--color-text); }
+        .uuid-results { min-height: 100px; padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); border: 1px solid var(--color-border-light); }
+        .uuid-results .placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: var(--color-text-tertiary); padding: 2rem; text-align: center; }
+        .uuid-results .placeholder i { opacity: 0.5; }
+        .uuid-actions { display: flex; gap: 0.5rem; margin-top: 1rem; justify-content: center; }
+        .result-count { font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: 0.5rem; text-align: center; }
+
+        @media (max-width: 768px) {
+            .uuid-options { flex-direction: column; }
+            .uuid-option { width: 100%; }
+            .uuid-option select, .uuid-option input { width: 100%; }
         }
-        .textarea-wrap input { min-height: auto; resize: none; }
-        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
-        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
-        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
-        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -65,10 +72,10 @@
             </div>
         </div>
     </header>
-    
+
     <!-- Breadcrumb -->
     <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_generators" data-i18n="cat_generators">Generators</a> / <span>UUID Generator</span></div></div>
-    
+
     <!-- Main Content -->
     <main class="tool-page">
         <div class="container tool-layout">
@@ -79,38 +86,55 @@
                     <h1>UUID Generator</h1>
                     <p>Generate unique IDs</p>
                 </div>
-                
+
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
                     <div class="workspace-grid">
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                        <!-- Options Panel -->
+                        <div class="full-width">
+                            <div class="uuid-options">
+                                <div class="uuid-option">
+                                    <label for="uuidVersion">Version</label>
+                                    <select id="uuidVersion">
+                                        <option value="v4">UUID v4 (Random)</option>
+                                        <option value="v1">UUID v1 (Timestamp)</option>
+                                    </select>
+                                </div>
+                                <div class="uuid-option">
+                                    <label for="uuidCount">Count</label>
+                                    <input type="number" id="uuidCount" value="1" min="1" max="100">
+                                </div>
+                                <div class="toggle-row" style="align-self: flex-end;">
+                                    <div class="tool-toggle" id="toggleUppercase" role="switch" aria-checked="true" tabindex="0">
+                                        <div class="tool-toggle__switch tool-toggle__switch--active"></div>
+                                        <span class="tool-toggle__label">Uppercase</span>
+                                    </div>
+                                    <div class="tool-toggle" id="toggleNoHyphens" role="switch" aria-checked="false" tabindex="0">
+                                        <div class="tool-toggle__switch"></div>
+                                        <span class="tool-toggle__label">No Hyphens</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
-                            </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+
+                        <!-- Results Panel -->
+                        <div class="full-width">
+                            <div class="result-count" id="resultCount"></div>
+                            <div class="uuid-results" id="uuidResults">
+                                <div class="placeholder">
+                                    <i data-lucide="fingerprint"></i>
+                                    <span>Click "Generate" to create UUIDs</span>
+                                </div>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            <div class="uuid-actions">
+                                <button class="btn btn-primary" id="btnGenerate"><i data-lucide="play"></i><span>Generate</span></button>
+                                <button class="btn btn-secondary" id="btnCopyAll"><i data-lucide="copy"></i><span>Copy All</span></button>
+                                <button class="btn btn-danger" id="btnClear"><i data-lucide="trash-2"></i><span>Clear</span></button>
                             </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
                 </div>
-                
+
                 <!-- Ad Slot -->
                 <div class="ad-slot" style="margin-top:2rem">
                     <span data-i18n="ad_label">Advertisement</span>
@@ -123,7 +147,7 @@
             </aside>
         </div>
     </main>
-    
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container footer-container">
@@ -136,194 +160,170 @@
             <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
         </div>
     </footer>
-    
+
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
-    
+
     <!-- Back to Top -->
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
         <i data-lucide="chevron-up"></i>
     </button>
-    
+
     <!-- Scripts -->
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-        if (typeof I18n !== 'undefined') {
-            I18n.init();
-        }
-    });
-    
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        if (toast) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-    }
-    
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
-    function setupToggle(el, callback) {
-        el.addEventListener('click', () => {
-          const active = el.classList.toggle('tool-toggle__switch--active');
-          el.setAttribute('aria-checked', active);
-          callback(active);
-        });
-        el.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
-        });
-      }
+    (function() {
+        // State variables
+        let uppercase = true;
+        let noHyphens = false;
 
-      setupToggle(toggleUppercase, (v) => uppercase = v);
-      setupToggle(toggleNoHyphens, (v) => noHyphens = v);
-
-      // UUID generation
-      function generateUUIDv4() {
-        if (crypto.randomUUID) return crypto.randomUUID();
-        // Fallback manual v4
-        const bytes = new Uint8Array(16);
-        crypto.getRandomValues(bytes);
-        bytes[6] = (bytes[6] & 0x0f) | 0x40;
-        bytes[8] = (bytes[8] & 0x3f) | 0x80;
-        const hex = Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
-        return hex.slice(0,8) + '-' + hex.slice(8,12) + '-' + hex.slice(12,16) + '-' + hex.slice(16,20) + '-' + hex.slice(20);
-      }
-
-      function generateUUIDv1() {
-        const now = new Date();
-        const timestamp = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
-          now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
-        const timeLow = timestamp & 0xFFFFFFFF;
-        const timeMid = (timestamp >> 32) & 0xFFFF;
-        const timeHi = ((timestamp >> 48) & 0x0FFF) | 0x1000;
-        const clockSeq = ((crypto.getRandomValues(new Uint8Array(2))[0] << 8) | crypto.getRandomValues(new Uint8Array(1))[0]) & 0x3FFF | 0x8000;
-        const node = Array.from(crypto.getRandomValues(new Uint8Array(6)), b => b.toString(16).padStart(2, '0')).join('');
-        const hex = (n, w) => n.toString(16).padStart(w, '0');
-        return hex(timeLow, 8) + '-' + hex(timeMid, 4) + '-' + hex(timeHi, 4) + '-' + hex(clockSeq, 4) + '-' + node;
-      }
-
-      function formatUUID(uuid) {
-        if (noHyphens) uuid = uuid.replace(/-/g, '');
-        if (uppercase) uuid = uuid.toUpperCase();
-        return uuid;
-      }
-
-      const resultsContainer = document.getElementById('uuidResults');
-      const resultCount = document.getElementById('resultCount');
-
-      function renderResults(uuids) {
-        if (uuids.length === 0) {
-          resultsContainer.innerHTML = '<div class="tool-output__placeholder"><i data-lucide="fingerprint"></i><span class="tool-output__placeholder-text">Click "Generate" to create UUIDs</span></div>';
-          resultCount.textContent = '';
-          lucide.createIcons();
-          return;
-        }
-        resultCount.textContent = uuids.length + ' UUID(s)';
-        let html = '<div style="display:flex;flex-direction:column;gap:var(--space-2);">';
-        uuids.forEach((uuid, i) => {
-          html += '<div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);background:var(--color-bg-secondary);border-radius:var(--radius-md);border:1px solid var(--color-border-light);">' +
-            '<code style="flex:1;font-family:var(--font-family-mono);font-size:var(--font-size-sm);color:var(--color-text);word-break:break-all;">' + escapeHtml(uuid) + '</code>' +
-            '<button class="tool-action-btn copy-single-btn" data-uuid="' + escapeHtml(uuid) + '" title="Copy"><i data-lucide="copy"></i></button>' +
-            '</div>';
-        });
-        html += '</div>';
-        resultsContainer.innerHTML = html;
-        lucide.createIcons();
-
-        // Bind copy buttons
-        resultsContainer.querySelectorAll('.copy-single-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            navigator.clipboard.writeText(btn.dataset.uuid).then(() => {
-              btn.classList.add('tool-action-btn--success');
-              btn.innerHTML = '<i data-lucide="check"></i>';
-              lucide.createIcons();
-              setTimeout(() => {
-                btn.classList.remove('tool-action-btn--success');
-                btn.innerHTML = '<i data-lucide="copy"></i>';
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
-              }, 1500);
+            }
+            if (typeof I18n !== 'undefined') {
+                I18n.init();
+            }
+
+            // Setup toggles
+            setupToggle('toggleUppercase', (v) => { uppercase = v; });
+            setupToggle('toggleNoHyphens', (v) => { noHyphens = v; });
+
+            // Generate button
+            document.getElementById('btnGenerate').addEventListener('click', () => {
+                const version = document.getElementById('uuidVersion').value;
+                let count = parseInt(document.getElementById('uuidCount').value) || 1;
+                count = Math.max(1, Math.min(100, count));
+                const uuids = [];
+                for (let i = 0; i < count; i++) {
+                    const raw = version === 'v1' ? generateUUIDv1() : generateUUIDv4();
+                    uuids.push(formatUUID(raw));
+                }
+                renderResults(uuids);
             });
-          });
+
+            // Copy All button
+            document.getElementById('btnCopyAll').addEventListener('click', () => {
+                const codes = resultsContainer.querySelectorAll('code');
+                if (codes.length === 0) return;
+                const text = Array.from(codes).map(c => c.textContent).join('\n');
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+                });
+            });
+
+            // Clear button
+            document.getElementById('btnClear').addEventListener('click', () => {
+                renderResults([]);
+                showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
+            });
+
+            // Auto-generate on load
+            document.getElementById('btnGenerate').click();
         });
-      }
 
-      function escapeHtml(str) {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-      }
-
-      // Generate
-      document.getElementById('btnGenerate').addEventListener('click', () => {
-        const version = document.getElementById('uuidVersion').value;
-        let count = parseInt(document.getElementById('uuidCount').value) || 1;
-        count = Math.max(1, Math.min(100, count));
-        const uuids = [];
-        for (let i = 0; i < count; i++) {
-          const raw = version === 'v1' ? generateUUIDv1() : generateUUIDv4();
-          uuids.push(formatUUID(raw));
-        }
-        renderResults(uuids);
-      });
-
-      // Copy All
-      document.getElementById('btnCopyAll').addEventListener('click', () => {
-        const codes = resultsContainer.querySelectorAll('code');
-        if (codes.length === 0) return;
-        const text = Array.from(codes).map(c => c.textContent).join('\n');
-        navigator.clipboard.writeText(text);
-      });
-
-      // Clear
-      document.getElementById('btnClear').addEventListener('click', () => {
-        renderResults([]);
-      });
-    })();
-  </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
+        function setupToggle(id, callback) {
+            const el = document.getElementById(id);
+            el.addEventListener('click', () => {
+                const active = el.classList.toggle('tool-toggle__switch--active');
+                el.setAttribute('aria-checked', active);
+                if (id === 'toggleUppercase') uppercase = active;
+                if (id === 'toggleNoHyphens') noHyphens = active;
+                callback(active);
+            });
+            el.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
             });
         }
-    });
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2500);
+            }
+        }
+
+        // UUID generation functions
+        function generateUUIDv4() {
+            if (crypto.randomUUID) return crypto.randomUUID();
+            // Fallback manual v4
+            const bytes = new Uint8Array(16);
+            crypto.getRandomValues(bytes);
+            bytes[6] = (bytes[6] & 0x0f) | 0x40;
+            bytes[8] = (bytes[8] & 0x3f) | 0x80;
+            const hex = Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+            return hex.slice(0,8) + '-' + hex.slice(8,12) + '-' + hex.slice(12,16) + '-' + hex.slice(16,20) + '-' + hex.slice(20);
+        }
+
+        function generateUUIDv1() {
+            const now = new Date();
+            const timestamp = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
+                now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
+            const timeLow = timestamp & 0xFFFFFFFF;
+            const timeMid = (timestamp >> 32) & 0xFFFF;
+            const timeHi = ((timestamp >> 48) & 0x0FFF) | 0x1000;
+            const clockSeq = ((crypto.getRandomValues(new Uint8Array(2))[0] << 8) | crypto.getRandomValues(new Uint8Array(1))[0]) & 0x3FFF | 0x8000;
+            const node = Array.from(crypto.getRandomValues(new Uint8Array(6)), b => b.toString(16).padStart(2, '0')).join('');
+            const hex = (n, w) => n.toString(16).padStart(w, '0');
+            return hex(timeLow, 8) + '-' + hex(timeMid, 4) + '-' + hex(timeHi, 4) + '-' + hex(clockSeq, 4) + '-' + node;
+        }
+
+        function formatUUID(uuid) {
+            if (noHyphens) uuid = uuid.replace(/-/g, '');
+            if (uppercase) uuid = uuid.toUpperCase();
+            return uuid;
+        }
+
+        const resultsContainer = document.getElementById('uuidResults');
+        const resultCount = document.getElementById('resultCount');
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function renderResults(uuids) {
+            if (uuids.length === 0) {
+                resultsContainer.innerHTML = '<div class="placeholder"><i data-lucide="fingerprint"></i><span>Click "Generate" to create UUIDs</span></div>';
+                resultCount.textContent = '';
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+                return;
+            }
+            resultCount.textContent = uuids.length + ' UUID(s)';
+            let html = '<div style="display:flex;flex-direction:column;gap:var(--space-2);">';
+            uuids.forEach((uuid) => {
+                html += '<div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);background:var(--color-bg);border-radius:var(--radius-md);border:1px solid var(--color-border-light);">' +
+                    '<code style="flex:1;font-family:var(--font-family-mono);font-size:var(--font-size-sm);color:var(--color-text);word-break:break-all;">' + escapeHtml(uuid) + '</code>' +
+                    '<button class="tool-action-btn copy-single-btn" data-uuid="' + escapeHtml(uuid) + '" title="Copy"><i data-lucide="copy"></i></button>' +
+                    '</div>';
+            });
+            html += '</div>';
+            resultsContainer.innerHTML = html;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            // Bind copy buttons
+            resultsContainer.querySelectorAll('.copy-single-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(btn.dataset.uuid).then(() => {
+                        btn.classList.add('tool-action-btn--success');
+                        btn.innerHTML = '<i data-lucide="check"></i>';
+                        if (typeof lucide !== 'undefined') lucide.createIcons();
+                        setTimeout(() => {
+                            btn.classList.remove('tool-action-btn--success');
+                            btn.innerHTML = '<i data-lucide="copy"></i>';
+                            if (typeof lucide !== 'undefined') lucide.createIcons();
+                        }, 1500);
+                    });
+                });
+            });
+        }
+    })();
     </script>
 </body>
 </html>

@@ -23,23 +23,159 @@
     <link rel="stylesheet" href="../../assets/css/tools.css">
     
     <style>
-        /* Tool Page Custom Styles */
-        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .workspace-grid .full-width { grid-column: 1 / -1; }
-        .textarea-wrap { position: relative; }
-        .textarea-wrap textarea, .textarea-wrap input {
-            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
-            resize: vertical; background: var(--color-bg); color: var(--color-text);
-            box-sizing: border-box;
+        .bmi-container {
+            max-width: 600px;
+            margin: 0 auto;
         }
-        .textarea-wrap input { min-height: auto; resize: none; }
-        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
-        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
-        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
-        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+        .bmi-input-section {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .bmi-unit-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--color-bg-tertiary);
+            border-radius: var(--radius-lg);
+            padding: 0.25rem;
+        }
+        .bmi-unit-btn {
+            flex: 1;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: none;
+            border-radius: var(--radius-md);
+            background: transparent;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .bmi-unit-btn.active {
+            background: var(--color-surface);
+            color: var(--color-text);
+            box-shadow: var(--shadow-sm);
+        }
+        .bmi-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 480px) {
+            .bmi-form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        .bmi-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .bmi-form-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-text);
+        }
+        .bmi-form-input {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-size: 1rem;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .bmi-form-input:focus {
+            outline: none;
+            border-color: var(--color-border-focus);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+        .bmi-btn-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+        .bmi-result-section {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            text-align: center;
+            display: none;
+        }
+        .bmi-result-section.visible {
+            display: block;
+        }
+        .bmi-value {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .bmi-category {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        .bmi-scale {
+            position: relative;
+            height: 8px;
+            background: linear-gradient(to right, #3B82F6, #10B981, #F59E0B, #EF4444);
+            border-radius: var(--radius-full);
+            margin: 2rem 0 1rem;
+        }
+        .bmi-scale-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--color-text-tertiary);
+        }
+        .bmi-marker {
+            position: absolute;
+            top: -6px;
+            width: 20px;
+            height: 20px;
+            background: var(--color-surface);
+            border: 3px solid var(--color-text);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            transition: left 0.3s ease;
+        }
+        .bmi-info {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--color-border-light);
+            text-align: left;
+        }
+        .bmi-info-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 0.5rem;
+        }
+        .bmi-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+        .bmi-info-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            padding: 0.5rem;
+            background: var(--color-bg-tertiary);
+            border-radius: var(--radius-md);
+        }
+        .bmi-info-label {
+            color: var(--color-text-secondary);
+        }
+        .bmi-info-value {
+            font-weight: 500;
+            color: var(--color-text);
+        }
     </style>
 </head>
 <body>
@@ -82,32 +218,73 @@
                 
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
-                    <div class="workspace-grid">
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                    <div class="bmi-container">
+                        <div class="bmi-input-section">
+                            <div class="bmi-unit-toggle">
+                                <button class="bmi-unit-btn active" data-unit="metric">Metric (kg/cm)</button>
+                                <button class="bmi-unit-btn" data-unit="imperial">Imperial (lb/ft)</button>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                            
+                            <div class="bmi-form-row">
+                                <div class="bmi-form-group">
+                                    <label class="bmi-form-label" for="height">Height (<span class="unit-label">cm</span>)</label>
+                                    <input type="number" id="height" class="bmi-form-input" placeholder="170" min="1" max="300">
+                                </div>
+                                <div class="bmi-form-group">
+                                    <label class="bmi-form-label" for="weight">Weight (<span class="unit-label">kg</span>)</label>
+                                    <input type="number" id="weight" class="bmi-form-input" placeholder="70" min="1" max="500">
+                                </div>
                             </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                            
+                            <div class="bmi-btn-group">
+                                <button id="btnCalculate" class="btn btn-primary">
+                                    <i data-lucide="calculator"></i>
+                                    Calculate BMI
+                                </button>
+                                <button id="btnReset" class="btn btn-secondary">
+                                    <i data-lucide="rotate-ccw"></i>
+                                    Reset
+                                </button>
+                            </div>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+                        
+                        <div class="bmi-result-section" id="bmiResult">
+                            <div class="bmi-value" id="bmiValue">0</div>
+                            <div class="bmi-category" id="bmiCategory">-</div>
+                            
+                            <div class="bmi-scale">
+                                <div class="bmi-marker" id="bmiMarker" style="left: 0%;"></div>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            <div class="bmi-scale-labels">
+                                <span>15</span>
+                                <span>18.5</span>
+                                <span>25</span>
+                                <span>30</span>
+                                <span>40</span>
                             </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                            
+                            <div class="bmi-info">
+                                <div class="bmi-info-title">BMI Categories</div>
+                                <div class="bmi-info-grid">
+                                    <div class="bmi-info-item">
+                                        <span class="bmi-info-label">Underweight</span>
+                                        <span class="bmi-info-value">&lt; 18.5</span>
+                                    </div>
+                                    <div class="bmi-info-item">
+                                        <span class="bmi-info-label">Normal</span>
+                                        <span class="bmi-info-value">18.5 - 24.9</span>
+                                    </div>
+                                    <div class="bmi-info-item">
+                                        <span class="bmi-info-label">Overweight</span>
+                                        <span class="bmi-info-value">25 - 29.9</span>
+                                    </div>
+                                    <div class="bmi-info-item">
+                                        <span class="bmi-info-label">Obese</span>
+                                        <span class="bmi-info-value">&gt; 30</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
                 </div>
                 
@@ -151,111 +328,74 @@
     <script src="../../assets/js/app.js"></script>
     
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-        if (typeof I18n !== 'undefined') {
-            I18n.init();
-        }
-    });
-    
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        if (toast) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-    }
-    
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
-    function calculate() {
-        let heightVal = parseFloat(document.getElementById('height').value);
-        let weightVal = parseFloat(document.getElementById('weight').value);
-
-        if (isNaN(heightVal) || isNaN(weightVal) || heightVal <= 0 || weightVal <= 0) {
-          alert('Please enter valid height and weight.');
-          return;
-        }
-
-        let heightM, weightKg;
-        if (isMetric) {
-          heightM = heightVal / 100;
-          weightKg = weightVal;
-        } else {
-          heightM = heightVal * 0.3048;
-          weightKg = weightVal * 0.453592;
-        }
-
-        const bmi = weightKg / (heightM * heightM);
-        const bmiRounded = Math.round(bmi * 10) / 10;
-
-        let category, color;
-        if (bmi < 18.5) { category = 'Underweight'; color = '#3B82F6'; }
-        else if (bmi < 25) { category = 'Normal weight'; color = '#10B981'; }
-        else if (bmi < 30) { category = 'Overweight'; color = '#F59E0B'; }
-        else { category = 'Obese'; color = '#EF4444'; }
-
-        document.getElementById('bmiValue').textContent = bmiRounded;
-        document.getElementById('bmiValue').style.color = color;
-        document.getElementById('bmiCategory').textContent = category;
-        document.getElementById('bmiCategory').style.color = color;
-
-        // Scale marker position (range 15-40)
-        const clampedBmi = Math.max(15, Math.min(40, bmi));
-        const percent = ((clampedBmi - 15) / 25) * 100;
-        document.getElementById('bmiMarker').style.left = percent + '%';
-
-        document.getElementById('bmiResult').style.display = 'block';
-      }
-
-      document.getElementById('btnCalculate').addEventListener('click', calculate);
-
-      document.getElementById('btnReset').addEventListener('click', function() {
-        document.getElementById('height').value = '';
-        document.getElementById('weight').value = '';
-        document.getElementById('bmiResult').style.display = 'none';
-      });
-    })();
-  </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
+    (function() {
+        let isMetric = true;
+        
+        // Unit toggle
+        document.querySelectorAll('.bmi-unit-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.bmi-unit-btn').forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                isMetric = this.dataset.unit === 'metric';
+                
+                const unitLabels = document.querySelectorAll('.unit-label');
+                unitLabels[0].textContent = isMetric ? 'cm' : 'ft/in';
+                unitLabels[1].textContent = isMetric ? 'kg' : 'lb';
+                
+                document.getElementById('height').placeholder = isMetric ? '170' : '5';
+                document.getElementById('weight').placeholder = isMetric ? '70' : '154';
             });
+        });
+        
+        function calculate() {
+            let heightVal = parseFloat(document.getElementById('height').value);
+            let weightVal = parseFloat(document.getElementById('weight').value);
+            
+            if (isNaN(heightVal) || isNaN(weightVal) || heightVal <= 0 || weightVal <= 0) {
+                alert('Please enter valid height and weight.');
+                return;
+            }
+            
+            let heightM, weightKg;
+            if (isMetric) {
+                heightM = heightVal / 100;
+                weightKg = weightVal;
+            } else {
+                // Convert feet to meters and inches to meters
+                heightM = (heightVal * 0.3048); // feet to meters
+                weightKg = weightVal * 0.453592;
+            }
+            
+            const bmi = weightKg / (heightM * heightM);
+            const bmiRounded = Math.round(bmi * 10) / 10;
+            
+            let category, color;
+            if (bmi < 18.5) { category = 'Underweight'; color = '#3B82F6'; }
+            else if (bmi < 25) { category = 'Normal weight'; color = '#10B981'; }
+            else if (bmi < 30) { category = 'Overweight'; color = '#F59E0B'; }
+            else { category = 'Obese'; color = '#EF4444'; }
+            
+            document.getElementById('bmiValue').textContent = bmiRounded;
+            document.getElementById('bmiValue').style.color = color;
+            document.getElementById('bmiCategory').textContent = category;
+            document.getElementById('bmiCategory').style.color = color;
+            
+            // Scale marker position (range 15-40)
+            const clampedBmi = Math.max(15, Math.min(40, bmi));
+            const percent = ((clampedBmi - 15) / 25) * 100;
+            document.getElementById('bmiMarker').style.left = percent + '%';
+            
+            document.getElementById('bmiResult').classList.add('visible');
         }
-    });
+        
+        document.getElementById('btnCalculate').addEventListener('click', calculate);
+        
+        document.getElementById('btnReset').addEventListener('click', function() {
+            document.getElementById('height').value = '';
+            document.getElementById('weight').value = '';
+            document.getElementById('bmiResult').classList.remove('visible');
+        });
+    })();
     </script>
 </body>
 </html>

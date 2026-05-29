@@ -17,6 +17,9 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
     
+    <!-- CryptoJS Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+    
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
@@ -39,7 +42,62 @@
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
         
-        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+        /* Options Panel */
+        .options-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+        }
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .option-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+        }
+        .option-group select, .option-group input {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-size: 14px;
+            min-width: 150px;
+        }
+        .option-group input[type="password"] {
+            min-width: 200px;
+        }
+        
+        /* Mode Toggle */
+        .mode-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .mode-toggle .btn {
+            min-width: 120px;
+        }
+        .mode-toggle .btn.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+        
+        @media (max-width: 768px) {
+            .workspace-grid { grid-template-columns: 1fr; }
+            .options-panel { flex-direction: column; }
+            .option-group select, .option-group input { width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -82,6 +140,46 @@
                 
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
+                    <!-- Mode Toggle -->
+                    <div class="mode-toggle">
+                        <button class="btn btn-secondary active" id="encryptBtn" onclick="setMode('encrypt')">
+                            <i data-lucide="lock"></i> Encrypt
+                        </button>
+                        <button class="btn btn-secondary" id="decryptBtn" onclick="setMode('decrypt')">
+                            <i data-lucide="unlock"></i> Decrypt
+                        </button>
+                    </div>
+                    
+                    <!-- Options Panel -->
+                    <div class="options-panel">
+                        <div class="option-group">
+                            <label>Secret Key</label>
+                            <input type="password" id="secretKey" placeholder="Enter secret key...">
+                        </div>
+                        <div class="option-group">
+                            <label>Mode</label>
+                            <select id="aesMode">
+                                <option value="CBC">CBC</option>
+                                <option value="ECB">ECB</option>
+                                <option value="CTR">CTR</option>
+                            </select>
+                        </div>
+                        <div class="option-group">
+                            <label>Padding</label>
+                            <select id="aesPadding">
+                                <option value="Pkcs7">Pkcs7</option>
+                                <option value="NoPadding">No Padding</option>
+                            </select>
+                        </div>
+                        <div class="option-group">
+                            <label>Output Format</label>
+                            <select id="outputFormat">
+                                <option value="Base64">Base64</option>
+                                <option value="Hex">Hex</option>
+                            </select>
+                        </div>
+                    </div>
+                    
                     <div class="workspace-grid">
                         <div>
                             <div class="textarea-label">
@@ -89,7 +187,7 @@
                                 <span data-i18n="input_label">Input</span>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                                <textarea id="inputArea" placeholder="Enter text..."></textarea>
                             </div>
                             <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
@@ -99,13 +197,13 @@
                                 <span data-i18n="output_label">Output</span>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                                <textarea id="outputArea" placeholder="Result..." readonly></textarea>
                             </div>
                             <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
                     </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
+                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span data-i18n="btn_process">Process</span></button>
                         <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
                         <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
@@ -151,12 +249,23 @@
     <script src="../../assets/js/app.js"></script>
     
     <script>
+    let currentMode = 'encrypt';
+    
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
         if (typeof I18n !== 'undefined') {
             I18n.init();
+        }
+        
+        // Input character counter
+        const inputArea = document.getElementById('inputArea');
+        const inputCount = document.getElementById('inputCount');
+        if (inputArea && inputCount) {
+            inputArea.addEventListener('input', () => {
+                inputCount.textContent = inputArea.value.length;
+            });
         }
     });
     
@@ -169,31 +278,26 @@
         }
     }
     
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
+    function setMode(mode) {
+        currentMode = mode;
+        const encryptBtn = document.getElementById('encryptBtn');
+        const decryptBtn = document.getElementById('decryptBtn');
+        
+        if (mode === 'encrypt') {
+            encryptBtn.classList.add('active');
+            decryptBtn.classList.remove('active');
+        } else {
+            decryptBtn.classList.add('active');
+            encryptBtn.classList.remove('active');
         }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
     }
     
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
+    function process() {
+        if (currentMode === 'encrypt') {
+            encryptAES();
+        } else {
+            decryptAES();
+        }
     }
     
     function getOptions() {
@@ -223,7 +327,12 @@
 
     function encryptAES() {
         const { mode, padding, format, key } = getOptions();
+        const inputArea = document.getElementById('inputArea');
+        const outputArea = document.getElementById('outputArea');
+        const outputCount = document.getElementById('outputCount');
+        
         const input = inputArea.value;
+        
         if (!input) { showToast('Please enter text to encrypt'); return; }
         if (!key) { showToast('Please enter a secret key'); return; }
 
@@ -244,7 +353,12 @@
 
     function decryptAES() {
         const { mode, padding, format, key } = getOptions();
+        const inputArea = document.getElementById('inputArea');
+        const outputArea = document.getElementById('outputArea');
+        const outputCount = document.getElementById('outputCount');
+        
         const input = inputArea.value.trim();
+        
         if (!input) { showToast('Please enter ciphertext to decrypt'); return; }
         if (!key) { showToast('Please enter a secret key'); return; }
 
@@ -283,36 +397,33 @@
     }
 
     function copyOutput() {
-        if (!outputArea.value) { showToast('Nothing to copy'); return; }
-        navigator.clipboard.writeText(outputArea.value).then(() => showToast('Copied to clipboard'));
+        const outputArea = document.getElementById('outputArea');
+        if (!outputArea.value) {
+            showToast('Nothing to copy');
+            return;
+        }
+        navigator.clipboard.writeText(outputArea.value).then(() => {
+            showToast('Copied to clipboard');
+        }).catch(() => {
+            showToast('Failed to copy');
+        });
     }
 
     function clearAll() {
+        const inputArea = document.getElementById('inputArea');
+        const outputArea = document.getElementById('outputArea');
+        const inputCount = document.getElementById('inputCount');
+        const outputCount = document.getElementById('outputCount');
+        const secretKey = document.getElementById('secretKey');
+        
         inputArea.value = '';
         outputArea.value = '';
-        document.getElementById('secretKey').value = '';
+        if (secretKey) secretKey.value = '';
         inputCount.textContent = '0';
         outputCount.textContent = '0';
+        
+        showToast('Cleared');
     }
-
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2500);
-    }
-    </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
     </script>
 </body>
 </html>

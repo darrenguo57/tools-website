@@ -17,6 +17,9 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
     
+    <!-- CryptoJS Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+    
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
@@ -39,7 +42,71 @@
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
         
-        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+        /* Options Panel */
+        .options-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+        }
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .option-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+        }
+        .option-group select, .option-group input {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-size: 14px;
+            min-width: 150px;
+        }
+        .option-group input[type="text"], .option-group input[type="password"] {
+            min-width: 200px;
+        }
+        
+        /* Result Display */
+        .result-display {
+            background: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .result-display .result-label {
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        .result-display .result-value {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            word-break: break-all;
+            background: var(--color-bg);
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--color-border);
+            min-height: 60px;
+        }
+        
+        @media (max-width: 768px) {
+            .workspace-grid { grid-template-columns: 1fr; }
+            .options-panel { flex-direction: column; }
+            .option-group input, .option-group select { width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -82,32 +149,62 @@
                 
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
+                    <!-- Options Panel -->
+                    <div class="options-panel">
+                        <div class="option-group" style="flex: 1;">
+                            <label>Secret Key</label>
+                            <input type="password" id="hmacKey" placeholder="Your secret key">
+                        </div>
+                        <div class="option-group">
+                            <label>Algorithm</label>
+                            <select id="hmacAlgo">
+                                <option value="HMAC-SHA256">HMAC-SHA256</option>
+                                <option value="HMAC-SHA1">HMAC-SHA1</option>
+                                <option value="HMAC-MD5">HMAC-MD5</option>
+                                <option value="HMAC-SHA512">HMAC-SHA512</option>
+                            </select>
+                        </div>
+                        <div class="option-group">
+                            <label>Output Format</label>
+                            <select id="hmacFormat">
+                                <option value="Hex">Hex</option>
+                                <option value="Base64">Base64</option>
+                            </select>
+                        </div>
+                    </div>
+                    
                     <div class="workspace-grid">
                         <div>
                             <div class="textarea-label">
                                 <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                                <span>Message</span>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                                <textarea id="messageInput" placeholder="Enter message to hash..."></textarea>
                             </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                            <div class="char-count"><span id="messageCount">0</span> characters</div>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+                        <div class="full-width">
+                            <!-- Result Display -->
+                            <div class="result-display">
+                                <div class="result-label">
+                                    HMAC Result
+                                    <button class="btn btn-secondary" style="margin-left: auto; padding: 0.25rem 0.75rem; font-size: 12px;" onclick="copyResult()">
+                                        <i data-lucide="copy"></i> Copy
+                                    </button>
+                                </div>
+                                <div class="result-value" id="hmacResult">-</div>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
-                            </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
                     </div>
+                    
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                        <button class="btn btn-primary" onclick="calculateHMAC()">
+                            <i data-lucide="calculator"></i> Calculate HMAC
+                        </button>
+                        <button class="btn btn-danger" onclick="clearAll()">
+                            <i data-lucide="trash-2"></i> Clear
+                        </button>
                     </div>
                 </div>
                 
@@ -158,6 +255,15 @@
         if (typeof I18n !== 'undefined') {
             I18n.init();
         }
+        
+        // Input character counter
+        const messageInput = document.getElementById('messageInput');
+        const messageCount = document.getElementById('messageCount');
+        if (messageInput && messageCount) {
+            messageInput.addEventListener('input', () => {
+                messageCount.textContent = messageInput.value.length;
+            });
+        }
     });
     
     function showToast(msg) {
@@ -169,38 +275,22 @@
         }
     }
     
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
+    function calculateHMAC() {
+        if (typeof CryptoJS === 'undefined') {
+            showToast('CryptoJS library not loaded');
             return;
         }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
-    function calculateHMAC() {
+        
+        const messageInput = document.getElementById('messageInput');
+        const hmacKey = document.getElementById('hmacKey');
+        const hmacAlgo = document.getElementById('hmacAlgo');
+        const hmacFormat = document.getElementById('hmacFormat');
+        const hmacResult = document.getElementById('hmacResult');
+        
         const message = messageInput.value;
-        const key = document.getElementById('hmacKey').value.trim();
-        const algo = document.getElementById('hmacAlgo').value;
-        const format = document.getElementById('hmacFormat').value;
+        const key = hmacKey.value.trim();
+        const algo = hmacAlgo.value;
+        const format = hmacFormat.value;
 
         if (!message) { showToast('Please enter a message'); return; }
         if (!key) { showToast('Please enter a secret key'); return; }
@@ -225,45 +315,40 @@
             }
 
             const result = format === 'Hex' ? hash.toString(CryptoJS.enc.Hex) : hash.toString(CryptoJS.enc.Base64);
-            document.getElementById('hmacResult').textContent = result;
+            hmacResult.textContent = result;
             showToast('HMAC calculated successfully');
         } catch (e) {
-            document.getElementById('hmacResult').textContent = '-';
+            hmacResult.textContent = '-';
             showToast('Error: ' + e.message);
         }
     }
 
     function copyResult() {
         const result = document.getElementById('hmacResult').textContent;
-        if (!result || result === '-') { showToast('No result to copy'); return; }
-        navigator.clipboard.writeText(result).then(() => showToast('Copied to clipboard'));
+        if (!result || result === '-') {
+            showToast('No result to copy');
+            return;
+        }
+        navigator.clipboard.writeText(result).then(() => {
+            showToast('Copied to clipboard');
+        }).catch(() => {
+            showToast('Failed to copy');
+        });
     }
 
     function clearAll() {
+        const messageInput = document.getElementById('messageInput');
+        const hmacKey = document.getElementById('hmacKey');
+        const hmacResult = document.getElementById('hmacResult');
+        const messageCount = document.getElementById('messageCount');
+        
         messageInput.value = '';
-        document.getElementById('hmacKey').value = '';
-        document.getElementById('hmacResult').textContent = '-';
+        hmacKey.value = '';
+        hmacResult.textContent = '-';
         messageCount.textContent = '0';
+        
+        showToast('Cleared');
     }
-
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2500);
-    }
-    </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
     </script>
 </body>
 </html>

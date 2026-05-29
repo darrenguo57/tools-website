@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Json Visualizer - ToolBox</title>
-    <meta name="description" content="Json Visualizer tool">
-    
+    <title>JSON Visualizer - ToolBox</title>
+    <meta name="description" content="Visualize JSON data as a tree">
+
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
     <link rel="stylesheet" href="../../assets/css/tools.css">
-    
+
     <style>
         /* Tool Page Custom Styles */
         .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -38,7 +38,43 @@
         .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
+        .message-box { padding: 0.75rem 1rem; border-radius: var(--radius-md); margin-bottom: 1rem; font-size: 14px; display: none; }
+        .message-box.show { display: block; }
+        .error-box { background: rgba(220, 38, 38, 0.1); border: 1px solid rgba(220, 38, 38, 0.3); color: #dc2626; }
+        .success-box { background: rgba(22, 163, 74, 0.1); border: 1px solid rgba(22, 163, 74, 0.3); color: #16a34a; }
+
+        /* Stats Bar */
+        .stats-bar { display: flex; gap: 1rem; padding: 0.75rem; background: var(--color-bg-secondary); border-radius: var(--radius-md); margin-top: 1rem; flex-wrap: wrap; }
+        .stats-bar__item { font-size: 14px; }
+        .stats-bar__label { color: var(--color-text-tertiary); }
+        .stats-bar__value { font-weight: 600; margin-left: 0.25rem; }
+
+        /* JSON Tree Styles */
+        .json-tree { font-family: 'Courier New', monospace; font-size: 14px; line-height: 1.6; }
+        .json-tree-node { margin-left: 20px; }
+        .json-tree-toggle { cursor: pointer; user-select: none; }
+        .json-tree-toggle:hover { background: var(--color-bg-secondary); }
+        .json-tree-arrow { display: inline-block; width: 16px; transition: transform 0.2s; }
+        .json-tree-arrow.collapsed { transform: rotate(-90deg); }
+        .json-tree-children { margin-left: 20px; border-left: 1px dashed var(--color-border); padding-left: 10px; }
+        .json-tree-children.hidden { display: none; }
+        .json-tree-key { color: #2762d4; }
+        .json-tree-bracket { color: #666; }
+        .json-tree-count { color: #888; font-size: 12px; margin-left: 0.5rem; }
+        .type-icon { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 4px; font-size: 10px; font-weight: bold; margin: 0 4px; }
+        .type-icon.obj { background: #e3f2fd; color: #1565c0; }
+        .type-icon.arr { background: #f3e5f5; color: #7b1fa2; }
+        .type-icon.str { background: #e8f5e9; color: #2e7d32; }
+        .type-icon.num { background: #fff3e0; color: #ef6c00; }
+        .type-icon.bool { background: #fce4ec; color: #c2185b; }
+        .type-icon.nil { background: #eceff1; color: #546e7a; }
+        .json-tree-value-string { color: #0d7a3f; }
+        .json-tree-value-number { color: #b35900; }
+        .json-tree-value-boolean { color: #a020f0; }
+        .json-tree-value-null { color: #808080; }
+
+        .tree-output { background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 1rem; min-height: 300px; max-height: 500px; overflow: auto; }
+
         @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -65,52 +101,61 @@
             </div>
         </div>
     </header>
-    
+
     <!-- Breadcrumb -->
-    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_all" data-i18n="cat_all">Tools</a> / <span>Json Visualizer</span></div></div>
-    
+    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_formatters" data-i18n="cat_formatters">Formatters</a> / <span>JSON Visualizer</span></div></div>
+
     <!-- Main Content -->
     <main class="tool-page">
         <div class="container tool-layout">
             <div class="tool-main">
                 <!-- Tool Header -->
                 <div class="tool-header">
-                    <div class="tool-icon"><i data-lucide="tool"></i></div>
-                    <h1>Json Visualizer</h1>
-                    <p>Json Visualizer tool</p>
+                    <div class="tool-icon"><i data-lucide="file-json"></i></div>
+                    <h1>JSON Visualizer</h1>
+                    <p>Visualize JSON data as an interactive tree</p>
                 </div>
-                
+
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
+                    <!-- Message Boxes -->
+                    <div class="message-box error-box" id="errorMsg"></div>
+                    <div class="message-box success-box" id="successMsg"></div>
+
                     <div class="workspace-grid">
-                        <div>
+                        <div class="full-width">
                             <div class="textarea-label">
                                 <i data-lucide="file-text"></i>
                                 <span data-i18n="input_label">Input</span>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Paste JSON here..."></textarea>
                             </div>
                             <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
-                            </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
-                        </div>
                     </div>
+
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                        <button class="btn btn-primary" id="btnVisualize"><i data-lucide="file-json"></i><span>Visualize</span></button>
+                        <button class="btn btn-secondary" id="btnExpandAll"><i data-lucide="chevrons-down"></i><span data-i18n="btn_expand_all">Expand All</span></button>
+                        <button class="btn btn-secondary" id="btnCollapseAll"><i data-lucide="chevrons-up"></i><span data-i18n="btn_collapse_all">Collapse All</span></button>
+                        <button class="btn btn-secondary" id="btnPaste"><i data-lucide="clipboard"></i><span>Paste</span></button>
+                        <button class="btn btn-danger" id="btnClear"><i data-lucide="trash-2"></i><span>Clear</span></button>
+                    </div>
+
+                    <!-- Stats Bar -->
+                    <div class="stats-bar" id="statsBar" style="display:none;">
+                        <div class="stats-bar__item"><span class="stats-bar__label" id="statType">Root:</span></div>
+                        <div class="stats-bar__item"><span class="stats-bar__label" id="statKeys">Total keys:</span></div>
+                        <div class="stats-bar__item"><span class="stats-bar__label" id="statDepth">Max depth:</span></div>
+                    </div>
+
+                    <!-- Tree Output -->
+                    <div class="tree-output" id="treeOutput">
+                        <span style="color:#8b949e;">JSON tree visualization will appear here...</span>
                     </div>
                 </div>
-                
+
                 <!-- Ad Slot -->
                 <div class="ad-slot" style="margin-top:2rem">
                     <span data-i18n="ad_label">Advertisement</span>
@@ -123,7 +168,7 @@
             </aside>
         </div>
     </main>
-    
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container footer-container">
@@ -136,20 +181,20 @@
             <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
         </div>
     </footer>
-    
+
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
-    
+
     <!-- Back to Top -->
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
         <i data-lucide="chevron-up"></i>
     </button>
-    
+
     <!-- Scripts -->
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
@@ -158,209 +203,214 @@
         if (typeof I18n !== 'undefined') {
             I18n.init();
         }
-    });
-    
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        if (toast) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-    }
-    
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
-    function getTypeIcon(type) {
-        const icons = { object: '{', array: '[]', string: 'A', number: '#', boolean: '!?', null: '~' };
-        return '<span class="type-icon ' + ({object:'obj',array:'arr',string:'str',number:'num',boolean:'bool',null:'nil'}[type]) + '">' + (icons[type]||'?') + '</span>';
-      }
 
-      function getTypeClass(type) {
-        return 'json-tree-value-' + (type === 'null' ? 'null' : type);
-      }
-
-      function countKeys(obj) {
-        let count = 0;
-        if (obj && typeof obj === 'object') {
-          if (Array.isArray(obj)) {
-            count += obj.length;
-            obj.forEach(function(v) { count += countKeys(v); });
-          } else {
-            const keys = Object.keys(obj);
-            count += keys.length;
-            keys.forEach(function(k) { count += countKeys(obj[k]); });
-          }
-        }
-        return count;
-      }
-
-      function getDepth(obj) {
-        if (obj && typeof obj === 'object') {
-          if (Array.isArray(obj)) {
-            if (obj.length === 0) return 1;
-            return 1 + Math.max.apply(null, obj.map(getDepth));
-          } else {
-            const keys = Object.keys(obj);
-            if (keys.length === 0) return 1;
-            return 1 + Math.max.apply(null, keys.map(function(k) { return getDepth(obj[k]); }));
-          }
-        }
-        return 0;
-      }
-
-      function escapeHtml(str) {
-        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-      }
-
-      function buildTree(data, key, isLast) {
-        const type = data === null ? 'null' : Array.isArray(data) ? 'array' : typeof data;
-        const comma = isLast ? '' : '<span class="json-tree-bracket">,</span>';
-        let html = '';
-
-        if (type === 'object' || type === 'array') {
-          const isOpen = type === 'object' ? '{' : '[';
-          const isClose = type === 'object' ? '}' : ']';
-          const entries = type === 'array' ? data : Object.entries(data);
-          const count = type === 'array' ? data.length : Object.keys(data).length;
-          const id = 'node_' + Math.random().toString(36).substr(2, 9);
-
-          html += '<div class="json-tree-node">';
-          html += '<span class="json-tree-toggle" data-target="' + id + '">';
-          html += '<span class="json-tree-arrow">&#9660;</span>';
-          if (key !== null && key !== undefined) {
-            html += '<span class="json-tree-key">"' + escapeHtml(String(key)) + '"</span>: ';
-          }
-          html += getTypeIcon(type);
-          html += '<span class="json-tree-bracket">' + isOpen + '</span>';
-          html += '<span class="json-tree-count">' + count + ' ' + (type === 'array' ? 'items' : 'keys') + '</span>';
-          html += '</span>';
-          html += '<div class="json-tree-children" id="' + id + '">';
-
-          if (type === 'array') {
-            data.forEach(function(item, i) {
-              html += buildTree(item, null, i === data.length - 1);
-            });
-          } else {
-            const keys = Object.keys(data);
-            keys.forEach(function(k, i) {
-              html += buildTree(data[k], k, i === keys.length - 1);
-            });
-          }
-
-          html += '</div>';
-          html += '<span class="json-tree-bracket">' + isClose + '</span>' + comma;
-          html += '</div>';
-        } else {
-          html += '<div class="json-tree-node" style="margin-left:20px;">';
-          if (key !== null && key !== undefined) {
-            html += '<span class="json-tree-key">"' + escapeHtml(String(key)) + '"</span>: ';
-          }
-          html += getTypeIcon(type);
-          if (type === 'string') {
-            html += '<span class="' + getTypeClass(type) + '">"' + escapeHtml(String(data)) + '"</span>';
-          } else {
-            html += '<span class="' + getTypeClass(type) + '">' + String(data) + '</span>';
-          }
-          html += comma;
-          html += '</div>';
-        }
-
-        return html;
-      }
-
-      document.getElementById('btnVisualize').addEventListener('click', function() {
-        errorMsg.classList.remove('show');
-        const val = input.value.trim();
-        if (!val) { errorMsg.textContent = 'Please enter JSON data.'; errorMsg.classList.add('show'); return; }
-        try {
-          const obj = JSON.parse(val);
-          const type = Array.isArray(obj) ? 'Array' : typeof obj;
-          document.getElementById('statType').textContent = 'Root: ' + type;
-          document.getElementById('statKeys').textContent = 'Total keys/items: ' + countKeys(obj);
-          document.getElementById('statDepth').textContent = 'Max depth: ' + getDepth(obj);
-          statsBar.style.display = 'flex';
-          treeOutput.innerHTML = buildTree(obj, null, true);
-          attachToggleEvents();
-        } catch (e) {
-          errorMsg.textContent = 'Invalid JSON: ' + e.message;
-          errorMsg.classList.add('show');
-          treeOutput.innerHTML = '';
-          statsBar.style.display = 'none';
-        }
-      });
-
-      function attachToggleEvents() {
-        treeOutput.querySelectorAll('.json-tree-toggle').forEach(function(toggle) {
-          toggle.addEventListener('click', function() {
-            const targetId = this.getAttribute('data-target');
-            const target = document.getElementById(targetId);
-            const arrow = this.querySelector('.json-tree-arrow');
-            if (target) {
-              target.classList.toggle('hidden');
-              arrow.classList.toggle('collapsed');
-            }
-          });
-        });
-      }
-
-      document.getElementById('btnExpandAll').addEventListener('click', function() {
-        treeOutput.querySelectorAll('.json-tree-children').forEach(function(el) { el.classList.remove('hidden'); });
-        treeOutput.querySelectorAll('.json-tree-arrow').forEach(function(el) { el.classList.remove('collapsed'); });
-      });
-
-      document.getElementById('btnCollapseAll').addEventListener('click', function() {
-        treeOutput.querySelectorAll('.json-tree-children').forEach(function(el) { el.classList.add('hidden'); });
-        treeOutput.querySelectorAll('.json-tree-arrow').forEach(function(el) { el.classList.add('collapsed'); });
-      });
-
-      document.getElementById('btnClear').addEventListener('click', function() {
-        input.value = '';
-        treeOutput.innerHTML = '<span style="color:#8b949e;">JSON tree visualization will appear here...</span>';
-        statsBar.style.display = 'none';
-        errorMsg.classList.remove('show');
-      });
-
-      document.getElementById('btnPaste').addEventListener('click', function() {
-        navigator.clipboard.readText().then(function(text) { input.value = text; }).catch(function() { errorMsg.textContent = 'Failed to read clipboard.'; errorMsg.classList.add('show'); });
-      });
-    })();
-  </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
+        // Initialize character counter
         const inputArea = document.getElementById('inputArea');
         const inputCount = document.getElementById('inputCount');
+
         if (inputArea && inputCount) {
             inputArea.addEventListener('input', () => {
                 inputCount.textContent = inputArea.value.length;
             });
         }
+
+        // Variables
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+        const statsBar = document.getElementById('statsBar');
+        const treeOutput = document.getElementById('treeOutput');
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2500);
+            }
+        }
+
+        function showError(msg) {
+            errorMsg.textContent = msg;
+            errorMsg.classList.add('show');
+            successMsg.classList.remove('show');
+        }
+
+        function showSuccess(msg) {
+            successMsg.textContent = msg;
+            successMsg.classList.add('show');
+            errorMsg.classList.remove('show');
+        }
+
+        function clearMessages() {
+            errorMsg.classList.remove('show');
+            successMsg.classList.remove('show');
+        }
+
+        function getTypeIcon(type) {
+            const icons = { object: '{', array: '[]', string: 'A', number: '#', boolean: '!?', null: '~' };
+            return '<span class="type-icon ' + ({object:'obj',array:'arr',string:'str',number:'num',boolean:'bool',null:'nil'}[type]) + '">' + (icons[type]||'?') + '</span>';
+        }
+
+        function getTypeClass(type) {
+            return 'json-tree-value-' + (type === 'null' ? 'null' : type);
+        }
+
+        function countKeys(obj) {
+            let count = 0;
+            if (obj && typeof obj === 'object') {
+                if (Array.isArray(obj)) {
+                    count += obj.length;
+                    obj.forEach(function(v) { count += countKeys(v); });
+                } else {
+                    const keys = Object.keys(obj);
+                    count += keys.length;
+                    keys.forEach(function(k) { count += countKeys(obj[k]); });
+                }
+            }
+            return count;
+        }
+
+        function getDepth(obj) {
+            if (obj && typeof obj === 'object') {
+                if (Array.isArray(obj)) {
+                    if (obj.length === 0) return 1;
+                    return 1 + Math.max.apply(null, obj.map(getDepth));
+                } else {
+                    const keys = Object.keys(obj);
+                    if (keys.length === 0) return 1;
+                    return 1 + Math.max.apply(null, keys.map(function(k) { return getDepth(obj[k]); }));
+                }
+            }
+            return 0;
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function buildTree(data, key, isLast) {
+            const type = data === null ? 'null' : Array.isArray(data) ? 'array' : typeof data;
+            const comma = isLast ? '' : '<span class="json-tree-bracket">,</span>';
+            let html = '';
+
+            if (type === 'object' || type === 'array') {
+                const isOpen = type === 'object' ? '{' : '[';
+                const isClose = type === 'object' ? '}' : ']';
+                const entries = type === 'array' ? data : Object.entries(data);
+                const count = type === 'array' ? data.length : Object.keys(data).length;
+                const id = 'node_' + Math.random().toString(36).substr(2, 9);
+
+                html += '<div class="json-tree-node">';
+                html += '<span class="json-tree-toggle" data-target="' + id + '">';
+                html += '<span class="json-tree-arrow">&#9660;</span>';
+                if (key !== null && key !== undefined) {
+                    html += '<span class="json-tree-key">"' + escapeHtml(String(key)) + '"</span>: ';
+                }
+                html += getTypeIcon(type);
+                html += '<span class="json-tree-bracket">' + isOpen + '</span>';
+                html += '<span class="json-tree-count">' + count + ' ' + (type === 'array' ? 'items' : 'keys') + '</span>';
+                html += '</span>';
+                html += '<div class="json-tree-children" id="' + id + '">';
+
+                if (type === 'array') {
+                    data.forEach(function(item, i) {
+                        html += buildTree(item, null, i === data.length - 1);
+                    });
+                } else {
+                    const keys = Object.keys(data);
+                    keys.forEach(function(k, i) {
+                        html += buildTree(data[k], k, i === keys.length - 1);
+                    });
+                }
+
+                html += '</div>';
+                html += '<span class="json-tree-bracket">' + isClose + '</span>' + comma;
+                html += '</div>';
+            } else {
+                html += '<div class="json-tree-node" style="margin-left:20px;">';
+                if (key !== null && key !== undefined) {
+                    html += '<span class="json-tree-key">"' + escapeHtml(String(key)) + '"</span>: ';
+                }
+                html += getTypeIcon(type);
+                if (type === 'string') {
+                    html += '<span class="' + getTypeClass(type) + '">"' + escapeHtml(String(data)) + '"</span>';
+                } else {
+                    html += '<span class="' + getTypeClass(type) + '">' + String(data) + '</span>';
+                }
+                html += comma;
+                html += '</div>';
+            }
+
+            return html;
+        }
+
+        function attachToggleEvents() {
+            treeOutput.querySelectorAll('.json-tree-toggle').forEach(function(toggle) {
+                toggle.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const target = document.getElementById(targetId);
+                    const arrow = this.querySelector('.json-tree-arrow');
+                    if (target) {
+                        target.classList.toggle('hidden');
+                        arrow.classList.toggle('collapsed');
+                    }
+                });
+            });
+        }
+
+        // Visualize button
+        document.getElementById('btnVisualize').addEventListener('click', function() {
+            clearMessages();
+            const val = inputArea.value.trim();
+            if (!val) { showError('Please enter JSON data.'); return; }
+            try {
+                const obj = JSON.parse(val);
+                const type = Array.isArray(obj) ? 'Array' : typeof obj;
+                document.getElementById('statType').innerHTML = '<span class="stats-bar__label">Root:</span><span class="stats-bar__value">' + type + '</span>';
+                document.getElementById('statKeys').innerHTML = '<span class="stats-bar__label">Total keys:</span><span class="stats-bar__value">' + countKeys(obj) + '</span>';
+                document.getElementById('statDepth').innerHTML = '<span class="stats-bar__label">Max depth:</span><span class="stats-bar__value">' + getDepth(obj) + '</span>';
+                statsBar.style.display = 'flex';
+                treeOutput.innerHTML = '<div class="json-tree">' + buildTree(obj, null, true) + '</div>';
+                attachToggleEvents();
+                showSuccess('JSON visualized successfully!');
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            } catch (e) {
+                showError('Invalid JSON: ' + e.message);
+                treeOutput.innerHTML = '<span style="color:#8b949e;">JSON tree visualization will appear here...</span>';
+                statsBar.style.display = 'none';
+            }
+        });
+
+        // Expand All button
+        document.getElementById('btnExpandAll').addEventListener('click', function() {
+            treeOutput.querySelectorAll('.json-tree-children').forEach(function(el) { el.classList.remove('hidden'); });
+            treeOutput.querySelectorAll('.json-tree-arrow').forEach(function(el) { el.classList.remove('collapsed'); });
+        });
+
+        // Collapse All button
+        document.getElementById('btnCollapseAll').addEventListener('click', function() {
+            treeOutput.querySelectorAll('.json-tree-children').forEach(function(el) { el.classList.add('hidden'); });
+            treeOutput.querySelectorAll('.json-tree-arrow').forEach(function(el) { el.classList.add('collapsed'); });
+        });
+
+        // Paste button
+        document.getElementById('btnPaste').addEventListener('click', function() {
+            navigator.clipboard.readText().then(function(text) {
+                inputArea.value = text;
+                inputCount.textContent = text.length;
+            }).catch(function() {
+                showError('Failed to read clipboard.');
+            });
+        });
+
+        // Clear button
+        document.getElementById('btnClear').addEventListener('click', function() {
+            inputArea.value = '';
+            treeOutput.innerHTML = '<span style="color:#8b949e;">JSON tree visualization will appear here...</span>';
+            inputCount.textContent = '0';
+            statsBar.style.display = 'none';
+            clearMessages();
+        });
     });
     </script>
 </body>

@@ -16,7 +16,10 @@
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
-    
+
+    <!-- ECharts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts"></script>
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
@@ -38,7 +41,13 @@
         .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
+        .chart-controls { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .chart-controls label { display: flex; align-items: center; gap: 0.5rem; font-size: 14px; }
+        .chart-controls select, .chart-controls input { padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); }
+        .chart-container { position: relative; width: 100%; min-height: 500px; background: var(--color-surface); border-radius: var(--radius-lg); padding: 1rem; }
+        .sample-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .sample-buttons .btn { padding: 0.5rem 1rem; font-size: 13px; }
+
         @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -86,28 +95,43 @@
                         <div>
                             <div class="textarea-label">
                                 <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                                <span data-i18n="chart_type">Chart Type</span>
+                            </div>
+                            <div class="chart-controls">
+                                <label>
+                                    <span>Type:</span>
+                                    <select id="chartType">
+                                        <option value="heatmap">Heatmap</option>
+                                        <option value="sankey">Sankey</option>
+                                        <option value="funnel">Funnel</option>
+                                        <option value="candlestick">Candlestick</option>
+                                        <option value="sunburst">Sunburst</option>
+                                        <option value="boxplot">Boxplot</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="sample-buttons">
+                                <button class="btn btn-secondary sample-btn" data-type="heatmap">Heatmap Sample</button>
+                                <button class="btn btn-secondary sample-btn" data-type="sankey">Sankey Sample</button>
+                                <button class="btn btn-secondary sample-btn" data-type="funnel">Funnel Sample</button>
+                                <button class="btn btn-secondary sample-btn" data-type="candlestick">Candlestick Sample</button>
+                                <button class="btn btn-secondary sample-btn" data-type="sunburst">Sunburst Sample</button>
+                                <button class="btn btn-secondary sample-btn" data-type="boxplot">Boxplot Sample</button>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                                <textarea id="jsonInput" style="min-height: 300px;" placeholder='{"xLabels": [...], "yLabels": [...], "data": [...]}'></textarea>
                             </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
-                        </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+                            <div class="btn-group">
+                                <button class="btn btn-secondary" id="btnFormat"><i data-lucide="code"></i><span data-i18n="btn_format_json">Format JSON</span></button>
+                                <button class="btn btn-primary" id="btnGenerate"><i data-lucide="play"></i><span>Generate</span></button>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
-                            </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
                     </div>
+                    <div class="chart-container">
+                        <div id="echartPreview" style="width: 100%; height: 500px;"></div>
+                    </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                        <button class="btn btn-secondary" id="btnDownloadPNG"><i data-lucide="download"></i><span data-i18n="btn_download_png">Download PNG</span></button>
                     </div>
                 </div>
                 
@@ -149,8 +173,38 @@
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
+    // Global variables
+    let myChart = null;
+    const sampleData = {
+      heatmap: {
+        xLabels: ['A', 'B', 'C', 'D', 'E'],
+        yLabels: ['W', 'X', 'Y', 'Z'],
+        data: [[0, 2, 5, 3, 7], [8, 1, 6, 4, 2], [3, 9, 2, 8, 1], [5, 3, 7, 6, 4]]
+      },
+      sankey: {
+        nodes: [{name: 'A'}, {name: 'B'}, {name: 'C'}, {name: 'D'}, {name: 'E'}],
+        links: [{source: 'A', target: 'C', value: 30}, {source: 'B', target: 'C', value: 20}, {source: 'C', target: 'D', value: 35}, {source: 'C', target: 'E', value: 15}]
+      },
+      funnel: ['Electronics', 'Visitors', 'Leads', 'Qualified', 'Customers'].map((v, i) => ({name: v, value: 100 - i * 15})),
+      candlestick: {
+        dates: ['2024-01', '2024-02', '2024-03', '2024-04', '2024-05'],
+        values: [[2320, 2340, 2300, 2380], [2190, 2210, 2180, 2250], [2260, 2280, 2240, 2320], [2180, 2200, 2150, 2230], [2350, 2370, 2330, 2400]]
+      },
+      sunburst: [
+        {name: 'Root', children: [
+          {name: 'A', value: 40, children: [{name: 'A1', value: 20}, {name: 'A2', value: 20}]},
+          {name: 'B', value: 35, children: [{name: 'B1', value: 15}, {name: 'B2', value: 20}]},
+          {name: 'C', value: 25, children: [{name: 'C1', value: 10}, {name: 'C2', value: 15}]}
+        ]}
+      ],
+      boxplot: {
+        categories: ['Group A', 'Group B', 'Group C', 'Group D'],
+        data: [[850, 740, 900, 1070, 930, 850, 950], [980, 880, 960, 940, 880, 900, 1000], [960, 940, 960, 940, 880, 880, 960]]
+      }
+    };
+
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
@@ -295,17 +349,5 @@
     document.getElementById('jsonInput').value = getSampleJSON('heatmap');
   })();
   </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
-    </script>
 </body>
 </html>

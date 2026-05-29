@@ -38,7 +38,12 @@
         .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
+        .textarea-wrap { position: relative; }
+        .textarea-wrap textarea { width: 100%; min-height: 150px; padding: 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px; resize: vertical; background: var(--color-bg); color: var(--color-text); box-sizing: border-box; }
+        .textarea-wrap textarea:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .chart-container { position: relative; width: 100%; min-height: 500px; background: var(--color-surface); border-radius: var(--radius-lg); padding: 1rem; overflow: auto; }
+        .chart-container canvas { display: block; margin: 0 auto; }
+
         @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -86,28 +91,27 @@
                         <div>
                             <div class="textarea-label">
                                 <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                                <span data-i18n="mindmap_text">Mind Map Text</span>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                                <textarea id="mindmapInput" placeholder="Enter mind map structure...&#10;Use indentation for hierarchy&#10;&#10;Example:&#10;Central Topic&#10;  Subtopic 1&#10;    Detail A&#10;    Detail B&#10;  Subtopic 2&#10;    Detail C">Central Topic
+  Subtopic 1
+    Detail A
+    Detail B
+  Subtopic 2
+    Detail C
+  Subtopic 3</textarea>
                             </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
-                        </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+                            <div class="btn-group">
+                                <button class="btn btn-primary" id="btnGenerate"><i data-lucide="play"></i><span>Generate</span></button>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
-                            </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
                     </div>
+                    <div class="chart-container">
+                        <canvas id="mindmapCanvas"></canvas>
+                    </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                        <button class="btn btn-secondary" id="btnDownloadPNG"><i data-lucide="download"></i><span data-i18n="btn_download_png">Download PNG</span></button>
                     </div>
                 </div>
                 
@@ -149,8 +153,15 @@
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
+    // Global variables
+    const canvas = document.getElementById('mindmapCanvas');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+    let treeRoot = null;
+    let allNodes = [];
+    const colors = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#06B6D4'];
+
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
@@ -345,17 +356,5 @@
     });
   })();
   </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
-    </script>
 </body>
 </html>

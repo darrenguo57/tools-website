@@ -38,7 +38,12 @@
         .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
+        .gauge-controls { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
+        .gauge-controls label { display: flex; align-items: center; gap: 0.5rem; font-size: 14px; }
+        .gauge-controls input[type="range"] { width: 150px; }
+        .chart-container { position: relative; width: 100%; min-height: 350px; background: var(--color-surface); border-radius: var(--radius-lg); padding: 1rem; display: flex; justify-content: center; align-items: center; }
+        .chart-container canvas { max-width: 100%; }
+
         @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -85,29 +90,49 @@
                     <div class="workspace-grid">
                         <div>
                             <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                                <i data-lucide="gauge"></i>
+                                <span data-i18n="gauge_config">Gauge Configuration</span>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                            <div class="gauge-controls">
+                                <label>
+                                    <span>Value: </span>
+                                    <input type="range" id="gaugeValue" min="0" max="100" value="65">
+                                    <span id="gaugeValueDisplay">65%</span>
+                                </label>
+                                <label>
+                                    <span>Min:</span>
+                                    <input type="number" id="gaugeMin" value="0" style="width: 60px;">
+                                </label>
+                                <label>
+                                    <span>Max:</span>
+                                    <input type="number" id="gaugeMax" value="100" style="width: 60px;">
+                                </label>
                             </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
-                        </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+                            <div class="gauge-controls">
+                                <label>
+                                    <span>Color:</span>
+                                    <input type="color" id="gaugeColor" value="#10B981" style="width: 50px; height: 32px; cursor: pointer;">
+                                </label>
+                                <label>
+                                    <span>Background:</span>
+                                    <input type="color" id="gaugeBg" value="#E5E7EB" style="width: 50px; height: 32px; cursor: pointer;">
+                                </label>
+                                <label>
+                                    <span>Thickness:</span>
+                                    <input type="range" id="gaugeThickness" min="5" max="30" value="15" style="width: 100px;">
+                                    <span id="gaugeThicknessDisplay">15px</span>
+                                </label>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            <div class="btn-group">
+                                <button class="btn btn-primary" id="btnGenerate"><i data-lucide="play"></i><span>Generate</span></button>
                             </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
                     </div>
+                    <div class="chart-container">
+                        <canvas id="gaugeCanvas" width="300" height="300"></canvas>
+                    </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                        <button class="btn btn-secondary" id="btnDownloadPNG"><i data-lucide="download"></i><span data-i18n="btn_download_png">Download PNG</span></button>
                     </div>
                 </div>
                 
@@ -149,8 +174,12 @@
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
+    // Global variables
+    const canvas = document.getElementById('gaugeCanvas');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
@@ -335,17 +364,5 @@
     });
   })();
   </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
-    </script>
 </body>
 </html>

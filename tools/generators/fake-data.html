@@ -5,41 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fake Data - ToolBox</title>
     <meta name="description" content="Generate fake data">
-    
+
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
     <link rel="stylesheet" href="../../assets/css/tools.css">
-    
+
     <style>
         /* Tool Page Custom Styles */
-        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .workspace-grid .full-width { grid-column: 1 / -1; }
-        .textarea-wrap { position: relative; }
-        .textarea-wrap textarea, .textarea-wrap input {
-            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
-            resize: vertical; background: var(--color-bg); color: var(--color-text);
-            box-sizing: border-box;
+        .fake-options { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); border: 1px solid var(--color-border-light); }
+        .fake-option { display: flex; flex-direction: column; gap: 0.25rem; }
+        .fake-option label { font-size: var(--font-size-sm); color: var(--color-text-secondary); font-weight: 500; }
+        .fake-option input, .fake-option select { padding: 0.5rem 0.75rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); font-size: var(--font-size-sm); min-width: 120px; }
+        .fake-option input:focus, .fake-option select:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .data-types { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .data-type-chip { display: flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.75rem; background: var(--color-bg); border: 1px solid var(--color-border); border-radius: 999px; cursor: pointer; transition: all 0.2s; }
+        .data-type-chip:hover { border-color: var(--color-primary); }
+        .data-type-chip input { display: none; }
+        .data-type-chip.selected { background: var(--color-primary); color: white; border-color: var(--color-primary); }
+        .data-type-chip span { font-size: var(--font-size-sm); }
+        .fake-output { min-height: 200px; padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); border: 1px solid var(--color-border-light); overflow-x: auto; }
+        .fake-output table.data-table { width: 100%; border-collapse: collapse; font-size: var(--font-size-sm); }
+        .fake-output table.data-table th, .fake-output table.data-table td { padding: 0.5rem; border: 1px solid var(--color-border); text-align: left; }
+        .fake-output table.data-table th { background: var(--color-bg); font-weight: 600; }
+        .fake-output pre { margin: 0; white-space: pre-wrap; word-break: break-all; font-family: var(--font-family-mono); font-size: var(--font-size-sm); }
+        .output-tabs { display: flex; gap: 0.25rem; margin-bottom: 1rem; }
+        .output-tab { padding: 0.5rem 1rem; background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-md); cursor: pointer; font-size: var(--font-size-sm); transition: all 0.2s; }
+        .output-tab:hover { border-color: var(--color-primary); }
+        .output-tab.active { background: var(--color-primary); color: white; border-color: var(--color-primary); }
+        .fake-actions { display: flex; gap: 0.5rem; margin-top: 1rem; justify-content: center; flex-wrap: wrap; }
+
+        @media (max-width: 768px) {
+            .fake-options { flex-direction: column; }
+            .fake-option { width: 100%; }
+            .fake-option input, .fake-option select { width: 100%; }
         }
-        .textarea-wrap input { min-height: auto; resize: none; }
-        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
-        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
-        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
-        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -65,10 +76,10 @@
             </div>
         </div>
     </header>
-    
+
     <!-- Breadcrumb -->
     <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_generators" data-i18n="cat_generators">Generators</a> / <span>Fake Data</span></div></div>
-    
+
     <!-- Main Content -->
     <main class="tool-page">
         <div class="container tool-layout">
@@ -77,40 +88,55 @@
                 <div class="tool-header">
                     <div class="tool-icon"><i data-lucide="database"></i></div>
                     <h1>Fake Data</h1>
-                    <p>Generate fake data</p>
+                    <p>Generate fake data for testing</p>
                 </div>
-                
+
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
                     <div class="workspace-grid">
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                        <!-- Options Panel -->
+                        <div class="full-width">
+                            <div class="fake-options">
+                                <div class="fake-option">
+                                    <label data-i18n="data_types">Data Types</label>
+                                    <div class="data-types">
+                                        <label class="data-type-chip selected"><input type="checkbox" value="name" checked><span>Name</span></label>
+                                        <label class="data-type-chip selected"><input type="checkbox" value="email" checked><span>Email</span></label>
+                                        <label class="data-type-chip"><input type="checkbox" value="phone"><span>Phone</span></label>
+                                        <label class="data-type-chip"><input type="checkbox" value="address"><span>Address</span></label>
+                                        <label class="data-type-chip"><input type="checkbox" value="company"><span>Company</span></label>
+                                        <label class="data-type-chip"><input type="checkbox" value="creditCard"><span data-i18n="credit_card">Credit Card</span></label>
+                                        <label class="data-type-chip"><input type="checkbox" value="ip"><span>IP Address</span></label>
+                                        <label class="data-type-chip"><input type="checkbox" value="date"><span>Date</span></label>
+                                        <label class="data-type-chip"><input type="checkbox" value="url"><span>URL</span></label>
+                                    </div>
+                                </div>
+                                <div class="fake-option">
+                                    <label for="fakeCount">Count</label>
+                                    <input type="number" id="fakeCount" value="5" min="1" max="100">
+                                </div>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
-                            </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+
+                        <!-- Results Panel -->
+                        <div class="full-width">
+                            <div class="output-tabs">
+                                <button class="output-tab active" data-format="table">Table</button>
+                                <button class="output-tab" data-format="json">JSON</button>
+                                <button class="output-tab" data-format="csv">CSV</button>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            <div class="fake-output" id="fakeOutput">
+                                <p style="color: var(--color-text-tertiary); text-align: center;">Click "Generate" to create fake data</p>
                             </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                            <div class="fake-actions">
+                                <button class="btn btn-primary" id="btnGenerate"><i data-lucide="play"></i><span>Generate</span></button>
+                                <button class="btn btn-secondary" id="btnCopy"><i data-lucide="copy"></i><span>Copy</span></button>
+                                <button class="btn btn-secondary" id="btnDownload"><i data-lucide="download"></i><span>Download</span></button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
                 </div>
-                
+
                 <!-- Ad Slot -->
                 <div class="ad-slot" style="margin-top:2rem">
                     <span data-i18n="ad_label">Advertisement</span>
@@ -123,7 +149,7 @@
             </aside>
         </div>
     </main>
-    
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container footer-container">
@@ -136,255 +162,222 @@
             <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
         </div>
     </footer>
-    
+
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
-    
+
     <!-- Back to Top -->
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
         <i data-lucide="chevron-up"></i>
     </button>
-    
+
     <!-- Scripts -->
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-        if (typeof I18n !== 'undefined') {
-            I18n.init();
-        }
-    });
-    
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        if (toast) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-    }
-    
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
-    function getSelectedTypes() {
-        return Array.from(document.querySelectorAll('.data-type-chip input:checked')).map(cb => cb.value);
-      }
+    (function() {
+        // Data lists
+        const FIRST_NAMES = ['James', 'Mary', 'John', 'Patricia', 'Robert', 'Jennifer', 'Michael', 'Linda', 'William', 'Elizabeth', 'David', 'Barbara', 'Richard', 'Susan', 'Joseph', 'Jessica', 'Thomas', 'Sarah', 'Charles', 'Karen', 'Daniel', 'Nancy', 'Matthew', 'Lisa', 'Anthony', 'Betty', 'Mark', 'Margaret', 'Donald', 'Sandra', 'Steven', 'Ashley', 'Paul', 'Kimberly', 'Andrew', 'Emily', 'Joshua', 'Donna', 'Kenneth', 'Michelle'];
+        const LAST_NAMES = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez', 'Hernandez', 'Lopez', 'Gonzalez', 'Wilson', 'Anderson', 'Thomas', 'Taylor', 'Moore', 'Jackson', 'Martin', 'Lee', 'Perez', 'Thompson', 'White', 'Harris', 'Sanchez', 'Clark', 'Ramirez', 'Lewis', 'Robinson', 'Walker', 'Young', 'Allen', 'King', 'Wright', 'Scott', 'Torres', 'Nguyen', 'Hill', 'Flores'];
+        const DOMAINS = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'icloud.com', 'protonmail.com', 'mail.com', 'aol.com'];
+        const STREETS = ['Main St', 'Oak Ave', 'Maple Dr', 'Cedar Ln', 'Pine Rd', 'Elm St', 'Washington Blvd', 'Park Ave', 'Lake Dr', 'Hill Rd', 'Forest Way', 'River Rd', 'Spring St', 'Valley Dr', 'Sunset Blvd'];
+        const CITIES = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose', 'Austin', 'Jacksonville', 'Fort Worth', 'Columbus', 'Charlotte', 'Seattle', 'Denver', 'Boston', 'Portland', 'Miami'];
+        const STATES = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'];
+        const COMPANIES = ['TechCorp', 'GlobalSoft', 'DataSystems', 'CloudNet', 'WebWorks', 'InfoTech', 'CyberSolutions', 'DigitalVentures', 'SmartApps', 'InnovateTech', 'FutureTech', 'NextGenSoftware', 'PrimeLogic', 'EliteComputing', 'ApexIndustries'];
+        const COLORS = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFA500', '#800080', '#FFC0CB', '#808080', '#000080', '#008000', '#800000', '#000000', '#FFFFFF'];
+        const USERNAMES = ['user', 'admin', 'john', 'jane', 'dev', 'test', 'cool', 'super', 'the', 'mr', 'ms', 'dr'];
 
-      // ===== Random helpers =====
-      function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-      function randInt(min, max) { const a = new Uint32Array(1); crypto.getRandomValues(a); return Math.floor(a[0] / (0xFFFFFFFF + 1) * (max - min + 1)) + min; }
+        const fakeOutput = document.getElementById('fakeOutput');
+        let currentData = [];
+        let currentFormat = 'table';
 
-      // ===== Data generators =====
-      const generators = {
-        name: () => pick(FIRST_NAMES) + ' ' + pick(LAST_NAMES),
-        email: () => {
-          const first = pick(FIRST_NAMES).toLowerCase();
-          const last = pick(LAST_NAMES).toLowerCase();
-          const sep = pick(['.', '_', '']);
-          const num = Math.random() > 0.5 ? randInt(1, 999) : '';
-          return first + sep + last + num + '@' + pick(DOMAINS);
-        },
-        phone: () => {
-          const area = randInt(200, 999);
-          const mid = randInt(200, 999);
-          const end = randInt(1000, 9999);
-          return '(' + area + ') ' + mid + '-' + end;
-        },
-        address: () => randInt(1, 9999) + ' ' + pick(STREETS) + ', ' + pick(CITIES) + ', ' + pick(STATES) + ' ' + randInt(10000, 99999),
-        company: () => pick(COMPANIES),
-        creditCard: () => {
-          const prefixes = ['4', '51', '52', '53', '54', '55', '37', '6011'];
-          let num = pick(prefixes);
-          while (num.length < 16) num += randInt(0, 9);
-          return num.slice(0,4) + ' ' + num.slice(4,8) + ' ' + num.slice(8,12) + ' ' + num.slice(12,16);
-        },
-        ip: () => randInt(1, 255) + '.' + randInt(0, 255) + '.' + randInt(0, 255) + '.' + randInt(1, 254),
-        mac: () => {
-          const hex = () => randInt(0, 255).toString(16).padStart(2, '0').toUpperCase();
-          return hex() + ':' + hex() + ':' + hex() + ':' + hex() + ':' + hex() + ':' + hex();
-        },
-        date: () => {
-          const y = randInt(1970, 2026);
-          const m = String(randInt(1, 12)).padStart(2, '0');
-          const d = String(randInt(1, 28)).padStart(2, '0');
-          return y + '-' + m + '-' + d;
-        },
-        url: () => {
-          const protocols = ['https://', 'http://'];
-          const subs = ['www.', 'app.', 'api.', 'blog.', ''];
-          const names = ['example','test','demo','sample','myapp','project','site','portal','dashboard','platform'];
-          const tlds = ['.com','.org','.net','.io','.dev','.app','.co','.tech'];
-          const paths = ['','/home','/about','/api/v1','/users','/dashboard','/products','/blog','/contact',''];
-          return pick(protocols) + pick(subs) + pick(names) + randInt(1, 999) + pick(tlds) + pick(paths);
-        },
-        username: () => {
-          const prefixes = ['user','admin','john','jane','dev','test','cool','super','the','mr','ms','dr'];
-          const suffixes = ['smith','dev','coder','pro','master','guru','ninja','geek','fan','hero','wiz','star'];
-          const num = Math.random() > 0.5 ? randInt(1, 9999) : '';
-          return pick(prefixes) + pick(suffixes) + num;
-        },
-        color: () => pick(COLORS)
-      };
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            if (typeof I18n !== 'undefined') {
+                I18n.init();
+            }
 
-      const typeLabels = {
-        name: 'Name', email: 'Email', phone: 'Phone', address: 'Address', company: 'Company',
-        creditCard: 'Credit Card', ip: 'IP Address', mac: 'MAC Address', date: 'Date', url: 'URL',
-        username: 'Username', color: 'Color'
-      };
-
-      // ===== Output tabs =====
-      document.querySelectorAll('.output-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-          document.querySelectorAll('.output-tab').forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-          currentFormat = tab.dataset.format;
-          if (currentData.length > 0) renderOutput();
-        });
-      });
-
-      // ===== Generate =====
-      const outputEl = document.getElementById('fakeOutput');
-
-      function escapeHtml(str) {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-      }
-
-      function generateData() {
-        const types = getSelectedTypes();
-        if (types.length === 0) {
-          outputEl.innerHTML = '<div class="tool-output__content tool-output__error">Please select at least one data type.</div>';
-          return;
-        }
-        let count = parseInt(document.getElementById('fakeCount').value) || 5;
-        count = Math.max(1, Math.min(500, count));
-
-        currentData = [];
-        for (let i = 0; i < count; i++) {
-          const record = {};
-          types.forEach(type => {
-            record[type] = generators[type]();
-          });
-          currentData.push(record);
-        }
-        renderOutput();
-      }
-
-      function renderOutput() {
-        if (currentData.length === 0) return;
-        const types = Object.keys(currentData[0]);
-
-        if (currentFormat === 'table') {
-          let html = '<table class="data-table"><thead><tr><th>#</th>';
-          types.forEach(t => html += '<th>' + escapeHtml(typeLabels[t]) + '</th>');
-          html += '</tr></thead><tbody>';
-          currentData.forEach((row, i) => {
-            html += '<tr><td>' + (i + 1) + '</td>';
-            types.forEach(t => html += '<td>' + escapeHtml(row[t]) + '</td>');
-            html += '</tr>';
-          });
-          html += '</tbody></table>';
-          outputEl.innerHTML = html;
-        } else if (currentFormat === 'json') {
-          const json = JSON.stringify(currentData, null, 2);
-          outputEl.innerHTML = '<pre class="tool-output__content" style="margin:0;white-space:pre-wrap;word-break:break-all;">' + escapeHtml(json) + '</pre>';
-        } else {
-          let csv = types.map(t => '"' + typeLabels[t] + '"').join(',') + '\n';
-          currentData.forEach(row => {
-            csv += types.map(t => '"' + row[t].replace(/"/g, '""') + '"').join(',') + '\n';
-          });
-          outputEl.innerHTML = '<pre class="tool-output__content" style="margin:0;white-space:pre-wrap;word-break:break-all;">' + escapeHtml(csv) + '</pre>';
-        }
-      }
-
-      function getOutputText() {
-        if (currentData.length === 0) return '';
-        const types = Object.keys(currentData[0]);
-        if (currentFormat === 'json') return JSON.stringify(currentData, null, 2);
-        if (currentFormat === 'csv') {
-          let csv = types.map(t => '"' + typeLabels[t] + '"').join(',') + '\n';
-          currentData.forEach(row => csv += types.map(t => '"' + row[t].replace(/"/g, '""') + '"').join(',') + '\n');
-          return csv;
-        }
-        // table -> tsv
-        let tsv = types.map(t => typeLabels[t]).join('\t') + '\n';
-        currentData.forEach(row => tsv += types.map(t => row[t]).join('\t') + '\n');
-        return tsv;
-      }
-
-      document.getElementById('btnGenerate').addEventListener('click', generateData);
-
-      document.getElementById('btnCopy').addEventListener('click', () => {
-        const text = getOutputText();
-        if (!text) return;
-        navigator.clipboard.writeText(text);
-      });
-
-      document.getElementById('btnDownload').addEventListener('click', () => {
-        const text = getOutputText();
-        if (!text) return;
-        const ext = currentFormat === 'json' ? 'json' : currentFormat === 'csv' ? 'csv' : 'tsv';
-        const mime = currentFormat === 'json' ? 'application/json' : 'text/plain';
-        const blob = new Blob([text], { type: mime });
-        const link = document.createElement('a');
-        link.download = 'fake-data.' + ext;
-        link.href = URL.createObjectURL(blob);
-        link.click();
-        URL.revokeObjectURL(link.href);
-      });
-
-      // Sync format dropdown with tabs
-      document.getElementById('fakeFormat').addEventListener('change', (e) => {
-        currentFormat = e.target.value;
-        document.querySelectorAll('.output-tab').forEach(t => {
-          t.classList.toggle('active', t.dataset.format === currentFormat);
-        });
-        if (currentData.length > 0) renderOutput();
-      });
-    })();
-  </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
+            // Data type chip selection
+            document.querySelectorAll('.data-type-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    chip.classList.toggle('selected');
+                    chip.querySelector('input').checked = chip.classList.contains('selected');
+                });
             });
+
+            // Output tabs
+            document.querySelectorAll('.output-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.output-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentFormat = tab.dataset.format;
+                    if (currentData.length > 0) renderOutput();
+                });
+            });
+
+            // Generate button
+            document.getElementById('btnGenerate').addEventListener('click', generateData);
+
+            // Copy button
+            document.getElementById('btnCopy').addEventListener('click', () => {
+                const text = getOutputText();
+                if (!text) return;
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+                });
+            });
+
+            // Download button
+            document.getElementById('btnDownload').addEventListener('click', () => {
+                const text = getOutputText();
+                if (!text) return;
+                const ext = currentFormat === 'json' ? 'json' : currentFormat === 'csv' ? 'csv' : 'tsv';
+                const mime = currentFormat === 'json' ? 'application/json' : 'text/plain';
+                const blob = new Blob([text], { type: mime });
+                const link = document.createElement('a');
+                link.download = 'fake-data.' + ext;
+                link.href = URL.createObjectURL(blob);
+                link.click();
+                URL.revokeObjectURL(link.href);
+                showToast('Downloaded!');
+            });
+
+            // Auto-generate on load
+            generateData();
+        });
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2500);
+            }
         }
-    });
+
+        function getSelectedTypes() {
+            return Array.from(document.querySelectorAll('.data-type-chip input:checked')).map(cb => cb.value);
+        }
+
+        function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+        function randInt(min, max) { const a = new Uint32Array(1); crypto.getRandomValues(a); return Math.floor(a[0] / (0xFFFFFFFF + 1) * (max - min + 1)) + min; }
+
+        const generators = {
+            name: () => pick(FIRST_NAMES) + ' ' + pick(LAST_NAMES),
+            email: () => {
+                const first = pick(FIRST_NAMES).toLowerCase();
+                const last = pick(LAST_NAMES).toLowerCase();
+                const sep = pick(['.', '_', '']);
+                const num = Math.random() > 0.5 ? randInt(1, 999) : '';
+                return first + sep + last + num + '@' + pick(DOMAINS);
+            },
+            phone: () => {
+                const area = randInt(200, 999);
+                const mid = randInt(200, 999);
+                const end = randInt(1000, 9999);
+                return '(' + area + ') ' + mid + '-' + end;
+            },
+            address: () => randInt(1, 9999) + ' ' + pick(STREETS) + ', ' + pick(CITIES) + ', ' + pick(STATES) + ' ' + randInt(10000, 99999),
+            company: () => pick(COMPANIES),
+            creditCard: () => {
+                const prefixes = ['4', '51', '52', '53', '54', '55', '37', '6011'];
+                let num = pick(prefixes);
+                while (num.length < 16) num += randInt(0, 9);
+                return num.slice(0,4) + ' ' + num.slice(4,8) + ' ' + num.slice(8,12) + ' ' + num.slice(12,16);
+            },
+            ip: () => randInt(1, 255) + '.' + randInt(0, 255) + '.' + randInt(0, 255) + '.' + randInt(1, 254),
+            date: () => {
+                const y = randInt(1970, 2026);
+                const m = String(randInt(1, 12)).padStart(2, '0');
+                const d = String(randInt(1, 28)).padStart(2, '0');
+                return y + '-' + m + '-' + d;
+            },
+            url: () => {
+                const protocols = ['https://', 'http://'];
+                const subs = ['www.', 'app.', 'api.', 'blog.', ''];
+                const names = ['example','test','demo','sample','myapp','project','site','portal','dashboard','platform'];
+                const tlds = ['.com','.org','.net','.io','.dev','.app','.co','.tech'];
+                const paths = ['','/home','/about','/api/v1','/users','/dashboard','/products','/blog','/contact',''];
+                return pick(protocols) + pick(subs) + pick(names) + randInt(1, 999) + pick(tlds) + pick(paths);
+            }
+        };
+
+        const typeLabels = {
+            name: 'Name', email: 'Email', phone: 'Phone', address: 'Address', company: 'Company',
+            creditCard: 'Credit Card', ip: 'IP Address', date: 'Date', url: 'URL'
+        };
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function generateData() {
+            const types = getSelectedTypes();
+            if (types.length === 0) {
+                fakeOutput.innerHTML = '<p style="color: var(--color-error); text-align: center;">Please select at least one data type.</p>';
+                return;
+            }
+            let count = parseInt(document.getElementById('fakeCount').value) || 5;
+            count = Math.max(1, Math.min(100, count));
+
+            currentData = [];
+            for (let i = 0; i < count; i++) {
+                const record = {};
+                types.forEach(type => {
+                    record[type] = generators[type]();
+                });
+                currentData.push(record);
+            }
+            renderOutput();
+        }
+
+        function renderOutput() {
+            if (currentData.length === 0) return;
+            const types = Object.keys(currentData[0]);
+
+            if (currentFormat === 'table') {
+                let html = '<table class="data-table"><thead><tr><th>#</th>';
+                types.forEach(t => html += '<th>' + escapeHtml(typeLabels[t]) + '</th>');
+                html += '</tr></thead><tbody>';
+                currentData.forEach((row, i) => {
+                    html += '<tr><td>' + (i + 1) + '</td>';
+                    types.forEach(t => html += '<td>' + escapeHtml(row[t]) + '</td>');
+                    html += '</tr>';
+                });
+                html += '</tbody></table>';
+                fakeOutput.innerHTML = html;
+            } else if (currentFormat === 'json') {
+                const json = JSON.stringify(currentData, null, 2);
+                fakeOutput.innerHTML = '<pre>' + escapeHtml(json) + '</pre>';
+            } else {
+                let csv = types.map(t => '"' + typeLabels[t] + '"').join(',') + '\n';
+                currentData.forEach(row => {
+                    csv += types.map(t => '"' + row[t].replace(/"/g, '""') + '"').join(',') + '\n';
+                });
+                fakeOutput.innerHTML = '<pre>' + escapeHtml(csv) + '</pre>';
+            }
+        }
+
+        function getOutputText() {
+            if (currentData.length === 0) return '';
+            const types = Object.keys(currentData[0]);
+            if (currentFormat === 'json') return JSON.stringify(currentData, null, 2);
+            if (currentFormat === 'csv') {
+                let csv = types.map(t => '"' + typeLabels[t] + '"').join(',') + '\n';
+                currentData.forEach(row => csv += types.map(t => '"' + row[t].replace(/"/g, '""') + '"').join(',') + '\n');
+                return csv;
+            }
+            let tsv = types.map(t => typeLabels[t]).join('\t') + '\n';
+            currentData.forEach(row => tsv += types.map(t => row[t]).join('\t') + '\n');
+            return tsv;
+        }
+    })();
     </script>
 </body>
 </html>

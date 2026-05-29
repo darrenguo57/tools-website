@@ -17,6 +17,9 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
     
+    <!-- JSEncrypt Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.3.2/jsencrypt.min.js"></script>
+    
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
@@ -39,7 +42,96 @@
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
         
-        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+        /* Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--color-border);
+            background: var(--color-bg);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .tab-btn:hover { background: var(--color-bg-secondary); }
+        .tab-btn.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        /* Key Display */
+        .key-display {
+            background: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .key-display .key-label {
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .key-display .key-value {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            word-break: break-all;
+            background: var(--color-bg);
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--color-border);
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        /* Options Panel */
+        .options-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+        }
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .option-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+        }
+        .option-group select, .option-group input {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-size: 14px;
+            min-width: 150px;
+        }
+        
+        @media (max-width: 768px) {
+            .workspace-grid { grid-template-columns: 1fr; }
+            .options-panel { flex-direction: column; }
+        }
     </style>
 </head>
 <body>
@@ -82,32 +174,103 @@
                 
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
-                    <div class="workspace-grid">
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                    <!-- Tabs -->
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="switchTab('generate')">
+                            <i data-lucide="key"></i> Generate Keys
+                        </button>
+                        <button class="tab-btn" onclick="switchTab('crypt')">
+                            <i data-lucide="lock"></i> Encrypt/Decrypt
+                        </button>
+                    </div>
+                    
+                    <!-- Generate Keys Tab -->
+                    <div id="tab-generate" class="tab-content active">
+                        <div class="options-panel">
+                            <div class="option-group">
+                                <label>Key Length</label>
+                                <select id="keyLength">
+                                    <option value="512">512 bits</option>
+                                    <option value="1024">1024 bits</option>
+                                    <option value="2048" selected>2048 bits</option>
+                                    <option value="4096">4096 bits</option>
+                                </select>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
-                            </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+                        
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="generateKeyPair()">
+                                <i data-lucide="plus"></i> Generate Key Pair
+                            </button>
+                        </div>
+                        
+                        <div class="key-display">
+                            <div class="key-label">
+                                <span>Public Key</span>
+                                <button class="btn btn-secondary" style="padding: 0.25rem 0.75rem; font-size: 12px;" onclick="copyKey('publicKey')">
+                                    <i data-lucide="copy"></i> Copy
+                                </button>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            <div class="key-value" id="publicKey">-</div>
+                        </div>
+                        
+                        <div class="key-display">
+                            <div class="key-label">
+                                <span>Private Key</span>
+                                <button class="btn btn-secondary" style="padding: 0.25rem 0.75rem; font-size: 12px;" onclick="copyKey('privateKey')">
+                                    <i data-lucide="copy"></i> Copy
+                                </button>
                             </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                            <div class="key-value" id="privateKey">-</div>
                         </div>
                     </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                    
+                    <!-- Encrypt/Decrypt Tab -->
+                    <div id="tab-crypt" class="tab-content">
+                        <div class="workspace-grid">
+                            <div>
+                                <div class="textarea-label">
+                                    <i data-lucide="file-text"></i>
+                                    <span>Plaintext / Ciphertext</span>
+                                </div>
+                                <div class="textarea-wrap">
+                                    <textarea id="cryptInput" placeholder="Enter text..."></textarea>
+                                </div>
+                                <div class="char-count"><span id="cryptInputCount">0</span> characters</div>
+                            </div>
+                            <div>
+                                <div class="textarea-label">
+                                    <i data-lucide="file-output"></i>
+                                    <span>Result</span>
+                                </div>
+                                <div class="textarea-wrap">
+                                    <textarea id="cryptOutput" placeholder="Result..." readonly></textarea>
+                                </div>
+                                <div class="char-count"><span id="cryptOutputCount">0</span> characters</div>
+                            </div>
+                        </div>
+                        
+                        <div class="options-panel">
+                            <div class="option-group" style="flex: 1;">
+                                <label>Paste Public Key (for encrypt) or Private Key (for decrypt)</label>
+                                <input type="text" id="cryptKey" placeholder="Paste your key here...">
+                            </div>
+                        </div>
+                        
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="rsaEncrypt()">
+                                <i data-lucide="lock"></i> Encrypt
+                            </button>
+                            <button class="btn btn-secondary" onclick="rsaDecrypt()">
+                                <i data-lucide="unlock"></i> Decrypt
+                            </button>
+                            <button class="btn btn-secondary" onclick="copyCryptOutput()">
+                                <i data-lucide="copy"></i> Copy
+                            </button>
+                            <button class="btn btn-danger" onclick="clearCrypt()">
+                                <i data-lucide="trash-2"></i> Clear
+                            </button>
+                        </div>
                     </div>
                 </div>
                 
@@ -158,6 +321,15 @@
         if (typeof I18n !== 'undefined') {
             I18n.init();
         }
+        
+        // Input character counter
+        const cryptInput = document.getElementById('cryptInput');
+        const cryptInputCount = document.getElementById('cryptInputCount');
+        if (cryptInput && cryptInputCount) {
+            cryptInput.addEventListener('input', () => {
+                cryptInputCount.textContent = cryptInput.value.length;
+            });
+        }
     });
     
     function showToast(msg) {
@@ -169,36 +341,10 @@
         }
     }
     
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
     function switchTab(tab) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
         if (tab === 'generate') {
             document.querySelectorAll('.tab-btn')[0].classList.add('active');
             document.getElementById('tab-generate').classList.add('active');
@@ -206,11 +352,19 @@
             document.querySelectorAll('.tab-btn')[1].classList.add('active');
             document.getElementById('tab-crypt').classList.add('active');
         }
+        
+        lucide.createIcons();
     }
 
     function generateKeyPair() {
+        if (typeof JSEncrypt === 'undefined') {
+            showToast('JSEncrypt library not loaded');
+            return;
+        }
+        
         const bitLength = parseInt(document.getElementById('keyLength').value);
         showToast('Generating ' + bitLength + '-bit key pair...');
+        
         setTimeout(() => {
             try {
                 const crypt = new JSEncrypt({ default_key_size: bitLength });
@@ -224,33 +378,47 @@
         }, 50);
     }
 
-    function clearKeys() {
-        document.getElementById('publicKey').textContent = '-';
-        document.getElementById('privateKey').textContent = '-';
-    }
-
-    function copyText(id) {
+    function copyKey(id) {
         const text = document.getElementById(id).textContent;
-        if (!text || text === '-') { showToast('No key to copy'); return; }
-        navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard'));
+        if (!text || text === '-') {
+            showToast('No key to copy');
+            return;
+        }
+        navigator.clipboard.writeText(text).then(() => {
+            showToast('Copied to clipboard');
+        }).catch(() => {
+            showToast('Failed to copy');
+        });
     }
 
     function rsaEncrypt() {
-        const key = document.getElementById('cryptKey').value.trim();
+        if (typeof JSEncrypt === 'undefined') {
+            showToast('JSEncrypt library not loaded');
+            return;
+        }
+        
+        const cryptKey = document.getElementById('cryptKey').value.trim();
+        const cryptInput = document.getElementById('cryptInput');
+        const cryptOutput = document.getElementById('cryptOutput');
+        const cryptOutputCount = document.getElementById('cryptOutputCount');
+        
         const input = cryptInput.value;
-        if (!key) { showToast('Please paste a public key'); return; }
+        
+        if (!cryptKey) { showToast('Please paste a public key'); return; }
         if (!input) { showToast('Please enter plaintext to encrypt'); return; }
 
         try {
             const crypt = new JSEncrypt();
-            crypt.setPublicKey(key);
+            crypt.setPublicKey(cryptKey);
             const encrypted = crypt.encrypt(input);
+            
             if (encrypted === false) {
                 showToast('Encryption failed - check your public key');
                 cryptOutput.value = '';
                 cryptOutputCount.textContent = '0';
                 return;
             }
+            
             cryptOutput.value = encrypted;
             cryptOutputCount.textContent = cryptOutput.value.length;
             showToast('Encrypted successfully');
@@ -262,21 +430,33 @@
     }
 
     function rsaDecrypt() {
-        const key = document.getElementById('cryptKey').value.trim();
+        if (typeof JSEncrypt === 'undefined') {
+            showToast('JSEncrypt library not loaded');
+            return;
+        }
+        
+        const cryptKey = document.getElementById('cryptKey').value.trim();
+        const cryptInput = document.getElementById('cryptInput');
+        const cryptOutput = document.getElementById('cryptOutput');
+        const cryptOutputCount = document.getElementById('cryptOutputCount');
+        
         const input = cryptInput.value.trim();
-        if (!key) { showToast('Please paste a private key'); return; }
+        
+        if (!cryptKey) { showToast('Please paste a private key'); return; }
         if (!input) { showToast('Please enter ciphertext to decrypt'); return; }
 
         try {
             const crypt = new JSEncrypt();
-            crypt.setPrivateKey(key);
+            crypt.setPrivateKey(cryptKey);
             const decrypted = crypt.decrypt(input);
+            
             if (decrypted === false || decrypted === null) {
                 showToast('Decryption failed - check your private key or ciphertext');
                 cryptOutput.value = '';
                 cryptOutputCount.textContent = '0';
                 return;
             }
+            
             cryptOutput.value = decrypted;
             cryptOutputCount.textContent = cryptOutput.value.length;
             showToast('Decrypted successfully');
@@ -288,36 +468,33 @@
     }
 
     function copyCryptOutput() {
-        if (!cryptOutput.value) { showToast('Nothing to copy'); return; }
-        navigator.clipboard.writeText(cryptOutput.value).then(() => showToast('Copied to clipboard'));
+        const cryptOutput = document.getElementById('cryptOutput');
+        if (!cryptOutput.value) {
+            showToast('Nothing to copy');
+            return;
+        }
+        navigator.clipboard.writeText(cryptOutput.value).then(() => {
+            showToast('Copied to clipboard');
+        }).catch(() => {
+            showToast('Failed to copy');
+        });
     }
 
     function clearCrypt() {
+        const cryptInput = document.getElementById('cryptInput');
+        const cryptOutput = document.getElementById('cryptOutput');
+        const cryptKey = document.getElementById('cryptKey');
+        const cryptInputCount = document.getElementById('cryptInputCount');
+        const cryptOutputCount = document.getElementById('cryptOutputCount');
+        
         cryptInput.value = '';
         cryptOutput.value = '';
-        document.getElementById('cryptKey').value = '';
+        cryptKey.value = '';
         cryptInputCount.textContent = '0';
         cryptOutputCount.textContent = '0';
+        
+        showToast('Cleared');
     }
-
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2500);
-    }
-    </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
     </script>
 </body>
 </html>

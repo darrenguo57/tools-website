@@ -39,6 +39,22 @@
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
         
+        /* Mode Toggle */
+        .mode-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .mode-toggle .btn {
+            min-width: 120px;
+        }
+        .mode-toggle .btn.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+        
         @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -82,6 +98,16 @@
                 
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
+                    <!-- Mode Toggle -->
+                    <div class="mode-toggle">
+                        <button class="btn btn-secondary active" id="encodeBtn" onclick="setMode('encode')">
+                            <i data-lucide="lock"></i> Encode
+                        </button>
+                        <button class="btn btn-secondary" id="decodeBtn" onclick="setMode('decode')">
+                            <i data-lucide="unlock"></i> Decode
+                        </button>
+                    </div>
+                    
                     <div class="workspace-grid">
                         <div>
                             <div class="textarea-label">
@@ -89,7 +115,7 @@
                                 <span data-i18n="input_label">Input</span>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                                <textarea id="inputArea" placeholder="Enter text..."></textarea>
                             </div>
                             <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
@@ -99,13 +125,14 @@
                                 <span data-i18n="output_label">Output</span>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                                <textarea id="outputArea" placeholder="Result..." readonly></textarea>
                             </div>
                             <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
                     </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
+                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span data-i18n="btn_process">Process</span></button>
+                        <button class="btn btn-secondary" onclick="swapValues()"><i data-lucide="arrow-up-down"></i><span>Swap</span></button>
                         <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
                         <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
@@ -151,12 +178,23 @@
     <script src="../../assets/js/app.js"></script>
     
     <script>
+    let currentMode = 'encode';
+    
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
         if (typeof I18n !== 'undefined') {
             I18n.init();
+        }
+        
+        // Input character counter
+        const inputArea = document.getElementById('inputArea');
+        const inputCount = document.getElementById('inputCount');
+        if (inputArea && inputCount) {
+            inputArea.addEventListener('input', () => {
+                inputCount.textContent = inputArea.value.length;
+            });
         }
     });
     
@@ -169,31 +207,45 @@
         }
     }
     
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
+    function setMode(mode) {
+        currentMode = mode;
+        const encodeBtn = document.getElementById('encodeBtn');
+        const decodeBtn = document.getElementById('decodeBtn');
+        
+        if (mode === 'encode') {
+            encodeBtn.classList.add('active');
+            decodeBtn.classList.remove('active');
+        } else {
+            decodeBtn.classList.add('active');
+            encodeBtn.classList.remove('active');
         }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
     }
     
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
+    function process() {
+        const inputArea = document.getElementById('inputArea');
+        const outputArea = document.getElementById('outputArea');
         const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
+        
+        const input = inputArea.value;
+        
+        if (!input) {
+            showToast('Please enter some text');
+            return;
+        }
+        
+        try {
+            if (currentMode === 'encode') {
+                outputArea.value = utf8ToBase64(input);
+            } else {
+                outputArea.value = base64ToUtf8(input.trim());
+            }
+            outputCount.textContent = outputArea.value.length;
+            showToast(currentMode === 'encode' ? 'Encoded successfully' : 'Decoded successfully');
+        } catch (e) {
+            outputArea.value = '';
+            outputCount.textContent = '0';
+            showToast(currentMode === 'encode' ? 'Encoding error' : 'Invalid Base64 string');
+        }
     }
     
     function utf8ToBase64(str) {
@@ -213,78 +265,48 @@
         return new TextDecoder().decode(uint8Array);
     }
 
-    function encodeBase64() {
-        const input = inputArea.value;
-        if (!input) { showToast('Please enter some text to encode'); return; }
-        try {
-            outputArea.value = utf8ToBase64(input);
-            outputCount.textContent = outputArea.value.length;
-            showToast('Encoded successfully');
-        } catch (e) {
-            outputArea.value = '';
-            outputCount.textContent = '0';
-            showToast('Error: ' + e.message);
-        }
-    }
-
-    function decodeBase64() {
-        const input = inputArea.value.trim();
-        if (!input) { showToast('Please enter Base64 string to decode'); return; }
-        try {
-            outputArea.value = base64ToUtf8(input);
-            outputCount.textContent = outputArea.value.length;
-            showToast('Decoded successfully');
-        } catch (e) {
-            outputArea.value = '';
-            outputCount.textContent = '0';
-            showToast('Invalid Base64 string');
-        }
-    }
-
     function swapValues() {
+        const inputArea = document.getElementById('inputArea');
+        const outputArea = document.getElementById('outputArea');
+        const inputCount = document.getElementById('inputCount');
+        const outputCount = document.getElementById('outputCount');
+        
         const temp = inputArea.value;
         inputArea.value = outputArea.value;
         outputArea.value = temp;
+        
         inputCount.textContent = inputArea.value.length;
         outputCount.textContent = outputArea.value.length;
+        
+        showToast('Swapped');
     }
 
     function copyOutput() {
-        if (!outputArea.value) { showToast('Nothing to copy'); return; }
+        const outputArea = document.getElementById('outputArea');
+        if (!outputArea.value) {
+            showToast('Nothing to copy');
+            return;
+        }
         navigator.clipboard.writeText(outputArea.value).then(() => {
             showToast('Copied to clipboard');
         }).catch(() => {
-            outputArea.select();
-            document.execCommand('copy');
-            showToast('Copied to clipboard');
+            showToast('Failed to copy');
         });
     }
 
     function clearAll() {
+        const inputArea = document.getElementById('inputArea');
+        const outputArea = document.getElementById('outputArea');
+        const inputCount = document.getElementById('inputCount');
+        const outputCount = document.getElementById('outputCount');
+        
         inputArea.value = '';
         outputArea.value = '';
         inputCount.textContent = '0';
         outputCount.textContent = '0';
+        
+        showToast('Cleared');
     }
-
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2500);
-    }
-    </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
     </script>
 </body>
 </html>

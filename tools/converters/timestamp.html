@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Timestamp Converter - ToolBox</title>
     <meta name="description" content="Convert Unix timestamps">
-    
+
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
     <link rel="stylesheet" href="../../assets/css/tools.css">
-    
+
     <style>
         /* Tool Page Custom Styles */
         .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -38,7 +38,19 @@
         .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
+
+        .timestamp-input-group { display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center; flex-wrap: wrap; justify-content: center; }
+        .timestamp-input-group input { width: auto; min-height: auto; padding: 0.5rem 1rem; font-size: 16px; }
+        .timestamp-input-group select { padding: 0.5rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-bg); color: var(--color-text); }
+        .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .result-item { background: var(--color-surface); padding: 1rem; border-radius: var(--radius-lg); border: 1px solid var(--color-border); }
+        .result-label { font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 0.25rem; }
+        .result-value { font-size: 16px; font-weight: 500; word-break: break-all; cursor: pointer; }
+        .result-value:hover { color: var(--color-primary); }
+        .live-timestamp { text-align: center; padding: 1rem; background: var(--color-surface); border-radius: var(--radius-lg); border: 1px solid var(--color-border); margin-bottom: 1rem; }
+        .live-timestamp .value { font-size: 24px; font-weight: 600; font-family: 'Courier New', monospace; }
+        .error-msg { color: #ef4444; font-size: 12px; margin-top: 0.25rem; display: none; }
+
         @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -65,10 +77,10 @@
             </div>
         </div>
     </header>
-    
+
     <!-- Breadcrumb -->
     <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_converters" data-i18n="cat_converters">Converters</a> / <span>Timestamp Converter</span></div></div>
-    
+
     <!-- Main Content -->
     <main class="tool-page">
         <div class="container tool-layout">
@@ -79,38 +91,45 @@
                     <h1>Timestamp Converter</h1>
                     <p>Convert Unix timestamps</p>
                 </div>
-                
+
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
-                    <div class="workspace-grid">
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
-                            </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
-                        </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
-                            </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
-                        </div>
+                    <div class="live-timestamp">
+                        <div class="result-label">Current Timestamp (seconds)</div>
+                        <div class="value" id="liveTs">-</div>
                     </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+
+                    <div class="timestamp-input-group">
+                        <input type="text" id="tsInput" placeholder="Enter timestamp...">
+                        <select id="tsUnit">
+                            <option value="seconds">Seconds</option>
+                            <option value="milliseconds">Milliseconds</option>
+                        </select>
+                        <button class="btn btn-primary" id="convertTsBtn"><i data-lucide="play"></i><span>Convert</span></button>
+                        <button class="btn btn-secondary" id="nowBtn"><i data-lucide="clock"></i><span>Now</span></button>
+                    </div>
+                    <div class="error-msg" id="tsError"></div>
+
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <div class="result-label">ISO 8601</div>
+                            <div class="result-value" id="resIso" onclick="copyResult(this)">-</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">UTC</div>
+                            <div class="result-value" id="resUtc" onclick="copyResult(this)">-</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Local</div>
+                            <div class="result-value" id="resLocal" onclick="copyResult(this)">-</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Relative</div>
+                            <div class="result-value" id="resRelative" onclick="copyResult(this)">-</div>
+                        </div>
                     </div>
                 </div>
-                
+
                 <!-- Ad Slot -->
                 <div class="ad-slot" style="margin-top:2rem">
                     <span data-i18n="ad_label">Advertisement</span>
@@ -123,7 +142,7 @@
             </aside>
         </div>
     </main>
-    
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container footer-container">
@@ -136,166 +155,103 @@
             <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
         </div>
     </footer>
-    
+
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
-    
+
     <!-- Back to Top -->
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
         <i data-lucide="chevron-up"></i>
     </button>
-    
+
     <!-- Scripts -->
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-        if (typeof I18n !== 'undefined') {
-            I18n.init();
-        }
-    });
-    
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        if (toast) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-    }
-    
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
-    function updateLive() {
-        document.getElementById('liveTs').textContent = Math.floor(Date.now() / 1000);
-    }
-    updateLive();
-    setInterval(updateLive, 1000);
+    (function() {
+        const tsInput = document.getElementById('tsInput');
+        const tsUnit = document.getElementById('tsUnit');
+        const tsError = document.getElementById('tsError');
+        const liveTs = document.getElementById('liveTs');
+        const convertTsBtn = document.getElementById('convertTsBtn');
+        const nowBtn = document.getElementById('nowBtn');
 
-    // Set current timestamp
-    function setCurrentTs() {
-        tsInput.value = Math.floor(Date.now() / 1000);
-        tsUnit.value = 'seconds';
-        tsToDate();
-    }
-
-    // Timestamp to Date
-    function tsToDate() {
-        tsError.style.display = 'none';
-        const val = tsInput.value.trim();
-        if (!val) { tsError.textContent = 'Please enter a timestamp'; tsError.style.display = 'block'; return; }
-
-        const num = Number(val);
-        if (isNaN(num)) { tsError.textContent = 'Invalid number'; tsError.style.display = 'block'; return; }
-
-        let ms = tsUnit.value === 'seconds' ? num * 1000 : num;
-        if (ms < -8640000000000 || ms > 8640000000000) {
-            tsError.textContent = 'Timestamp out of range';
-            tsError.style.display = 'block';
-            return;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2500);
+            }
         }
 
-        const date = new Date(ms);
-        if (isNaN(date.getTime())) { tsError.textContent = 'Invalid timestamp'; tsError.style.display = 'block'; return; }
+        function updateLive() {
+            liveTs.textContent = Math.floor(Date.now() / 1000);
+        }
+        updateLive();
+        setInterval(updateLive, 1000);
 
-        document.getElementById('resIso').textContent = date.toISOString();
-        document.getElementById('resUtc').textContent = date.toUTCString();
-        document.getElementById('resLocal').textContent = date.toLocaleString();
-        document.getElementById('resRelative').textContent = getRelativeTime(date);
-        document.getElementById('resDate').textContent = date.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        document.getElementById('resTime').textContent = date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    }
+        function setCurrentTs() {
+            tsInput.value = Math.floor(Date.now() / 1000);
+            tsUnit.value = 'seconds';
+            tsToDate();
+        }
 
-    function getRelativeTime(date) {
-        const now = new Date();
-        const diff = now - date;
-        const absDiff = Math.abs(diff);
-        const isPast = diff > 0;
-        const prefix = isPast ? '' : 'in ';
-        const suffix = isPast ? ' ago' : '';
+        function tsToDate() {
+            tsError.style.display = 'none';
+            const val = tsInput.value.trim();
+            if (!val) { tsError.textContent = 'Please enter a timestamp'; tsError.style.display = 'block'; return; }
 
-        if (absDiff < 60000) return prefix + Math.floor(absDiff / 1000) + ' seconds' + suffix;
-        if (absDiff < 3600000) return prefix + Math.floor(absDiff / 60000) + ' minutes' + suffix;
-        if (absDiff < 86400000) return prefix + Math.floor(absDiff / 3600000) + ' hours' + suffix;
-        if (absDiff < 2592000000) return prefix + Math.floor(absDiff / 86400000) + ' days' + suffix;
-        if (absDiff < 31536000000) return prefix + Math.floor(absDiff / 2592000000) + ' months' + suffix;
-        return prefix + (absDiff / 31536000000).toFixed(1) + ' years' + suffix;
-    }
+            const num = Number(val);
+            if (isNaN(num)) { tsError.textContent = 'Invalid number'; tsError.style.display = 'block'; return; }
 
-    // Date to Timestamp
-    function dateToTs() {
-        const val = dateInput.value;
-        if (!val) { showToast('Please select a date'); return; }
-        const date = new Date(val);
-        if (isNaN(date.getTime())) { showToast('Invalid date'); return; }
-        document.getElementById('resSec').textContent = Math.floor(date.getTime() / 1000);
-        document.getElementById('resMs').textContent = date.getTime();
-    }
+            let ms = tsUnit.value === 'seconds' ? num * 1000 : num;
+            if (ms < -8640000000000 || ms > 8640000000000) {
+                tsError.textContent = 'Timestamp out of range';
+                tsError.style.display = 'block';
+                return;
+            }
 
-    // Copy result
-    function copyResult(el) {
-        const text = el.querySelector('.result-value').textContent;
-        if (text === '-') return;
-        navigator.clipboard.writeText(text).then(() => showToast('Copied: ' + text));
-    }
+            const date = new Date(ms);
+            if (isNaN(date.getTime())) { tsError.textContent = 'Invalid timestamp'; tsError.style.display = 'block'; return; }
 
-    // Enter key support
-    tsInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') tsToDate(); });
+            document.getElementById('resIso').textContent = date.toISOString();
+            document.getElementById('resUtc').textContent = date.toUTCString();
+            document.getElementById('resLocal').textContent = date.toLocaleString();
+            document.getElementById('resRelative').textContent = getRelativeTime(date);
+        }
 
-    // Set default date input
-    const now = new Date();
-    const offset = now.getTimezoneOffset();
-    const local = new Date(now.getTime() - offset * 60000);
-    dateInput.value = local.toISOString().slice(0, 16);
+        function getRelativeTime(date) {
+            const now = new Date();
+            const diff = now - date;
+            const absDiff = Math.abs(diff);
+            const isPast = diff > 0;
+            const prefix = isPast ? '' : 'in ';
+            const suffix = isPast ? ' ago' : '';
 
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2500);
-    }
-    </script>
+            if (absDiff < 60000) return prefix + Math.floor(absDiff / 1000) + ' seconds' + suffix;
+            if (absDiff < 3600000) return prefix + Math.floor(absDiff / 60000) + ' minutes' + suffix;
+            if (absDiff < 86400000) return prefix + Math.floor(absDiff / 3600000) + ' hours' + suffix;
+            if (absDiff < 2592000000) return prefix + Math.floor(absDiff / 86400000) + ' days' + suffix;
+            if (absDiff < 31536000000) return prefix + Math.floor(absDiff / 2592000000) + ' months' + suffix;
+            return prefix + (absDiff / 31536000000).toFixed(1) + ' years' + suffix;
+        }
 
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
+        window.copyResult = function(el) {
+            const text = el.textContent;
+            if (text === '-') return;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied: ' + text);
             });
-        }
-    });
+        };
+
+        // Event listeners
+        convertTsBtn.addEventListener('click', tsToDate);
+        nowBtn.addEventListener('click', setCurrentTs);
+        tsInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') tsToDate(); });
+    })();
     </script>
 </body>
 </html>

@@ -38,7 +38,14 @@
         .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
+        .data-table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+        .data-table th, .data-table td { padding: 0.5rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        .data-table th { font-weight: 600; background: var(--color-bg); }
+        .data-table input { width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); }
+        .data-table input[type="color"] { width: 50px; height: 32px; padding: 2px; cursor: pointer; }
+        .chart-container { position: relative; width: 100%; min-height: 500px; background: var(--color-surface); border-radius: var(--radius-lg); padding: 1rem; overflow: auto; }
+        .chart-container canvas { display: block; }
+
         @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -86,28 +93,60 @@
                         <div>
                             <div class="textarea-label">
                                 <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                                <span data-i18n="treemap_data">Treemap Data</span>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="col_name">Name</th>
+                                        <th data-i18n="col_value">Value</th>
+                                        <th data-i18n="col_parent">Parent</th>
+                                        <th data-i18n="col_color">Color</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="treemapBody">
+                                    <tr>
+                                        <td><input type="text" value="Root" class="tm-name"></td>
+                                        <td><input type="number" value="100" class="tm-value"></td>
+                                        <td><input type="text" value="" class="tm-parent" placeholder="(none)"></td>
+                                        <td><input type="color" value="#3B82F6" class="tm-color" style="width:40px;height:32px;border:1px solid var(--color-border);border-radius:var(--radius-md);cursor:pointer;padding:2px;"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" value="Category A" class="tm-name"></td>
+                                        <td><input type="number" value="40" class="tm-value"></td>
+                                        <td><input type="text" value="Root" class="tm-parent" placeholder="(none)"></td>
+                                        <td><input type="color" value="#10B981" class="tm-color" style="width:40px;height:32px;border:1px solid var(--color-border);border-radius:var(--radius-md);cursor:pointer;padding:2px;"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" value="Category B" class="tm-name"></td>
+                                        <td><input type="number" value="35" class="tm-value"></td>
+                                        <td><input type="text" value="Root" class="tm-parent" placeholder="(none)"></td>
+                                        <td><input type="color" value="#F59E0B" class="tm-color" style="width:40px;height:32px;border:1px solid var(--color-border);border-radius:var(--radius-md);cursor:pointer;padding:2px;"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" value="Category C" class="tm-name"></td>
+                                        <td><input type="number" value="25" class="tm-value"></td>
+                                        <td><input type="text" value="Root" class="tm-parent" placeholder="(none)"></td>
+                                        <td><input type="color" value="#EF4444" class="tm-color" style="width:40px;height:32px;border:1px solid var(--color-border);border-radius:var(--radius-md);cursor:pointer;padding:2px;"></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="btn-group">
+                                <button class="btn btn-secondary" id="btnAddRow"><i data-lucide="plus"></i><span data-i18n="btn_add_row">Add Row</span></button>
+                                <button class="btn btn-primary" id="btnGenerate"><i data-lucide="play"></i><span>Generate</span></button>
                             </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
-                        </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
-                            </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
                     </div>
+                    <div class="chart-container">
+                        <canvas id="treemapCanvas"></canvas>
+                    </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                        <button class="btn btn-secondary" id="btnDownloadPNG"><i data-lucide="download"></i><span data-i18n="btn_download_png">Download PNG</span></button>
                     </div>
                 </div>
                 
@@ -149,8 +188,26 @@
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
+    // Global variables
+    const canvas = document.getElementById('treemapCanvas');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+    let treeData = [];
+    const colorSchemes = {
+      vibrant: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#06B6D4'],
+      pastel: ['#93C5FD', '#86EFAC', '#FCD34D', '#FCA5A5', '#C4B5FD', '#F9A8D4', '#67E8F9'],
+      earth: ['#92400E', '#78716C', '#84CC16', '#65A30D', '#A3E635', '#D97706', '#78716C'],
+      ocean: ['#0EA5E9', '#06B6D4', '#0891B2', '#155E75', '#22D3EE', '#7DD3FC', '#0C4A6E'],
+      sunset: ['#F97316', '#FB923C', '#FDBA74', '#FED7AA', '#FFEDD5', '#FF8C00', '#CC7000']
+    };
+    const sampleData = [
+      {name: 'Root', value: 100, parent: ''},
+      {name: 'Category A', value: 40, parent: 'Root'},
+      {name: 'Category B', value: 35, parent: 'Root'},
+      {name: 'Category C', value: 25, parent: 'Root'}
+    ];
+
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
@@ -349,17 +406,5 @@
     document.getElementById('jsonInput').value = JSON.stringify(sampleData, null, 2);
   })();
   </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
-    </script>
 </body>
 </html>

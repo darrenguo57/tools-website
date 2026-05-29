@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crop & Rotate - ToolBox</title>
-    <meta name="description" content="Crop and rotate images">
+    <meta name="description" content="Crop and rotate images online">
     
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
@@ -23,23 +23,21 @@
     <link rel="stylesheet" href="../../assets/css/tools.css">
     
     <style>
-        /* Tool Page Custom Styles */
-        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .workspace-grid .full-width { grid-column: 1 / -1; }
-        .textarea-wrap { position: relative; }
-        .textarea-wrap textarea, .textarea-wrap input {
-            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
-            resize: vertical; background: var(--color-bg); color: var(--color-text);
-            box-sizing: border-box;
-        }
-        .textarea-wrap input { min-height: auto; resize: none; }
-        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
-        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
-        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
+        /* Crop Rotate Tool Styles */
+        .crop-upload { border: 2px dashed var(--color-border); border-radius: var(--radius-xl); padding: 3rem 2rem; text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 1.5rem; }
+        .crop-upload:hover { border-color: var(--color-primary); background: var(--color-primary-light); }
+        .crop-container { position: relative; background: var(--color-bg-secondary); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 1.5rem; display: none; }
+        .crop-container.active { display: block; }
+        .crop-canvas-wrap { position: relative; display: flex; justify-content: center; align-items: center; padding: 1rem; min-height: 300px; }
+        #cropCanvas { max-width: 100%; max-height: 500px; }
+        .crop-overlay { position: absolute; border: 2px dashed var(--color-primary); background: rgba(59, 130, 246, 0.1); display: none; }
+        .crop-controls { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); margin-bottom: 1rem; }
+        .crop-control-group { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; background: var(--color-bg-tertiary); border-radius: var(--radius-md); }
+        .crop-control-group label { font-size: 12px; color: var(--color-text-secondary); }
+        .crop-control-group input[type="number"] { width: 70px; padding: 0.25rem 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg); color: var(--color-text); }
+        .crop-info { font-size: 12px; color: var(--color-text-tertiary); padding: 0.5rem 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-md); margin-bottom: 1rem; }
         
-        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .crop-controls { flex-direction: column; } }
     </style>
 </head>
 <body>
@@ -67,7 +65,7 @@
     </header>
     
     <!-- Breadcrumb -->
-    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_image_tools" data-i18n="cat_image_tools">Image Tools</a> / <span>Crop & Rotate</span></div></div>
+    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_image_tools" data-i18n="cat_image_tools">Image Tools</a> / <span data-i18n="crop_title">Crop & Rotate</span></div></div>
     
     <!-- Main Content -->
     <main class="tool-page">
@@ -76,38 +74,65 @@
                 <!-- Tool Header -->
                 <div class="tool-header">
                     <div class="tool-icon"><i data-lucide="crop"></i></div>
-                    <h1>Crop & Rotate</h1>
-                    <p>Crop and rotate images</p>
+                    <h1 data-i18n="crop_title">Crop & Rotate</h1>
+                    <p data-i18n="crop_desc">Crop and rotate images with precision controls</p>
                 </div>
                 
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
-                    <div class="workspace-grid">
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
-                            </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                    <!-- Upload Zone -->
+                    <div class="crop-upload" id="dropzone" onclick="document.getElementById('fileInput').click()">
+                        <i data-lucide="upload-cloud" style="width:48px;height:48px;color:var(--color-text-tertiary);margin-bottom:1rem"></i>
+                        <div style="font-weight:500;margin-bottom:0.25rem" data-i18n="crop_upload_text">Drop image here or click to upload</div>
+                        <div style="font-size:12px;color:var(--color-text-tertiary)" data-i18n="crop_upload_hint">Supports: JPG, PNG, WebP, GIF</div>
+                        <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFile(this.files[0])">
+                    </div>
+                    
+                    <!-- Controls -->
+                    <div class="crop-controls" id="editorArea" style="display:none">
+                        <div class="crop-control-group">
+                            <button class="btn btn-secondary" onclick="rotate(-90)"><i data-lucide="rotate-ccw" style="width:16px;height:16px"></i> -90</button>
+                            <button class="btn btn-secondary" onclick="rotate(-45)"><i data-lucide="rotate-cw" style="width:14px;height:14px"></i> -45</button>
+                            <button class="btn btn-secondary" onclick="rotate(45)"><i data-lucide="rotate-ccw" style="width:14px;height:14px"></i> +45</button>
+                            <button class="btn btn-secondary" onclick="rotate(90)"><i data-lucide="rotate-cw" style="width:16px;height:16px"></i> +90</button>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
-                            </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        <div class="crop-control-group">
+                            <label data-i18n="crop_angle">Angle:</label>
+                            <input type="number" id="freeAngle" value="0" min="-360" max="360" onchange="rotateFree()">
+                            <span>deg</span>
+                        </div>
+                        <div class="crop-control-group">
+                            <button class="btn btn-secondary" onclick="flip('h')"><i data-lucide="arrow-left-right" style="width:16px;height:16px"></i> Flip H</button>
+                            <button class="btn btn-secondary" onclick="flip('v')"><i data-lucide="arrow-up-down" style="width:16px;height:16px"></i> Flip V</button>
+                        </div>
+                        <div class="crop-control-group">
+                            <button class="btn btn-secondary" id="btnCrop" onclick="toggleCropMode()"><i data-lucide="square" style="width:16px;height:16px"></i> Crop</button>
+                            <button class="btn btn-primary" id="btnApplyCrop" onclick="applyCrop()" style="display:none">Apply Crop</button>
+                        </div>
+                        <div class="crop-control-group">
+                            <button class="btn btn-danger" onclick="resetImage()"><i data-lucide="refresh-cw" style="width:16px;height:16px"></i> Reset</button>
                         </div>
                     </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                    
+                    <div class="crop-info" id="imageInfo" style="display:none"></div>
+                    <div id="cropInfo" style="display:none;font-size:12px;color:var(--color-primary);margin-bottom:1rem"></div>
+                    
+                    <!-- Canvas Container -->
+                    <div class="crop-container" id="container">
+                        <div class="crop-canvas-wrap">
+                            <canvas id="cropCanvas"></canvas>
+                            <div class="crop-overlay" id="cropOverlay"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Actions -->
+                    <div class="btn-group" id="editorArea2" style="display:none">
+                        <button class="btn btn-success" onclick="downloadResult()">
+                            <i data-lucide="download"></i> <span data-i18n="btn_download">Download</span>
+                        </button>
+                        <button class="btn btn-danger" onclick="clearAll()">
+                            <i data-lucide="trash-2"></i> <span data-i18n="btn_clear">Clear</span>
+                        </button>
                     </div>
                 </div>
                 
@@ -151,6 +176,26 @@
     <script src="../../assets/js/app.js"></script>
     
     <script>
+    // Global state
+    let originalImage = null;
+    let currentRotation = 0;
+    let flipH = false;
+    let flipV = false;
+    let fileName = '';
+    let cropMode = false;
+    let isDragging = false;
+    let dragStart = { x: 0, y: 0 };
+    let cropRect = { x: 0, y: 0, w: 0, h: 0 };
+    
+    // DOM Elements
+    const canvas = document.getElementById('cropCanvas');
+    const ctx = canvas.getContext('2d');
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const container = document.getElementById('container');
+    const cropOverlay = document.getElementById('cropOverlay');
+    
+    // Initialize
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
@@ -158,6 +203,20 @@
         if (typeof I18n !== 'undefined') {
             I18n.init();
         }
+        
+        // Dropzone events
+        dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+        dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+        dropzone.addEventListener('drop', e => {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+        });
+        
+        // Crop mouse events
+        container.addEventListener('mousedown', startCrop);
+        container.addEventListener('mousemove', moveCrop);
+        container.addEventListener('mouseup', endCrop);
     });
     
     function showToast(msg) {
@@ -169,36 +228,10 @@
         }
     }
     
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
     function handleFile(file) {
         if (!file || !file.type.startsWith('image/')) { showToast('Please select an image file'); return; }
-        fileName = file.name.replace(/\.[^.]+$/, '');
+        const lastDot = file.name.lastIndexOf('.');
+        fileName = lastDot > 0 ? file.name.substring(0, lastDot) : file.name;
         const img = new Image();
         img.onload = () => {
             originalImage = img;
@@ -206,13 +239,17 @@
             flipH = false;
             flipV = false;
             dropzone.style.display = 'none';
-            document.getElementById('editorArea').style.display = 'block';
+            container.classList.add('active');
+            document.getElementById('editorArea').style.display = 'flex';
+            document.getElementById('editorArea2').style.display = 'flex';
+            document.getElementById('imageInfo').style.display = 'block';
             renderCanvas();
             showToast('Image loaded');
+            lucide.createIcons();
         };
         img.src = URL.createObjectURL(file);
     }
-
+    
     function renderCanvas() {
         if (!originalImage) return;
         const rad = currentRotation * Math.PI / 180;
@@ -220,14 +257,13 @@
         const w = originalImage.width, h = originalImage.height;
         const newW = Math.round(w * cos + h * sin);
         const newH = Math.round(w * sin + h * cos);
-
-        // Scale to fit container
+    
         const maxW = container.clientWidth || 800;
         const maxH = 500;
         const scale = Math.min(maxW / newW, maxH / newH, 1);
         canvas.width = Math.round(newW * scale);
         canvas.height = Math.round(newH * scale);
-
+    
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.save();
         ctx.translate(canvas.width / 2, canvas.height / 2);
@@ -235,29 +271,28 @@
         ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
         ctx.drawImage(originalImage, -w * scale / 2, -h * scale / 2, w * scale, h * scale);
         ctx.restore();
-
-        document.getElementById('imageInfo').textContent =
-            `Original: ${originalImage.width} x ${originalImage.height} | Canvas: ${canvas.width} x ${canvas.height} | Rotation: ${currentRotation}`;
+    
+        document.getElementById('imageInfo').textContent = 'Original: ' + originalImage.width + ' x ' + originalImage.height + ' | Canvas: ' + canvas.width + ' x ' + canvas.height + ' | Rotation: ' + currentRotation;
     }
-
+    
     function rotate(deg) {
         currentRotation = (currentRotation + deg) % 360;
         if (currentRotation < 0) currentRotation += 360;
         document.getElementById('freeAngle').value = currentRotation;
         renderCanvas();
     }
-
+    
     function rotateFree() {
         currentRotation = parseInt(document.getElementById('freeAngle').value) || 0;
         renderCanvas();
     }
-
+    
     function flip(dir) {
         if (dir === 'h') flipH = !flipH;
         else flipV = !flipV;
         renderCanvas();
     }
-
+    
     function resetImage() {
         currentRotation = 0;
         flipH = false;
@@ -271,8 +306,7 @@
         renderCanvas();
         showToast('Reset to original');
     }
-
-    // Crop functionality
+    
     function toggleCropMode() {
         cropMode = !cropMode;
         document.getElementById('btnCrop').classList.toggle('active', cropMode);
@@ -284,19 +318,12 @@
             showToast('Click and drag on the image to select crop area');
         }
     }
-
-    container.addEventListener('mousedown', startCrop);
-    container.addEventListener('mousemove', moveCrop);
-    container.addEventListener('mouseup', endCrop);
-    container.addEventListener('touchstart', e => { e.preventDefault(); startCrop(e.touches[0]); });
-    container.addEventListener('touchmove', e => { e.preventDefault(); moveCrop(e.touches[0]); });
-    container.addEventListener('touchend', e => { e.preventDefault(); endCrop(e); });
-
+    
     function getCanvasCoords(e) {
         const rect = canvas.getBoundingClientRect();
         return { x: e.clientX - rect.left, y: e.clientY - rect.top };
     }
-
+    
     function startCrop(e) {
         if (!cropMode) return;
         isDragging = true;
@@ -306,7 +333,7 @@
         cropOverlay.style.display = 'block';
         updateCropOverlay();
     }
-
+    
     function moveCrop(e) {
         if (!isDragging || !cropMode) return;
         const pos = getCanvasCoords(e);
@@ -316,42 +343,36 @@
         cropRect.h = Math.abs(pos.y - dragStart.y);
         updateCropOverlay();
     }
-
+    
     function endCrop(e) {
         if (!isDragging) return;
         isDragging = false;
         if (cropRect.w > 5 && cropRect.h > 5) {
             document.getElementById('btnApplyCrop').style.display = 'inline-flex';
-            document.getElementById('cropInfo').style.display = 'inline';
-            document.getElementById('cropInfo').textContent =
-                `Crop: ${Math.round(cropRect.w)} x ${Math.round(cropRect.h)} at (${Math.round(cropRect.x)}, ${Math.round(cropRect.y)})`;
+            document.getElementById('cropInfo').style.display = 'block';
+            document.getElementById('cropInfo').textContent = 'Crop: ' + Math.round(cropRect.w) + ' x ' + Math.round(cropRect.h) + ' at (' + Math.round(cropRect.x) + ', ' + Math.round(cropRect.y) + ')';
         } else {
             cropOverlay.style.display = 'none';
         }
     }
-
+    
     function updateCropOverlay() {
         cropOverlay.style.left = cropRect.x + 'px';
         cropOverlay.style.top = cropRect.y + 'px';
         cropOverlay.style.width = cropRect.w + 'px';
         cropOverlay.style.height = cropRect.h + 'px';
     }
-
+    
     function applyCrop() {
         if (cropRect.w < 5 || cropRect.h < 5) { showToast('Please select a crop area first'); return; }
-
-        // Get the cropped image data from canvas
-        const imageData = ctx.getImageData(
-            Math.round(cropRect.x), Math.round(cropRect.y),
-            Math.round(cropRect.w), Math.round(cropRect.h)
-        );
-
-        // Create a new image from cropped data
+    
+        const imageData = ctx.getImageData(Math.round(cropRect.x), Math.round(cropRect.y), Math.round(cropRect.w), Math.round(cropRect.h));
+    
         const tempCanvas = document.createElement('canvas');
         tempCanvas.width = Math.round(cropRect.w);
         tempCanvas.height = Math.round(cropRect.h);
         tempCanvas.getContext('2d').putImageData(imageData, 0, 0);
-
+    
         const img = new Image();
         img.onload = () => {
             originalImage = img;
@@ -369,7 +390,7 @@
         };
         img.src = tempCanvas.toDataURL();
     }
-
+    
     function downloadResult() {
         if (!originalImage) { showToast('No image to download'); return; }
         const link = document.createElement('a');
@@ -378,7 +399,7 @@
         link.click();
         showToast('Image downloaded');
     }
-
+    
     function clearAll() {
         originalImage = null;
         currentRotation = 0;
@@ -386,28 +407,13 @@
         flipV = false;
         cropMode = false;
         dropzone.style.display = '';
+        container.classList.remove('active');
         document.getElementById('editorArea').style.display = 'none';
+        document.getElementById('editorArea2').style.display = 'none';
+        document.getElementById('imageInfo').style.display = 'none';
         fileInput.value = '';
+        lucide.createIcons();
     }
-
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2500);
-    }
-    </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
     </script>
 </body>
 </html>

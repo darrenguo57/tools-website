@@ -16,7 +16,10 @@
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
-    
+
+    <!-- Mermaid -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
@@ -38,7 +41,11 @@
         .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
+        .textarea-wrap textarea { width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px; resize: vertical; background: var(--color-bg); color: var(--color-text); box-sizing: border-box; }
+        .textarea-wrap textarea:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .preview-container { background: var(--color-surface); border-radius: var(--radius-lg); padding: 1rem; min-height: 400px; display: flex; align-items: center; justify-content: center; overflow: auto; }
+        .preview-container svg { max-width: 100%; height: auto; }
+
         @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -86,28 +93,26 @@
                         <div>
                             <div class="textarea-label">
                                 <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                                <span data-i18n="mermaid_code">Mermaid Code</span>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                                <textarea id="mermaidInput" placeholder="flowchart TD&#10;    A[Start] --> B{Decision}&#10;    B -->|Yes| C[Process 1]&#10;    B -->|No| D[Process 2]&#10;    C --> E[End]&#10;    D --> E">flowchart TD
+    A[Start] --> B{Is it working?}
+    B -->|Yes| C[Great!]
+    B -->|No| D[Debug]
+    D --> B</textarea>
                             </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
-                        </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+                            <div class="btn-group">
+                                <button class="btn btn-primary" id="btnRender"><i data-lucide="play"></i><span>Render</span></button>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
-                            </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
                     </div>
+                    <div class="preview-container" id="mermaidPreview">
+                        <span style="color: var(--color-text-tertiary);">Click "Render" to generate flowchart</span>
+                    </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                        <button class="btn btn-secondary" id="btnDownloadSVG"><i data-lucide="download"></i><span data-i18n="btn_download_svg">Download SVG</span></button>
+                        <button class="btn btn-secondary" id="btnDownloadPNG"><i data-lucide="download"></i><span data-i18n="btn_download_png">Download PNG</span></button>
                     </div>
                 </div>
                 
@@ -149,8 +154,20 @@
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
+    // Global variables
+    let renderCount = 0;
+
+    // Initialize Mermaid
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'default',
+        securityLevel: 'loose'
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
@@ -245,17 +262,5 @@
     });
   })();
   </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
-    </script>
 </body>
 </html>

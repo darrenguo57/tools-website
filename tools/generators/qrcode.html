@@ -5,41 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator - ToolBox</title>
     <meta name="description" content="Generate QR codes">
-    
+
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
-    
+
+    <!-- QRCode.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
     <link rel="stylesheet" href="../../assets/css/tools.css">
-    
+
     <style>
         /* Tool Page Custom Styles */
-        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .workspace-grid .full-width { grid-column: 1 / -1; }
-        .textarea-wrap { position: relative; }
-        .textarea-wrap textarea, .textarea-wrap input {
-            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
-            resize: vertical; background: var(--color-bg); color: var(--color-text);
-            box-sizing: border-box;
+        .qr-options { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); border: 1px solid var(--color-border-light); }
+        .qr-option { display: flex; flex-direction: column; gap: 0.25rem; }
+        .qr-option label { font-size: var(--font-size-sm); color: var(--color-text-secondary); font-weight: 500; }
+        .qr-option select, .qr-option input { padding: 0.5rem 0.75rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); font-size: var(--font-size-sm); min-width: 120px; }
+        .qr-option input:focus, .qr-option select:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .qr-preview { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 200px; padding: 2rem; background: white; border-radius: var(--radius-lg); border: 1px solid var(--color-border-light); }
+        .qr-preview canvas { max-width: 100%; height: auto; }
+        .qr-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: var(--color-text-tertiary); }
+        .qr-placeholder i { opacity: 0.5; }
+        .qr-actions { display: flex; gap: 0.5rem; margin-top: 1rem; justify-content: center; flex-wrap: wrap; }
+
+        @media (max-width: 768px) {
+            .qr-options { flex-direction: column; }
+            .qr-option { width: 100%; }
+            .qr-option select, .qr-option input { width: 100%; }
         }
-        .textarea-wrap input { min-height: auto; resize: none; }
-        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
-        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
-        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
-        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -65,10 +68,10 @@
             </div>
         </div>
     </header>
-    
+
     <!-- Breadcrumb -->
     <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_generators" data-i18n="cat_generators">Generators</a> / <span>QR Code Generator</span></div></div>
-    
+
     <!-- Main Content -->
     <main class="tool-page">
         <div class="container tool-layout">
@@ -77,40 +80,60 @@
                 <div class="tool-header">
                     <div class="tool-icon"><i data-lucide="qr-code"></i></div>
                     <h1>QR Code Generator</h1>
-                    <p>Generate QR codes</p>
+                    <p>Generate QR codes from text or URLs</p>
                 </div>
-                
+
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
                     <div class="workspace-grid">
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                        <!-- Options Panel -->
+                        <div class="full-width">
+                            <div class="qr-options">
+                                <div class="qr-option" style="flex: 2;">
+                                    <label for="qrInput">Content</label>
+                                    <textarea id="qrInput" rows="3" placeholder="Enter text or URL..." style="width: 100%; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); resize: vertical; font-family: inherit;"></textarea>
+                                </div>
+                                <div class="qr-option">
+                                    <label for="qrSize">Size (px)</label>
+                                    <input type="number" id="qrSize" value="256" min="128" max="512" step="64">
+                                </div>
+                                <div class="qr-option">
+                                    <label for="qrErrorLevel">Error Level</label>
+                                    <select id="qrErrorLevel">
+                                        <option value="L">Low (L)</option>
+                                        <option value="M" selected>Medium (M)</option>
+                                        <option value="Q">Quartile (Q)</option>
+                                        <option value="H">High (H)</option>
+                                    </select>
+                                </div>
+                                <div class="qr-option">
+                                    <label for="qrFgColor">Foreground</label>
+                                    <input type="color" id="qrFgColor" value="#000000">
+                                </div>
+                                <div class="qr-option">
+                                    <label for="qrBgColor">Background</label>
+                                    <input type="color" id="qrBgColor" value="#ffffff">
+                                </div>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
-                            </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+
+                        <!-- Results Panel -->
+                        <div class="full-width">
+                            <div class="qr-preview" id="qrPreview">
+                                <div class="qr-placeholder">
+                                    <i data-lucide="qr-code"></i>
+                                    <span>Enter content above to generate QR code</span>
+                                </div>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            <div class="qr-actions">
+                                <button class="btn btn-primary" id="btnGenerate"><i data-lucide="play"></i><span>Generate</span></button>
+                                <button class="btn btn-secondary" id="btnDownload"><i data-lucide="download"></i><span>Download</span></button>
+                                <button class="btn btn-secondary" id="btnCopy"><i data-lucide="copy"></i><span>Copy</span></button>
                             </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
                 </div>
-                
+
                 <!-- Ad Slot -->
                 <div class="ad-slot" style="margin-top:2rem">
                     <span data-i18n="ad_label">Advertisement</span>
@@ -123,7 +146,7 @@
             </aside>
         </div>
     </main>
-    
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container footer-container">
@@ -136,137 +159,135 @@
             <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
         </div>
     </footer>
-    
+
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
-    
+
     <!-- Back to Top -->
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
         <i data-lucide="chevron-up"></i>
     </button>
-    
+
     <!-- Scripts -->
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-        if (typeof I18n !== 'undefined') {
-            I18n.init();
-        }
-    });
-    
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        if (toast) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-    }
-    
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
-    function getOptions() {
-        return {
-          width: parseInt(sizeSlider.value),
-          margin: 2,
-          color: {
-            dark: fgColor.value,
-            light: bgColor.value
-          },
-          errorCorrectionLevel: document.getElementById('qrErrorLevel').value
-        };
-      }
+    (function() {
+        const qrPreview = document.getElementById('qrPreview');
+        const qrInput = document.getElementById('qrInput');
+        const qrSize = document.getElementById('qrSize');
+        const qrFgColor = document.getElementById('qrFgColor');
+        const qrBgColor = document.getElementById('qrBgColor');
+        const qrErrorLevel = document.getElementById('qrErrorLevel');
+        const btnGenerate = document.getElementById('btnGenerate');
+        const btnDownload = document.getElementById('btnDownload');
+        const btnCopy = document.getElementById('btnCopy');
 
-      function generateQR() {
-        const text = document.getElementById('qrInput').value.trim();
-        if (!text) {
-          preview.style.display = 'flex';
-          canvas.style.display = 'none';
-          return;
-        }
-        QRCode.toCanvas(canvas, text, getOptions(), function(error) {
-          if (error) {
-            preview.style.display = 'flex';
-            preview.innerHTML = '<span class="tool-output__placeholder-text" style="color:var(--color-error);">Error: ' + error.message + '</span>';
-            canvas.style.display = 'none';
-            return;
-          }
-          preview.style.display = 'none';
-          canvas.style.display = 'block';
-        });
-      }
+        let currentCanvas = null;
 
-      document.getElementById('btnGenerate').addEventListener('click', generateQR);
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            if (typeof I18n !== 'undefined') {
+                I18n.init();
+            }
 
-      document.getElementById('btnDownload').addEventListener('click', () => {
-        if (canvas.style.display === 'none') return;
-        const link = document.createElement('a');
-        link.download = 'qrcode.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      });
+            // Generate on button click
+            btnGenerate.addEventListener('click', generateQR);
 
-      document.getElementById('btnCopyClipboard').addEventListener('click', async () => {
-        if (canvas.style.display === 'none') return;
-        try {
-          const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-          await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-        } catch (e) {
-          // Fallback: copy as data URL
-          try {
-            await navigator.clipboard.writeText(canvas.toDataURL('image/png'));
-          } catch (e2) { /* ignore */ }
-        }
-      });
-
-      // Auto-generate on Enter in textarea
-      document.getElementById('qrInput').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); generateQR(); }
-      });
-    })();
-  </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
+            // Generate on Enter key in textarea
+            qrInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    generateQR();
+                }
             });
+
+            // Download QR code
+            btnDownload.addEventListener('click', () => {
+                if (!currentCanvas) return;
+                const link = document.createElement('a');
+                link.download = 'qrcode.png';
+                link.href = currentCanvas.toDataURL('image/png');
+                link.click();
+                showToast('Downloaded!');
+            });
+
+            // Copy QR code
+            btnCopy.addEventListener('click', async () => {
+                if (!currentCanvas) return;
+                try {
+                    const blob = await new Promise(resolve => currentCanvas.toBlob(resolve, 'image/png'));
+                    await navigator.clipboard.write([
+                        new ClipboardItem({ 'image/png': blob })
+                    ]);
+                    showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+                } catch (e) {
+                    // Fallback: copy as data URL
+                    try {
+                        await navigator.clipboard.writeText(currentCanvas.toDataURL('image/png'));
+                        showToast('Copied as data URL');
+                    } catch (e2) {
+                        showToast('Failed to copy');
+                    }
+                }
+            });
+        });
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2500);
+            }
         }
-    });
+
+        function generateQR() {
+            const text = qrInput.value.trim();
+
+            if (!text) {
+                qrPreview.innerHTML = '<div class="qr-placeholder"><i data-lucide="qr-code"></i><span>Enter content above to generate QR code</span></div>';
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+                currentCanvas = null;
+                return;
+            }
+
+            const size = parseInt(qrSize.value) || 256;
+            const options = {
+                width: size,
+                margin: 2,
+                color: {
+                    dark: qrFgColor.value,
+                    light: qrBgColor.value
+                },
+                errorCorrectionLevel: qrErrorLevel.value
+            };
+
+            // Create canvas element
+            const canvas = document.createElement('canvas');
+            qrPreview.innerHTML = '';
+            qrPreview.appendChild(canvas);
+
+            if (typeof QRCode !== 'undefined') {
+                QRCode.toCanvas(canvas, text, options, function(error) {
+                    if (error) {
+                        qrPreview.innerHTML = '<div class="qr-placeholder" style="color: var(--color-error);"><i data-lucide="alert-circle"></i><span>Error: ' + error.message + '</span></div>';
+                        if (typeof lucide !== 'undefined') lucide.createIcons();
+                        currentCanvas = null;
+                        return;
+                    }
+                    currentCanvas = canvas;
+                });
+            } else {
+                qrPreview.innerHTML = '<div class="qr-placeholder" style="color: var(--color-error);"><i data-lucide="alert-circle"></i><span>QRCode library not loaded</span></div>';
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }
+        }
+    })();
     </script>
 </body>
 </html>

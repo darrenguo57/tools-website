@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Compress - ToolBox</title>
-    <meta name="description" content="Compress images">
+    <meta name="description" content="Compress images online with quality control">
     
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
@@ -39,7 +39,28 @@
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
         
-        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+        /* Compress Tool Styles */
+        .compress-options { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); }
+        .compress-option { display: flex; align-items: center; gap: 0.5rem; }
+        .compress-option label { font-size: 14px; color: var(--color-text-secondary); }
+        .compress-option select, .compress-option input { padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); }
+        .file-list { margin: 1rem 0; }
+        .file-item { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem; background: var(--color-bg-secondary); border-radius: var(--radius-md); margin-bottom: 0.5rem; }
+        .file-item-name { display: flex; align-items: center; gap: 0.5rem; font-size: 14px; }
+        .file-item-size { font-size: 12px; color: var(--color-text-tertiary); margin-left: auto; margin-right: 1rem; }
+        .file-item-remove { background: none; border: none; cursor: pointer; color: var(--color-text-tertiary); padding: 0.25rem; }
+        .file-item-remove:hover { color: var(--color-error); }
+        .results-area { margin-top: 1.5rem; }
+        .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        .compare-card { background: var(--color-bg-secondary); border-radius: var(--radius-lg); overflow: hidden; }
+        .compare-card-header { padding: 0.75rem 1rem; font-size: 12px; font-weight: 600; background: var(--color-bg-tertiary); }
+        .compare-card-body { padding: 1rem; display: flex; align-items: center; justify-content: center; min-height: 150px; }
+        .compare-card-body img { max-width: 100%; max-height: 200px; border-radius: var(--radius-md); }
+        .compare-stats { padding: 0.75rem 1rem; font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .progress-bar { width: 100%; height: 6px; background: var(--color-bg-tertiary); border-radius: 3px; margin: 1rem 0; overflow: hidden; display: none; }
+        .progress-fill { height: 100%; background: var(--color-primary); transition: width 0.3s; }
+        
+        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } .compare-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -67,7 +88,7 @@
     </header>
     
     <!-- Breadcrumb -->
-    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_image_tools" data-i18n="cat_image_tools">Image Tools</a> / <span>Image Compress</span></div></div>
+    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_image_tools" data-i18n="cat_image_tools">Image Tools</a> / <span data-i18n="compress_title">Image Compress</span></div></div>
     
     <!-- Main Content -->
     <main class="tool-page">
@@ -76,38 +97,73 @@
                 <!-- Tool Header -->
                 <div class="tool-header">
                     <div class="tool-icon"><i data-lucide="image-minus"></i></div>
-                    <h1>Image Compress</h1>
-                    <p>Compress images</p>
+                    <h1 data-i18n="compress_title">Image Compress</h1>
+                    <p data-i18n="compress_desc">Compress images with quality control</p>
                 </div>
                 
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
-                    <div class="workspace-grid">
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
-                            </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                    <!-- Options -->
+                    <div class="compress-options">
+                        <div class="compress-option">
+                            <label data-i18n="compress_quality">Quality:</label>
+                            <input type="range" id="qualitySlider" min="10" max="100" value="80" style="width: 120px;">
+                            <span id="qualityValue">80%</span>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
-                            </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        <div class="compress-option">
+                            <label data-i18n="compress_max_width">Max Width:</label>
+                            <input type="number" id="maxWidth" placeholder="Auto" value="" style="width: 80px;">
+                        </div>
+                        <div class="compress-option">
+                            <label data-i18n="compress_max_height">Max Height:</label>
+                            <input type="number" id="maxHeight" placeholder="Auto" value="" style="width: 80px;">
+                        </div>
+                        <div class="compress-option">
+                            <label data-i18n="compress_format">Format:</label>
+                            <select id="outputFormat">
+                                <option value="auto" data-i18n="compress_auto">Auto</option>
+                                <option value="image/jpeg">JPEG</option>
+                                <option value="image/png">PNG</option>
+                                <option value="image/webp">WebP</option>
+                            </select>
                         </div>
                     </div>
+                    
+                    <!-- Upload Zone -->
+                    <div class="tool-dropzone" id="dropzone">
+                        <i data-lucide="upload-cloud" class="tool-dropzone__icon"></i>
+                        <div class="tool-dropzone__text" data-i18n="compress_upload_text">Drop images here or click to upload</div>
+                        <div class="tool-dropzone__hint" data-i18n="compress_upload_hint">Supports: JPG, PNG, WebP, GIF (max 10MB)</div>
+                        <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">
+                    </div>
+                    
+                    <!-- File List -->
+                    <div class="file-list" id="fileList"></div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="progress-bar" id="progressBar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    
+                    <!-- Results -->
+                    <div class="results-area" id="results">
+                        <div class="empty-state" style="text-align: center; padding: 2rem; color: var(--color-text-tertiary);" data-i18n="compress_empty">Upload images and click Compress to see results</div>
+                    </div>
+                    
+                    <!-- Actions -->
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                        <button class="btn btn-primary" id="btnCompress" onclick="compressAll()">
+                            <i data-lucide="zap"></i>
+                            <span data-i18n="btn_compress">Compress All</span>
+                        </button>
+                        <button class="btn btn-success" id="btnDownloadAll" onclick="downloadAll()" style="display: none;">
+                            <i data-lucide="download"></i>
+                            <span data-i18n="btn_download_all">Download All</span>
+                        </button>
+                        <button class="btn btn-danger" onclick="clearAll()">
+                            <i data-lucide="trash-2"></i>
+                            <span data-i18n="btn_clear">Clear</span>
+                        </button>
                     </div>
                 </div>
                 
@@ -151,6 +207,22 @@
     <script src="../../assets/js/app.js"></script>
     
     <script>
+    // Global state
+    let files = [];
+    let compressedResults = [];
+    
+    // DOM Elements
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const fileList = document.getElementById('fileList');
+    const results = document.getElementById('results');
+    const btnDownloadAll = document.getElementById('btnDownloadAll');
+    const progressBar = document.getElementById('progressBar');
+    const progressFill = document.getElementById('progressFill');
+    const qualitySlider = document.getElementById('qualitySlider');
+    const qualityValue = document.getElementById('qualityValue');
+    
+    // Initialize
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
@@ -158,6 +230,22 @@
         if (typeof I18n !== 'undefined') {
             I18n.init();
         }
+        
+        // Quality slider
+        qualitySlider.addEventListener('input', () => {
+            qualityValue.textContent = qualitySlider.value + '%';
+        });
+        
+        // Dropzone events
+        dropzone.addEventListener('click', () => fileInput.click());
+        dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('tool-dropzone--active'); });
+        dropzone.addEventListener('dragleave', () => dropzone.classList.remove('tool-dropzone--active'));
+        dropzone.addEventListener('drop', e => {
+            e.preventDefault();
+            dropzone.classList.remove('tool-dropzone--active');
+            handleFiles(e.dataTransfer.files);
+        });
+        fileInput.addEventListener('change', () => { if (fileInput.files.length > 0) handleFiles(fileInput.files); });
     });
     
     function showToast(msg) {
@@ -169,33 +257,6 @@
         }
     }
     
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
     function handleFiles(inputFiles) {
         const imageFiles = Array.from(inputFiles).filter(f => f.type.startsWith('image/'));
         if (imageFiles.length === 0) { showToast('Please select image files'); return; }
@@ -203,7 +264,7 @@
         renderFileList();
         showToast(imageFiles.length + ' file(s) added');
     }
-
+    
     function renderFileList() {
         fileList.innerHTML = files.map((f, i) => `
             <div class="file-item">
@@ -214,45 +275,46 @@
         `).join('');
         lucide.createIcons();
     }
-
+    
     function removeFile(index) {
         files.splice(index, 1);
         renderFileList();
     }
-
+    
     function clearAll() {
         files = [];
         compressedResults = [];
         fileList.innerHTML = '';
-        results.innerHTML = '<div class="empty-state">Upload images and click Compress to see results</div>';
+        results.innerHTML = '<div class="empty-state" style="text-align: center; padding: 2rem; color: var(--color-text-tertiary);">Upload images and click Compress to see results</div>';
         btnDownloadAll.style.display = 'none';
         progressBar.style.display = 'none';
         fileInput.value = '';
+        showToast('Cleared');
     }
-
+    
     async function compressAll() {
         if (files.length === 0) { showToast('Please upload images first'); return; }
         compressedResults = [];
         progressBar.style.display = 'block';
         progressFill.style.width = '0%';
         results.innerHTML = '';
-
+    
         const quality = qualitySlider.value / 100;
         const maxW = parseInt(document.getElementById('maxWidth').value) || Infinity;
         const maxH = parseInt(document.getElementById('maxHeight').value) || Infinity;
         const format = document.getElementById('outputFormat').value;
-
+    
         for (let i = 0; i < files.length; i++) {
             const result = await compressImage(files[i], quality, maxW, maxH, format);
             compressedResults.push(result);
             progressFill.style.width = ((i + 1) / files.length * 100) + '%';
             appendResult(result, i);
         }
-
+    
         btnDownloadAll.style.display = 'inline-flex';
         showToast('Compression complete!');
     }
-
+    
     function compressImage(file, quality, maxW, maxH, format) {
         return new Promise(resolve => {
             const img = new Image();
@@ -263,18 +325,17 @@
                 if (h > maxH) { w = w * (maxH / h); h = maxH; }
                 w = Math.round(w);
                 h = Math.round(h);
-
+    
                 const canvas = document.createElement('canvas');
                 canvas.width = w;
                 canvas.height = h;
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, w, h);
-
+    
                 const outputFormat = format === 'auto' ? file.type : format;
                 const useQuality = (outputFormat === 'image/jpeg' || outputFormat === 'image/webp') ? quality : undefined;
-
+    
                 canvas.toBlob(blob => {
-                    const originalUrl = url;
                     const compressedUrl = URL.createObjectURL(blob);
                     const ratio = ((1 - blob.size / file.size) * 100).toFixed(1);
                     resolve({
@@ -282,7 +343,7 @@
                         originalSize: file.size,
                         compressedSize: blob.size,
                         ratio: ratio,
-                        originalUrl: originalUrl,
+                        originalUrl: url,
                         compressedUrl: compressedUrl,
                         width: w,
                         height: h,
@@ -294,7 +355,7 @@
             img.src = url;
         });
     }
-
+    
     function appendResult(result, index) {
         const card = document.createElement('div');
         card.className = 'compare-grid';
@@ -316,42 +377,24 @@
         `;
         results.appendChild(card);
     }
-
+    
     function downloadAll() {
         compressedResults.forEach(r => {
             const a = document.createElement('a');
             a.href = r.compressedUrl;
-            const baseName = r.name.replace(/\.[^.]+$/, '');
+            const lastDot = r.name.lastIndexOf('.');
+            const baseName = lastDot > 0 ? r.name.substring(0, lastDot) : r.name;
             a.download = baseName + '_compressed.' + r.format;
             a.click();
         });
         showToast('Downloading all files...');
     }
-
+    
     function formatSize(bytes) {
         if (bytes < 1024) return bytes + ' B';
         if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
         return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
     }
-
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2500);
-    }
-    </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
     </script>
 </body>
 </html>

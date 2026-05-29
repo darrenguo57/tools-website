@@ -5,41 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Random Number - ToolBox</title>
     <meta name="description" content="Generate random numbers">
-    
+
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
     <link rel="stylesheet" href="../../assets/css/tools.css">
-    
+
     <style>
         /* Tool Page Custom Styles */
-        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .workspace-grid .full-width { grid-column: 1 / -1; }
-        .textarea-wrap { position: relative; }
-        .textarea-wrap textarea, .textarea-wrap input {
-            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
-            resize: vertical; background: var(--color-bg); color: var(--color-text);
-            box-sizing: border-box;
+        .rng-options { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); border: 1px solid var(--color-border-light); }
+        .rng-option { display: flex; flex-direction: column; gap: 0.25rem; }
+        .rng-option label { font-size: var(--font-size-sm); color: var(--color-text-secondary); font-weight: 500; }
+        .rng-option input, .rng-option select { padding: 0.5rem 0.75rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); font-size: var(--font-size-sm); min-width: 120px; }
+        .rng-option input:focus, .rng-option select:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .rng-results { min-height: 150px; padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); border: 1px solid var(--color-border-light); }
+        .rng-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: var(--color-text-tertiary); padding: 2rem; text-align: center; }
+        .rng-placeholder i { opacity: 0.5; }
+        .rng-actions { display: flex; gap: 0.5rem; margin-top: 1rem; justify-content: center; flex-wrap: wrap; }
+        .number-display { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+        .number-chip { display: inline-block; padding: 0.5rem 1rem; background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-md); font-family: var(--font-family-mono); font-size: 1.25rem; font-weight: 600; }
+        .rng-history { margin-top: 1.5rem; }
+        .rng-history h3 { font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: 0.5rem; }
+        .history-list { display: flex; flex-direction: column; gap: 0.25rem; font-size: var(--font-size-sm); color: var(--color-text-tertiary); }
+
+        @media (max-width: 768px) {
+            .rng-options { flex-direction: column; }
+            .rng-option { width: 100%; }
+            .rng-option input, .rng-option select { width: 100%; }
         }
-        .textarea-wrap input { min-height: auto; resize: none; }
-        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
-        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
-        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
-        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -65,10 +69,10 @@
             </div>
         </div>
     </header>
-    
+
     <!-- Breadcrumb -->
     <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_generators" data-i18n="cat_generators">Generators</a> / <span>Random Number</span></div></div>
-    
+
     <!-- Main Content -->
     <main class="tool-page">
         <div class="container tool-layout">
@@ -79,38 +83,53 @@
                     <h1>Random Number</h1>
                     <p>Generate random numbers</p>
                 </div>
-                
+
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
                     <div class="workspace-grid">
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                        <!-- Options Panel -->
+                        <div class="full-width">
+                            <div class="rng-options">
+                                <div class="rng-option">
+                                    <label for="rngMin">Minimum</label>
+                                    <input type="number" id="rngMin" value="1">
+                                </div>
+                                <div class="rng-option">
+                                    <label for="rngMax">Maximum</label>
+                                    <input type="number" id="rngMax" value="100">
+                                </div>
+                                <div class="rng-option">
+                                    <label for="rngCount">Count</label>
+                                    <input type="number" id="rngCount" value="1" min="1" max="100">
+                                </div>
+                                <div class="rng-option">
+                                    <label for="rngDecimals">Decimals</label>
+                                    <input type="number" id="rngDecimals" value="0" min="0" max="10">
+                                </div>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
-                            </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+
+                        <!-- Results Panel -->
+                        <div class="full-width">
+                            <div class="rng-results" id="rngResults">
+                                <div class="rng-placeholder">
+                                    <i data-lucide="dice"></i>
+                                    <span>Click "Generate" to create random numbers</span>
+                                </div>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            <div class="rng-actions">
+                                <button class="btn btn-primary" id="btnGenerate"><i data-lucide="play"></i><span>Generate</span></button>
+                                <button class="btn btn-secondary" id="btnCopy"><i data-lucide="copy"></i><span>Copy</span></button>
+                                <button class="btn btn-danger" id="btnClearHistory"><i data-lucide="trash-2"></i><span>Clear History</span></button>
                             </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                            <div class="rng-history" id="rngHistory" style="display: none;">
+                                <h3>History</h3>
+                                <div class="history-list" id="historyList"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
                 </div>
-                
+
                 <!-- Ad Slot -->
                 <div class="ad-slot" style="margin-top:2rem">
                     <span data-i18n="ad_label">Advertisement</span>
@@ -123,7 +142,7 @@
             </aside>
         </div>
     </main>
-    
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container footer-container">
@@ -136,173 +155,131 @@
             <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
         </div>
     </footer>
-    
+
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
-    
+
     <!-- Back to Top -->
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
         <i data-lucide="chevron-up"></i>
     </button>
-    
+
     <!-- Scripts -->
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-        if (typeof I18n !== 'undefined') {
-            I18n.init();
-        }
-    });
-    
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        if (toast) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-    }
-    
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
-    function generateRandomNumber(min, max, decimals) {
-        const range = max - min;
-        if (decimals === 0) {
-          const arr = new Uint32Array(1);
-          crypto.getRandomValues(arr);
-          return Math.floor(arr[0] / (0xFFFFFFFF + 1) * (range + 1)) + min;
-        } else {
-          const arr = new Uint32Array(1);
-          crypto.getRandomValues(arr);
-          const val = (arr[0] / (0xFFFFFFFF + 1)) * range + min;
-          return parseFloat(val.toFixed(decimals));
-        }
-      }
+    (function() {
+        const resultsContainer = document.getElementById('rngResults');
+        const historyPanel = document.getElementById('rngHistory');
+        const historyList = document.getElementById('historyList');
+        const history = [];
 
-      function escapeHtml(str) {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-      }
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            if (typeof I18n !== 'undefined') {
+                I18n.init();
+            }
 
-      const resultsContainer = document.getElementById('rngResults');
-      const historyPanel = document.getElementById('historyPanel');
-      const historyList = document.getElementById('historyList');
+            // Generate button
+            document.getElementById('btnGenerate').addEventListener('click', () => {
+                let min = parseFloat(document.getElementById('rngMin').value);
+                let max = parseFloat(document.getElementById('rngMax').value);
+                let count = parseInt(document.getElementById('rngCount').value) || 1;
+                const decimals = parseInt(document.getElementById('rngDecimals').value) || 0;
 
-      document.getElementById('btnGenerate').addEventListener('click', () => {
-        let min = parseFloat(document.getElementById('rngMin').value);
-        let max = parseFloat(document.getElementById('rngMax').value);
-        let count = parseInt(document.getElementById('rngCount').value) || 1;
-        const decimals = parseInt(document.getElementById('rngDecimals').value) || 0;
+                if (isNaN(min) || isNaN(max)) {
+                    resultsContainer.innerHTML = '<div class="rng-placeholder" style="color: var(--color-error);"><i data-lucide="alert-circle"></i><span>Please enter valid min and max values.</span></div>';
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+                    return;
+                }
+                if (min > max) { [min, max] = [max, min]; }
 
-        if (isNaN(min) || isNaN(max)) {
-          resultsContainer.innerHTML = '<div class="tool-output__content tool-output__error">Please enter valid min and max values.</div>';
-          return;
-        }
-        if (min > max) { [min, max] = [max, min]; }
+                count = Math.max(1, Math.min(1000, count));
 
-        count = Math.max(1, Math.min(1000, count));
+                const numbers = [];
+                for (let i = 0; i < count; i++) {
+                    numbers.push(generateRandomNumber(min, max, decimals));
+                }
 
-        if (!allowDuplicates && decimals === 0 && count > (max - min + 1)) {
-          resultsContainer.innerHTML = '<div class="tool-output__content tool-output__error">Cannot generate ' + count + ' unique integers in range [' + min + ', ' + max + ']. Range only has ' + (max - min + 1) + ' values.</div>';
-          return;
-        }
+                // Render results
+                let html = '<div class="number-display">';
+                numbers.forEach(n => {
+                    html += '<span class="number-chip">' + escapeHtml(String(n)) + '</span>';
+                });
+                html += '</div>';
+                resultsContainer.innerHTML = html;
 
-        const numbers = [];
-        const usedSet = new Set();
-
-        while (numbers.length < count) {
-          const num = generateRandomNumber(min, max, decimals);
-          if (!allowDuplicates && decimals === 0) {
-            if (usedSet.has(num)) continue;
-            usedSet.add(num);
-          }
-          numbers.push(num);
-        }
-
-        // Render results
-        let html = '<div class="number-display">';
-        numbers.forEach(n => {
-          html += '<span class="number-chip">' + escapeHtml(String(n)) + '</span>';
-        });
-        html += '</div>';
-        resultsContainer.innerHTML = html;
-
-        // Add to history
-        const entry = { numbers: numbers.slice(), min, max, decimals, time: new Date().toLocaleTimeString() };
-        history.unshift(entry);
-        if (history.length > 20) history.pop();
-        renderHistory();
-      });
-
-      function renderHistory() {
-        if (history.length === 0) {
-          historyPanel.style.display = 'none';
-          return;
-        }
-        historyPanel.style.display = 'block';
-        let html = '';
-        history.forEach((entry, i) => {
-          const nums = entry.numbers.length <= 10 ? entry.numbers.join(', ') : entry.numbers.slice(0, 10).join(', ') + ' ... (+' + (entry.numbers.length - 10) + ' more)';
-          html += '<div class="history-item"><div><code>' + escapeHtml(nums) + '</code><br><span>[' + entry.min + ' - ' + entry.max + '] at ' + entry.time + '</span></div></div>';
-        });
-        historyList.innerHTML = html;
-      }
-
-      document.getElementById('btnCopy').addEventListener('click', () => {
-        const chips = resultsContainer.querySelectorAll('.number-chip');
-        if (chips.length === 0) return;
-        navigator.clipboard.writeText(Array.from(chips).map(c => c.textContent).join(', '));
-      });
-
-      document.getElementById('btnClearHistory').addEventListener('click', () => {
-        history.length = 0;
-        renderHistory();
-      });
-    })();
-  </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
+                // Add to history
+                const entry = { numbers: numbers.slice(), min, max, decimals, time: new Date().toLocaleTimeString() };
+                history.unshift(entry);
+                if (history.length > 20) history.pop();
+                renderHistory();
             });
+
+            // Copy button
+            document.getElementById('btnCopy').addEventListener('click', () => {
+                const chips = resultsContainer.querySelectorAll('.number-chip');
+                if (chips.length === 0) return;
+                navigator.clipboard.writeText(Array.from(chips).map(c => c.textContent).join(', ')).then(() => {
+                    showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+                });
+            });
+
+            // Clear history button
+            document.getElementById('btnClearHistory').addEventListener('click', () => {
+                history.length = 0;
+                renderHistory();
+                showToast('History cleared');
+            });
+        });
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2500);
+            }
         }
-    });
+
+        function generateRandomNumber(min, max, decimals) {
+            const range = max - min;
+            if (decimals === 0) {
+                const arr = new Uint32Array(1);
+                crypto.getRandomValues(arr);
+                return Math.floor(arr[0] / (0xFFFFFFFF + 1) * (range + 1)) + min;
+            } else {
+                const arr = new Uint32Array(1);
+                crypto.getRandomValues(arr);
+                const val = (arr[0] / (0xFFFFFFFF + 1)) * range + min;
+                return parseFloat(val.toFixed(decimals));
+            }
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function renderHistory() {
+            if (history.length === 0) {
+                historyPanel.style.display = 'none';
+                return;
+            }
+            historyPanel.style.display = 'block';
+            let html = '';
+            history.forEach((entry) => {
+                const nums = entry.numbers.length <= 10 ? entry.numbers.join(', ') : entry.numbers.slice(0, 10).join(', ') + ' ... (+' + (entry.numbers.length - 10) + ' more)';
+                html += '<div class="history-item"><code>' + escapeHtml(nums) + '</code> <span>[' + entry.min + ' - ' + entry.max + '] at ' + entry.time + '</span></div>';
+            });
+            historyList.innerHTML = html;
+        }
+    })();
     </script>
 </body>
 </html>

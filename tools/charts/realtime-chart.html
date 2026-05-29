@@ -16,7 +16,10 @@
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
-    
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
@@ -38,7 +41,20 @@
         .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
+        .chart-controls { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
+        .chart-controls label { display: flex; align-items: center; gap: 0.5rem; font-size: 14px; }
+        .chart-controls select, .chart-controls input { padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); }
+        .chart-container { position: relative; width: 100%; min-height: 400px; background: var(--color-surface); border-radius: var(--radius-lg); padding: 1rem; }
+        .status-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 13px; font-weight: 500; }
+        .status-badge.stopped { background: #E5E7EB; color: #6B7280; }
+        .status-badge.paused { background: #FEF3C7; color: #92400E; }
+        .status-badge.running { background: #D1FAE5; color: #065F46; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .status-dot.stopped { background: #9CA3AF; }
+        .status-dot.paused { background: #F59E0B; }
+        .status-dot.running { background: #10B981; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
         @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -82,32 +98,43 @@
                 
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
-                    <div class="workspace-grid">
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
-                            </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                    <div class="chart-controls">
+                        <div id="statusBadge" class="status-badge stopped">
+                            <span class="status-dot stopped"></span>
+                            <span>Stopped</span>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
-                            </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
-                        </div>
+                        <label>
+                            <span data-i18n="chart_type">Chart Type:</span>
+                            <select id="chartType">
+                                <option value="line">Line</option>
+                                <option value="bar">Bar</option>
+                            </select>
+                        </label>
+                        <label>
+                            <span data-i18n="chart_data_source">Data Source:</span>
+                            <select id="dataSource">
+                                <option value="sine">Sine Wave</option>
+                                <option value="random">Random</option>
+                                <option value="incremental">Incremental</option>
+                            </select>
+                        </label>
+                        <label>
+                            <span data-i18n="chart_max_points">Max Points:</span>
+                            <input type="number" id="maxPoints" value="30" min="10" max="100" style="width: 70px;">
+                        </label>
+                        <label>
+                            <span>Speed (ms):</span>
+                            <input type="range" id="speedSlider" min="100" max="2000" value="500" style="width: 100px;">
+                        </label>
+                        <span id="pointCount">0 points</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartCanvas" style="max-height: 400px;"></canvas>
                     </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                        <button class="btn btn-primary" id="btnStart"><i data-lucide="play"></i><span>Start</span></button>
+                        <button class="btn btn-secondary" id="btnPause" disabled><i data-lucide="pause"></i><span>Pause</span></button>
+                        <button class="btn btn-danger" id="btnReset"><i data-lucide="rotate-ccw"></i><span>Reset</span></button>
                     </div>
                 </div>
                 
@@ -149,8 +176,17 @@
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
+    // Global variables
+    let chartInstance = null;
+    let isRunning = false;
+    let intervalId = null;
+    let tick = 0;
+    let dataPoints = [];
+    let labels = [];
+    const speedSlider = { value: 500 };
+
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
@@ -320,17 +356,5 @@
     updateStatus();
   })();
   </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
-    </script>
 </body>
 </html>

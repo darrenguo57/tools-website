@@ -23,23 +23,24 @@
     <link rel="stylesheet" href="../../assets/css/tools.css">
     
     <style>
-        /* Tool Page Custom Styles */
-        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .workspace-grid .full-width { grid-column: 1 / -1; }
-        .textarea-wrap { position: relative; }
-        .textarea-wrap textarea, .textarea-wrap input {
-            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
-            resize: vertical; background: var(--color-bg); color: var(--color-text);
-            box-sizing: border-box;
-        }
-        .textarea-wrap input { min-height: auto; resize: none; }
-        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
-        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
-        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
+        /* Base64 Tool Styles */
+        .base64-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .base64-tab { flex: 1; padding: 0.75rem 1rem; border: 1px solid var(--color-border); background: var(--color-bg-secondary); border-radius: var(--radius-lg); cursor: pointer; text-align: center; font-weight: 500; transition: all 0.2s; }
+        .base64-tab:hover { background: var(--color-bg-tertiary); }
+        .base64-tab.active { background: var(--color-primary); color: white; border-color: var(--color-primary); }
+        .base64-content { display: none; }
+        .base64-content.active { display: block; }
+        .base64-upload { border: 2px dashed var(--color-border); border-radius: var(--radius-xl); padding: 2rem; text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 1rem; }
+        .base64-upload:hover { border-color: var(--color-primary); background: var(--color-primary-light); }
+        .base64-preview { background: var(--color-bg-secondary); border-radius: var(--radius-lg); padding: 1rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; min-height: 200px; }
+        .base64-preview img { max-width: 100%; max-height: 300px; border-radius: var(--radius-md); }
+        .base64-preview .empty-state { color: var(--color-text-tertiary); }
+        .base64-output { width: 100%; min-height: 150px; padding: 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-bg); color: var(--color-text); font-family: monospace; font-size: 12px; resize: vertical; box-sizing: border-box; }
+        .base64-info { font-size: 12px; color: var(--color-text-tertiary); margin: 0.5rem 0; }
+        .base64-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+        .base64-hint { font-size: 12px; color: var(--color-text-tertiary); margin-top: 0.5rem; }
         
-        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .base64-tabs { flex-direction: column; } }
     </style>
 </head>
 <body>
@@ -67,7 +68,7 @@
     </header>
     
     <!-- Breadcrumb -->
-    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_converters" data-i18n="cat_converters">Converters</a> / <span>Base64 Encoder/Decoder</span></div></div>
+    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_converters" data-i18n="cat_converters">Converters</a> / <span data-i18n="base64_title">Base64 Encoder/Decoder</span></div></div>
     
     <!-- Main Content -->
     <main class="tool-page">
@@ -76,38 +77,88 @@
                 <!-- Tool Header -->
                 <div class="tool-header">
                     <div class="tool-icon"><i data-lucide="arrow-left-right"></i></div>
-                    <h1>Base64 Encoder/Decoder</h1>
-                    <p>Encode and decode Base64 strings online</p>
+                    <h1 data-i18n="base64_title">Base64 Encoder/Decoder</h1>
+                    <p data-i18n="base64_desc">Encode images to Base64 or decode Base64 back to images</p>
                 </div>
                 
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
-                    <div class="workspace-grid">
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
-                            </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                    <!-- Tabs -->
+                    <div class="base64-tabs">
+                        <div class="base64-tab active" onclick="switchTab('img2base64')">
+                            <i data-lucide="image" style="width:16px;height:16px;vertical-align:middle;margin-right:4px"></i>
+                            <span data-i18n="base64_tab_img2base64">Image to Base64</span>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
-                            </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        <div class="base64-tab" onclick="switchTab('base642img')">
+                            <i data-lucide="file-image" style="width:16px;height:16px;vertical-align:middle;margin-right:4px"></i>
+                            <span data-i18n="base64_tab_base642img">Base64 to Image</span>
                         </div>
                     </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                    
+                    <!-- Image to Base64 -->
+                    <div class="base64-content active" id="tab-img2base64">
+                        <div class="base64-upload" id="dropzone" onclick="document.getElementById('fileInput').click()">
+                            <i data-lucide="upload-cloud" style="width:48px;height:48px;color:var(--color-text-tertiary);margin-bottom:1rem"></i>
+                            <div style="font-weight:500;margin-bottom:0.25rem" data-i18n="base64_upload_text">Drop image here or click to upload</div>
+                            <div style="font-size:12px;color:var(--color-text-tertiary)" data-i18n="base64_upload_hint">Supports: JPG, PNG, GIF, WebP</div>
+                            <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFile(this.files[0])">
+                        </div>
+                        
+                        <div class="base64-preview" id="imgPreview">
+                            <div class="empty-state">
+                                <i data-lucide="image" style="width:40px;height:40px;opacity:0.5"></i>
+                                <div data-i18n="base64_preview_empty">Image preview will appear here</div>
+                            </div>
+                        </div>
+                        
+                        <div id="imgInfo" style="display:none" class="base64-info"></div>
+                        
+                        <textarea class="base64-output" id="base64Output" placeholder="Base64 output will appear here..." readonly></textarea>
+                        
+                        <div class="base64-actions">
+                            <button class="btn btn-secondary" onclick="copyBase64()">
+                                <i data-lucide="copy"></i> <span data-i18n="btn_copy_base64">Copy Base64</span>
+                            </button>
+                            <button class="btn btn-secondary" onclick="copyDataUrl()">
+                                <i data-lucide="link"></i> <span data-i18n="btn_copy_dataurl">Copy Data URL</span>
+                            </button>
+                            <button class="btn btn-secondary" onclick="copyImgTag()">
+                                <i data-lucide="code"></i> <span data-i18n="btn_copy_imgtag">Copy IMG Tag</span>
+                            </button>
+                            <button class="btn btn-danger" onclick="clearImg2Base64()">
+                                <i data-lucide="trash-2"></i> <span data-i18n="btn_clear">Clear</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Base64 to Image -->
+                    <div class="base64-content" id="tab-base642img">
+                        <textarea class="base64-output" id="base64Input" placeholder="Paste Base64 string here..."></textarea>
+                        <div class="base64-hint" data-i18n="base64_decode_hint">Paste a Base64 string (with or without data URL prefix)</div>
+                        
+                        <div class="btn-group" style="justify-content:flex-start">
+                            <button class="btn btn-primary" onclick="decodeBase64()">
+                                <i data-lucide="play"></i> <span data-i18n="btn_decode">Decode</span>
+                            </button>
+                            <button class="btn btn-danger" onclick="clearBase642Img()">
+                                <i data-lucide="trash-2"></i> <span data-i18n="btn_clear">Clear</span>
+                            </button>
+                        </div>
+                        
+                        <div class="base64-preview" id="decodedPreview">
+                            <div class="empty-state">
+                                <i data-lucide="image" style="width:40px;height:40px;opacity:0.5"></i>
+                                <div data-i18n="base64_decoded_empty">Decoded image will appear here</div>
+                            </div>
+                        </div>
+                        
+                        <div id="decodedInfo" style="display:none" class="base64-info"></div>
+                        
+                        <div id="decodedActions" style="display:none" class="base64-actions">
+                            <button class="btn btn-success" onclick="downloadDecoded()">
+                                <i data-lucide="download"></i> <span data-i18n="btn_download">Download</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 
@@ -151,6 +202,17 @@
     <script src="../../assets/js/app.js"></script>
     
     <script>
+    // Global state
+    let currentDataUrl = '';
+    let currentFileName = '';
+    let decodedDataUrl = '';
+    let decodedMimeType = '';
+    
+    // DOM Elements
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    
+    // Initialize
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
@@ -158,6 +220,15 @@
         if (typeof I18n !== 'undefined') {
             I18n.init();
         }
+        
+        // Dropzone events
+        dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+        dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+        dropzone.addEventListener('drop', e => {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+        });
     });
     
     function showToast(msg) {
@@ -169,48 +240,15 @@
         }
     }
     
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
     function switchTab(tab) {
-        document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+        document.querySelectorAll('.base64-tab').forEach((btn, i) => {
             btn.classList.toggle('active', (tab === 'img2base64' && i === 0) || (tab === 'base642img' && i === 1));
         });
-        document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+        document.querySelectorAll('.base64-content').forEach(tc => tc.classList.remove('active'));
         document.getElementById('tab-' + tab).classList.add('active');
+        lucide.createIcons();
     }
-
-    // Image to Base64
-    dropzone.addEventListener('click', () => fileInput.click());
-    dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
-    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
-    dropzone.addEventListener('drop', e => { e.preventDefault(); dropzone.classList.remove('dragover'); handleFile(e.dataTransfer.files[0]); });
-    fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
-
+    
     function handleFile(file) {
         if (!file || !file.type.startsWith('image/')) { showToast('Please select an image file'); return; }
         currentFileName = file.name;
@@ -218,75 +256,72 @@
         reader.onload = (e) => {
             currentDataUrl = e.target.result;
             const base64Str = currentDataUrl.split(',')[1];
-
+            
             document.getElementById('imgPreview').innerHTML = `<img src="${currentDataUrl}" alt="Preview">`;
             document.getElementById('base64Output').value = base64Str;
-            document.getElementById('imgInfo').style.display = 'inline-flex';
-            document.getElementById('imgInfoText').textContent = `${file.name} | ${formatSize(file.size)} | ${base64Str.length.toLocaleString()} chars`;
-            lucide.createIcons();
+            document.getElementById('imgInfo').style.display = 'block';
+            document.getElementById('imgInfo').textContent = `${file.name} | ${formatSize(file.size)} | ${base64Str.length.toLocaleString()} chars`;
             showToast('Image converted to Base64');
         };
         reader.readAsDataURL(file);
     }
-
+    
     function copyBase64() {
         const val = document.getElementById('base64Output').value;
         if (!val) { showToast('No Base64 string to copy'); return; }
         copyToClipboard(val);
     }
-
+    
     function copyDataUrl() {
         if (!currentDataUrl) { showToast('No data URL to copy'); return; }
         copyToClipboard(currentDataUrl);
     }
-
+    
     function copyImgTag() {
         if (!currentDataUrl) { showToast('No image to copy'); return; }
-        copyToClipboard(`<img src="${currentDataUrl}" alt="${currentFileName}">`);
+        copyToClipboard('<img src="' + currentDataUrl + '" alt="' + currentFileName + '">');
     }
-
+    
     function clearImg2Base64() {
         currentDataUrl = '';
         currentFileName = '';
-        document.getElementById('imgPreview').innerHTML = '<div class="empty-state">Image preview will appear here</div>';
+        document.getElementById('imgPreview').innerHTML = '<div class="empty-state"><i data-lucide="image" style="width:40px;height:40px;opacity:0.5"></i><div>Image preview will appear here</div></div>';
         document.getElementById('base64Output').value = '';
         document.getElementById('imgInfo').style.display = 'none';
         fileInput.value = '';
+        lucide.createIcons();
     }
-
-    // Base64 to Image
+    
     function decodeBase64() {
         let input = document.getElementById('base64Input').value.trim();
         if (!input) { showToast('Please paste a Base64 string'); return; }
-
+        
         // Add data URL prefix if missing
         let dataUrl = input;
         if (!input.startsWith('data:image')) {
-            // Try to detect format
             let mimeType = 'image/png';
             if (input.startsWith('/9j/')) mimeType = 'image/jpeg';
             else if (input.startsWith('iVBOR')) mimeType = 'image/png';
             else if (input.startsWith('R0lGOD')) mimeType = 'image/gif';
             else if (input.startsWith('UklGR')) mimeType = 'image/webp';
-            dataUrl = `data:${mimeType};base64,${input}`;
+            dataUrl = 'data:' + mimeType + ';base64,' + input;
         }
-
+        
         decodedDataUrl = dataUrl;
         decodedMimeType = dataUrl.match(/data:(image\/\w+)/)?.[1] || 'image/png';
-
+        
         const img = new Image();
         img.onload = () => {
-            document.getElementById('decodedPreview').innerHTML = `<img src="${dataUrl}" alt="Decoded">`;
-            document.getElementById('decodedInfo').style.display = 'inline-flex';
-            document.getElementById('decodedInfoText').textContent = `${img.width} x ${img.height} | ${decodedMimeType} | ${formatSize(Math.round(dataUrl.length * 0.75))}`;
+            document.getElementById('decodedPreview').innerHTML = '<img src="' + dataUrl + '" alt="Decoded">';
+            document.getElementById('decodedInfo').style.display = 'block';
+            document.getElementById('decodedInfo').textContent = img.width + ' x ' + img.height + ' | ' + decodedMimeType + ' | ' + formatSize(Math.round(dataUrl.length * 0.75));
             document.getElementById('decodedActions').style.display = 'flex';
-            lucide.createIcons();
             showToast('Base64 decoded to image');
         };
         img.onerror = () => { showToast('Invalid Base64 string or unsupported format'); };
         img.src = dataUrl;
     }
-
+    
     function downloadDecoded() {
         if (!decodedDataUrl) { showToast('No image to download'); return; }
         const ext = decodedMimeType.split('/')[1] || 'png';
@@ -296,50 +331,35 @@
         a.click();
         showToast('Image downloaded');
     }
-
+    
     function clearBase642Img() {
         decodedDataUrl = '';
         decodedMimeType = '';
         document.getElementById('base64Input').value = '';
-        document.getElementById('decodedPreview').innerHTML = '<div class="empty-state">Decoded image will appear here</div>';
+        document.getElementById('decodedPreview').innerHTML = '<div class="empty-state"><i data-lucide="image" style="width:40px;height:40px;opacity:0.5"></i><div>Decoded image will appear here</div></div>';
         document.getElementById('decodedInfo').style.display = 'none';
         document.getElementById('decodedActions').style.display = 'none';
+        lucide.createIcons();
     }
-
+    
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard'))
             .catch(() => {
                 const ta = document.createElement('textarea');
-                ta.value = text; document.body.appendChild(ta); ta.select();
-                document.execCommand('copy'); document.body.removeChild(ta);
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
                 showToast('Copied to clipboard');
             });
     }
-
+    
     function formatSize(bytes) {
         if (bytes < 1024) return bytes + ' B';
         if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
         return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
     }
-
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2500);
-    }
-    </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
     </script>
 </body>
 </html>

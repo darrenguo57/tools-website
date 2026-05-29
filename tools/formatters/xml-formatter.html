@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XML Formatter - ToolBox</title>
     <meta name="description" content="Format XML documents">
-    
+
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
     <link rel="stylesheet" href="../../assets/css/tools.css">
-    
+
     <style>
         /* Tool Page Custom Styles */
         .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -38,7 +38,19 @@
         .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
+        .message-box { padding: 0.75rem 1rem; border-radius: var(--radius-md); margin-bottom: 1rem; font-size: 14px; display: none; }
+        .message-box.show { display: block; }
+        .error-box { background: rgba(220, 38, 38, 0.1); border: 1px solid rgba(220, 38, 38, 0.3); color: #dc2626; }
+        .success-box { background: rgba(22, 163, 74, 0.1); border: 1px solid rgba(22, 163, 74, 0.3); color: #16a34a; }
+
+        /* XML Syntax Highlighting */
+        .xml-tag { color: #d73a49; }
+        .xml-attr-name { color: #6f42c1; }
+        .xml-attr-value { color: #0d7a3f; }
+        .xml-prolog { color: #808080; }
+        .xml-comment { color: #6a737d; font-style: italic; }
+        .xml-cdata { color: #e36209; }
+
         @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -65,10 +77,10 @@
             </div>
         </div>
     </header>
-    
+
     <!-- Breadcrumb -->
     <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_formatters" data-i18n="cat_formatters">Formatters</a> / <span>XML Formatter</span></div></div>
-    
+
     <!-- Main Content -->
     <main class="tool-page">
         <div class="container tool-layout">
@@ -79,9 +91,13 @@
                     <h1>XML Formatter</h1>
                     <p>Format XML documents</p>
                 </div>
-                
+
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
+                    <!-- Message Boxes -->
+                    <div class="message-box error-box" id="errorMsg"></div>
+                    <div class="message-box success-box" id="successMsg"></div>
+
                     <div class="workspace-grid">
                         <div>
                             <div class="textarea-label">
@@ -89,7 +105,7 @@
                                 <span data-i18n="input_label">Input</span>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter XML here..."></textarea>
                             </div>
                             <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
@@ -99,18 +115,21 @@
                                 <span data-i18n="output_label">Output</span>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                                <div id="outputArea" style="min-height:200px;padding:1rem;border:1px solid var(--color-border);border-radius:var(--radius-lg);background:var(--color-bg);color:var(--color-text);font-family:'Courier New',monospace;font-size:14px;white-space:pre-wrap;overflow:auto;"><span style="color:#8b949e;">Formatted XML will appear here...</span></div>
                             </div>
                             <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
                     </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                        <button class="btn btn-primary" id="btnFormat"><i data-lucide="play"></i><span data-i18n="btn_format">Format</span></button>
+                        <button class="btn btn-secondary" id="btnMinify"><i data-lucide="minimize-2"></i><span data-i18n="btn_minify">Minify</span></button>
+                        <button class="btn btn-secondary" id="btnValidate"><i data-lucide="check-circle"></i><span data-i18n="btn_validate">Validate</span></button>
+                        <button class="btn btn-secondary" id="btnCopy"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
+                        <button class="btn btn-secondary" id="btnPaste"><i data-lucide="clipboard"></i><span data-i18n="btn_paste">Paste</span></button>
+                        <button class="btn btn-danger" id="btnClear"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
                 </div>
-                
+
                 <!-- Ad Slot -->
                 <div class="ad-slot" style="margin-top:2rem">
                     <span data-i18n="ad_label">Advertisement</span>
@@ -123,7 +142,7 @@
             </aside>
         </div>
     </main>
-    
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container footer-container">
@@ -136,20 +155,20 @@
             <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
         </div>
     </footer>
-    
+
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
-    
+
     <!-- Back to Top -->
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
         <i data-lucide="chevron-up"></i>
     </button>
-    
+
     <!-- Scripts -->
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
@@ -158,223 +177,219 @@
         if (typeof I18n !== 'undefined') {
             I18n.init();
         }
-    });
-    
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        if (toast) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-    }
-    
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
-    function getIndent() {
-        const val = document.getElementById('indentSize').value;
-        return val === 'tab' ? '\t' : ' '.repeat(parseInt(val));
-      }
 
-      function showError(msg) {
-        errorMsg.textContent = msg;
-        errorMsg.classList.add('show');
-        successMsg.classList.remove('show');
-      }
-
-      function showSuccess(msg) {
-        successMsg.textContent = msg;
-        successMsg.classList.add('show');
-        errorMsg.classList.remove('show');
-      }
-
-      function clearMessages() {
-        errorMsg.classList.remove('show');
-        successMsg.classList.remove('show');
-      }
-
-      function formatXML(xml, indent) {
-        const PADDING = indent || '  ';
-        let formatted = '';
-        let pad = 0;
-
-        // Normalize line breaks
-        xml = xml.replace(/(>)(<)(\/*)/g, '$1\n$2$3');
-        xml.split('\n').forEach(function(node) {
-          node = node.trim();
-          if (!node) return;
-
-          let padding = '';
-          if (node.match(/<\w[^>]*[^/]>.*$/)) {
-            // Opening tag
-            padding = PADDING.repeat(pad);
-            if (!node.match(/<\w[^>]*[^/]>.*<\/\w[^>]*>/)) {
-              // Not self-closing, not immediately closed
-              pad++;
-            }
-          } else if (node.match(/^<\/\w/)) {
-            // Closing tag
-            pad = Math.max(0, pad - 1);
-            padding = PADDING.repeat(pad);
-          } else if (node.match(/^<\w[^>]*\/>/)) {
-            // Self-closing tag
-            padding = PADDING.repeat(pad);
-          } else {
-            padding = PADDING.repeat(pad);
-          }
-
-          formatted += padding + node + '\n';
-        });
-
-        return formatted.trim();
-      }
-
-      function minifyXML(xml) {
-        return xml.replace(/>\s+</g, '><').replace(/\s+/g, ' ').trim();
-      }
-
-      function validateXML(xml) {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(xml, 'text/xml');
-        const errorNode = doc.querySelector('parsererror');
-        if (errorNode) {
-          const msg = errorNode.textContent;
-          // Try to extract line number
-          const lineMatch = msg.match(/line\s+(\d+)/i);
-          const colMatch = msg.match(/column\s+(\d+)/i);
-          let info = 'Invalid XML.';
-          if (lineMatch) info += ' Line ' + lineMatch[1] + '.';
-          if (colMatch) info += ' Column ' + colMatch[1] + '.';
-          info += ' ' + msg.substring(0, 200);
-          return { valid: false, message: info };
-        }
-        return { valid: true, message: 'Valid XML document.' };
-      }
-
-      function highlightXML(xml) {
-        // Escape HTML first
-        let escaped = xml.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-        // Highlight XML prolog
-        escaped = escaped.replace(/(&lt;\?[\s\S]*?\?&gt;)/g, '<span class="xml-prolog">$1</span>');
-
-        // Highlight comments
-        escaped = escaped.replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="xml-comment">$1</span>');
-
-        // Highlight CDATA
-        escaped = escaped.replace(/(&lt;!\[CDATA\[[\s\S]*?\]\]&gt;)/g, '<span class="xml-cdata">$1</span>');
-
-        // Highlight tags
-        escaped = escaped.replace(/(&lt;\/?)([\w:-]+)/g, '$1<span class="xml-tag">$2</span>');
-
-        // Highlight closing bracket
-        escaped = escaped.replace(/(\/?&gt;)/g, '<span class="xml-tag">$1</span>');
-
-        // Highlight attributes name="value"
-        escaped = escaped.replace(/([\w:-]+)(=)(&quot;|&#39;|")(.*?)(\3)/g,
-          '<span class="xml-attr-name">$1</span>$2<span class="xml-attr-value">$3$4$5</span>');
-
-        // Highlight attribute values with single quotes
-        escaped = escaped.replace(/([\w:-]+)(=)(&#39;)(.*?)(&#39;)/g,
-          '<span class="xml-attr-name">$1</span>$2<span class="xml-attr-value">$3$4$5</span>');
-
-        return escaped;
-      }
-
-      document.getElementById('btnFormat').addEventListener('click', function() {
-        clearMessages();
-        const val = input.value.trim();
-        if (!val) { showError('Please enter XML data.'); return; }
-        const validation = validateXML(val);
-        if (!validation.valid) { showError(validation.message); return; }
-        lastResult = formatXML(val, getIndent());
-        output.innerHTML = highlightXML(lastResult);
-        showSuccess('XML formatted successfully!');
-      });
-
-      document.getElementById('btnMinify').addEventListener('click', function() {
-        clearMessages();
-        const val = input.value.trim();
-        if (!val) { showError('Please enter XML data.'); return; }
-        const validation = validateXML(val);
-        if (!validation.valid) { showError(validation.message); return; }
-        lastResult = minifyXML(val);
-        output.innerHTML = highlightXML(lastResult);
-        showSuccess('XML minified! Size: ' + lastResult.length + ' characters.');
-      });
-
-      document.getElementById('btnValidate').addEventListener('click', function() {
-        clearMessages();
-        const val = input.value.trim();
-        if (!val) { showError('Please enter XML data.'); return; }
-        const validation = validateXML(val);
-        if (validation.valid) {
-          showSuccess(validation.message);
-          lastResult = formatXML(val, getIndent());
-          output.innerHTML = highlightXML(lastResult);
-        } else {
-          showError(validation.message);
-          output.innerHTML = '';
-        }
-      });
-
-      function copyResult() {
-        if (!lastResult) { showError('No result to copy.'); return; }
-        navigator.clipboard.writeText(lastResult).then(function() {
-          showSuccess('Copied to clipboard!');
-        }).catch(function() { showError('Failed to copy.'); });
-      }
-
-      document.getElementById('btnCopy').addEventListener('click', copyResult);
-      document.getElementById('btnCopyOutput').addEventListener('click', copyResult);
-
-      document.getElementById('btnClear').addEventListener('click', function() {
-        input.value = '';
-        output.innerHTML = '<span style="color:#8b949e;">Formatted XML will appear here...</span>';
-        lastResult = '';
-        clearMessages();
-      });
-
-      document.getElementById('btnPaste').addEventListener('click', function() {
-        navigator.clipboard.readText().then(function(text) { input.value = text; }).catch(function() {});
-      });
-    })();
-  </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
+        // Initialize character counter
         const inputArea = document.getElementById('inputArea');
         const inputCount = document.getElementById('inputCount');
+        const outputArea = document.getElementById('outputArea');
+        const outputCount = document.getElementById('outputCount');
+
         if (inputArea && inputCount) {
             inputArea.addEventListener('input', () => {
                 inputCount.textContent = inputArea.value.length;
             });
         }
+
+        // Variables
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+        let lastResult = '';
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2500);
+            }
+        }
+
+        function showError(msg) {
+            errorMsg.textContent = msg;
+            errorMsg.classList.add('show');
+            successMsg.classList.remove('show');
+        }
+
+        function showSuccess(msg) {
+            successMsg.textContent = msg;
+            successMsg.classList.add('show');
+            errorMsg.classList.remove('show');
+        }
+
+        function clearMessages() {
+            errorMsg.classList.remove('show');
+            successMsg.classList.remove('show');
+        }
+
+        function formatXML(xml, indent) {
+            const PADDING = indent || '  ';
+            let formatted = '';
+            let pad = 0;
+
+            // Normalize line breaks
+            xml = xml.replace(/(>)(<)(\/*)/g, '$1\n$2$3');
+            xml.split('\n').forEach(function(node) {
+                node = node.trim();
+                if (!node) return;
+
+                let padding = '';
+                if (node.match(/<\w[^>]*[^/]>.*$/)) {
+                    // Opening tag
+                    padding = PADDING.repeat(pad);
+                    if (!node.match(/<\w[^>]*[^/]>.*<\/\w[^>]*>/)) {
+                        // Not self-closing, not immediately closed
+                        pad++;
+                    }
+                } else if (node.match(/^<\/\w/)) {
+                    // Closing tag
+                    pad = Math.max(0, pad - 1);
+                    padding = PADDING.repeat(pad);
+                } else if (node.match(/^<\w[^>]*\/>/)) {
+                    // Self-closing tag
+                    padding = PADDING.repeat(pad);
+                } else {
+                    padding = PADDING.repeat(pad);
+                }
+
+                formatted += padding + node + '\n';
+            });
+
+            return formatted.trim();
+        }
+
+        function minifyXML(xml) {
+            return xml.replace(/>\s+</g, '><').replace(/\s+/g, ' ').trim();
+        }
+
+        function validateXML(xml) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(xml, 'text/xml');
+            const errorNode = doc.querySelector('parsererror');
+            if (errorNode) {
+                const msg = errorNode.textContent;
+                // Try to extract line number
+                const lineMatch = msg.match(/line\s+(\d+)/i);
+                const colMatch = msg.match(/column\s+(\d+)/i);
+                let info = 'Invalid XML.';
+                if (lineMatch) info += ' Line ' + lineMatch[1] + '.';
+                if (colMatch) info += ' Column ' + colMatch[1] + '.';
+                info += ' ' + msg.substring(0, 200);
+                return { valid: false, message: info };
+            }
+            return { valid: true, message: 'Valid XML document.' };
+        }
+
+        function highlightXML(xml) {
+            // Escape HTML first
+            let escaped = xml.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+            // Highlight XML prolog
+            escaped = escaped.replace(/(&lt;\?[\s\S]*?\?&gt;)/g, '<span class="xml-prolog">$1</span>');
+
+            // Highlight comments
+            escaped = escaped.replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="xml-comment">$1</span>');
+
+            // Highlight CDATA
+            escaped = escaped.replace(/(&lt;!\[CDATA\[[\s\S]*?\]\]&gt;)/g, '<span class="xml-cdata">$1</span>');
+
+            // Highlight tags
+            escaped = escaped.replace(/(&lt;\/?)([\w:-]+)/g, '$1<span class="xml-tag">$2</span>');
+
+            // Highlight closing bracket
+            escaped = escaped.replace(/(\/?&gt;)/g, '<span class="xml-tag">$1</span>');
+
+            // Highlight attributes name="value"
+            escaped = escaped.replace(/([\w:-]+)(=)(&quot;|&#39;|")(.*?)(\3)/g,
+                '<span class="xml-attr-name">$1</span>$2<span class="xml-attr-value">$3$4$5</span>');
+
+            // Highlight attribute values with single quotes
+            escaped = escaped.replace(/([\w:-]+)(=)(&#39;)(.*?)(&#39;)/g,
+                '<span class="xml-attr-name">$1</span>$2<span class="xml-attr-value">$3$4$5</span>');
+
+            return escaped;
+        }
+
+        function updateOutputCount() {
+            if (outputArea && outputCount && lastResult) {
+                outputCount.textContent = lastResult.length;
+            }
+        }
+
+        // Format button
+        document.getElementById('btnFormat').addEventListener('click', function() {
+            clearMessages();
+            const val = inputArea.value.trim();
+            if (!val) { showError('Please enter XML data.'); return; }
+            const validation = validateXML(val);
+            if (!validation.valid) { showError(validation.message); return; }
+            lastResult = formatXML(val);
+            outputArea.innerHTML = highlightXML(lastResult);
+            showSuccess('XML formatted successfully!');
+            updateOutputCount();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        });
+
+        // Minify button
+        document.getElementById('btnMinify').addEventListener('click', function() {
+            clearMessages();
+            const val = inputArea.value.trim();
+            if (!val) { showError('Please enter XML data.'); return; }
+            const validation = validateXML(val);
+            if (!validation.valid) { showError(validation.message); return; }
+            lastResult = minifyXML(val);
+            outputArea.innerHTML = highlightXML(lastResult);
+            showSuccess('XML minified! Size: ' + lastResult.length + ' characters.');
+            updateOutputCount();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        });
+
+        // Validate button
+        document.getElementById('btnValidate').addEventListener('click', function() {
+            clearMessages();
+            const val = inputArea.value.trim();
+            if (!val) { showError('Please enter XML data.'); return; }
+            const validation = validateXML(val);
+            if (validation.valid) {
+                showSuccess(validation.message);
+                lastResult = formatXML(val);
+                outputArea.innerHTML = highlightXML(lastResult);
+                updateOutputCount();
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            } else {
+                showError(validation.message);
+                outputArea.innerHTML = '';
+            }
+        });
+
+        // Copy button
+        document.getElementById('btnCopy').addEventListener('click', function() {
+            if (!lastResult) { showError('No result to copy.'); return; }
+            navigator.clipboard.writeText(lastResult).then(function() {
+                showSuccess('Copied to clipboard!');
+            }).catch(function() {
+                showError('Failed to copy.');
+            });
+        });
+
+        // Paste button
+        document.getElementById('btnPaste').addEventListener('click', function() {
+            navigator.clipboard.readText().then(function(text) {
+                inputArea.value = text;
+                inputCount.textContent = text.length;
+            }).catch(function() {
+                showError('Failed to read clipboard.');
+            });
+        });
+
+        // Clear button
+        document.getElementById('btnClear').addEventListener('click', function() {
+            inputArea.value = '';
+            outputArea.innerHTML = '<span style="color:#8b949e;">Formatted XML will appear here...</span>';
+            inputCount.textContent = '0';
+            outputCount.textContent = '0';
+            lastResult = '';
+            clearMessages();
+        });
     });
     </script>
 </body>

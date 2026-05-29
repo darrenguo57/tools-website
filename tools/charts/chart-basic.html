@@ -16,7 +16,10 @@
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
-    
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
@@ -38,7 +41,16 @@
         .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
+        .chart-controls { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .chart-controls label { display: flex; align-items: center; gap: 0.5rem; font-size: 14px; }
+        .chart-controls select, .chart-controls input { padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); }
+        .chart-controls input[type="checkbox"] { width: auto; }
+        .chart-container { position: relative; width: 100%; min-height: 400px; background: var(--color-surface); border-radius: var(--radius-lg); padding: 1rem; }
+        .data-table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+        .data-table th, .data-table td { padding: 0.5rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        .data-table th { font-weight: 600; background: var(--color-bg); }
+        .data-table input { width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); }
+
         @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -86,28 +98,95 @@
                         <div>
                             <div class="textarea-label">
                                 <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                                <span data-i18n="input_label">Data Input</span>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                            <div class="chart-controls">
+                                <label>
+                                    <span>Type:</span>
+                                    <select id="chartType">
+                                        <option value="bar">Bar Chart</option>
+                                        <option value="line">Line Chart</option>
+                                        <option value="pie">Pie Chart</option>
+                                        <option value="doughnut">Doughnut Chart</option>
+                                        <option value="radar">Radar Chart</option>
+                                        <option value="polarArea">Polar Area</option>
+                                    </select>
+                                </label>
+                                <label>
+                                    <span>Theme:</span>
+                                    <select id="colorTheme">
+                                        <option value="vibrant">Vibrant</option>
+                                        <option value="pastel">Pastel</option>
+                                        <option value="earth">Earth</option>
+                                        <option value="ocean">Ocean</option>
+                                        <option value="sunset">Sunset</option>
+                                    </select>
+                                </label>
+                                <label>
+                                    <span>Title:</span>
+                                    <input type="text" id="chartTitle" placeholder="Chart Title">
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="showLegend" checked>
+                                    <span>Legend</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="enableAnimation" checked>
+                                    <span>Animation</span>
+                                </label>
                             </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
-                        </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Label</th>
+                                        <th>Value</th>
+                                        <th style="width: 40px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dataBody">
+                                    <tr>
+                                        <td><input type="text" value="January" class="label-input"></td>
+                                        <td><input type="number" value="65" class="value-input"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" value="February" class="label-input"></td>
+                                        <td><input type="number" value="59" class="value-input"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" value="March" class="label-input"></td>
+                                        <td><input type="number" value="80" class="value-input"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" value="April" class="label-input"></td>
+                                        <td><input type="number" value="81" class="value-input"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" value="May" class="label-input"></td>
+                                        <td><input type="number" value="56" class="value-input"></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="btn-group">
+                                <button class="btn btn-secondary" id="btnAddRow"><i data-lucide="plus"></i><span>Add Row</span></button>
+                                <button class="btn btn-secondary" id="btnClearData"><i data-lucide="trash-2"></i><span>Clear</span></button>
+                                <button class="btn btn-primary" id="btnGenerate"><i data-lucide="play"></i><span>Generate</span></button>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
-                            </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
                     </div>
+                    <div class="chart-container">
+                        <div id="chartPlaceholder" style="display: flex; align-items: center; justify-content: center; height: 400px; color: var(--color-text-tertiary);">
+                            Click "Generate" to create chart
+                        </div>
+                        <canvas id="chartCanvas" style="display: none; max-height: 400px;"></canvas>
+                    </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                        <button class="btn btn-secondary" id="btnDownloadPNG"><i data-lucide="download"></i><span data-i18n="btn_download_png">Download PNG</span></button>
+                        <button class="btn btn-secondary" id="btnDownloadSVG"><i data-lucide="download"></i><span data-i18n="btn_download_svg">Download SVG</span></button>
                     </div>
                 </div>
                 
@@ -149,8 +228,18 @@
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
+    // Global variables
+    let chartInstance = null;
+    const colorThemes = {
+      vibrant: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#06B6D4'],
+      pastel: ['#93C5FD', '#86EFAC', '#FCD34D', '#FCA5A5', '#C4B5FD', '#F9A8D4', '#67E8F9'],
+      earth: ['#92400E', '#78716C', '#84CC16', '#65A30D', '#A3E635', '#D97706', '#78716C'],
+      ocean: ['#0EA5E9', '#06B6D4', '#0891B2', '#155E75', '#22D3EE', '#7DD3FC', '#0C4A6E'],
+      sunset: ['#F97316', '#FB923C', '#FDBA74', '#FED7AA', '#FFEDD5', '#FF8C00', '#CC7000']
+    };
+
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
@@ -304,17 +393,5 @@
     });
   })();
   </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
-    </script>
 </body>
 </html>

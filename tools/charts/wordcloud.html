@@ -16,7 +16,10 @@
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
-    
+
+    <!-- WordCloud -->
+    <script src="https://cdn.jsdelivr.net/npm/wordcloud@1.2.2/src/wordcloud2.min.js"></script>
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
@@ -38,7 +41,12 @@
         .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
+        .chart-controls { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .chart-controls label { display: flex; align-items: center; gap: 0.5rem; font-size: 14px; }
+        .chart-controls select, .chart-controls input { padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); }
+        .chart-container { position: relative; width: 100%; min-height: 500px; background: var(--color-surface); border-radius: var(--radius-lg); padding: 1rem; text-align: center; }
+        .chart-container canvas { display: inline-block; max-width: 100%; }
+
         @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -86,28 +94,77 @@
                         <div>
                             <div class="textarea-label">
                                 <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                                <span data-i18n="text_input">Text Input</span>
+                            </div>
+                            <div class="chart-controls">
+                                <label>
+                                    <span data-i18n="max_words">Max Words:</span>
+                                    <input type="number" id="maxWords" value="100" min="10" max="500" style="width: 80px;">
+                                </label>
+                                <label>
+                                    <span>Color:</span>
+                                    <select id="colorScheme">
+                                        <option value="vibrant">Vibrant</option>
+                                        <option value="pastel">Pastel</option>
+                                        <option value="earth">Earth</option>
+                                        <option value="ocean">Ocean</option>
+                                        <option value="sunset">Sunset</option>
+                                    </select>
+                                </label>
+                                <label>
+                                    <span>Shape:</span>
+                                    <select id="shape">
+                                        <option value="square">Square</option>
+                                        <option value="circle">Circle</option>
+                                        <option value="heart">Heart</option>
+                                    </select>
+                                </label>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                                <textarea id="textInput" placeholder="Enter text here to generate word cloud...&#10;&#10;One word per line, or use format: word:weight&#10;Example:&#10;javascript:100&#10;python:80&#10;html:60">javascript 100
+python 80
+html 60
+css 50
+react 70
+vue 40
+angular 30
+node 65
+typescript 55
+java 45
+csharp 35
+php 25
+ruby 20
+swift 15
+kotlin 10
+typescript 55
+go 30
+rust 25
+docker 40
+kubernetes 35
+aws 50
+azure 30
+gcp 25
+devops 45
+agile 30
+scrum 25
+ci 35
+cd 30
+git 55
+github 50
+gitlab 30
+jenkins 35
+terraform 25</textarea>
                             </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
-                        </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+                            <div class="btn-group">
+                                <button class="btn btn-primary" id="btnGenerate"><i data-lucide="play"></i><span>Generate</span></button>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
-                            </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
                     </div>
+                    <div class="chart-container">
+                        <canvas id="wordcloudCanvas" width="800" height="500"></canvas>
+                    </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                        <button class="btn btn-secondary" id="btnDownloadPNG"><i data-lucide="download"></i><span data-i18n="btn_download_png">Download PNG</span></button>
                     </div>
                 </div>
                 
@@ -149,8 +206,17 @@
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
+    // Global variables
+    const colorSchemes = {
+      vibrant: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#06B6D4'],
+      pastel: ['#93C5FD', '#86EFAC', '#FCD34D', '#FCA5A5', '#C4B5FD', '#F9A8D4', '#67E8F9'],
+      earth: ['#92400E', '#78716C', '#84CC16', '#65A30D', '#A3E635', '#D97706', '#78716C'],
+      ocean: ['#0EA5E9', '#06B6D4', '#0891B2', '#155E75', '#22D3EE', '#7DD3FC', '#0C4A6E'],
+      sunset: ['#F97316', '#FB923C', '#FDBA74', '#FED7AA', '#FFEDD5', '#FF8C00', '#CC7000']
+    };
+
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
@@ -286,17 +352,5 @@
     });
   })();
   </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
-    </script>
 </body>
 </html>

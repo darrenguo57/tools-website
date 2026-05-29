@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Screenshot Tool - ToolBox</title>
-    <meta name="description" content="Capture screenshots">
+    <meta name="description" content="Capture screenshots from HTML">
     
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
@@ -16,6 +16,8 @@
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
+    <!-- html2canvas for screenshot -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
@@ -23,23 +25,22 @@
     <link rel="stylesheet" href="../../assets/css/tools.css">
     
     <style>
-        /* Tool Page Custom Styles */
-        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .workspace-grid .full-width { grid-column: 1 / -1; }
-        .textarea-wrap { position: relative; }
-        .textarea-wrap textarea, .textarea-wrap input {
-            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
-            resize: vertical; background: var(--color-bg); color: var(--color-text);
-            box-sizing: border-box;
-        }
-        .textarea-wrap input { min-height: auto; resize: none; }
-        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
-        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
-        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
+        /* Screenshot Tool Styles */
+        .screenshot-controls { display: flex; flex-wrap: wrap; gap: 1rem; padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); margin-bottom: 1rem; }
+        .screenshot-control { display: flex; align-items: center; gap: 0.5rem; }
+        .screenshot-control label { font-size: 14px; color: var(--color-text-secondary); }
+        .screenshot-control input { padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); }
+        .screenshot-control input[type="number"] { width: 70px; }
+        .screenshot-control select { padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); }
+        .screenshot-textarea { width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-bg); color: var(--color-text); font-family: monospace; font-size: 13px; resize: vertical; box-sizing: border-box; margin-bottom: 1rem; }
+        .screenshot-preview { background: var(--color-bg-secondary); border-radius: var(--radius-lg); padding: 1rem; margin-bottom: 1rem; min-height: 200px; display: flex; align-items: center; justify-content: center; }
+        .screenshot-preview iframe { width: 100%; height: 400px; border: none; border-radius: var(--radius-md); background: white; }
+        .screenshot-result { text-align: center; }
+        .screenshot-result img { max-width: 100%; max-height: 500px; border-radius: var(--radius-lg); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .screenshot-status { font-size: 12px; color: var(--color-text-tertiary); margin-top: 0.5rem; }
+        .screenshot-hint { font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 1rem; }
         
-        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .screenshot-controls { flex-direction: column; } }
     </style>
 </head>
 <body>
@@ -67,7 +68,7 @@
     </header>
     
     <!-- Breadcrumb -->
-    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_image_tools" data-i18n="cat_image_tools">Image Tools</a> / <span>Screenshot Tool</span></div></div>
+    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_image_tools" data-i18n="cat_image_tools">Image Tools</a> / <span data-i18n="screenshot_title">Screenshot Tool</span></div></div>
     
     <!-- Main Content -->
     <main class="tool-page">
@@ -76,38 +77,65 @@
                 <!-- Tool Header -->
                 <div class="tool-header">
                     <div class="tool-icon"><i data-lucide="camera"></i></div>
-                    <h1>Screenshot Tool</h1>
-                    <p>Capture screenshots</p>
+                    <h1 data-i18n="screenshot_title">Screenshot Tool</h1>
+                    <p data-i18n="screenshot_desc">Convert HTML code to screenshots</p>
                 </div>
                 
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
-                    <div class="workspace-grid">
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
-                            </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                    <!-- Controls -->
+                    <div class="screenshot-controls">
+                        <div class="screenshot-control">
+                            <label data-i18n="screenshot_width">Width:</label>
+                            <input type="number" id="captureWidth" value="800" min="100" max="4000">
+                            <span style="color:var(--color-text-tertiary)">px</span>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
-                            </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        <div class="screenshot-control">
+                            <label data-i18n="screenshot_scale">Scale:</label>
+                            <select id="captureScale">
+                                <option value="1">1x</option>
+                                <option value="2" selected>2x</option>
+                                <option value="3">3x</option>
+                            </select>
+                        </div>
+                        <div class="screenshot-control">
+                            <label data-i18n="screenshot_background">Background:</label>
+                            <select id="captureBg">
+                                <option value="#ffffff">White</option>
+                                <option value="#f3f4f6">Gray</option>
+                                <option value="transparent">Transparent</option>
+                                <option value="#1e293b">Dark</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                    
+                    <!-- HTML Input -->
+                    <textarea class="screenshot-textarea" id="htmlInput" placeholder="Enter HTML code here...&#10;&#10;Example:&#10;<div style=&quot;padding: 20px; font-family: Arial;&quot;>&#10;  <h1>Hello World</h1>&#10;  <p>This will be captured as an image.</p>&#10;</div>"></textarea>
+                    <div class="screenshot-hint">Enter any HTML code. It will be rendered and captured as a screenshot.</div>
+                    
+                    <!-- Preview -->
+                    <div class="screenshot-preview" id="previewArea">
+                        <div class="empty-state" style="color:var(--color-text-tertiary)" data-i18n="screenshot_empty">
+                            Enter HTML code and click "Preview" to see the result
+                        </div>
+                    </div>
+                    
+                    <div class="screenshot-status" id="previewStatus">Waiting for input...</div>
+                    
+                    <!-- Actions -->
+                    <div class="btn-group" style="justify-content:flex-start">
+                        <button class="btn btn-secondary" onclick="previewHTML()">
+                            <i data-lucide="eye"></i> <span data-i18n="btn_preview">Preview</span>
+                        </button>
+                        <button class="btn btn-primary" onclick="captureScreenshot()">
+                            <i data-lucide="camera"></i> <span data-i18n="btn_capture">Capture</span>
+                        </button>
+                        <button class="btn btn-success" id="btnDownload" onclick="downloadScreenshot()" style="display:none">
+                            <i data-lucide="download"></i> <span data-i18n="btn_download">Download</span>
+                        </button>
+                        <button class="btn btn-danger" onclick="clearAll()">
+                            <i data-lucide="trash-2"></i> <span data-i18n="btn_clear">Clear</span>
+                        </button>
                     </div>
                 </div>
                 
@@ -151,6 +179,11 @@
     <script src="../../assets/js/app.js"></script>
     
     <script>
+    // Global state
+    let screenshotDataUrl = null;
+    let previewFrame = null;
+    
+    // Initialize
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
@@ -169,114 +202,86 @@
         }
     }
     
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
     function previewHTML() {
         const html = document.getElementById('htmlInput').value.trim();
         if (!html) { showToast('Please enter HTML code'); return; }
-
-        const frame = document.getElementById('previewFrame');
-        const empty = document.getElementById('emptyState');
-        const result = document.getElementById('screenshotResult');
-
-        empty.style.display = 'none';
-        result.style.display = 'none';
-        frame.style.display = 'block';
-
+    
+        const previewArea = document.getElementById('previewArea');
+        
+        // Create iframe for preview
+        if (!previewFrame) {
+            previewFrame = document.createElement('iframe');
+            previewFrame.style.cssText = 'width:100%;height:400px;border:none;border-radius:0.5rem;background:white';
+        }
+        
+        previewArea.innerHTML = '';
+        previewArea.appendChild(previewFrame);
+    
         const width = parseInt(document.getElementById('captureWidth').value) || 800;
-        frame.style.width = '100%';
-        frame.style.height = '400px';
-
-        const doc = frame.contentDocument || frame.contentWindow.document;
+        previewFrame.style.width = '100%';
+        previewFrame.style.height = '400px';
+    
+        const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+        const bg = document.getElementById('captureBg').value;
+        const bgStyle = bg === 'transparent' ? 'background:transparent' : 'background:' + bg;
+        
         doc.open();
-        doc.write(`<!DOCTYPE html><html><head><style>body{margin:0;padding:0;font-family:Inter,-apple-system,sans-serif;}</style></head><body>${html}</body></html>`);
+        doc.write('<!DOCTYPE html><html><head><style>body{margin:0;padding:20px;font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif;' + bgStyle + ';}</style></head><body>' + html + '</body></html>');
         doc.close();
-
+    
         document.getElementById('previewStatus').textContent = 'Preview loaded';
         showToast('Preview updated');
     }
-
+    
     async function captureScreenshot() {
         const html = document.getElementById('htmlInput').value.trim();
         if (!html) { showToast('Please enter HTML code first'); return; }
-
+    
         document.getElementById('previewStatus').textContent = 'Capturing...';
-        document.getElementById('previewStatus').className = 'loading';
-
+    
         try {
             // Create a temporary container to render
             const container = document.createElement('div');
-            container.style.width = (parseInt(document.getElementById('captureWidth').value) || 800) + 'px';
-            container.style.position = 'absolute';
-            container.style.left = '-9999px';
-            container.style.top = '0';
-            container.style.background = document.getElementById('captureBg').value;
+            container.style.cssText = 'position:absolute;left:-9999px;top:0;width:' + (parseInt(document.getElementById('captureWidth').value) || 800) + 'px';
             container.innerHTML = html;
             document.body.appendChild(container);
-
+    
             const scale = parseInt(document.getElementById('captureScale').value) || 2;
+            const bg = document.getElementById('captureBg').value;
+            
+            // Check if html2canvas is available
+            if (typeof html2canvas === 'undefined') {
+                showToast('html2canvas library not loaded. Please check your internet connection.');
+                document.body.removeChild(container);
+                return;
+            }
+    
             const canvas = await html2canvas(container, {
                 scale: scale,
                 useCORS: true,
                 allowTaint: true,
-                backgroundColor: document.getElementById('captureBg').value === 'transparent' ? null : document.getElementById('captureBg').value,
+                backgroundColor: bg === 'transparent' ? null : bg,
                 logging: false
             });
-
+    
             document.body.removeChild(container);
-
+    
             screenshotDataUrl = canvas.toDataURL('image/png');
-
+    
             // Show result
-            const frame = document.getElementById('previewFrame');
-            const empty = document.getElementById('emptyState');
-            const result = document.getElementById('screenshotResult');
-
-            frame.style.display = 'none';
-            empty.style.display = 'none';
-            result.style.display = 'block';
-            result.innerHTML = `<img src="${screenshotDataUrl}" alt="Screenshot" style="max-width:100%">`;
-
-            document.getElementById('previewStatus').textContent = 'Screenshot captured';
-            document.getElementById('previewStatus').className = '';
-            document.getElementById('previewStatus').style.fontWeight = '400';
-            document.getElementById('previewStatus').style.fontSize = '12px';
-            document.getElementById('previewStatus').style.color = 'var(--text-muted,#94a3b8)';
+            const previewArea = document.getElementById('previewArea');
+            previewArea.innerHTML = '<div class="screenshot-result"><img src="' + screenshotDataUrl + '" alt="Screenshot"></div>';
+    
+            document.getElementById('previewStatus').textContent = 'Screenshot captured (' + canvas.width + ' x ' + canvas.height + ')';
             document.getElementById('btnDownload').style.display = 'inline-flex';
-
+    
             showToast('Screenshot captured successfully');
         } catch (err) {
             document.getElementById('previewStatus').textContent = 'Error: ' + err.message;
-            document.getElementById('previewStatus').className = '';
             showToast('Capture failed: ' + err.message);
         }
     }
-
+    
     function downloadScreenshot() {
         if (!screenshotDataUrl) { showToast('No screenshot to download'); return; }
         const a = document.createElement('a');
@@ -285,35 +290,18 @@
         a.click();
         showToast('Screenshot downloaded');
     }
-
+    
     function clearAll() {
         document.getElementById('htmlInput').value = '';
-        document.getElementById('previewFrame').style.display = 'none';
-        document.getElementById('emptyState').style.display = '';
-        document.getElementById('screenshotResult').style.display = 'none';
+        if (previewFrame) {
+            previewFrame.contentDocument.body.innerHTML = '';
+        }
+        document.getElementById('previewArea').innerHTML = '<div class="empty-state" style="color:var(--color-text-tertiary)">Enter HTML code and click "Preview" to see the result</div>';
         document.getElementById('btnDownload').style.display = 'none';
         screenshotDataUrl = null;
         document.getElementById('previewStatus').textContent = 'Waiting for input...';
+        lucide.createIcons();
     }
-
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2500);
-    }
-    </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
     </script>
 </body>
 </html>

@@ -23,23 +23,176 @@
     <link rel="stylesheet" href="../../assets/css/tools.css">
     
     <style>
-        /* Tool Page Custom Styles */
-        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .workspace-grid .full-width { grid-column: 1 / -1; }
-        .textarea-wrap { position: relative; }
-        .textarea-wrap textarea, .textarea-wrap input {
-            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
-            resize: vertical; background: var(--color-bg); color: var(--color-text);
-            box-sizing: border-box;
+        .loan-container {
+            max-width: 800px;
+            margin: 0 auto;
         }
-        .textarea-wrap input { min-height: auto; resize: none; }
-        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
-        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
-        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
-        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+        .loan-input-form {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .loan-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 640px) {
+            .loan-form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        .loan-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .loan-form-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-text);
+        }
+        .loan-form-input {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-size: 1rem;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .loan-form-input:focus {
+            outline: none;
+            border-color: var(--color-border-focus);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+        .loan-term-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .loan-term-group .loan-form-input {
+            flex: 1;
+        }
+        .loan-term-group select {
+            min-width: 100px;
+        }
+        .loan-btn-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+        .loan-results {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            display: none;
+        }
+        .loan-results.visible {
+            display: block;
+        }
+        .loan-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        @media (max-width: 640px) {
+            .loan-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+        .loan-summary-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--color-bg-tertiary);
+            border-radius: var(--radius-lg);
+        }
+        .loan-summary-label {
+            font-size: 0.75rem;
+            color: var(--color-text-tertiary);
+            margin-bottom: 0.25rem;
+        }
+        .loan-summary-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text);
+        }
+        .loan-chart-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+        @media (max-width: 640px) {
+            .loan-chart-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        .loan-chart-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+        .loan-chart-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .loan-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .loan-legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: var(--radius-sm);
+        }
+        .loan-legend-color.principal { background: #3B82F6; }
+        .loan-legend-color.interest { background: #EF4444; }
+        .loan-legend-text {
+            font-size: 0.875rem;
+            color: var(--color-text);
+        }
+        .loan-legend-value {
+            font-weight: 600;
+            margin-left: auto;
+        }
+        .loan-schedule {
+            overflow-x: auto;
+        }
+        .loan-schedule-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 1rem;
+        }
+        .loan-schedule table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        .loan-schedule th {
+            background: var(--color-bg-tertiary);
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--color-text);
+            border-bottom: 2px solid var(--color-border);
+        }
+        .loan-schedule td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--color-border-light);
+            color: var(--color-text-secondary);
+        }
+        .loan-schedule tr:hover td {
+            background: var(--color-bg-secondary);
+        }
     </style>
 </head>
 <body>
@@ -82,32 +235,97 @@
                 
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
-                    <div class="workspace-grid">
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                    <div class="loan-container">
+                        <div class="loan-input-form">
+                            <div class="loan-form-row">
+                                <div class="loan-form-group">
+                                    <label class="loan-form-label" for="loanAmount">Loan Amount ($)</label>
+                                    <input type="number" id="loanAmount" class="loan-form-input" value="100000" min="0" step="1000">
+                                </div>
+                                <div class="loan-form-group">
+                                    <label class="loan-form-label" for="annualRate">Annual Interest Rate (%)</label>
+                                    <input type="number" id="annualRate" class="loan-form-input" value="5" min="0" max="100" step="0.1">
+                                </div>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                            <div class="loan-form-row">
+                                <div class="loan-form-group">
+                                    <label class="loan-form-label" for="loanTerm">Loan Term</label>
+                                    <div class="loan-term-group">
+                                        <input type="number" id="loanTerm" class="loan-form-input" value="30" min="1" max="50">
+                                        <select id="termUnit" class="loan-form-input">
+                                            <option value="years" selected>Years</option>
+                                            <option value="months">Months</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                            <div class="loan-btn-group">
+                                <button id="btnCalculate" class="btn btn-primary">
+                                    <i data-lucide="calculator"></i>
+                                    Calculate
+                                </button>
+                                <button id="btnReset" class="btn btn-secondary">
+                                    <i data-lucide="rotate-ccw"></i>
+                                    Reset
+                                </button>
+                                <button id="btnDownload" class="btn btn-secondary">
+                                    <i data-lucide="download"></i>
+                                    Download CSV
+                                </button>
+                            </div>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+                        
+                        <div class="loan-results" id="resultsSection">
+                            <div class="loan-summary">
+                                <div class="loan-summary-item">
+                                    <div class="loan-summary-label">Monthly Payment</div>
+                                    <div class="loan-summary-value" id="monthlyPayment">$0.00</div>
+                                </div>
+                                <div class="loan-summary-item">
+                                    <div class="loan-summary-label">Total Interest</div>
+                                    <div class="loan-summary-value" id="totalInterest" style="color: #EF4444;">$0.00</div>
+                                </div>
+                                <div class="loan-summary-item">
+                                    <div class="loan-summary-label">Total Repayment</div>
+                                    <div class="loan-summary-value" id="totalRepayment">$0.00</div>
+                                </div>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            
+                            <div class="loan-chart-section">
+                                <div class="loan-chart-container">
+                                    <canvas id="pieChart" width="200" height="200"></canvas>
+                                </div>
+                                <div class="loan-chart-legend">
+                                    <div class="loan-legend-item">
+                                        <div class="loan-legend-color principal"></div>
+                                        <span class="loan-legend-text">Principal</span>
+                                        <span class="loan-legend-value" id="legendPrincipal">$0.00</span>
+                                    </div>
+                                    <div class="loan-legend-item">
+                                        <div class="loan-legend-color interest"></div>
+                                        <span class="loan-legend-text">Interest</span>
+                                        <span class="loan-legend-value" id="legendInterest">$0.00</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                            
+                            <div class="loan-schedule">
+                                <h3 class="loan-schedule-title">Amortization Schedule</h3>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Period</th>
+                                            <th>Payment</th>
+                                            <th>Principal</th>
+                                            <th>Interest</th>
+                                            <th>Balance</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="scheduleBody">
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
                 </div>
                 
@@ -151,207 +369,139 @@
     <script src="../../assets/js/app.js"></script>
     
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
+    (function() {
+        function formatCurrency(num) {
+            return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         }
-        if (typeof I18n !== 'undefined') {
-            I18n.init();
+        
+        function calculate() {
+            const P = parseFloat(document.getElementById('loanAmount').value);
+            const annualRate = parseFloat(document.getElementById('annualRate').value);
+            const term = parseInt(document.getElementById('loanTerm').value);
+            const unit = document.getElementById('termUnit').value;
+            
+            if (isNaN(P) || isNaN(annualRate) || isNaN(term) || P <= 0 || annualRate < 0 || term <= 0) {
+                alert('Please enter valid loan parameters.');
+                return;
+            }
+            
+            const n = unit === 'years' ? term * 12 : term;
+            const r = annualRate / 100 / 12;
+            
+            let monthlyPayment;
+            if (r === 0) {
+                monthlyPayment = P / n;
+            } else {
+                monthlyPayment = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+            }
+            
+            const totalRepayment = monthlyPayment * n;
+            const totalInterest = totalRepayment - P;
+            
+            document.getElementById('monthlyPayment').textContent = '$' + formatCurrency(monthlyPayment);
+            document.getElementById('totalInterest').textContent = '$' + formatCurrency(totalInterest);
+            document.getElementById('totalRepayment').textContent = '$' + formatCurrency(totalRepayment);
+            document.getElementById('legendPrincipal').textContent = '$' + formatCurrency(P);
+            document.getElementById('legendInterest').textContent = '$' + formatCurrency(totalInterest);
+            
+            // Amortization schedule
+            let balance = P;
+            let rows = '';
+            for (let i = 1; i <= n; i++) {
+                const interestPayment = balance * r;
+                const principalPayment = monthlyPayment - interestPayment;
+                balance -= principalPayment;
+                if (balance < 0) balance = 0;
+                rows += '<tr>' +
+                    '<td>' + i + '</td>' +
+                    '<td>$' + formatCurrency(monthlyPayment) + '</td>' +
+                    '<td>$' + formatCurrency(principalPayment) + '</td>' +
+                    '<td>$' + formatCurrency(interestPayment) + '</td>' +
+                    '<td>$' + formatCurrency(balance) + '</td>' +
+                '</tr>';
+            }
+            document.getElementById('scheduleBody').innerHTML = rows;
+            
+            // Pie chart
+            drawPie(P, totalInterest);
+            
+            document.getElementById('resultsSection').classList.add('visible');
         }
-    });
-    
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        if (toast) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
+        
+        function drawPie(principal, interest) {
+            const canvas = document.getElementById('pieChart');
+            const ctx = canvas.getContext('2d');
+            const total = principal + interest;
+            const cx = 100, cy = 100, radius = 80;
+            
+            ctx.clearRect(0, 0, 200, 200);
+            
+            // Principal slice
+            const principalAngle = (principal / total) * 2 * Math.PI;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, radius, -Math.PI / 2, -Math.PI / 2 + principalAngle);
+            ctx.closePath();
+            ctx.fillStyle = '#3B82F6';
+            ctx.fill();
+            
+            // Interest slice
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, radius, -Math.PI / 2 + principalAngle, -Math.PI / 2 + 2 * Math.PI);
+            ctx.closePath();
+            ctx.fillStyle = '#EF4444';
+            ctx.fill();
+            
+            // Center circle for donut effect
+            ctx.beginPath();
+            ctx.arc(cx, cy, 40, 0, 2 * Math.PI);
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-surface').trim() || '#fff';
+            ctx.fill();
+            
+            // Center text
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-text').trim() || '#1F2937';
+            ctx.font = 'bold 14px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            const pPercent = Math.round(principal / total * 100);
+            ctx.fillText(pPercent + '%', cx, cy);
         }
-    }
-    
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        
+        document.getElementById('btnCalculate').addEventListener('click', calculate);
+        
+        document.getElementById('btnReset').addEventListener('click', function() {
+            document.getElementById('loanAmount').value = '100000';
+            document.getElementById('annualRate').value = '5';
+            document.getElementById('loanTerm').value = '30';
+            document.getElementById('termUnit').value = 'years';
+            document.getElementById('resultsSection').classList.remove('visible');
         });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
-    function formatCurrency(num) {
-        return '    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
+        
+        document.getElementById('btnDownload').addEventListener('click', function() {
+            const section = document.getElementById('resultsSection');
+            if (!section.classList.contains('visible')) {
+                alert('Please calculate first.');
+                return;
+            }
+            let csv = 'Period,Payment,Principal,Interest,Balance\n';
+            const rows = document.querySelectorAll('#scheduleBody tr');
+            rows.forEach(function(row) {
+                const cells = row.querySelectorAll('td');
+                csv += Array.from(cells).map(function(c) { return c.textContent.trim(); }).join(',') + '\n';
             });
-        }
-    });
-    </script>
-</body>
-</html> + num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      }
-
-      function calculate() {
-        const P = parseFloat(document.getElementById('loanAmount').value);
-        const annualRate = parseFloat(document.getElementById('annualRate').value);
-        const term = parseInt(document.getElementById('loanTerm').value);
-        const unit = document.getElementById('termUnit').value;
-
-        if (isNaN(P) || isNaN(annualRate) || isNaN(term) || P <= 0 || annualRate < 0 || term <= 0) {
-          alert('Please enter valid loan parameters.');
-          return;
-        }
-
-        const n = unit === 'years' ? term * 12 : term;
-        const r = annualRate / 100 / 12;
-
-        let monthlyPayment;
-        if (r === 0) {
-          monthlyPayment = P / n;
-        } else {
-          monthlyPayment = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
-        }
-
-        const totalRepayment = monthlyPayment * n;
-        const totalInterest = totalRepayment - P;
-
-        document.getElementById('monthlyPayment').textContent = formatCurrency(monthlyPayment);
-        document.getElementById('totalInterest').textContent = formatCurrency(totalInterest);
-        document.getElementById('totalRepayment').textContent = formatCurrency(totalRepayment);
-        document.getElementById('legendPrincipal').textContent = formatCurrency(P);
-        document.getElementById('legendInterest').textContent = formatCurrency(totalInterest);
-
-        // Amortization schedule
-        let balance = P;
-        let rows = '';
-        for (let i = 1; i <= n; i++) {
-          const interestPayment = balance * r;
-          const principalPayment = monthlyPayment - interestPayment;
-          balance -= principalPayment;
-          if (balance < 0) balance = 0;
-          rows += '<tr>' +
-            '<td>' + i + '</td>' +
-            '<td>' + formatCurrency(monthlyPayment) + '</td>' +
-            '<td>' + formatCurrency(principalPayment) + '</td>' +
-            '<td>' + formatCurrency(interestPayment) + '</td>' +
-            '<td>' + formatCurrency(balance) + '</td>' +
-          '</tr>';
-        }
-        document.getElementById('scheduleBody').innerHTML = rows;
-
-        // Pie chart
-        drawPie(P, totalInterest);
-
-        document.getElementById('resultsSection').style.display = 'block';
-      }
-
-      function drawPie(principal, interest) {
-        const canvas = document.getElementById('pieChart');
-        const ctx = canvas.getContext('2d');
-        const total = principal + interest;
-        const cx = 100, cy = 100, radius = 80;
-
-        ctx.clearRect(0, 0, 200, 200);
-
-        // Principal slice
-        const principalAngle = (principal / total) * 2 * Math.PI;
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.arc(cx, cy, radius, -Math.PI / 2, -Math.PI / 2 + principalAngle);
-        ctx.closePath();
-        ctx.fillStyle = '#3B82F6';
-        ctx.fill();
-
-        // Interest slice
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.arc(cx, cy, radius, -Math.PI / 2 + principalAngle, -Math.PI / 2 + 2 * Math.PI);
-        ctx.closePath();
-        ctx.fillStyle = '#EF4444';
-        ctx.fill();
-
-        // Center circle for donut effect
-        ctx.beginPath();
-        ctx.arc(cx, cy, 40, 0, 2 * Math.PI);
-        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-surface').trim() || '#fff';
-        ctx.fill();
-
-        // Center text
-        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-text').trim() || '#1F2937';
-        ctx.font = 'bold 14px Inter, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        const pPercent = Math.round(principal / total * 100);
-        ctx.fillText(pPercent + '%', cx, cy);
-      }
-
-      document.getElementById('btnCalculate').addEventListener('click', calculate);
-
-      document.getElementById('btnReset').addEventListener('click', function() {
-        document.getElementById('loanAmount').value = '100000';
-        document.getElementById('annualRate').value = '5';
-        document.getElementById('loanTerm').value = '30';
-        document.getElementById('termUnit').value = 'years';
-        document.getElementById('resultsSection').style.display = 'none';
-      });
-
-      document.getElementById('btnDownload').addEventListener('click', function() {
-        const section = document.getElementById('resultsSection');
-        if (section.style.display === 'none') {
-          alert('Please calculate first.');
-          return;
-        }
-        let csv = 'Period,Payment,Principal,Interest,Balance\n';
-        const rows = document.querySelectorAll('#scheduleBody tr');
-        rows.forEach(function(row) {
-          const cells = row.querySelectorAll('td');
-          csv += Array.from(cells).map(function(c) { return c.textContent.trim(); }).join(',') + '\n';
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'loan-amortization.csv';
+            a.click();
+            URL.revokeObjectURL(url);
         });
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'loan-amortization.csv';
-        a.click();
-        URL.revokeObjectURL(url);
-      });
-
-      // Auto-calculate on load
-      calculate();
+        
+        // Auto-calculate on load
+        calculate();
     })();
-  </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
     </script>
 </body>
 </html>

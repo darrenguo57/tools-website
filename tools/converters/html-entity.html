@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HTML Entities - ToolBox</title>
     <meta name="description" content="Encode and decode HTML entities">
-    
+
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
     <link rel="stylesheet" href="../../assets/css/tools.css">
-    
+
     <style>
         /* Tool Page Custom Styles */
         .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -38,7 +38,9 @@
         .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
+        .options-row { display: flex; gap: 1rem; justify-content: center; margin-bottom: 1rem; flex-wrap: wrap; }
+        .options-row label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: var(--font-size-sm); }
+
         @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -65,10 +67,10 @@
             </div>
         </div>
     </header>
-    
+
     <!-- Breadcrumb -->
     <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_converters" data-i18n="cat_converters">Converters</a> / <span>HTML Entities</span></div></div>
-    
+
     <!-- Main Content -->
     <main class="tool-page">
         <div class="container tool-layout">
@@ -79,9 +81,14 @@
                     <h1>HTML Entities</h1>
                     <p>Encode and decode HTML entities</p>
                 </div>
-                
+
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
+                    <div class="options-row">
+                        <label><input type="checkbox" id="optNamed" checked> Use Named Entities (&amp; &lt; &gt;)</label>
+                        <label><input type="checkbox" id="optNumeric" checked> Use Numeric Entities (&#123;)</label>
+                        <label><input type="checkbox" id="optNonAscii"> Encode Non-ASCII</label>
+                    </div>
                     <div class="workspace-grid">
                         <div>
                             <div class="textarea-label">
@@ -105,12 +112,13 @@
                         </div>
                     </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                        <button class="btn btn-primary" id="encodeBtn"><i data-lucide="lock"></i><span data-i18n="btn_encode">Encode</span></button>
+                        <button class="btn btn-primary" id="decodeBtn"><i data-lucide="unlock"></i><span data-i18n="btn_decode">Decode</span></button>
+                        <button class="btn btn-secondary" id="copyBtn"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
+                        <button class="btn btn-danger" id="clearBtn"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
                 </div>
-                
+
                 <!-- Ad Slot -->
                 <div class="ad-slot" style="margin-top:2rem">
                     <span data-i18n="ad_label">Advertisement</span>
@@ -123,7 +131,7 @@
             </aside>
         </div>
     </main>
-    
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container footer-container">
@@ -136,162 +144,167 @@
             <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
         </div>
     </footer>
-    
+
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
-    
+
     <!-- Back to Top -->
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
         <i data-lucide="chevron-up"></i>
     </button>
-    
+
     <!-- Scripts -->
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-        if (typeof I18n !== 'undefined') {
-            I18n.init();
-        }
-    });
-    
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        if (toast) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-    }
-    
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
+    (function() {
+        const inputArea = document.getElementById('inputArea');
+        const outputArea = document.getElementById('outputArea');
         const inputCount = document.getElementById('inputCount');
         const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
-    function encodeEntities() {
-        const input = inputArea.value;
-        if (!input) { showToast('Please enter text to encode'); return; }
+        const optNamed = document.getElementById('optNamed');
+        const optNumeric = document.getElementById('optNumeric');
+        const optNonAscii = document.getElementById('optNonAscii');
+        const encodeBtn = document.getElementById('encodeBtn');
+        const decodeBtn = document.getElementById('decodeBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const clearBtn = document.getElementById('clearBtn');
 
-        const useNamed = document.getElementById('optNamed').checked;
-        const useNumeric = document.getElementById('optNumeric').checked;
-        const encodeNonAscii = document.getElementById('optNonAscii').checked;
+        // Named HTML entities
+        const namedEntities = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        };
 
-        let result = '';
-        for (let i = 0; i < input.length; i++) {
-            const char = input[i];
-            const code = input.charCodeAt(i);
+        const namedToChar = {
+            '&amp;': '&',
+            '&lt;': '<',
+            '&gt;': '>',
+            '&quot;': '"',
+            '&apos;': "'",
+            '&nbsp;': ' '
+        };
 
-            if (useNamed && namedEntities[char]) {
-                result += namedEntities[char];
-            } else if (useNumeric && (code > 127 || '&<>"\''.includes(char))) {
-                result += '&#' + code + ';';
-            } else if (encodeNonAscii && code > 127) {
-                if (useNamed && namedEntities[char]) {
-                    result += namedEntities[char];
-                } else {
-                    result += '&#' + code + ';';
-                }
-            } else if ('&<>"'.includes(char)) {
-                // Always encode essential HTML chars
-                result += namedEntities[char] || ('&#' + code + ';');
-            } else {
-                result += char;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2500);
             }
         }
 
-        outputArea.value = result;
-        outputCount.textContent = result.length;
-        showToast('Encoded successfully');
-    }
+        function encodeEntities() {
+            const input = inputArea.value;
+            if (!input) {
+                showToast(typeof I18n !== 'undefined' ? I18n.t('toast.inputRequired') : 'Please enter text to encode');
+                return;
+            }
 
-    function decodeEntities() {
-        const input = inputArea.value;
-        if (!input) { showToast('Please enter HTML entities to decode'); return; }
+            const useNamed = optNamed.checked;
+            const useNumeric = optNumeric.checked;
+            const encodeNonAscii = optNonAscii.checked;
 
-        let result = input;
+            let result = '';
+            for (let i = 0; i < input.length; i++) {
+                const char = input[i];
+                const code = input.charCodeAt(i);
 
-        // Decode named entities
-        result = result.replace(/&[a-zA-Z]+;/g, (entity) => {
-            if (namedToChar[entity]) return namedToChar[entity];
-            // Try using a temporary element for unknown named entities
-            const textarea = document.createElement('textarea');
-            textarea.innerHTML = entity;
-            return textarea.value;
-        });
+                if ('&<>"'.includes(char)) {
+                    // Always encode essential HTML chars
+                    if (useNamed && namedEntities[char]) {
+                        result += namedEntities[char];
+                    } else if (useNumeric) {
+                        result += '&#' + code + ';';
+                    } else {
+                        result += char;
+                    }
+                } else if (encodeNonAscii && code > 127) {
+                    if (useNamed && namedEntities[char]) {
+                        result += namedEntities[char];
+                    } else {
+                        result += '&#' + code + ';';
+                    }
+                } else {
+                    result += char;
+                }
+            }
 
-        // Decode decimal numeric entities &#123;
-        result = result.replace(/&#(\d+);/g, (match, code) => {
-            return String.fromCharCode(parseInt(code, 10));
-        });
+            outputArea.value = result;
+            outputCount.textContent = result.length;
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.converted') : 'Encoded successfully');
+        }
 
-        // Decode hexadecimal numeric entities &#x1F4A9;
-        result = result.replace(/&#x([0-9a-fA-F]+);/g, (match, code) => {
-            return String.fromCharCode(parseInt(code, 16));
-        });
+        function decodeEntities() {
+            const input = inputArea.value;
+            if (!input) {
+                showToast(typeof I18n !== 'undefined' ? I18n.t('toast.inputRequired') : 'Please enter HTML entities to decode');
+                return;
+            }
 
-        outputArea.value = result;
-        outputCount.textContent = result.length;
-        showToast('Decoded successfully');
-    }
+            let result = input;
 
-    function copyOutput() {
-        if (!outputArea.value) { showToast('Nothing to copy'); return; }
-        navigator.clipboard.writeText(outputArea.value).then(() => showToast('Copied to clipboard'));
-    }
+            // Decode named entities
+            result = result.replace(/&[a-zA-Z]+;/g, (entity) => {
+                if (namedToChar[entity]) return namedToChar[entity];
+                // Try using a temporary element for unknown named entities
+                const textarea = document.createElement('textarea');
+                textarea.innerHTML = entity;
+                return textarea.value;
+            });
 
-    function clearAll() {
-        inputArea.value = '';
-        outputArea.value = '';
-        inputCount.textContent = '0';
-        outputCount.textContent = '0';
-    }
+            // Decode decimal numeric entities &#123;
+            result = result.replace(/&#(\d+);/g, (match, code) => {
+                return String.fromCharCode(parseInt(code, 10));
+            });
 
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2500);
-    }
-    </script>
+            // Decode hexadecimal numeric entities &#x1F4A9;
+            result = result.replace(/&#x([0-9a-fA-F]+);/g, (match, code) => {
+                return String.fromCharCode(parseInt(code, 16));
+            });
 
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
+            outputArea.value = result;
+            outputCount.textContent = result.length;
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.converted') : 'Decoded successfully');
+        }
+
+        function copyOutput() {
+            if (!outputArea.value) {
+                showToast(typeof I18n !== 'undefined' ? I18n.t('toast.inputRequired') : 'Nothing to copy');
+                return;
+            }
+            navigator.clipboard.writeText(outputArea.value).then(() => {
+                showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied to clipboard');
+            }).catch(() => {
+                outputArea.select();
+                document.execCommand('copy');
+                showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied to clipboard');
             });
         }
-    });
+
+        function clearAll() {
+            inputArea.value = '';
+            outputArea.value = '';
+            inputCount.textContent = '0';
+            outputCount.textContent = '0';
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
+        }
+
+        // Event listeners
+        encodeBtn.addEventListener('click', encodeEntities);
+        decodeBtn.addEventListener('click', decodeEntities);
+        copyBtn.addEventListener('click', copyOutput);
+        clearBtn.addEventListener('click', clearAll);
+
+        inputArea.addEventListener('input', () => {
+            inputCount.textContent = inputArea.value.length;
+        });
+    })();
     </script>
 </body>
 </html>

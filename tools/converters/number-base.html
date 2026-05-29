@@ -5,41 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Number Base - ToolBox</title>
     <meta name="description" content="Convert between number bases">
-    
+
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
     <link rel="stylesheet" href="../../assets/css/tools.css">
-    
+
     <style>
         /* Tool Page Custom Styles */
-        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .workspace-grid .full-width { grid-column: 1 / -1; }
-        .textarea-wrap { position: relative; }
-        .textarea-wrap textarea, .textarea-wrap input {
-            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
-            resize: vertical; background: var(--color-bg); color: var(--color-text);
-            box-sizing: border-box;
+        .converter-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; }
+        .input-row { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; justify-content: center; margin-bottom: 1.5rem; }
+        .input-row input { width: 200px; min-height: auto; padding: 0.75rem 1rem; font-size: 18px; font-family: 'Courier New', monospace; text-align: center; }
+        .input-row select { padding: 0.75rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-bg); color: var(--color-text); min-width: 150px; }
+        .error-msg { color: #ef4444; font-size: 12px; margin-top: 0.5rem; text-align: center; display: none; }
+        .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+        .result-item { background: var(--color-bg); padding: 1rem; border-radius: var(--radius); border: 1px solid var(--color-border); }
+        .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+        .result-label { font-size: 12px; color: var(--color-text-tertiary); font-weight: 600; }
+        .result-value { font-size: 18px; font-family: 'Courier New', monospace; word-break: break-all; cursor: pointer; padding: 0.5rem; border-radius: var(--radius); transition: background 0.2s; }
+        .result-value:hover { background: var(--color-surface); }
+        .copy-btn { padding: 0.25rem 0.5rem; border: none; background: var(--color-surface); border-radius: var(--radius); cursor: pointer; color: var(--color-text-tertiary); }
+        .copy-btn:hover { color: var(--color-primary); }
+
+        @media (max-width: 768px) {
+            .input-row { flex-direction: column; }
+            .input-row input, .input-row select { width: 100%; }
         }
-        .textarea-wrap input { min-height: auto; resize: none; }
-        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
-        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
-        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
-        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -65,10 +67,10 @@
             </div>
         </div>
     </header>
-    
+
     <!-- Breadcrumb -->
     <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_converters" data-i18n="cat_converters">Converters</a> / <span>Number Base</span></div></div>
-    
+
     <!-- Main Content -->
     <main class="tool-page">
         <div class="container tool-layout">
@@ -79,38 +81,54 @@
                     <h1>Number Base</h1>
                     <p>Convert between number bases</p>
                 </div>
-                
+
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
-                    <div class="workspace-grid">
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
-                            </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                    <div class="converter-card">
+                        <div class="input-row">
+                            <input type="text" id="numberInput" placeholder="Enter number">
+                            <select id="baseSelect">
+                                <option value="2">Binary (Base 2)</option>
+                                <option value="8">Octal (Base 8)</option>
+                                <option value="10" selected>Decimal (Base 10)</option>
+                                <option value="16">Hexadecimal (Base 16)</option>
+                            </select>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+                        <div class="error-msg" id="errorMsg"></div>
+
+                        <div class="results-grid">
+                            <div class="result-item">
+                                <div class="result-header">
+                                    <span class="result-label">BINARY (Base 2)</span>
+                                    <button class="copy-btn" onclick="copyResult('bin')"><i data-lucide="copy" style="width:14px;height:14px"></i></button>
+                                </div>
+                                <div class="result-value" id="resultBin">-</div>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            <div class="result-item">
+                                <div class="result-header">
+                                    <span class="result-label">OCTAL (Base 8)</span>
+                                    <button class="copy-btn" onclick="copyResult('oct')"><i data-lucide="copy" style="width:14px;height:14px"></i></button>
+                                </div>
+                                <div class="result-value" id="resultOct">-</div>
                             </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                            <div class="result-item">
+                                <div class="result-header">
+                                    <span class="result-label">DECIMAL (Base 10)</span>
+                                    <button class="copy-btn" onclick="copyResult('dec')"><i data-lucide="copy" style="width:14px;height:14px"></i></button>
+                                </div>
+                                <div class="result-value" id="resultDec">-</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-header">
+                                    <span class="result-label">HEXADECIMAL (Base 16)</span>
+                                    <button class="copy-btn" onclick="copyResult('hex')"><i data-lucide="copy" style="width:14px;height:14px"></i></button>
+                                </div>
+                                <div class="result-value" id="resultHex">-</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
                 </div>
-                
+
                 <!-- Ad Slot -->
                 <div class="ad-slot" style="margin-top:2rem">
                     <span data-i18n="ad_label">Advertisement</span>
@@ -123,7 +141,7 @@
             </aside>
         </div>
     </main>
-    
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container footer-container">
@@ -136,132 +154,92 @@
             <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
         </div>
     </footer>
-    
+
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
-    
+
     <!-- Back to Top -->
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
         <i data-lucide="chevron-up"></i>
     </button>
-    
+
     <!-- Scripts -->
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-        if (typeof I18n !== 'undefined') {
-            I18n.init();
-        }
-    });
-    
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        if (toast) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-    }
-    
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
-    function convert() {
-        const val = numberInput.value.trim();
-        const base = parseInt(baseSelect.value);
-        errorMsg.style.display = 'none';
+    (function() {
+        const numberInput = document.getElementById('numberInput');
+        const baseSelect = document.getElementById('baseSelect');
+        const errorMsg = document.getElementById('errorMsg');
 
-        if (!val) {
-            document.getElementById('resultBin').textContent = '-';
-            document.getElementById('resultOct').textContent = '-';
-            document.getElementById('resultDec').textContent = '-';
-            document.getElementById('resultHex').textContent = '-';
-            return;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2500);
+            }
         }
 
-        // Validate input based on base
-        const patterns = {
-            2: /^[01]+$/,
-            8: /^[0-7]+$/,
-            10: /^[0-9]+$/,
-            16: /^[0-9a-fA-F]+$/
+        function convert() {
+            const val = numberInput.value.trim();
+            const base = parseInt(baseSelect.value);
+            errorMsg.style.display = 'none';
+
+            if (!val) {
+                document.getElementById('resultBin').textContent = '-';
+                document.getElementById('resultOct').textContent = '-';
+                document.getElementById('resultDec').textContent = '-';
+                document.getElementById('resultHex').textContent = '-';
+                return;
+            }
+
+            // Validate input based on base
+            const patterns = {
+                2: /^[01]+$/,
+                8: /^[0-7]+$/,
+                10: /^[0-9]+$/,
+                16: /^[0-9a-fA-F]+$/
+            };
+
+            if (!patterns[base].test(val)) {
+                const baseNames = { 2: 'binary', 8: 'octal', 10: 'decimal', 16: 'hexadecimal' };
+                errorMsg.textContent = 'Invalid ' + baseNames[base] + ' number';
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            const decimal = parseInt(val, base);
+            if (isNaN(decimal)) {
+                errorMsg.textContent = 'Invalid number';
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            document.getElementById('resultBin').textContent = decimal.toString(2);
+            document.getElementById('resultOct').textContent = decimal.toString(8);
+            document.getElementById('resultDec').textContent = decimal.toString(10);
+            document.getElementById('resultHex').textContent = decimal.toString(16).toUpperCase();
+        }
+
+        window.copyResult = function(type) {
+            const map = { bin: 'resultBin', oct: 'resultOct', dec: 'resultDec', hex: 'resultHex' };
+            const text = document.getElementById(map[type]).textContent;
+            if (text === '-') {
+                showToast(typeof I18n !== 'undefined' ? I18n.t('toast.inputRequired') : 'No value to copy');
+                return;
+            }
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied: ' + text);
+            });
         };
 
-        if (!patterns[base].test(val)) {
-            const baseNames = { 2: 'binary', 8: 'octal', 10: 'decimal', 16: 'hexadecimal' };
-            errorMsg.textContent = 'Invalid ' + baseNames[base] + ' number';
-            errorMsg.style.display = 'block';
-            return;
-        }
-
-        const decimal = parseInt(val, base);
-        if (isNaN(decimal)) {
-            errorMsg.textContent = 'Invalid number';
-            errorMsg.style.display = 'block';
-            return;
-        }
-
-        document.getElementById('resultBin').textContent = decimal.toString(2);
-        document.getElementById('resultOct').textContent = decimal.toString(8);
-        document.getElementById('resultDec').textContent = decimal.toString(10);
-        document.getElementById('resultHex').textContent = decimal.toString(16).toUpperCase();
-    }
-
-    function copyResult(type) {
-        const map = { bin: 'resultBin', oct: 'resultOct', dec: 'resultDec', hex: 'resultHex' };
-        const text = document.getElementById(map[type]).textContent;
-        if (text === '-') { showToast('No value to copy'); return; }
-        navigator.clipboard.writeText(text).then(() => showToast('Copied: ' + text));
-    }
-
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2500);
-    }
-    </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
+        // Event listeners
+        numberInput.addEventListener('input', convert);
+        baseSelect.addEventListener('change', convert);
+    })();
     </script>
 </body>
 </html>

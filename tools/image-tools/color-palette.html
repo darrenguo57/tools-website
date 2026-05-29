@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Color Picker - ToolBox</title>
-    <meta name="description" content="Pick colors">
+    <meta name="description" content="Extract color palette from images">
     
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
@@ -23,23 +23,36 @@
     <link rel="stylesheet" href="../../assets/css/tools.css">
     
     <style>
-        /* Tool Page Custom Styles */
-        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .workspace-grid .full-width { grid-column: 1 / -1; }
-        .textarea-wrap { position: relative; }
-        .textarea-wrap textarea, .textarea-wrap input {
-            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
-            resize: vertical; background: var(--color-bg); color: var(--color-text);
-            box-sizing: border-box;
-        }
-        .textarea-wrap input { min-height: auto; resize: none; }
-        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
-        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
-        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
+        /* Color Palette Tool Styles */
+        .palette-upload { border: 2px dashed var(--color-border); border-radius: var(--radius-xl); padding: 3rem 2rem; text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 1.5rem; }
+        .palette-upload:hover { border-color: var(--color-primary); background: var(--color-primary-light); }
+        .palette-preview { background: var(--color-bg-secondary); border-radius: var(--radius-lg); padding: 1rem; margin-bottom: 1.5rem; display: none; }
+        .palette-preview.active { display: block; }
+        .palette-preview img { max-width: 100%; max-height: 300px; border-radius: var(--radius-md); }
+        .palette-bar { display: flex; border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 1.5rem; min-height: 60px; }
+        .palette-bar-item { flex: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s; min-height: 60px; }
+        .palette-bar-item:hover { transform: scaleY(1.2); }
+        .palette-bar-item .color-label { font-size: 10px; font-weight: 600; opacity: 0; transition: opacity 0.2s; }
+        .palette-bar-item:hover .color-label { opacity: 1; }
+        .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+        .color-card { background: var(--color-bg-secondary); border-radius: var(--radius-lg); overflow: hidden; }
+        .color-swatch { height: 100px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .color-swatch .copy-hint { font-size: 11px; opacity: 0; transition: opacity 0.2s; }
+        .color-swatch:hover .copy-hint { opacity: 1; }
+        .color-info { padding: 0.75rem; }
+        .color-info-row { display: flex; justify-content: space-between; align-items: center; padding: 0.25rem 0; font-size: 12px; }
+        .color-info-row span:first-child { color: var(--color-text-tertiary); }
+        .color-info-value { font-family: monospace; font-size: 11px; }
+        .color-info-copy { background: none; border: none; cursor: pointer; padding: 2px; color: var(--color-text-tertiary); }
+        .color-info-copy:hover { color: var(--color-primary); }
+        .palette-export { background: var(--color-bg-secondary); border-radius: var(--radius-lg); padding: 1rem; margin-bottom: 1rem; }
+        .export-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+        .export-tab { padding: 0.5rem 1rem; border: 1px solid var(--color-border); background: var(--color-bg); border-radius: var(--radius-md); cursor: pointer; font-size: 13px; }
+        .export-tab:hover { background: var(--color-bg-tertiary); }
+        .export-tab.active { background: var(--color-primary); color: white; border-color: var(--color-primary); }
+        .export-output { width: 100%; min-height: 150px; padding: 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); font-family: monospace; font-size: 12px; resize: vertical; box-sizing: border-box; }
         
-        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .palette-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -67,7 +80,7 @@
     </header>
     
     <!-- Breadcrumb -->
-    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_image_tools" data-i18n="cat_image_tools">Image Tools</a> / <span>Color Picker</span></div></div>
+    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_image_tools" data-i18n="cat_image_tools">Image Tools</a> / <span data-i18n="palette_title">Color Picker</span></div></div>
     
     <!-- Main Content -->
     <main class="tool-page">
@@ -76,38 +89,61 @@
                 <!-- Tool Header -->
                 <div class="tool-header">
                     <div class="tool-icon"><i data-lucide="pipette"></i></div>
-                    <h1>Color Picker</h1>
-                    <p>Pick colors</p>
+                    <h1 data-i18n="palette_title">Color Picker</h1>
+                    <p data-i18n="palette_desc">Extract beautiful color palettes from images</p>
                 </div>
                 
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
-                    <div class="workspace-grid">
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
-                            </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
-                        </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
-                            </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                    <!-- Options -->
+                    <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;padding:1rem;background:var(--color-bg-secondary);border-radius:var(--radius-lg)">
+                        <div style="display:flex;align-items:center;gap:0.5rem">
+                            <label style="font-size:14px;color:var(--color-text-secondary)">Colors:</label>
+                            <input type="number" id="colorCount" value="8" min="2" max="16" style="width:60px;padding:0.5rem;border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-bg);color:var(--color-text)">
                         </div>
                     </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                    
+                    <!-- Upload Zone -->
+                    <div class="palette-upload" id="dropzone" onclick="document.getElementById('fileInput').click()">
+                        <i data-lucide="upload-cloud" style="width:48px;height:48px;color:var(--color-text-tertiary);margin-bottom:1rem"></i>
+                        <div style="font-weight:500;margin-bottom:0.25rem" data-i18n="palette_upload_text">Drop image here or click to upload</div>
+                        <div style="font-size:12px;color:var(--color-text-tertiary)" data-i18n="palette_upload_hint">Supports: JPG, PNG, WebP, GIF</div>
+                        <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFile(this.files[0])">
+                    </div>
+                    
+                    <!-- Image Preview -->
+                    <div class="palette-preview" id="imagePreview"></div>
+                    
+                    <!-- Actions -->
+                    <div class="btn-group" id="editorArea" style="display:none">
+                        <button class="btn btn-primary" onclick="extractColors()">
+                            <i data-lucide="palette"></i> <span data-i18n="btn_extract">Extract Palette</span>
+                        </button>
+                        <button class="btn btn-danger" onclick="clearAll()">
+                            <i data-lucide="trash-2"></i> <span data-i18n="btn_clear">Clear</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Palette Bar -->
+                    <div class="palette-bar" id="paletteBar" style="display:none"></div>
+                    
+                    <!-- Color Grid -->
+                    <div class="palette-grid" id="colorGrid" style="display:none"></div>
+                    
+                    <!-- Export Section -->
+                    <div class="palette-export" id="exportSection" style="display:none">
+                        <div style="font-weight:600;margin-bottom:1rem">Export Palette</div>
+                        <div class="export-tabs">
+                            <button class="export-tab active" onclick="setExportFormat('css')">CSS</button>
+                            <button class="export-tab" onclick="setExportFormat('json')">JSON</button>
+                            <button class="export-tab" onclick="setExportFormat('tailwind')">Tailwind</button>
+                        </div>
+                        <textarea class="export-output" id="exportOutput" readonly></textarea>
+                        <div class="btn-group" style="justify-content:flex-start;margin-top:1rem">
+                            <button class="btn btn-secondary" onclick="copyExport()">
+                                <i data-lucide="copy"></i> <span data-i18n="btn_copy">Copy</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 
@@ -151,6 +187,20 @@
     <script src="../../assets/js/app.js"></script>
     
     <script>
+    // Global state
+    let currentImage = null;
+    let paletteColors = [];
+    
+    // DOM Elements
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const imagePreview = document.getElementById('imagePreview');
+    const paletteBar = document.getElementById('paletteBar');
+    const colorGrid = document.getElementById('colorGrid');
+    const exportSection = document.getElementById('exportSection');
+    const editorArea = document.getElementById('editorArea');
+    
+    // Initialize
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
@@ -158,6 +208,15 @@
         if (typeof I18n !== 'undefined') {
             I18n.init();
         }
+        
+        // Dropzone events
+        dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+        dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+        dropzone.addEventListener('drop', e => {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+        });
     });
     
     function showToast(msg) {
@@ -169,91 +228,64 @@
         }
     }
     
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
     function handleFile(file) {
         if (!file || !file.type.startsWith('image/')) { showToast('Please select an image file'); return; }
         const img = new Image();
         img.onload = () => {
             currentImage = img;
-            document.getElementById('imagePreview').style.display = 'block';
-            document.getElementById('imagePreview').innerHTML = `<img src="${img.src}" alt="Uploaded image">`;
+            imagePreview.classList.add('active');
+            imagePreview.innerHTML = '<img src="' + img.src + '" alt="Uploaded image">';
+            editorArea.style.display = 'flex';
             showToast('Image loaded. Click Extract Palette to analyze colors.');
         };
         img.src = URL.createObjectURL(file);
     }
-
+    
     function extractColors() {
         if (!currentImage) { showToast('Please upload an image first'); return; }
-
+    
         const count = parseInt(document.getElementById('colorCount').value) || 8;
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-
+    
         // Scale down for performance
         const maxDim = 200;
         const scale = Math.min(maxDim / currentImage.width, maxDim / currentImage.height, 1);
         canvas.width = Math.round(currentImage.width * scale);
         canvas.height = Math.round(currentImage.height * scale);
         ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
-
+    
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const pixels = imageData.data;
-
+    
         // Collect pixels
         const pixelArray = [];
         for (let i = 0; i < pixels.length; i += 4) {
             pixelArray.push([pixels[i], pixels[i + 1], pixels[i + 2]]);
         }
-
+    
         // Median cut algorithm
         paletteColors = medianCut(pixelArray, count);
-
+    
         // Render palette
         renderPalette();
         showToast('Palette extracted: ' + paletteColors.length + ' colors');
     }
-
+    
     function medianCut(pixels, numColors) {
         if (pixels.length === 0) return [];
         if (numColors <= 1) {
             const avg = averageColor(pixels);
             return [avg];
         }
-
+    
         let buckets = [pixels];
-
+    
         while (buckets.length < numColors) {
-            // Find bucket with largest range
             let maxRange = -1;
             let maxIndex = 0;
             let splitChannel = 0;
-
+    
             for (let i = 0; i < buckets.length; i++) {
                 const bucket = buckets[i];
                 if (bucket.length < 2) continue;
@@ -267,30 +299,29 @@
                     }
                 }
             }
-
+    
             if (maxRange <= 0) break;
-
-            // Split the bucket
+    
             const bucket = buckets[maxIndex];
             bucket.sort((a, b) => a[splitChannel] - b[splitChannel]);
             const mid = Math.floor(bucket.length / 2);
             buckets.splice(maxIndex, 1, bucket.slice(0, mid), bucket.slice(mid));
         }
-
+    
         return buckets.map(bucket => averageColor(bucket));
     }
-
+    
     function averageColor(pixels) {
         let r = 0, g = 0, b = 0;
         for (const p of pixels) { r += p[0]; g += p[1]; b += p[2]; }
         const n = pixels.length;
         return [Math.round(r / n), Math.round(g / n), Math.round(b / n)];
     }
-
+    
     function rgbToHex(r, g, b) {
         return '#' + [r, g, b].map(c => c.toString(16).padStart(2, '0')).join('');
     }
-
+    
     function rgbToHsl(r, g, b) {
         r /= 255; g /= 255; b /= 255;
         const max = Math.max(r, g, b), min = Math.min(r, g, b);
@@ -307,140 +338,91 @@
         }
         return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
     }
-
+    
     function getContrastColor(r, g, b) {
         const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
         return luminance > 0.5 ? '#000000' : '#ffffff';
     }
-
+    
     function renderPalette() {
         // Palette bar
-        const bar = document.getElementById('paletteBar');
-        bar.innerHTML = paletteColors.map((c, i) => {
+        paletteBar.style.display = 'flex';
+        paletteBar.innerHTML = paletteColors.map((c, i) => {
             const hex = rgbToHex(c[0], c[1], c[2]);
             const contrast = getContrastColor(c[0], c[1], c[2]);
-            return `<div class="palette-bar-item" style="background:${hex}" onclick="copyColor('${hex}')" title="Click to copy ${hex}">
-                <span class="color-label" style="color:${contrast}">${hex}</span>
-            </div>`;
+            return '<div class="palette-bar-item" style="background:' + hex + '" onclick="copyColor(\'' + hex + '\')" title="Click to copy ' + hex + '"><span class="color-label" style="color:' + contrast + '">' + hex + '</span></div>';
         }).join('');
-
-        document.getElementById('palettePreview').style.display = 'block';
-
+    
         // Color grid
-        const grid = document.getElementById('colorGrid');
-        grid.innerHTML = paletteColors.map((c, i) => {
+        colorGrid.style.display = 'grid';
+        colorGrid.innerHTML = paletteColors.map((c, i) => {
             const hex = rgbToHex(c[0], c[1], c[2]);
-            const rgb = `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
+            const rgb = 'rgb(' + c[0] + ', ' + c[1] + ', ' + c[2] + ')';
             const hsl = rgbToHsl(c[0], c[1], c[2]);
-            const hslStr = `hsl(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%)`;
+            const hslStr = 'hsl(' + hsl[0] + ', ' + hsl[1] + '%, ' + hsl[2] + '%)';
             const contrast = getContrastColor(c[0], c[1], c[2]);
-            return `<div class="color-card">
-                <div class="color-swatch" style="background:${hex}" onclick="copyColor('${hex}')">
-                    <span class="copy-hint" style="color:${contrast}">Click to copy</span>
-                </div>
-                <div class="color-info">
-                    <div class="color-info-row">
-                        <span>HEX</span>
-                        <span style="display:flex;align-items:center;gap:0.25rem">
-                            <span class="color-info-value">${hex}</span>
-                            <button class="color-info-copy" onclick="copyColor('${hex}')"><i data-lucide="copy" style="width:12px;height:12px"></i></button>
-                        </span>
-                    </div>
-                    <div class="color-info-row">
-                        <span>RGB</span>
-                        <span style="display:flex;align-items:center;gap:0.25rem">
-                            <span class="color-info-value">${rgb}</span>
-                            <button class="color-info-copy" onclick="copyColor('${rgb}')"><i data-lucide="copy" style="width:12px;height:12px"></i></button>
-                        </span>
-                    </div>
-                    <div class="color-info-row">
-                        <span>HSL</span>
-                        <span style="display:flex;align-items:center;gap:0.25rem">
-                            <span class="color-info-value">${hslStr}</span>
-                            <button class="color-info-copy" onclick="copyColor('${hslStr}')"><i data-lucide="copy" style="width:12px;height:12px"></i></button>
-                        </span>
-                    </div>
-                </div>
-            </div>`;
+            return '<div class="color-card"><div class="color-swatch" style="background:' + hex + '" onclick="copyColor(\'' + hex + '\')"><span class="copy-hint" style="color:' + contrast + '">Click to copy</span></div><div class="color-info"><div class="color-info-row"><span>HEX</span><span style="display:flex;align-items:center;gap:0.25rem"><span class="color-info-value">' + hex + '</span><button class="color-info-copy" onclick="copyColor(\'' + hex + '\')"><i data-lucide="copy" style="width:12px;height:12px"></i></button></span></div><div class="color-info-row"><span>RGB</span><span style="display:flex;align-items:center;gap:0.25rem"><span class="color-info-value">' + rgb + '</span><button class="color-info-copy" onclick="copyColor(\'' + rgb + '\')"><i data-lucide="copy" style="width:12px;height:12px"></i></button></span></div><div class="color-info-row"><span>HSL</span><span style="display:flex;align-items:center;gap:0.25rem"><span class="color-info-value">' + hslStr + '</span><button class="color-info-copy" onclick="copyColor(\'' + hslStr + '\')"><i data-lucide="copy" style="width:12px;height:12px"></i></button></span></div></div></div>';
         }).join('');
-
+    
         lucide.createIcons();
-        document.getElementById('btnExport').style.display = 'inline-flex';
-        document.getElementById('exportSection').style.display = 'block';
+        exportSection.style.display = 'block';
         exportAs('css');
     }
-
+    
     function copyColor(color) {
         navigator.clipboard.writeText(color).then(() => showToast('Copied: ' + color))
             .catch(() => showToast('Copied: ' + color));
     }
-
+    
+    function setExportFormat(format) {
+        document.querySelectorAll('.export-tab').forEach(tab => tab.classList.remove('active'));
+        event.target.classList.add('active');
+        exportAs(format);
+    }
+    
     function exportAs(format) {
         if (paletteColors.length === 0) return;
         let output = '';
         if (format === 'css') {
             output = ':root {\n' + paletteColors.map((c, i) => {
                 const hex = rgbToHex(c[0], c[1], c[2]);
-                return `  --color-${i + 1}: ${hex};`;
+                return '  --color-' + (i + 1) + ': ' + hex + ';';
             }).join('\n') + '\n}';
         } else if (format === 'json') {
             output = JSON.stringify(paletteColors.map((c, i) => ({
-                name: `Color ${i + 1}`,
+                name: 'Color ' + (i + 1),
                 hex: rgbToHex(c[0], c[1], c[2]),
-                rgb: `rgb(${c[0]}, ${c[1]}, ${c[2]})`,
+                rgb: 'rgb(' + c[0] + ', ' + c[1] + ', ' + c[2] + ')',
                 hsl: rgbToHsl(c[0], c[1], c[2])
             })), null, 2);
         } else if (format === 'tailwind') {
-            output = '// tailwind.config.js\nmodule.exports = {\n  theme: {\n    extend: {\n      colors: {\n' +
-                paletteColors.map((c, i) => {
-                    const hex = rgbToHex(c[0], c[1], c[2]);
-                    return `        'palette-${i + 1}': '${hex}',`;
-                }).join('\n') + '\n      }\n    }\n  }\n}';
+            output = '// tailwind.config.js\nmodule.exports = {\n  theme: {\n    extend: {\n      colors: {\n' + paletteColors.map((c, i) => {
+                const hex = rgbToHex(c[0], c[1], c[2]);
+                return '        \'palette-' + (i + 1) + '\': \'' + hex + '\',';
+            }).join('\n') + '\n      }\n    }\n  }\n}';
         }
         document.getElementById('exportOutput').value = output;
     }
-
+    
     function copyExport() {
         const output = document.getElementById('exportOutput').value;
         if (!output) return;
         navigator.clipboard.writeText(output).then(() => showToast('Export copied to clipboard'));
     }
-
-    function exportPalette() {
-        exportAs('css');
-        document.getElementById('exportSection').scrollIntoView({ behavior: 'smooth' });
-    }
-
+    
     function clearAll() {
         currentImage = null;
         paletteColors = [];
-        document.getElementById('imagePreview').style.display = 'none';
-        document.getElementById('imagePreview').innerHTML = '';
-        document.getElementById('palettePreview').style.display = 'none';
-        document.getElementById('colorGrid').innerHTML = '';
-        document.getElementById('exportSection').style.display = 'none';
-        document.getElementById('btnExport').style.display = 'none';
+        imagePreview.classList.remove('active');
+        imagePreview.innerHTML = '';
+        paletteBar.style.display = 'none';
+        paletteBar.innerHTML = '';
+        colorGrid.style.display = 'none';
+        colorGrid.innerHTML = '';
+        exportSection.style.display = 'none';
+        editorArea.style.display = 'none';
         fileInput.value = '';
     }
-
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2500);
-    }
-    </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
     </script>
 </body>
 </html>

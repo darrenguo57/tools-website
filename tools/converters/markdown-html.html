@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Markdown to HTML - ToolBox</title>
     <meta name="description" content="Convert Markdown to HTML">
-    
+
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
     <link rel="stylesheet" href="../../assets/css/tools.css">
-    
+
     <style>
         /* Tool Page Custom Styles */
         .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -38,7 +38,7 @@
         .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
+
         @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -65,10 +65,10 @@
             </div>
         </div>
     </header>
-    
+
     <!-- Breadcrumb -->
     <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_converters" data-i18n="cat_converters">Converters</a> / <span>Markdown to HTML</span></div></div>
-    
+
     <!-- Main Content -->
     <main class="tool-page">
         <div class="container tool-layout">
@@ -79,38 +79,36 @@
                     <h1>Markdown to HTML</h1>
                     <p>Convert Markdown to HTML</p>
                 </div>
-                
+
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
                     <div class="workspace-grid">
                         <div>
                             <div class="textarea-label">
                                 <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                                <span>Markdown Input</span>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                                <textarea id="mdArea" placeholder="# Hello World&#10;&#10;This is **bold** and *italic* text.&#10;&#10;- List item 1&#10;- List item 2"></textarea>
                             </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
                         <div>
                             <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+                                <i data-lucide="file-code"></i>
+                                <span>HTML Output</span>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                                <textarea id="htmlArea" placeholder="HTML output will appear here..." readonly></textarea>
                             </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
                     </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                        <button class="btn btn-primary" id="mdToHtmlBtn"><i data-lucide="arrow-right"></i><span>Markdown to HTML</span></button>
+                        <button class="btn btn-secondary" id="copyBtn"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
+                        <button class="btn btn-danger" id="clearBtn"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
                 </div>
-                
+
                 <!-- Ad Slot -->
                 <div class="ad-slot" style="margin-top:2rem">
                     <span data-i18n="ad_label">Advertisement</span>
@@ -123,7 +121,7 @@
             </aside>
         </div>
     </main>
-    
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container footer-container">
@@ -136,370 +134,228 @@
             <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
         </div>
     </footer>
-    
+
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
-    
+
     <!-- Back to Top -->
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
         <i data-lucide="chevron-up"></i>
     </button>
-    
+
     <!-- Scripts -->
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-        if (typeof I18n !== 'undefined') {
-            I18n.init();
-        }
-    });
-    
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        if (toast) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-    }
-    
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
-    function mdToHtml() {
-        const md = mdArea.value;
-        if (!md) { showToast('Please enter Markdown'); return; }
-        htmlArea.value = markdownToHtml(md);
-        htmlCount.textContent = htmlArea.value.length;
-        if (previewVisible) updatePreview();
-        showToast('Converted Markdown to HTML');
-    }
+    (function() {
+        const mdArea = document.getElementById('mdArea');
+        const htmlArea = document.getElementById('htmlArea');
+        const mdToHtmlBtn = document.getElementById('mdToHtmlBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const clearBtn = document.getElementById('clearBtn');
 
-    function markdownToHtml(md) {
-        let html = md;
-        const lines = html.split('\n');
-        let result = [];
-        let inCodeBlock = false;
-        let inList = false;
-        let listType = '';
-        let inTable = false;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2500);
+            }
+        }
 
-        for (let i = 0; i < lines.length; i++) {
-            let line = lines[i];
+        function markdownToHtml(md) {
+            let html = md;
+            const lines = html.split('\n');
+            let result = [];
+            let inCodeBlock = false;
+            let inList = false;
+            let listType = '';
+            let inTable = false;
 
-            // Code blocks
-            if (line.trim().startsWith('```')) {
-                if (inCodeBlock) {
-                    result.push('</code></pre>');
-                    inCodeBlock = false;
-                } else {
-                    inCodeBlock = true;
-                    const lang = line.trim().substring(3).trim();
-                    result.push('<pre><code' + (lang ? ' class="language-' + escapeHtml(lang) + '"' : '') + '>');
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i];
+
+                // Code blocks
+                if (line.trim().startsWith('```')) {
+                    if (inCodeBlock) {
+                        result.push('</code></pre>');
+                        inCodeBlock = false;
+                    } else {
+                        inCodeBlock = true;
+                        const lang = line.trim().substring(3).trim();
+                        result.push('<pre><code' + (lang ? ' class="language-' + escapeHtml(lang) + '"' : '') + '>');
+                    }
+                    continue;
                 }
-                continue;
-            }
-            if (inCodeBlock) {
-                result.push(escapeHtml(line));
-                continue;
-            }
+                if (inCodeBlock) {
+                    result.push(escapeHtml(line));
+                    continue;
+                }
 
-            // Close list if needed
-            if (inList && !line.trim().startsWith('- ') && !line.trim().startsWith('* ') && !/^\d+\.\s/.test(line.trim()) && line.trim() !== '') {
-                result.push(listType === 'ul' ? '</ul>' : '</ol>');
-                inList = false;
-            }
-
-            // Close table if needed
-            if (inTable && !line.trim().startsWith('|')) {
-                result.push('</tbody></table>');
-                inTable = false;
-            }
-
-            // Empty line
-            if (line.trim() === '') {
-                if (inList) {
+                // Close list if needed
+                if (inList && !line.trim().startsWith('- ') && !line.trim().startsWith('* ') && !/^\d+\.\s/.test(line.trim()) && line.trim() !== '') {
                     result.push(listType === 'ul' ? '</ul>' : '</ol>');
                     inList = false;
                 }
-                continue;
-            }
 
-            // Headings
-            const headingMatch = line.match(/^(#{1,6})\s+(.+)$/);
-            if (headingMatch) {
-                const level = headingMatch[1].length;
-                const text = inlineFormat(headingMatch[2]);
-                result.push('<h' + level + '>' + text + '</h' + level + '>');
-                continue;
-            }
+                // Close table if needed
+                if (inTable && !line.trim().startsWith('|')) {
+                    result.push('</tbody></table>');
+                    inTable = false;
+                }
 
-            // Horizontal rule
-            if (/^(-{3,}|\*{3,}|_{3,})\s*$/.test(line.trim())) {
-                result.push('<hr>');
-                continue;
-            }
-
-            // Blockquote
-            if (line.trim().startsWith('> ')) {
-                const text = inlineFormat(line.trim().substring(2));
-                result.push('<blockquote><p>' + text + '</p></blockquote>');
-                continue;
-            }
-
-            // Table
-            if (line.trim().startsWith('|') && line.trim().endsWith('|')) {
-                if (!inTable) {
-                    result.push('<table><thead>');
-                    inTable = true;
-                    const cells = line.trim().split('|').filter(c => c.trim() !== '');
-                    result.push('<tr>' + cells.map(c => '<th>' + inlineFormat(c.trim()) + '</th>').join('') + '</tr>');
-                    result.push('</thead><tbody>');
-                    // Check next line for separator
-                    if (i + 1 < lines.length && /^\|[\s\-:|]+\|$/.test(lines[i + 1].trim())) {
-                        i++; // skip separator
+                // Empty line
+                if (line.trim() === '') {
+                    if (inList) {
+                        result.push(listType === 'ul' ? '</ul>' : '</ol>');
+                        inList = false;
                     }
-                } else {
-                    const cells = line.trim().split('|').filter(c => c.trim() !== '');
-                    result.push('<tr>' + cells.map(c => '<td>' + inlineFormat(c.trim()) + '</td>').join('') + '</tr>');
+                    continue;
                 }
-                continue;
+
+                // Headings
+                const headingMatch = line.match(/^(#{1,6})\s+(.+)$/);
+                if (headingMatch) {
+                    const level = headingMatch[1].length;
+                    const text = inlineFormat(headingMatch[2]);
+                    result.push('<h' + level + '>' + text + '</h' + level + '>');
+                    continue;
+                }
+
+                // Horizontal rule
+                if (/^(-{3,}|\*{3,}|_{3,})\s*$/.test(line.trim())) {
+                    result.push('<hr>');
+                    continue;
+                }
+
+                // Blockquote
+                if (line.trim().startsWith('> ')) {
+                    const text = inlineFormat(line.trim().substring(2));
+                    result.push('<blockquote><p>' + text + '</p></blockquote>');
+                    continue;
+                }
+
+                // Table
+                if (line.trim().startsWith('|') && line.trim().endsWith('|')) {
+                    if (!inTable) {
+                        result.push('<table><thead>');
+                        inTable = true;
+                        const cells = line.trim().split('|').filter(c => c.trim() !== '');
+                        result.push('<tr>' + cells.map(c => '<th>' + inlineFormat(c.trim()) + '</th>').join('') + '</tr>');
+                        result.push('</thead><tbody>');
+                        // Check next line for separator
+                        if (i + 1 < lines.length && /^\|[\s\-:|]+\|$/.test(lines[i + 1].trim())) {
+                            i++; // skip separator
+                        }
+                    } else {
+                        const cells = line.trim().split('|').filter(c => c.trim() !== '');
+                        result.push('<tr>' + cells.map(c => '<td>' + inlineFormat(c.trim()) + '</td>').join('') + '</tr>');
+                    }
+                    continue;
+                }
+
+                // Unordered list
+                if (line.trim().startsWith('- ') || line.trim().startsWith('* ')) {
+                    if (!inList || listType !== 'ul') {
+                        if (inList) result.push(listType === 'ul' ? '</ul>' : '</ol>');
+                        result.push('<ul>');
+                        inList = true;
+                        listType = 'ul';
+                    }
+                    result.push('<li>' + inlineFormat(line.trim().substring(2)) + '</li>');
+                    continue;
+                }
+
+                // Ordered list
+                const olMatch = line.trim().match(/^\d+\.\s+(.+)$/);
+                if (olMatch) {
+                    if (!inList || listType !== 'ol') {
+                        if (inList) result.push(listType === 'ul' ? '</ul>' : '</ol>');
+                        result.push('<ol>');
+                        inList = true;
+                        listType = 'ol';
+                    }
+                    result.push('<li>' + inlineFormat(olMatch[1]) + '</li>');
+                    continue;
+                }
+
+                // Paragraph
+                result.push('<p>' + inlineFormat(line) + '</p>');
             }
 
-            // Unordered list
-            if (line.trim().startsWith('- ') || line.trim().startsWith('* ')) {
-                if (!inList || listType !== 'ul') {
-                    if (inList) result.push(listType === 'ul' ? '</ul>' : '</ol>');
-                    result.push('<ul>');
-                    inList = true;
-                    listType = 'ul';
-                }
-                result.push('<li>' + inlineFormat(line.trim().substring(2)) + '</li>');
-                continue;
+            // Close any open tags
+            if (inCodeBlock) result.push('</code></pre>');
+            if (inList) result.push(listType === 'ul' ? '</ul>' : '</ol>');
+            if (inTable) result.push('</tbody></table>');
+
+            return result.join('\n');
+        }
+
+        function inlineFormat(text) {
+            // Images (must be before links)
+            text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+            // Links
+            text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+            // Bold + Italic
+            text = text.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+            text = text.replace(/___(.+?)___/g, '<strong><em>$1</em></strong>');
+            // Bold
+            text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            text = text.replace(/__(.+?)__/g, '<strong>$1</strong>');
+            // Italic
+            text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+            text = text.replace(/_(.+?)_/g, '<em>$1</em>');
+            // Inline code
+            text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+            // Strikethrough
+            text = text.replace(/~~(.+?)~~/g, '<del>$1</del>');
+            // Line breaks
+            text = text.replace(/  \n/g, '<br>\n');
+            return text;
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                       .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+        }
+
+        function mdToHtml() {
+            const md = mdArea.value;
+            if (!md) {
+                showToast(typeof I18n !== 'undefined' ? I18n.t('toast.inputRequired') : 'Please enter Markdown');
+                return;
             }
+            htmlArea.value = markdownToHtml(md);
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.converted') : 'Converted Markdown to HTML');
+        }
 
-            // Ordered list
-            const olMatch = line.trim().match(/^\d+\.\s+(.+)$/);
-            if (olMatch) {
-                if (!inList || listType !== 'ol') {
-                    if (inList) result.push(listType === 'ul' ? '</ul>' : '</ol>');
-                    result.push('<ol>');
-                    inList = true;
-                    listType = 'ol';
-                }
-                result.push('<li>' + inlineFormat(olMatch[1]) + '</li>');
-                continue;
+        function copyOutput() {
+            if (!htmlArea.value) {
+                showToast(typeof I18n !== 'undefined' ? I18n.t('toast.inputRequired') : 'Nothing to copy');
+                return;
             }
-
-            // Paragraph
-            result.push('<p>' + inlineFormat(line) + '</p>');
-        }
-
-        // Close any open tags
-        if (inCodeBlock) result.push('</code></pre>');
-        if (inList) result.push(listType === 'ul' ? '</ul>' : '</ol>');
-        if (inTable) result.push('</tbody></table>');
-
-        return result.join('\n');
-    }
-
-    function inlineFormat(text) {
-        // Images (must be before links)
-        text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
-        // Links
-        text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
-        // Bold + Italic
-        text = text.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
-        text = text.replace(/___(.+?)___/g, '<strong><em>$1</em></strong>');
-        // Bold
-        text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-        text = text.replace(/__(.+?)__/g, '<strong>$1</strong>');
-        // Italic
-        text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
-        text = text.replace(/_(.+?)_/g, '<em>$1</em>');
-        // Inline code
-        text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
-        // Strikethrough
-        text = text.replace(/~~(.+?)~~/g, '<del>$1</del>');
-        // Line breaks
-        text = text.replace(/  \n/g, '<br>\n');
-        return text;
-    }
-
-    function escapeHtml(text) {
-        return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-                   .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-    }
-
-    // ========== HTML -> Markdown (Simple) ==========
-    function htmlToMd() {
-        const html = htmlArea.value;
-        if (!html) { showToast('Please enter HTML in the HTML panel'); return; }
-
-        // Make textarea editable for this operation
-        htmlArea.removeAttribute('readonly');
-        let md = html;
-
-        // Table to markdown
-        md = md.replace(/<table[^>]*>([\s\S]*?)<\/table>/gi, (match, content) => {
-            const rows = content.match(/<tr[^>]*>([\s\S]*?)<\/tr>/gi);
-            if (!rows) return '';
-            let result = '';
-            rows.forEach((row, idx) => {
-                const cells = row.match(/<t[hd][^>]*>([\s\S]*?)<\/t[hd]>/gi);
-                if (!cells) return;
-                const cellContents = cells.map(c => c.replace(/<t[hd][^>]*>/gi, '').replace(/<\/t[hd]>/gi, '').trim());
-                result += '| ' + cellContents.join(' | ') + ' |\n';
-                if (idx === 0) {
-                    result += '| ' + cellContents.map(() => '---').join(' | ') + ' |\n';
-                }
-            });
-            return result.trim();
-        });
-
-        // Headings
-        md = md.replace(/<h1[^>]*>([\s\S]*?)<\/h1>/gi, '# $1');
-        md = md.replace(/<h2[^>]*>([\s\S]*?)<\/h2>/gi, '## $1');
-        md = md.replace(/<h3[^>]*>([\s\S]*?)<\/h3>/gi, '### $1');
-        md = md.replace(/<h4[^>]*>([\s\S]*?)<\/h4>/gi, '#### $1');
-        md = md.replace(/<h5[^>]*>([\s\S]*?)<\/h5>/gi, '##### $1');
-        md = md.replace(/<h6[^>]*>([\s\S]*?)<\/h6>/gi, '###### $1');
-
-        // Bold
-        md = md.replace(/<(strong|b)[^>]*>([\s\S]*?)<\/(strong|b)>/gi, '**$2**');
-        // Italic
-        md = md.replace(/<(em|i)[^>]*>([\s\S]*?)<\/(em|i)>/gi, '*$2*');
-        // Strikethrough
-        md = md.replace(/<del[^>]*>([\s\S]*?)<\/del>/gi, '~~$1~~');
-        // Code
-        md = md.replace(/<code[^>]*>([\s\S]*?)<\/code>/gi, '`$1`');
-        // Pre/Code blocks
-        md = md.replace(/<pre[^>]*><code[^>]*>([\s\S]*?)<\/code><\/pre>/gi, '```\n$1\n```');
-        md = md.replace(/<pre[^>]*>([\s\S]*?)<\/pre>/gi, '```\n$1\n```');
-
-        // Links
-        md = md.replace(/<a[^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/gi, '[$2]($1)');
-        // Images
-        md = md.replace(/<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?>/gi, '![$2]($1)');
-        md = md.replace(/<img[^>]*src="([^"]*)"[^>]*\/?>/gi, '![]($1)');
-
-        // Blockquote
-        md = md.replace(/<blockquote[^>]*>([\s\S]*?)<\/blockquote>/gi, (_, content) => {
-            return content.split('\n').map(l => '> ' + l.trim()).join('\n');
-        });
-
-        // List items
-        md = md.replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, '- $1');
-        md = md.replace(/<\/?[uo]l[^>]*>/gi, '');
-
-        // Horizontal rule
-        md = md.replace(/<hr\s*\/?>/gi, '---');
-
-        // Paragraphs
-        md = md.replace(/<p[^>]*>([\s\S]*?)<\/p>/gi, '$1\n');
-        // Line breaks
-        md = md.replace(/<br\s*\/?>/gi, '\n');
-
-        // Remove remaining tags
-        md = md.replace(/<[^>]+>/g, '');
-
-        // Decode HTML entities
-        md = md.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-               .replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/&nbsp;/g, ' ');
-
-        // Clean up whitespace
-        md = md.replace(/\n{3,}/g, '\n\n').trim();
-
-        mdArea.value = md;
-        mdCount.textContent = md.length;
-        htmlArea.setAttribute('readonly', '');
-        showToast('Converted HTML to Markdown');
-    }
-
-    // ========== Preview ==========
-    function togglePreview() {
-        previewVisible = !previewVisible;
-        const btn = document.getElementById('previewBtn');
-        if (previewVisible) {
-            document.getElementById('htmlPanel').style.display = 'none';
-            document.getElementById('previewPanel').style.display = 'block';
-            btn.innerHTML = '<i data-lucide="code" style="width:16px;height:16px"></i> HTML';
-            updatePreview();
-        } else {
-            document.getElementById('htmlPanel').style.display = 'block';
-            document.getElementById('previewPanel').style.display = 'none';
-            btn.innerHTML = '<i data-lucide="eye" style="width:16px;height:16px"></i> Preview';
-        }
-        lucide.createIcons();
-    }
-
-    function updatePreview() {
-        document.getElementById('previewFrame').innerHTML = htmlArea.value || '<p style="color:#94a3b8">No content to preview</p>';
-    }
-
-    function copyHtml() {
-        if (!htmlArea.value) { showToast('Nothing to copy'); return; }
-        navigator.clipboard.writeText(htmlArea.value).then(() => showToast('HTML copied to clipboard'));
-    }
-
-    function clearAll() {
-        mdArea.value = '';
-        htmlArea.value = '';
-        mdCount.textContent = '0';
-        htmlCount.textContent = '0';
-        if (previewVisible) {
-            document.getElementById('previewFrame').innerHTML = '';
-        }
-    }
-
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2500);
-    }
-    </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
+            navigator.clipboard.writeText(htmlArea.value).then(() => {
+                showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied to clipboard');
+            }).catch(() => {
+                htmlArea.select();
+                document.execCommand('copy');
+                showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied to clipboard');
             });
         }
-    });
+
+        function clearAll() {
+            mdArea.value = '';
+            htmlArea.value = '';
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
+        }
+
+        // Event listeners
+        mdToHtmlBtn.addEventListener('click', mdToHtml);
+        copyBtn.addEventListener('click', copyOutput);
+        clearBtn.addEventListener('click', clearAll);
+    })();
     </script>
 </body>
 </html>

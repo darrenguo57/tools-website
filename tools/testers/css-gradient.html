@@ -39,6 +39,147 @@
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
         
+        /* CSS Gradient Tool Specific Styles */
+        .grad-preview {
+            width: 100%;
+            height: 200px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            margin-bottom: 1rem;
+        }
+        .grad-type-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .grad-type-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .grad-type-btn:hover {
+            border-color: var(--color-border-focus);
+        }
+        .grad-type-btn.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+        .grad-control-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        .grad-control-row label {
+            min-width: 80px;
+            font-size: 13px;
+            color: var(--color-text-secondary);
+        }
+        .grad-control-row input[type="range"] {
+            flex: 1;
+        }
+        .grad-control-row input[type="number"] {
+            width: 80px;
+            padding: 0.5rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-size: 14px;
+        }
+        .grad-control-row select {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-size: 14px;
+        }
+        .grad-stops {
+            margin-bottom: 1rem;
+        }
+        .grad-stops-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .grad-stops-header h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-text);
+        }
+        .grad-stop-row {
+            display: grid;
+            grid-template-columns: 50px 1fr 60px 30px;
+            gap: 0.75rem;
+            align-items: center;
+            padding: 0.5rem;
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-md);
+            margin-bottom: 0.5rem;
+        }
+        .grad-stop-row input[type="color"] {
+            width: 50px;
+            height: 35px;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+        }
+        .grad-stop-row input[type="range"] {
+            width: 100%;
+        }
+        .grad-stop-row span {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            text-align: center;
+        }
+        .grad-remove-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: transparent;
+            color: var(--color-text-tertiary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .grad-remove-btn:hover {
+            background: #FEE2E2;
+            color: #DC2626;
+        }
+        .grad-css-output {
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .grad-css-output code {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: var(--color-text);
+            word-break: break-all;
+        }
+        .grad-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
         @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -83,31 +224,99 @@
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
                     <div class="workspace-grid">
+                        <!-- Controls -->
                         <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                            <!-- Gradient Type -->
+                            <div class="grad-type-tabs">
+                                <button class="grad-type-btn active" data-type="linear">
+                                    <i data-lucide="minus"></i> Linear
+                                </button>
+                                <button class="grad-type-btn" data-type="radial">
+                                    <i data-lucide="circle"></i> Radial
+                                </button>
+                                <button class="grad-type-btn" data-type="conic">
+                                    <i data-lucide="pie-chart"></i> Conic
+                                </button>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                            
+                            <!-- Angle Control (for linear and conic) -->
+                            <div id="angleRow" class="grad-control-row">
+                                <label>Angle:</label>
+                                <input type="range" id="gradAngle" min="0" max="360" value="90">
+                                <span id="angleVal">90deg</span>
                             </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                            
+                            <!-- Shape Control (for radial) -->
+                            <div id="shapeRow" class="grad-control-row" style="display: none;">
+                                <label>Shape:</label>
+                                <select id="gradShape">
+                                    <option value="ellipse">Ellipse</option>
+                                    <option value="circle">Circle</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Position Control (for radial and conic) -->
+                            <div id="posRow" class="grad-control-row" style="display: none;">
+                                <label>Position:</label>
+                                <select id="gradPosition">
+                                    <option value="center">Center</option>
+                                    <option value="top">Top</option>
+                                    <option value="bottom">Bottom</option>
+                                    <option value="left">Left</option>
+                                    <option value="right">Right</option>
+                                    <option value="top left">Top Left</option>
+                                    <option value="top right">Top Right</option>
+                                    <option value="bottom left">Bottom Left</option>
+                                    <option value="bottom right">Bottom Right</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Color Stops -->
+                            <div class="grad-stops">
+                                <div class="grad-stops-header">
+                                    <h4>Color Stops</h4>
+                                    <button id="btnAddStop" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 12px;">
+                                        <i data-lucide="plus" style="width:14px;height:14px;"></i> Add
+                                    </button>
+                                </div>
+                                <div id="stopsContainer"></div>
+                            </div>
+                            
+                            <!-- Actions -->
+                            <div class="grad-actions">
+                                <button id="btnRandom" class="btn btn-secondary">
+                                    <i data-lucide="shuffle"></i> Random
+                                </button>
+                                <button id="btnCopy" class="btn btn-primary">
+                                    <i data-lucide="copy"></i> Copy CSS
+                                </button>
+                            </div>
                         </div>
+                        
+                        <!-- Preview and Output -->
                         <div>
+                            <!-- Preview -->
                             <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+                                <i data-lucide="eye"></i>
+                                <span>Preview</span>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            <div id="preview" class="grad-preview" style="background: linear-gradient(90deg, #3B82F6 0%, #8B5CF6 100%);"></div>
+                            
+                            <!-- CSS Output -->
+                            <div class="textarea-label">
+                                <i data-lucide="code"></i>
+                                <span>CSS Code</span>
                             </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                            <div class="grad-css-output">
+                                <code id="cssCode">background: linear-gradient(90deg, #3B82F6 0%, #8B5CF6 100%);</code>
+                            </div>
+                            
+                            <div style="text-align: center;">
+                                <button id="btnCopy2" class="btn btn-primary">
+                                    <i data-lucide="copy"></i> Copy
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
                 </div>
                 
@@ -158,6 +367,9 @@
         if (typeof I18n !== 'undefined') {
             I18n.init();
         }
+        
+        // Initialize gradient generator
+        initGradientGenerator();
     });
     
     function showToast(msg) {
@@ -169,180 +381,149 @@
         }
     }
     
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
-    function randomColor() {
-        return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
-      }
-
-      function renderStops() {
-        var html = '';
-        stops.forEach(function(stop, i) {
-          html += '<div class="grad-stop-row" data-index="' + i + '">';
-          html += '<input type="color" value="' + stop.color + '" class="stop-color">';
-          html += '<input type="range" min="0" max="100" value="' + stop.position + '" class="stop-range">';
-          html += '<span class="stop-pos">' + stop.position + '%</span>';
-          if (stops.length > 2) {
-            html += '<button class="grad-remove-btn" data-index="' + i + '"><i data-lucide="x" style="width:14px;height:14px;"></i></button>';
-          }
-          html += '</div>';
-        });
-        stopsContainer.innerHTML = html;
-        lucide.createIcons();
-
-        stopsContainer.querySelectorAll('.stop-color').forEach(function(input) {
-          input.addEventListener('input', function() {
-            var idx = parseInt(this.closest('.grad-stop-row').dataset.index);
-            stops[idx].color = this.value;
-            updateGradient();
-          });
-        });
-        stopsContainer.querySelectorAll('.stop-range').forEach(function(input) {
-          input.addEventListener('input', function() {
-            var idx = parseInt(this.closest('.grad-stop-row').dataset.index);
-            stops[idx].position = parseInt(this.value);
-            this.nextElementSibling.textContent = this.value + '%';
-            updateGradient();
-          });
-        });
-        stopsContainer.querySelectorAll('.grad-remove-btn').forEach(function(btn) {
-          btn.addEventListener('click', function() {
-            var idx = parseInt(this.dataset.index);
-            stops.splice(idx, 1);
-            renderStops();
-            updateGradient();
-          });
-        });
-      }
-
-      function updateGradient() {
-        var stopsStr = stops.map(function(s) { return s.color + ' ' + s.position + '%'; }).join(', ');
-        var cssValue;
-
-        if (gradType === 'linear') {
-          var angle = document.getElementById('gradAngle').value;
-          cssValue = 'linear-gradient(' + angle + 'deg, ' + stopsStr + ')';
-        } else if (gradType === 'radial') {
-          var shape = document.getElementById('gradShape').value;
-          var pos = document.getElementById('gradPosition').value;
-          cssValue = 'radial-gradient(' + shape + ' at ' + pos + ', ' + stopsStr + ')';
-        } else {
-          var pos2 = document.getElementById('gradPosition').value;
-          var angle2 = document.getElementById('gradAngle').value;
-          cssValue = 'conic-gradient(from ' + angle2 + 'deg at ' + pos2 + ', ' + stopsStr + ')';
+    function initGradientGenerator() {
+        var stops = [
+            { color: '#3B82F6', position: 0 },
+            { color: '#8B5CF6', position: 100 }
+        ];
+        var gradType = 'linear';
+        
+        var stopsContainer = document.getElementById('stopsContainer');
+        var preview = document.getElementById('preview');
+        var cssCodeEl = document.getElementById('cssCode');
+        
+        function randomColor() {
+            return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
         }
 
-        preview.style.background = cssValue;
-        cssCodeEl.textContent = 'background: ' + cssValue + ';';
-      }
+        function renderStops() {
+            var html = '';
+            stops.forEach(function(stop, i) {
+                html += '<div class="grad-stop-row" data-index="' + i + '">';
+                html += '<input type="color" value="' + stop.color + '" class="stop-color">';
+                html += '<input type="range" min="0" max="100" value="' + stop.position + '" class="stop-range">';
+                html += '<span class="stop-pos">' + stop.position + '%</span>';
+                if (stops.length > 2) {
+                    html += '<button class="grad-remove-btn" data-index="' + i + '"><i data-lucide="x" style="width:14px;height:14px;"></i></button>';
+                } else {
+                    html += '<div style="width:30px;"></div>';
+                }
+                html += '</div>';
+            });
+            stopsContainer.innerHTML = html;
+            lucide.createIcons();
 
-      // Type tabs
-      document.querySelectorAll('.grad-type-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          document.querySelectorAll('.grad-type-btn').forEach(function(b) { b.classList.remove('active'); });
-          this.classList.add('active');
-          gradType = this.dataset.type;
-
-          document.getElementById('angleRow').style.display = (gradType === 'radial') ? 'none' : 'flex';
-          document.getElementById('shapeRow').style.display = (gradType === 'radial') ? 'flex' : 'none';
-          document.getElementById('posRow').style.display = (gradType === 'linear') ? 'none' : 'flex';
-
-          updateGradient();
-        });
-      });
-
-      // Angle
-      document.getElementById('gradAngle').addEventListener('input', function() {
-        document.getElementById('angleVal').innerHTML = this.value + '&deg;';
-        updateGradient();
-      });
-
-      // Shape & Position
-      document.getElementById('gradShape').addEventListener('change', updateGradient);
-      document.getElementById('gradPosition').addEventListener('change', updateGradient);
-
-      // Add stop
-      document.getElementById('btnAddStop').addEventListener('click', function() {
-        var lastPos = stops[stops.length - 1].position;
-        var newPos = Math.min(100, lastPos + Math.round((100 - lastPos) / 2));
-        stops.push({ color: randomColor(), position: newPos });
-        renderStops();
-        updateGradient();
-      });
-
-      // Random
-      document.getElementById('btnRandom').addEventListener('click', function() {
-        stops = [];
-        var numStops = 2 + Math.floor(Math.random() * 3);
-        for (var i = 0; i < numStops; i++) {
-          stops.push({
-            color: randomColor(),
-            position: Math.round(i / (numStops - 1) * 100)
-          });
-        }
-        document.getElementById('gradAngle').value = Math.floor(Math.random() * 360);
-        document.getElementById('angleVal').innerHTML = document.getElementById('gradAngle').value + '&deg;';
-        renderStops();
-        updateGradient();
-      });
-
-      // Copy
-      function copyCss() {
-        navigator.clipboard.writeText(cssCodeEl.textContent);
-        var btn = document.getElementById('btnCopy');
-        btn.classList.add('tool-action-btn--success');
-        btn.innerHTML = '<i data-lucide="check"></i>';
-        lucide.createIcons();
-        setTimeout(function() {
-          btn.classList.remove('tool-action-btn--success');
-          btn.innerHTML = '<i data-lucide="copy"></i>';
-          lucide.createIcons();
-        }, 1500);
-      }
-      document.getElementById('btnCopy').addEventListener('click', copyCss);
-      document.getElementById('btnCopy2').addEventListener('click', copyCss);
-
-      // Init
-      renderStops();
-      updateGradient();
-    })();
-  </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
+            stopsContainer.querySelectorAll('.stop-color').forEach(function(input) {
+                input.addEventListener('input', function() {
+                    var idx = parseInt(this.closest('.grad-stop-row').dataset.index);
+                    stops[idx].color = this.value;
+                    updateGradient();
+                });
+            });
+            stopsContainer.querySelectorAll('.stop-range').forEach(function(input) {
+                input.addEventListener('input', function() {
+                    var idx = parseInt(this.closest('.grad-stop-row').dataset.index);
+                    stops[idx].position = parseInt(this.value);
+                    this.nextElementSibling.textContent = this.value + '%';
+                    updateGradient();
+                });
+            });
+            stopsContainer.querySelectorAll('.grad-remove-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var idx = parseInt(this.dataset.index);
+                    stops.splice(idx, 1);
+                    renderStops();
+                    updateGradient();
+                });
             });
         }
-    });
+
+        function updateGradient() {
+            // Sort stops by position
+            stops.sort(function(a, b) { return a.position - b.position; });
+            
+            var stopsStr = stops.map(function(s) { return s.color + ' ' + s.position + '%'; }).join(', ');
+            var cssValue;
+
+            if (gradType === 'linear') {
+                var angle = document.getElementById('gradAngle').value;
+                cssValue = 'linear-gradient(' + angle + 'deg, ' + stopsStr + ')';
+            } else if (gradType === 'radial') {
+                var shape = document.getElementById('gradShape').value;
+                var pos = document.getElementById('gradPosition').value;
+                cssValue = 'radial-gradient(' + shape + ' at ' + pos + ', ' + stopsStr + ')';
+            } else {
+                var pos2 = document.getElementById('gradPosition').value;
+                var angle2 = document.getElementById('gradAngle').value;
+                cssValue = 'conic-gradient(from ' + angle2 + 'deg at ' + pos2 + ', ' + stopsStr + ')';
+            }
+
+            preview.style.background = cssValue;
+            cssCodeEl.textContent = 'background: ' + cssValue + ';';
+        }
+
+        // Type tabs
+        document.querySelectorAll('.grad-type-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.grad-type-btn').forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                gradType = this.dataset.type;
+
+                document.getElementById('angleRow').style.display = (gradType === 'radial') ? 'none' : 'flex';
+                document.getElementById('shapeRow').style.display = (gradType === 'radial') ? 'flex' : 'none';
+                document.getElementById('posRow').style.display = (gradType === 'linear') ? 'none' : 'flex';
+
+                updateGradient();
+            });
+        });
+
+        // Angle
+        document.getElementById('gradAngle').addEventListener('input', function() {
+            document.getElementById('angleVal').innerHTML = this.value + '\u00B0';
+            updateGradient();
+        });
+
+        // Shape & Position
+        document.getElementById('gradShape').addEventListener('change', updateGradient);
+        document.getElementById('gradPosition').addEventListener('change', updateGradient);
+
+        // Add stop
+        document.getElementById('btnAddStop').addEventListener('click', function() {
+            var lastPos = stops[stops.length - 1].position;
+            var newPos = Math.min(100, lastPos + Math.round((100 - lastPos) / 2));
+            stops.push({ color: randomColor(), position: newPos });
+            renderStops();
+            updateGradient();
+        });
+
+        // Random
+        document.getElementById('btnRandom').addEventListener('click', function() {
+            stops = [];
+            var numStops = 2 + Math.floor(Math.random() * 3);
+            for (var i = 0; i < numStops; i++) {
+                stops.push({
+                    color: randomColor(),
+                    position: Math.round(i / (numStops - 1) * 100)
+                });
+            }
+            document.getElementById('gradAngle').value = Math.floor(Math.random() * 360);
+            document.getElementById('angleVal').innerHTML = document.getElementById('gradAngle').value + '\u00B0';
+            renderStops();
+            updateGradient();
+        });
+
+        // Copy
+        function copyCss() {
+            navigator.clipboard.writeText(cssCodeEl.textContent);
+            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
+        }
+        document.getElementById('btnCopy').addEventListener('click', copyCss);
+        document.getElementById('btnCopy2').addEventListener('click', copyCss);
+
+        // Init
+        renderStops();
+        updateGradient();
+    }
     </script>
 </body>
 </html>

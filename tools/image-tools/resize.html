@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Resize - ToolBox</title>
-    <meta name="description" content="Resize images">
+    <meta name="description" content="Resize images online">
     
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
@@ -23,23 +23,26 @@
     <link rel="stylesheet" href="../../assets/css/tools.css">
     
     <style>
-        /* Tool Page Custom Styles */
-        .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .workspace-grid .full-width { grid-column: 1 / -1; }
-        .textarea-wrap { position: relative; }
-        .textarea-wrap textarea, .textarea-wrap input {
-            width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg); font-family: 'Courier New', monospace; font-size: 14px;
-            resize: vertical; background: var(--color-bg); color: var(--color-text);
-            box-sizing: border-box;
-        }
-        .textarea-wrap input { min-height: auto; resize: none; }
-        .textarea-wrap textarea:focus, .textarea-wrap input:focus { outline: none; border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-        .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
-        .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
-        .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
+        /* Resize Tool Styles */
+        .resize-upload { border: 2px dashed var(--color-border); border-radius: var(--radius-xl); padding: 3rem 2rem; text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 1.5rem; }
+        .resize-upload:hover { border-color: var(--color-primary); background: var(--color-primary-light); }
+        .resize-controls { display: flex; flex-wrap: wrap; gap: 1rem; padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); margin-bottom: 1rem; }
+        .resize-control { display: flex; align-items: center; gap: 0.5rem; }
+        .resize-control label { font-size: 14px; color: var(--color-text-secondary); white-space: nowrap; }
+        .resize-control input[type="number"] { width: 80px; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); }
+        .resize-control input[type="range"] { width: 100px; }
+        .resize-control select { padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); }
+        .resize-info { font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 1rem; padding: 0.75rem; background: var(--color-bg-secondary); border-radius: var(--radius-md); }
+        .resize-canvas-wrap { background: var(--color-bg-secondary); border-radius: var(--radius-lg); padding: 1rem; margin-bottom: 1.5rem; display: none; }
+        .resize-canvas-wrap.active { display: block; }
+        #resizeCanvas { max-width: 100%; max-height: 400px; display: block; margin: 0 auto; }
+        .resize-presets { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+        .preset-btn { padding: 0.4rem 0.8rem; border: 1px solid var(--color-border); background: var(--color-bg-secondary); border-radius: var(--radius-md); cursor: pointer; font-size: 12px; }
+        .preset-btn:hover { background: var(--color-bg-tertiary); }
+        .resize-result { background: var(--color-bg-secondary); border-radius: var(--radius-lg); padding: 1rem; margin-top: 1rem; display: none; }
+        .resize-result.active { display: block; }
         
-        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .resize-controls { flex-direction: column; } }
     </style>
 </head>
 <body>
@@ -67,7 +70,7 @@
     </header>
     
     <!-- Breadcrumb -->
-    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_image_tools" data-i18n="cat_image_tools">Image Tools</a> / <span>Image Resize</span></div></div>
+    <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_image_tools" data-i18n="cat_image_tools">Image Tools</a> / <span data-i18n="resize_title">Image Resize</span></div></div>
     
     <!-- Main Content -->
     <main class="tool-page">
@@ -76,38 +79,87 @@
                 <!-- Tool Header -->
                 <div class="tool-header">
                     <div class="tool-icon"><i data-lucide="maximize"></i></div>
-                    <h1>Image Resize</h1>
-                    <p>Resize images</p>
+                    <h1 data-i18n="resize_title">Image Resize</h1>
+                    <p data-i18n="resize_desc">Resize images to custom dimensions</p>
                 </div>
                 
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
-                    <div class="workspace-grid">
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
-                            </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                    <!-- Upload Zone -->
+                    <div class="resize-upload" id="dropzone" onclick="document.getElementById('fileInput').click()">
+                        <i data-lucide="upload-cloud" style="width:48px;height:48px;color:var(--color-text-tertiary);margin-bottom:1rem"></i>
+                        <div style="font-weight:500;margin-bottom:0.25rem" data-i18n="resize_upload_text">Drop image here or click to upload</div>
+                        <div style="font-size:12px;color:var(--color-text-tertiary)" data-i18n="resize_upload_hint">Supports: JPG, PNG, WebP, GIF</div>
+                        <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFile(this.files[0])">
+                    </div>
+                    
+                    <!-- Info -->
+                    <div class="resize-info" id="originalInfo" style="display:none"></div>
+                    
+                    <!-- Controls -->
+                    <div class="resize-controls" id="editorArea" style="display:none">
+                        <div class="resize-control">
+                            <label data-i18n="resize_width">Width:</label>
+                            <input type="number" id="widthInput" value="800" min="1" max="10000" onchange="onWidthChange()">
+                            <span style="color:var(--color-text-tertiary)">px</span>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
-                            </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                        <div class="resize-control">
+                            <label data-i18n="resize_height">Height:</label>
+                            <input type="number" id="heightInput" value="600" min="1" max="10000" onchange="onHeightChange()">
+                            <span style="color:var(--color-text-tertiary)">px</span>
+                        </div>
+                        <div class="resize-control">
+                            <button class="btn btn-secondary" id="lockBtn" onclick="toggleLock()" style="padding:0.5rem 0.75rem">
+                                <i data-lucide="unlock" style="width:16px;height:16px"></i>
+                            </button>
+                            <span id="lockText" style="font-size:12px;color:var(--color-text-tertiary)">Unlocked</span>
+                        </div>
+                        <div class="resize-control">
+                            <label data-i18n="resize_scale">Scale:</label>
+                            <input type="range" id="scalePercent" value="100" min="10" max="500" onchange="onScaleChange()">
+                            <span id="scaleValue">100%</span>
                         </div>
                     </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                    
+                    <!-- Presets -->
+                    <div class="resize-presets" id="editorArea2" style="display:none">
+                        <button class="preset-btn" onclick="applyPreset(1920, 1080)">1920 x 1080</button>
+                        <button class="preset-btn" onclick="applyPreset(1280, 720)">1280 x 720</button>
+                        <button class="preset-btn" onclick="applyPreset(800, 600)">800 x 600</button>
+                        <button class="preset-btn" onclick="applyPreset(640, 480)">640 x 480</button>
+                        <button class="preset-btn" onclick="applyPreset(320, 240)">320 x 240</button>
+                    </div>
+                    
+                    <!-- Output Format -->
+                    <div class="resize-control" id="editorArea3" style="display:none;margin-bottom:1rem">
+                        <label data-i18n="resize_output_format">Output Format:</label>
+                        <select id="outputFormat">
+                            <option value="auto">Auto</option>
+                            <option value="image/png">PNG</option>
+                            <option value="image/jpeg">JPEG</option>
+                            <option value="image/webp">WebP</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Canvas -->
+                    <div class="resize-canvas-wrap" id="container">
+                        <canvas id="resizeCanvas"></canvas>
+                    </div>
+                    
+                    <!-- Result -->
+                    <div class="resize-result" id="resultArea"></div>
+                    
+                    <!-- Actions -->
+                    <div class="btn-group" id="editorArea4" style="display:none">
+                        <button class="btn btn-primary" onclick="resizeImage()">
+                            <i data-lucide="maximize"></i> <span data-i18n="btn_resize">Resize</span>
+                        </button>
+                        <button class="btn btn-success" id="btnDownload" onclick="downloadResult()" style="display:none">
+                            <i data-lucide="download"></i> <span data-i18n="btn_download">Download</span>
+                        </button>
+                        <button class="btn btn-danger" onclick="clearAll()">
+                            <i data-lucide="trash-2"></i> <span data-i18n="btn_clear">Clear</span>
+                        </button>
                     </div>
                 </div>
                 
@@ -151,6 +203,28 @@
     <script src="../../assets/js/app.js"></script>
     
     <script>
+    // Global state
+    let originalImage = null;
+    let originalWidth = 0;
+    let originalHeight = 0;
+    let aspectRatio = 1;
+    let locked = false;
+    let fileName = '';
+    let resultDataUrl = null;
+    let resultBlob = null;
+    
+    // DOM Elements
+    const canvas = document.getElementById('resizeCanvas');
+    const ctx = canvas.getContext('2d');
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const container = document.getElementById('container');
+    const widthInput = document.getElementById('widthInput');
+    const heightInput = document.getElementById('heightInput');
+    const scaleInput = document.getElementById('scalePercent');
+    const scaleValue = document.getElementById('scaleValue');
+    
+    // Initialize
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
@@ -158,6 +232,15 @@
         if (typeof I18n !== 'undefined') {
             I18n.init();
         }
+        
+        // Dropzone events
+        dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+        dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+        dropzone.addEventListener('drop', e => {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+        });
     });
     
     function showToast(msg) {
@@ -169,148 +252,144 @@
         }
     }
     
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
     function handleFile(file) {
         if (!file || !file.type.startsWith('image/')) { showToast('Please select an image file'); return; }
-        fileName = file.name.replace(/\.[^.]+$/, '');
+        const lastDot = file.name.lastIndexOf('.');
+        fileName = lastDot > 0 ? file.name.substring(0, lastDot) : file.name;
         const img = new Image();
         img.onload = () => {
             originalImage = img;
             originalWidth = img.width;
             originalHeight = img.height;
             aspectRatio = img.width / img.height;
-
+    
             widthInput.value = img.width;
             heightInput.value = img.height;
-            document.getElementById('scalePercent').value = 100;
-
-            document.getElementById('originalInfo').textContent = `${img.width} x ${img.height} | ${formatSize(file.size)} | ${file.type.split('/')[1].toUpperCase()}`;
-
+            scaleInput.value = 100;
+            scaleValue.textContent = '100%';
+    
+            document.getElementById('originalInfo').style.display = 'block';
+            document.getElementById('originalInfo').textContent = img.width + ' x ' + img.height + ' | ' + formatSize(file.size) + ' | ' + file.type.split('/')[1].toUpperCase();
+    
             dropzone.style.display = 'none';
-            document.getElementById('editorArea').style.display = 'block';
-            document.getElementById('resultArea').innerHTML = '';
+            container.classList.add('active');
+            document.getElementById('editorArea').style.display = 'flex';
+            document.getElementById('editorArea2').style.display = 'flex';
+            document.getElementById('editorArea3').style.display = 'flex';
+            document.getElementById('editorArea4').style.display = 'flex';
+            document.getElementById('resultArea').classList.remove('active');
+            document.getElementById('resultArea').style.display = 'none';
             document.getElementById('btnDownload').style.display = 'none';
             resultDataUrl = null;
             resultBlob = null;
-
+    
             lucide.createIcons();
+            renderPreview();
             showToast('Image loaded');
         };
         img.src = URL.createObjectURL(file);
     }
-
+    
     function toggleLock() {
         locked = !locked;
         const btn = document.getElementById('lockBtn');
+        const icon = btn.querySelector('i');
         btn.classList.toggle('active', locked);
         document.getElementById('lockText').textContent = locked ? 'Locked' : 'Unlocked';
-        // Re-render the lock icon
-        btn.querySelector('i').setAttribute('data-lucide', locked ? 'lock' : 'unlock');
+        icon.setAttribute('data-lucide', locked ? 'lock' : 'unlock');
         lucide.createIcons();
     }
-
+    
     function onWidthChange() {
         if (locked && originalImage) {
             const w = parseInt(widthInput.value) || 1;
             heightInput.value = Math.round(w / aspectRatio);
         }
+        updateScaleFromDimensions();
+        renderPreview();
     }
-
+    
     function onHeightChange() {
         if (locked && originalImage) {
             const h = parseInt(heightInput.value) || 1;
             widthInput.value = Math.round(h * aspectRatio);
         }
+        updateScaleFromDimensions();
+        renderPreview();
     }
-
+    
     function onScaleChange() {
         if (!originalImage) return;
-        const scale = (parseInt(document.getElementById('scalePercent').value) || 100) / 100;
+        scaleValue.textContent = scaleInput.value + '%';
+        const scale = parseInt(scaleInput.value) / 100;
         widthInput.value = Math.round(originalWidth * scale);
         heightInput.value = Math.round(originalHeight * scale);
+        renderPreview();
     }
-
+    
+    function updateScaleFromDimensions() {
+        if (!originalImage) return;
+        const w = parseInt(widthInput.value) || 1;
+        const scale = (w / originalWidth) * 100;
+        scaleInput.value = Math.round(scale);
+        scaleValue.textContent = Math.round(scale) + '%';
+    }
+    
     function applyPreset(w, h) {
         if (!originalImage) { showToast('Please upload an image first'); return; }
         widthInput.value = w;
         heightInput.value = h;
-        document.getElementById('scalePercent').value = Math.round((w / originalWidth) * 100);
+        scaleInput.value = Math.round((w / originalWidth) * 100);
+        scaleValue.textContent = Math.round((w / originalWidth) * 100) + '%';
+        renderPreview();
     }
-
-    function resizeImage() {
-        if (!originalImage) { showToast('Please upload an image first'); return; }
-
-        const w = parseInt(widthInput.value);
-        const h = parseInt(heightInput.value);
-
-        if (!w || !h || w < 1 || h < 1) { showToast('Please enter valid dimensions'); return; }
-        if (w > 10000 || h > 10000) { showToast('Maximum dimension is 10000px'); return; }
-
-        const canvas = document.createElement('canvas');
+    
+    function renderPreview() {
+        if (!originalImage) return;
+        const w = parseInt(widthInput.value) || 1;
+        const h = parseInt(heightInput.value) || 1;
         canvas.width = w;
         canvas.height = h;
-        const ctx = canvas.getContext('2d');
-
-        // Use high-quality scaling
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = 'high';
         ctx.drawImage(originalImage, 0, 0, w, h);
-
+    }
+    
+    function resizeImage() {
+        if (!originalImage) { showToast('Please upload an image first'); return; }
+    
+        const w = parseInt(widthInput.value);
+        const h = parseInt(heightInput.value);
+    
+        if (!w || !h || w < 1 || h < 1) { showToast('Please enter valid dimensions'); return; }
+        if (w > 10000 || h > 10000) { showToast('Maximum dimension is 10000px'); return; }
+    
+        const resultCanvas = document.createElement('canvas');
+        resultCanvas.width = w;
+        resultCanvas.height = h;
+        const resultCtx = resultCanvas.getContext('2d');
+        resultCtx.imageSmoothingEnabled = true;
+        resultCtx.imageSmoothingQuality = 'high';
+        resultCtx.drawImage(originalImage, 0, 0, w, h);
+    
         const format = document.getElementById('outputFormat').value;
-        const outputFormat = format === 'auto' ? (originalImage.src ? 'image/png' : 'image/png') : format;
+        const outputFormat = format === 'auto' ? 'image/png' : format;
         const ext = outputFormat.split('/')[1];
-
-        canvas.toBlob(blob => {
+    
+        resultCanvas.toBlob(blob => {
             resultBlob = blob;
             resultDataUrl = URL.createObjectURL(blob);
-
+    
             const area = document.getElementById('resultArea');
-            area.innerHTML = `
-                <div class="compare-grid">
-                    <div class="compare-card">
-                        <div class="compare-card-header">Original (${originalWidth} x ${originalHeight})</div>
-                        <div class="compare-card-body"><img src="${originalImage.src}" alt="Original"></div>
-                        <div class="compare-stats"><span>${originalWidth} x ${originalHeight}</span></div>
-                    </div>
-                    <div class="compare-card">
-                        <div class="compare-card-header">Resized (${w} x ${h})</div>
-                        <div class="compare-card-body"><img src="${resultDataUrl}" alt="Resized"></div>
-                        <div class="compare-stats"><span>${w} x ${h} | ${formatSize(blob.size)}</span></div>
-                    </div>
-                </div>
-            `;
-
+            area.classList.add('active');
+            area.style.display = 'block';
+            area.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem"><strong>Result:</strong><span style="color:var(--color-text-tertiary)">' + w + ' x ' + h + ' | ' + formatSize(blob.size) + '</span></div><img src="' + resultDataUrl + '" alt="Resized" style="max-width:100%;border-radius:0.5rem">';
+    
             document.getElementById('btnDownload').style.display = 'inline-flex';
-            showToast(`Resized to ${w} x ${h}`);
+            showToast('Resized to ' + w + ' x ' + h);
         }, outputFormat, 0.92);
     }
-
+    
     function downloadResult() {
         if (!resultDataUrl) { showToast('No image to download'); return; }
         const format = document.getElementById('outputFormat').value;
@@ -321,42 +400,29 @@
         a.click();
         showToast('Image downloaded');
     }
-
+    
     function clearAll() {
         originalImage = null;
         dropzone.style.display = '';
+        container.classList.remove('active');
         document.getElementById('editorArea').style.display = 'none';
-        document.getElementById('resultArea').innerHTML = '';
+        document.getElementById('editorArea2').style.display = 'none';
+        document.getElementById('editorArea3').style.display = 'none';
+        document.getElementById('editorArea4').style.display = 'none';
+        document.getElementById('originalInfo').style.display = 'none';
+        document.getElementById('resultArea').classList.remove('active');
+        document.getElementById('resultArea').style.display = 'none';
         document.getElementById('btnDownload').style.display = 'none';
         fileInput.value = '';
         resultDataUrl = null;
         resultBlob = null;
     }
-
+    
     function formatSize(bytes) {
         if (bytes < 1024) return bytes + ' B';
         if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
         return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
     }
-
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2500);
-    }
-    </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
-            });
-        }
-    });
     </script>
 </body>
 </html>

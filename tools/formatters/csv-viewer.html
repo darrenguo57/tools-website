@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSV Viewer - ToolBox</title>
     <meta name="description" content="View CSV files">
-    
+
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
     <link rel="stylesheet" href="../../assets/css/tools.css">
-    
+
     <style>
         /* Tool Page Custom Styles */
         .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -38,7 +38,27 @@
         .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
+        .message-box { padding: 0.75rem 1rem; border-radius: var(--radius-md); margin-bottom: 1rem; font-size: 14px; display: none; }
+        .message-box.show { display: block; }
+        .error-box { background: rgba(220, 38, 38, 0.1); border: 1px solid rgba(220, 38, 38, 0.3); color: #dc2626; }
+        .success-box { background: rgba(22, 163, 74, 0.1); border: 1px solid rgba(22, 163, 74, 0.3); color: #16a34a; }
+
+        /* CSV Table Styles */
+        .csv-table-container { overflow-x: auto; margin-top: 1rem; }
+        .csv-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .csv-table th, .csv-table td { padding: 8px 12px; border: 1px solid var(--color-border); text-align: left; }
+        .csv-table th { background: var(--color-bg-secondary); font-weight: 600; cursor: pointer; }
+        .csv-table th:hover { background: var(--color-bg-tertiary); }
+        .csv-table th.sorted { background: var(--color-primary-light); }
+        .csv-table tr:nth-child(even) { background: var(--color-bg-secondary); }
+        .csv-table tr:hover { background: var(--color-bg-tertiary); }
+        .sort-icon { margin-left: 0.5rem; color: var(--color-text-tertiary); }
+
+        .stats-bar { display: flex; gap: 1rem; padding: 0.75rem; background: var(--color-bg-secondary); border-radius: var(--radius-md); margin-top: 1rem; flex-wrap: wrap; }
+        .stats-bar__item { font-size: 14px; }
+        .stats-bar__label { color: var(--color-text-tertiary); }
+        .stats-bar__value { font-weight: 600; margin-left: 0.25rem; }
+
         @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -65,10 +85,10 @@
             </div>
         </div>
     </header>
-    
+
     <!-- Breadcrumb -->
     <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_formatters" data-i18n="cat_formatters">Formatters</a> / <span>CSV Viewer</span></div></div>
-    
+
     <!-- Main Content -->
     <main class="tool-page">
         <div class="container tool-layout">
@@ -79,38 +99,47 @@
                     <h1>CSV Viewer</h1>
                     <p>View CSV files</p>
                 </div>
-                
+
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
+                    <!-- Message Boxes -->
+                    <div class="message-box error-box" id="errorMsg"></div>
+                    <div class="message-box success-box" id="successMsg"></div>
+
                     <div class="workspace-grid">
-                        <div>
+                        <div class="full-width">
                             <div class="textarea-label">
                                 <i data-lucide="file-text"></i>
                                 <span data-i18n="input_label">Input</span>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Paste CSV data here..."></textarea>
                             </div>
                             <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
-                            </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
-                            </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
-                        </div>
                     </div>
+
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                        <button class="btn btn-primary" id="btnParse"><i data-lucide="play"></i><span data-i18n="btn_parse">Parse</span></button>
+                        <button class="btn btn-secondary" id="btnCopyTSV"><i data-lucide="copy"></i><span data-i18n="btn_copy_tsv">Copy as TSV</span></button>
+                        <button class="btn btn-secondary" id="btnDownload"><i data-lucide="download"></i><span data-i18n="btn_download">Download CSV</span></button>
+                        <button class="btn btn-secondary" id="btnPaste"><i data-lucide="clipboard"></i><span data-i18n="btn_paste">Paste</span></button>
+                        <button class="btn btn-danger" id="btnClear"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                    </div>
+
+                    <!-- Stats Bar -->
+                    <div class="stats-bar" id="statsBar" style="display:none;">
+                        <div class="stats-bar__item"><span class="stats-bar__label">Rows:</span><span class="stats-bar__value" id="statRows">0</span></div>
+                        <div class="stats-bar__item"><span class="stats-bar__label">Columns:</span><span class="stats-bar__value" id="statCols">0</span></div>
+                        <div class="stats-bar__item"><span class="stats-bar__label">Delimiter:</span><span class="stats-bar__value" id="statDelimiter">,</span></div>
+                    </div>
+
+                    <!-- CSV Table Output -->
+                    <div class="csv-table-container" id="tableContainer">
+                        <span style="color:#8b949e;">Parsed CSV data will appear here...</span>
                     </div>
                 </div>
-                
+
                 <!-- Ad Slot -->
                 <div class="ad-slot" style="margin-top:2rem">
                     <span data-i18n="ad_label">Advertisement</span>
@@ -123,7 +152,7 @@
             </aside>
         </div>
     </main>
-    
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container footer-container">
@@ -136,20 +165,20 @@
             <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
         </div>
     </footer>
-    
+
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
-    
+
     <!-- Back to Top -->
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
         <i data-lucide="chevron-up"></i>
     </button>
-    
+
     <!-- Scripts -->
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
@@ -158,254 +187,248 @@
         if (typeof I18n !== 'undefined') {
             I18n.init();
         }
-    });
-    
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        if (toast) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-    }
-    
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
-    function handleFile(file) {
-        document.getElementById('fileName').textContent = file.name;
-        document.getElementById('fileSize').textContent = '(' + (file.size / 1024).toFixed(1) + ' KB)';
-        fileInfo.style.display = 'flex';
-        dropZone.style.display = 'none';
 
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          document.getElementById('csvInput').value = e.target.result;
-        };
-        reader.readAsText(file);
-      }
-
-      document.getElementById('btnRemoveFile').addEventListener('click', function() {
-        fileInput.value = '';
-        fileInfo.style.display = 'none';
-        dropZone.style.display = '';
-        document.getElementById('csvInput').value = '';
-      });
-
-      // Detect delimiter
-      function detectDelimiter(text) {
-        const firstLine = text.split('\n')[0];
-        const counts = { ',': 0, '\t': 0, ';': 0, '|': 0 };
-        for (let i = 0; i < firstLine.length; i++) {
-          if (firstLine[i] in counts) counts[firstLine[i]]++;
-        }
-        let max = ',';
-        for (let d in counts) {
-          if (counts[d] > counts[max]) max = d;
-        }
-        return max;
-      }
-
-      // Parse CSV
-      function parseCSV(text, delimiter) {
-        const rows = [];
-        let current = '';
-        let inQuotes = false;
-        let row = [];
-
-        for (let i = 0; i < text.length; i++) {
-          const ch = text[i];
-          if (inQuotes) {
-            if (ch === '"' && text[i + 1] === '"') {
-              current += '"';
-              i++;
-            } else if (ch === '"') {
-              inQuotes = false;
-            } else {
-              current += ch;
-            }
-          } else {
-            if (ch === '"') {
-              inQuotes = true;
-            } else if (ch === delimiter) {
-              row.push(current.trim());
-              current = '';
-            } else if (ch === '\n' || ch === '\r') {
-              if (ch === '\r' && text[i + 1] === '\n') i++;
-              row.push(current.trim());
-              if (row.some(function(c) { return c !== ''; })) rows.push(row);
-              row = [];
-              current = '';
-            } else {
-              current += ch;
-            }
-          }
-        }
-        // Last field
-        row.push(current.trim());
-        if (row.some(function(c) { return c !== ''; })) rows.push(row);
-
-        return rows;
-      }
-
-      function renderTable() {
-        if (csvData.length === 0) return;
-
-        csvHeaders = csvData[0];
-        const bodyRows = csvData.slice(1);
-
-        let html = '<table class="csv-table"><thead><tr>';
-        csvHeaders.forEach(function(h, i) {
-          const sorted = sortCol === i ? ' sorted' : '';
-          const icon = sortCol === i ? (sortAsc ? ' &#9650;' : ' &#9660;') : ' &#8597;';
-          html += '<th class="' + sorted + '" data-col="' + i + '">' + escapeHtml(h) + '<span class="sort-icon">' + icon + '</span></th>';
-        });
-        html += '</tr></thead><tbody>';
-
-        bodyRows.forEach(function(row) {
-          html += '<tr>';
-          csvHeaders.forEach(function(_, i) {
-            const val = row[i] !== undefined ? row[i] : '';
-            html += '<td title="' + escapeHtml(val) + '">' + escapeHtml(val) + '</td>';
-          });
-          html += '</tr>';
-        });
-
-        html += '</tbody></table>';
-        tableContainer.innerHTML = html;
-
-        // Sort events
-        tableContainer.querySelectorAll('th').forEach(function(th) {
-          th.addEventListener('click', function() {
-            const col = parseInt(this.getAttribute('data-col'));
-            if (sortCol === col) {
-              sortAsc = !sortAsc;
-            } else {
-              sortCol = col;
-              sortAsc = true;
-            }
-            sortData();
-            renderTable();
-          });
-        });
-      }
-
-      function sortData() {
-        if (sortCol < 0) return;
-        const headers = csvData[0];
-        const body = csvData.slice(1);
-        body.sort(function(a, b) {
-          let va = a[sortCol] || '';
-          let vb = b[sortCol] || '';
-          // Try numeric sort
-          const na = parseFloat(va);
-          const nb = parseFloat(vb);
-          if (!isNaN(na) && !isNaN(nb)) {
-            return sortAsc ? na - nb : nb - na;
-          }
-          va = va.toLowerCase();
-          vb = vb.toLowerCase();
-          if (va < vb) return sortAsc ? -1 : 1;
-          if (va > vb) return sortAsc ? 1 : -1;
-          return 0;
-        });
-        csvData = [headers].concat(body);
-      }
-
-      function escapeHtml(str) {
-        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-      }
-
-      // Parse button
-      document.getElementById('btnParse').addEventListener('click', function() {
-        errorMsg.classList.remove('show');
-        let text = '';
-        if (currentMode === 'upload') {
-          text = document.getElementById('csvInput').value;
-        } else {
-          text = document.getElementById('csvInput').value;
-        }
-        if (!text.trim()) { errorMsg.textContent = 'Please upload a file or paste CSV data.'; errorMsg.classList.add('show'); return; }
-
-        csvDelimiter = detectDelimiter(text);
-        csvData = parseCSV(text, csvDelimiter);
-
-        if (csvData.length < 1) { errorMsg.textContent = 'Could not parse CSV data.'; errorMsg.classList.add('show'); return; }
-
-        sortCol = -1;
-        renderTable();
-
-        document.getElementById('statRows').textContent = csvData.length - 1;
-        document.getElementById('statCols').textContent = csvData[0].length;
-        document.getElementById('statDelimiter').textContent = csvDelimiter === '\t' ? 'Tab' : csvDelimiter;
-        csvStats.style.display = 'flex';
-      });
-
-      // Copy as TSV
-      document.getElementById('btnCopyTSV').addEventListener('click', function() {
-        if (csvData.length === 0) { errorMsg.textContent = 'No data to copy. Parse CSV first.'; errorMsg.classList.add('show'); return; }
-        const tsv = csvData.map(function(row) { return row.join('\t'); }).join('\n');
-        navigator.clipboard.writeText(tsv).then(function() {
-          errorMsg.classList.remove('show');
-        }).catch(function() { errorMsg.textContent = 'Failed to copy.'; errorMsg.classList.add('show'); });
-      });
-
-      // Download CSV
-      document.getElementById('btnDownload').addEventListener('click', function() {
-        if (csvData.length === 0) { errorMsg.textContent = 'No data to download. Parse CSV first.'; errorMsg.classList.add('show'); return; }
-        const csv = csvData.map(function(row) {
-          return row.map(function(cell) {
-            if (cell.includes(',') || cell.includes('"') || cell.includes('\n')) {
-              return '"' + cell.replace(/"/g, '""') + '"';
-            }
-            return cell;
-          }).join(',');
-        }).join('\n');
-
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'data.csv';
-        a.click();
-        URL.revokeObjectURL(url);
-      });
-    })();
-  </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
+        // Initialize character counter
         const inputArea = document.getElementById('inputArea');
         const inputCount = document.getElementById('inputCount');
+
         if (inputArea && inputCount) {
             inputArea.addEventListener('input', () => {
                 inputCount.textContent = inputArea.value.length;
             });
         }
+
+        // Variables
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+        const statsBar = document.getElementById('statsBar');
+        const tableContainer = document.getElementById('tableContainer');
+        let csvData = [];
+        let sortCol = -1;
+        let sortAsc = true;
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2500);
+            }
+        }
+
+        function showError(msg) {
+            errorMsg.textContent = msg;
+            errorMsg.classList.add('show');
+            successMsg.classList.remove('show');
+        }
+
+        function showSuccess(msg) {
+            successMsg.textContent = msg;
+            successMsg.classList.add('show');
+            errorMsg.classList.remove('show');
+        }
+
+        function clearMessages() {
+            errorMsg.classList.remove('show');
+            successMsg.classList.remove('show');
+        }
+
+        // Detect delimiter
+        function detectDelimiter(text) {
+            const firstLine = text.split('\n')[0];
+            const counts = { ',': 0, '\t': 0, ';': 0, '|': 0 };
+            for (let i = 0; i < firstLine.length; i++) {
+                if (firstLine[i] in counts) counts[firstLine[i]]++;
+            }
+            let max = ',';
+            for (let d in counts) {
+                if (counts[d] > counts[max]) max = d;
+            }
+            return max;
+        }
+
+        // Parse CSV
+        function parseCSV(text, delimiter) {
+            const rows = [];
+            let current = '';
+            let inQuotes = false;
+            let row = [];
+
+            for (let i = 0; i < text.length; i++) {
+                const ch = text[i];
+                if (inQuotes) {
+                    if (ch === '"' && text[i + 1] === '"') {
+                        current += '"';
+                        i++;
+                    } else if (ch === '"') {
+                        inQuotes = false;
+                    } else {
+                        current += ch;
+                    }
+                } else {
+                    if (ch === '"') {
+                        inQuotes = true;
+                    } else if (ch === delimiter) {
+                        row.push(current.trim());
+                        current = '';
+                    } else if (ch === '\n' || ch === '\r') {
+                        if (ch === '\r' && text[i + 1] === '\n') i++;
+                        row.push(current.trim());
+                        if (row.some(function(c) { return c !== ''; })) rows.push(row);
+                        row = [];
+                        current = '';
+                    } else {
+                        current += ch;
+                    }
+                }
+            }
+            // Last field
+            row.push(current.trim());
+            if (row.some(function(c) { return c !== ''; })) rows.push(row);
+
+            return rows;
+        }
+
+        function renderTable() {
+            if (csvData.length === 0) return;
+
+            const csvHeaders = csvData[0];
+            const bodyRows = csvData.slice(1);
+
+            let html = '<table class="csv-table"><thead><tr>';
+            csvHeaders.forEach(function(h, i) {
+                const sorted = sortCol === i ? ' sorted' : '';
+                const icon = sortCol === i ? (sortAsc ? ' &#9650;' : ' &#9660;') : ' &#8597;';
+                html += '<th class="' + sorted + '" data-col="' + i + '">' + escapeHtml(h) + '<span class="sort-icon">' + icon + '</span></th>';
+            });
+            html += '</tr></thead><tbody>';
+
+            bodyRows.forEach(function(row) {
+                html += '<tr>';
+                csvHeaders.forEach(function(_, i) {
+                    const val = row[i] !== undefined ? row[i] : '';
+                    html += '<td title="' + escapeHtml(val) + '">' + escapeHtml(val) + '</td>';
+                });
+                html += '</tr>';
+            });
+
+            html += '</tbody></table>';
+            tableContainer.innerHTML = html;
+
+            // Sort events
+            tableContainer.querySelectorAll('th').forEach(function(th) {
+                th.addEventListener('click', function() {
+                    const col = parseInt(this.getAttribute('data-col'));
+                    if (sortCol === col) {
+                        sortAsc = !sortAsc;
+                    } else {
+                        sortCol = col;
+                        sortAsc = true;
+                    }
+                    sortData();
+                    renderTable();
+                });
+            });
+        }
+
+        function sortData() {
+            if (sortCol < 0) return;
+            const headers = csvData[0];
+            const body = csvData.slice(1);
+            body.sort(function(a, b) {
+                let va = a[sortCol] || '';
+                let vb = b[sortCol] || '';
+                // Try numeric sort
+                const na = parseFloat(va);
+                const nb = parseFloat(vb);
+                if (!isNaN(na) && !isNaN(nb)) {
+                    return sortAsc ? na - nb : nb - na;
+                }
+                va = va.toLowerCase();
+                vb = vb.toLowerCase();
+                if (va < vb) return sortAsc ? -1 : 1;
+                if (va > vb) return sortAsc ? 1 : -1;
+                return 0;
+            });
+            csvData = [headers].concat(body);
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // Parse button
+        document.getElementById('btnParse').addEventListener('click', function() {
+            clearMessages();
+            const text = inputArea.value;
+            if (!text.trim()) { showError('Please paste CSV data.'); return; }
+
+            const csvDelimiter = detectDelimiter(text);
+            csvData = parseCSV(text, csvDelimiter);
+
+            if (csvData.length < 1) { showError('Could not parse CSV data.'); return; }
+
+            sortCol = -1;
+            renderTable();
+
+            document.getElementById('statRows').textContent = csvData.length - 1;
+            document.getElementById('statCols').textContent = csvData[0].length;
+            document.getElementById('statDelimiter').textContent = csvDelimiter === '\t' ? 'Tab' : csvDelimiter;
+            statsBar.style.display = 'flex';
+            showSuccess('CSV parsed successfully! ' + (csvData.length - 1) + ' rows, ' + csvData[0].length + ' columns.');
+        });
+
+        // Copy as TSV
+        document.getElementById('btnCopyTSV').addEventListener('click', function() {
+            if (csvData.length === 0) { showError('No data to copy. Parse CSV first.'); return; }
+            const tsv = csvData.map(function(row) { return row.join('\t'); }).join('\n');
+            navigator.clipboard.writeText(tsv).then(function() {
+                showSuccess('Copied as TSV!');
+            }).catch(function() { showError('Failed to copy.'); });
+        });
+
+        // Download CSV
+        document.getElementById('btnDownload').addEventListener('click', function() {
+            if (csvData.length === 0) { showError('No data to download. Parse CSV first.'); return; }
+            const csv = csvData.map(function(row) {
+                return row.map(function(cell) {
+                    if (cell.includes(',') || cell.includes('"') || cell.includes('\n')) {
+                        return '"' + cell.replace(/"/g, '""') + '"';
+                    }
+                    return cell;
+                }).join(',');
+            }).join('\n');
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'data.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+            showSuccess('CSV downloaded!');
+        });
+
+        // Paste button
+        document.getElementById('btnPaste').addEventListener('click', function() {
+            navigator.clipboard.readText().then(function(text) {
+                inputArea.value = text;
+                inputCount.textContent = text.length;
+            }).catch(function() {
+                showError('Failed to read clipboard.');
+            });
+        });
+
+        // Clear button
+        document.getElementById('btnClear').addEventListener('click', function() {
+            inputArea.value = '';
+            tableContainer.innerHTML = '<span style="color:#8b949e;">Parsed CSV data will appear here...</span>';
+            inputCount.textContent = '0';
+            csvData = [];
+            sortCol = -1;
+            statsBar.style.display = 'none';
+            clearMessages();
+        });
     });
     </script>
 </body>

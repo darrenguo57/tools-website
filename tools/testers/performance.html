@@ -39,7 +39,135 @@
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
         
-        @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
+        /* Performance Test Tool Specific Styles */
+        .perf-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        @media (max-width: 900px) {
+            .perf-layout { grid-template-columns: 1fr; }
+        }
+        .perf-input-section textarea {
+            min-height: 300px;
+        }
+        .perf-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        .perf-results {
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+        }
+        .perf-results.hidden {
+            display: none;
+        }
+        .perf-score-section {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .perf-score-ring {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1rem;
+        }
+        .perf-score-ring svg {
+            transform: rotate(-90deg);
+        }
+        .perf-score-ring circle {
+            fill: none;
+            stroke-width: 8;
+        }
+        .perf-score-ring .bg {
+            stroke: var(--color-border);
+        }
+        .perf-score-ring .fg {
+            stroke: #10B981;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        .perf-score-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .perf-score-ring-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+        }
+        .perf-score-label {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+        .perf-details {
+            margin-bottom: 1.5rem;
+        }
+        .perf-details h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--color-text);
+        }
+        .perf-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 13px;
+        }
+        .perf-detail-row:last-child {
+            border-bottom: none;
+        }
+        .perf-detail-label {
+            color: var(--color-text-secondary);
+        }
+        .perf-detail-value {
+            font-weight: 500;
+            color: var(--color-text);
+        }
+        .perf-suggestions h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--color-text);
+        }
+        .perf-suggestion {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--color-bg);
+            border-radius: var(--radius-md);
+            margin-bottom: 0.5rem;
+        }
+        .sug-icon {
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+        }
+        .sug-icon.good { color: #10B981; }
+        .sug-icon.warn { color: #F59E0B; }
+        .sug-icon.bad { color: #EF4444; }
+        .sug-text {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .sug-text strong {
+            font-weight: 600;
+        }
+        .sug-text code {
+            background: var(--color-bg-secondary);
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
@@ -77,37 +205,62 @@
                 <div class="tool-header">
                     <div class="tool-icon"><i data-lucide="zap"></i></div>
                     <h1>Performance Test</h1>
-                    <p>Test performance</p>
+                    <p>Analyze HTML performance</p>
                 </div>
                 
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
-                    <div class="workspace-grid">
-                        <div>
+                    <div class="perf-layout">
+                        <!-- Input Section -->
+                        <div class="perf-input-section">
                             <div class="textarea-label">
-                                <i data-lucide="file-text"></i>
-                                <span data-i18n="input_label">Input</span>
+                                <i data-lucide="code"></i>
+                                <span>HTML Code</span>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                                <textarea id="htmlInput" placeholder="Paste your HTML code here..."></textarea>
                             </div>
-                            <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                            
+                            <div class="perf-actions">
+                                <button id="btnAnalyze" class="btn btn-primary">
+                                    <i data-lucide="play"></i> Analyze
+                                </button>
+                                <button id="btnSample" class="btn btn-secondary">
+                                    <i data-lucide="file-text"></i> Load Sample
+                                </button>
+                                <button id="btnPaste" class="btn btn-secondary">
+                                    <i data-lucide="clipboard"></i> Paste
+                                </button>
+                                <button id="btnClear" class="btn btn-danger">
+                                    <i data-lucide="trash-2"></i> Clear
+                                </button>
+                            </div>
                         </div>
-                        <div>
-                            <div class="textarea-label">
-                                <i data-lucide="file-output"></i>
-                                <span data-i18n="output_label">Output</span>
+                        
+                        <!-- Results Section -->
+                        <div class="perf-results hidden" id="resultsSection">
+                            <div class="perf-score-section">
+                                <div class="perf-score-ring-wrapper">
+                                    <svg class="perf-score-ring" viewBox="0 0 120 120">
+                                        <circle class="bg" cx="60" cy="60" r="52"></circle>
+                                        <circle class="fg" id="scoreRing" cx="60" cy="60" r="52" 
+                                            stroke-dasharray="326.73" stroke-dashoffset="326.73"></circle>
+                                    </svg>
+                                    <span id="scoreValue" class="perf-score-value">0</span>
+                                </div>
+                                <div id="scoreLabel" class="perf-score-label">Score</div>
                             </div>
-                            <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                            
+                            <div class="perf-details">
+                                <h4>Details</h4>
+                                <div id="detailsList"></div>
                             </div>
-                            <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
+                            
+                            <div class="perf-suggestions">
+                                <h4>Suggestions</h4>
+                                <div id="suggestionsList"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
                 </div>
                 
@@ -158,6 +311,9 @@
         if (typeof I18n !== 'undefined') {
             I18n.init();
         }
+        
+        // Initialize performance tester
+        initPerformanceTester();
     });
     
     function showToast(msg) {
@@ -169,259 +325,224 @@
         }
     }
     
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
+    var sampleHtml = '<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <meta name="description" content="Sample page for testing">\n    <title>Sample Page</title>\n    <link rel="stylesheet" href="styles.css">\n    <link rel="stylesheet" href="main.css">\n</head>\n<body>\n    <header>\n        <img src="logo.png" alt="Logo" width="100" height="50">\n        <nav>\n            <a href="#">Home</a>\n            <a href="#">About</a>\n        </nav>\n    </header>\n    <main>\n        <h1>Welcome</h1>\n        <p>This is a sample page.</p>\n        <img src="hero.jpg" alt="Hero image" width="800" height="400">\n    </main>\n    <script src="app.js"><\/script>\n</body>\n</html>';
     
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
-    function formatBytes(bytes) {
-        if (bytes < 1024) return bytes + ' B';
-        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-        return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
-      }
-
-      function analyze() {
-        var html = document.getElementById('htmlInput').value;
-        if (!html.trim()) { alert('Please enter HTML code to analyze.'); return; }
-
-        var suggestions = [];
-        var score = 100;
-        var details = [];
-
-        // HTML size
-        var htmlSize = new Blob([html]).size;
-        details.push({ label: 'HTML Document Size', value: formatBytes(htmlSize) });
-        if (htmlSize > 100000) {
-          score -= 15;
-          suggestions.push({ type: 'bad', text: '<strong>Large HTML document</strong> (' + formatBytes(htmlSize) + '). Consider splitting into multiple pages or reducing inline content.' });
-        } else if (htmlSize > 50000) {
-          score -= 5;
-          suggestions.push({ type: 'warn', text: '<strong>HTML document is somewhat large</strong> (' + formatBytes(htmlSize) + '). Consider optimizing content.' });
-        } else {
-          suggestions.push({ type: 'good', text: '<strong>HTML document size is good</strong> (' + formatBytes(htmlSize) + ').' });
+    function initPerformanceTester() {
+        function formatBytes(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
         }
 
-        // DOM elements
-        var parser = new DOMParser();
-        var doc = parser.parseFromString(html, 'text/html');
-        var allElements = doc.querySelectorAll('*');
-        var elementCount = allElements.length;
-        details.push({ label: 'DOM Elements', value: elementCount });
-        if (elementCount > 1500) {
-          score -= 15;
-          suggestions.push({ type: 'bad', text: '<strong>Too many DOM elements</strong> (' + elementCount + '). This can slow down rendering. Consider reducing nested elements.' });
-        } else if (elementCount > 800) {
-          score -= 5;
-          suggestions.push({ type: 'warn', text: '<strong>Relatively high DOM element count</strong> (' + elementCount + '). Consider simplifying the structure.' });
-        } else {
-          suggestions.push({ type: 'good', text: '<strong>DOM element count is reasonable</strong> (' + elementCount + ').' });
-        }
+        function analyze() {
+            var html = document.getElementById('htmlInput').value;
+            if (!html.trim()) {
+                showToast('Please enter HTML code to analyze');
+                return;
+            }
 
-        // Images
-        var images = doc.querySelectorAll('img');
-        var imgCount = images.length;
-        details.push({ label: 'Images', value: imgCount });
-        document.getElementById('statImages').textContent = imgCount;
-        var missingAlt = 0;
-        var missingDimensions = 0;
-        images.forEach(function(img) {
-          if (!img.getAttribute('alt')) missingAlt++;
-          if (!img.getAttribute('width') && !img.getAttribute('height')) missingDimensions++;
-        });
-        if (missingAlt > 0) {
-          score -= 5 * Math.min(missingAlt, 3);
-          suggestions.push({ type: 'bad', text: '<strong>' + missingAlt + ' image(s) missing alt attribute.</strong> Add descriptive alt text for accessibility and SEO.' });
-        }
-        if (missingDimensions > 0) {
-          score -= 5;
-          suggestions.push({ type: 'warn', text: '<strong>' + missingDimensions + ' image(s) missing width/height.</strong> Specify dimensions to prevent layout shift (CLS).' });
-        }
-        if (imgCount > 0 && missingAlt === 0 && missingDimensions === 0) {
-          suggestions.push({ type: 'good', text: '<strong>All images have alt attributes and dimensions.</strong>' });
-        }
+            var suggestions = [];
+            var score = 100;
+            var details = [];
 
-        // CSS references
-        var cssLinks = doc.querySelectorAll('link[rel="stylesheet"]');
-        var inlineStyles = doc.querySelectorAll('[style]');
-        var styleTags = doc.querySelectorAll('style');
-        var cssCount = cssLinks.length;
-        details.push({ label: 'External CSS Files', value: cssCount });
-        details.push({ label: 'Inline Styles', value: inlineStyles.length });
-        details.push({ label: 'Style Tags', value: styleTags.length });
-        document.getElementById('statCss').textContent = cssCount;
-        if (cssCount > 5) {
-          score -= 10;
-          suggestions.push({ type: 'bad', text: '<strong>Too many external CSS files</strong> (' + cssCount + '). Consider combining and minifying CSS files.' });
-        } else if (cssCount > 2) {
-          score -= 3;
-          suggestions.push({ type: 'warn', text: '<strong>Multiple CSS files</strong> (' + cssCount + '). Consider combining to reduce HTTP requests.' });
-        }
-        if (inlineStyles.length > 5) {
-          score -= 5;
-          suggestions.push({ type: 'warn', text: '<strong>' + inlineStyles.length + ' inline styles found.</strong> Move styles to external CSS for better caching and maintainability.' });
-        }
+            // HTML size
+            var htmlSize = new Blob([html]).size;
+            details.push({ label: 'HTML Document Size', value: formatBytes(htmlSize) });
+            if (htmlSize > 100000) {
+                score -= 15;
+                suggestions.push({ type: 'bad', text: '<strong>Large HTML document</strong> (' + formatBytes(htmlSize) + '). Consider splitting into multiple pages or reducing inline content.' });
+            } else if (htmlSize > 50000) {
+                score -= 5;
+                suggestions.push({ type: 'warn', text: '<strong>HTML document is somewhat large</strong> (' + formatBytes(htmlSize) + '). Consider optimizing content.' });
+            } else {
+                suggestions.push({ type: 'good', text: '<strong>HTML document size is good</strong> (' + formatBytes(htmlSize) + ').' });
+            }
 
-        // JS references
-        var jsScripts = doc.querySelectorAll('script[src]');
-        var inlineScripts = doc.querySelectorAll('script:not([src])');
-        var jsCount = jsScripts.length;
-        details.push({ label: 'External JS Files', value: jsCount });
-        details.push({ label: 'Inline Scripts', value: inlineScripts.length });
-        document.getElementById('statJs').textContent = jsCount;
-        if (jsCount > 5) {
-          score -= 10;
-          suggestions.push({ type: 'bad', text: '<strong>Too many external JS files</strong> (' + jsCount + '). Consider bundling and minifying JavaScript.' });
-        } else if (jsCount > 2) {
-          score -= 3;
-          suggestions.push({ type: 'warn', text: '<strong>Multiple JS files</strong> (' + jsCount + '). Consider combining to reduce requests.' });
-        }
-        if (inlineScripts.length > 2) {
-          score -= 5;
-          suggestions.push({ type: 'warn', text: '<strong>' + inlineScripts.length + ' inline script(s) found.</strong> Move to external files for better caching.' });
-        }
+            // DOM elements
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(html, 'text/html');
+            var allElements = doc.querySelectorAll('*');
+            var elementCount = allElements.length;
+            details.push({ label: 'DOM Elements', value: elementCount });
+            if (elementCount > 1500) {
+                score -= 15;
+                suggestions.push({ type: 'bad', text: '<strong>Too many DOM elements</strong> (' + elementCount + '). This can slow down rendering. Consider reducing nested elements.' });
+            } else if (elementCount > 800) {
+                score -= 5;
+                suggestions.push({ type: 'warn', text: '<strong>Relatively high DOM element count</strong> (' + elementCount + '). Consider simplifying the structure.' });
+            } else {
+                suggestions.push({ type: 'good', text: '<strong>DOM element count is reasonable</strong> (' + elementCount + ').' });
+            }
 
-        // Render-blocking resources
-        var renderBlocking = 0;
-        cssLinks.forEach(function(link) {
-          if (!link.getAttribute('media') || link.getAttribute('media') === 'all') renderBlocking++;
-        });
-        jsScripts.forEach(function(script) {
-          if (!script.getAttribute('async') && !script.getAttribute('defer')) renderBlocking++;
-        });
-        details.push({ label: 'Render-Blocking Resources', value: renderBlocking });
-        if (renderBlocking > 4) {
-          score -= 10;
-          suggestions.push({ type: 'bad', text: '<strong>' + renderBlocking + ' render-blocking resources.</strong> Use async/defer for JS and preload critical CSS.' });
-        } else if (renderBlocking > 2) {
-          score -= 5;
-          suggestions.push({ type: 'warn', text: '<strong>' + renderBlocking + ' render-blocking resources.</strong> Consider async/defer for scripts.' });
-        }
-
-        // Meta tags
-        var hasViewport = !!doc.querySelector('meta[name="viewport"]');
-        var hasDescription = !!doc.querySelector('meta[name="description"]');
-        var hasCharset = !!doc.querySelector('meta[charset]');
-        details.push({ label: 'Viewport Meta', value: hasViewport ? 'Yes' : 'Missing' });
-        details.push({ label: 'Description Meta', value: hasDescription ? 'Yes' : 'Missing' });
-        details.push({ label: 'Charset Meta', value: hasCharset ? 'Yes' : 'Missing' });
-        if (!hasViewport) {
-          score -= 10;
-          suggestions.push({ type: 'bad', text: '<strong>Missing viewport meta tag.</strong> Add <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code> for mobile responsiveness.' });
-        }
-        if (!hasDescription) {
-          score -= 5;
-          suggestions.push({ type: 'warn', text: '<strong>Missing meta description.</strong> Add a meta description for better SEO.' });
-        }
-
-        // Tables for layout
-        var tables = doc.querySelectorAll('table');
-        if (tables.length > 0) {
-          suggestions.push({ type: 'warn', text: '<strong>' + tables.length + ' table(s) found.</strong> Ensure tables are used for data, not layout. Use CSS Grid or Flexbox instead.' });
-        }
-
-        // Ensure score is in range
-        score = Math.max(0, Math.min(100, score));
-
-        // Update UI
-        document.getElementById('statHtmlSize').textContent = formatBytes(htmlSize);
-        document.getElementById('resultsSection').style.display = 'block';
-
-        // Score ring
-        var circumference = 2 * Math.PI * 52;
-        var offset = circumference - (score / 100) * circumference;
-        var ring = document.getElementById('scoreRing');
-        var color;
-        if (score >= 80) color = '#10B981';
-        else if (score >= 60) color = '#F59E0B';
-        else if (score >= 40) color = '#F97316';
-        else color = '#EF4444';
-        ring.style.stroke = color;
-        ring.style.strokeDashoffset = offset;
-        document.getElementById('scoreValue').textContent = score;
-        document.getElementById('scoreValue').style.color = color;
-
-        var label;
-        if (score >= 90) label = 'Excellent';
-        else if (score >= 80) label = 'Good';
-        else if (score >= 60) label = 'Fair';
-        else if (score >= 40) label = 'Needs Improvement';
-        else label = 'Poor';
-        document.getElementById('scoreLabel').textContent = label;
-
-        // Details
-        var detailsHtml = '';
-        details.forEach(function(d) {
-          detailsHtml += '<div class="perf-detail-row"><span class="perf-detail-label">' + d.label + '</span><span class="perf-detail-value">' + d.value + '</span></div>';
-        });
-        document.getElementById('detailsList').innerHTML = detailsHtml;
-
-        // Suggestions
-        var sugHtml = '';
-        suggestions.forEach(function(s) {
-          var iconSvg;
-          if (s.type === 'good') iconSvg = '<svg class="sug-icon good" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
-          else if (s.type === 'warn') iconSvg = '<svg class="sug-icon warn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
-          else iconSvg = '<svg class="sug-icon bad" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
-          sugHtml += '<div class="perf-suggestion">' + iconSvg + '<div class="sug-text">' + s.text + '</div></div>';
-        });
-        document.getElementById('suggestionsList').innerHTML = sugHtml;
-      }
-
-      document.getElementById('btnAnalyze').addEventListener('click', analyze);
-
-      document.getElementById('btnSample').addEventListener('click', function() {
-        document.getElementById('htmlInput').value = sampleHtml;
-      });
-
-      document.getElementById('btnPaste').addEventListener('click', function() {
-        navigator.clipboard.readText().then(function(text) {
-          document.getElementById('htmlInput').value = text;
-        }).catch(function() {
-          // Fallback
-          document.getElementById('htmlInput').focus();
-          document.execCommand('paste');
-        });
-      });
-
-      document.getElementById('btnClear').addEventListener('click', function() {
-        document.getElementById('htmlInput').value = '';
-        document.getElementById('resultsSection').style.display = 'none';
-      });
-    })();
-  </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
-        const inputArea = document.getElementById('inputArea');
-        const inputCount = document.getElementById('inputCount');
-        if (inputArea && inputCount) {
-            inputArea.addEventListener('input', () => {
-                inputCount.textContent = inputArea.value.length;
+            // Images
+            var images = doc.querySelectorAll('img');
+            var imgCount = images.length;
+            details.push({ label: 'Images', value: imgCount });
+            var missingAlt = 0;
+            var missingDimensions = 0;
+            images.forEach(function(img) {
+                if (!img.getAttribute('alt')) missingAlt++;
+                if (!img.getAttribute('width') && !img.getAttribute('height')) missingDimensions++;
             });
+            if (missingAlt > 0) {
+                score -= 5 * Math.min(missingAlt, 3);
+                suggestions.push({ type: 'bad', text: '<strong>' + missingAlt + ' image(s) missing alt attribute.</strong> Add descriptive alt text for accessibility and SEO.' });
+            }
+            if (missingDimensions > 0) {
+                score -= 5;
+                suggestions.push({ type: 'warn', text: '<strong>' + missingDimensions + ' image(s) missing width/height.</strong> Specify dimensions to prevent layout shift (CLS).' });
+            }
+            if (imgCount > 0 && missingAlt === 0 && missingDimensions === 0) {
+                suggestions.push({ type: 'good', text: '<strong>All images have alt attributes and dimensions.</strong>' });
+            }
+
+            // CSS references
+            var cssLinks = doc.querySelectorAll('link[rel="stylesheet"]');
+            var inlineStyles = doc.querySelectorAll('[style]');
+            var styleTags = doc.querySelectorAll('style');
+            var cssCount = cssLinks.length;
+            details.push({ label: 'External CSS Files', value: cssCount });
+            details.push({ label: 'Inline Styles', value: inlineStyles.length });
+            details.push({ label: 'Style Tags', value: styleTags.length });
+            if (cssCount > 5) {
+                score -= 10;
+                suggestions.push({ type: 'bad', text: '<strong>Too many external CSS files</strong> (' + cssCount + '). Consider combining and minifying CSS files.' });
+            } else if (cssCount > 2) {
+                score -= 3;
+                suggestions.push({ type: 'warn', text: '<strong>Multiple CSS files</strong> (' + cssCount + '). Consider combining to reduce HTTP requests.' });
+            }
+            if (inlineStyles.length > 5) {
+                score -= 5;
+                suggestions.push({ type: 'warn', text: '<strong>' + inlineStyles.length + ' inline styles found.</strong> Move styles to external CSS for better caching and maintainability.' });
+            }
+
+            // JS references
+            var jsScripts = doc.querySelectorAll('script[src]');
+            var inlineScripts = doc.querySelectorAll('script:not([src])');
+            var jsCount = jsScripts.length;
+            details.push({ label: 'External JS Files', value: jsCount });
+            details.push({ label: 'Inline Scripts', value: inlineScripts.length });
+            if (jsCount > 5) {
+                score -= 10;
+                suggestions.push({ type: 'bad', text: '<strong>Too many external JS files</strong> (' + jsCount + '). Consider bundling and minifying JavaScript.' });
+            } else if (jsCount > 2) {
+                score -= 3;
+                suggestions.push({ type: 'warn', text: '<strong>Multiple JS files</strong> (' + jsCount + '). Consider combining to reduce requests.' });
+            }
+            if (inlineScripts.length > 2) {
+                score -= 5;
+                suggestions.push({ type: 'warn', text: '<strong>' + inlineScripts.length + ' inline script(s) found.</strong> Move to external files for better caching.' });
+            }
+
+            // Render-blocking resources
+            var renderBlocking = 0;
+            cssLinks.forEach(function(link) {
+                if (!link.getAttribute('media') || link.getAttribute('media') === 'all') renderBlocking++;
+            });
+            jsScripts.forEach(function(script) {
+                if (!script.getAttribute('async') && !script.getAttribute('defer')) renderBlocking++;
+            });
+            details.push({ label: 'Render-Blocking Resources', value: renderBlocking });
+            if (renderBlocking > 4) {
+                score -= 10;
+                suggestions.push({ type: 'bad', text: '<strong>' + renderBlocking + ' render-blocking resources.</strong> Use async/defer for JS and preload critical CSS.' });
+            } else if (renderBlocking > 2) {
+                score -= 5;
+                suggestions.push({ type: 'warn', text: '<strong>' + renderBlocking + ' render-blocking resources.</strong> Consider async/defer for scripts.' });
+            }
+
+            // Meta tags
+            var hasViewport = !!doc.querySelector('meta[name="viewport"]');
+            var hasDescription = !!doc.querySelector('meta[name="description"]');
+            var hasCharset = !!doc.querySelector('meta[charset]');
+            details.push({ label: 'Viewport Meta', value: hasViewport ? 'Yes' : 'Missing' });
+            details.push({ label: 'Description Meta', value: hasDescription ? 'Yes' : 'Missing' });
+            details.push({ label: 'Charset Meta', value: hasCharset ? 'Yes' : 'Missing' });
+            if (!hasViewport) {
+                score -= 10;
+                suggestions.push({ type: 'bad', text: '<strong>Missing viewport meta tag.</strong> Add <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code> for mobile responsiveness.' });
+            }
+            if (!hasDescription) {
+                score -= 5;
+                suggestions.push({ type: 'warn', text: '<strong>Missing meta description.</strong> Add a meta description for better SEO.' });
+            }
+
+            // Tables for layout
+            var tables = doc.querySelectorAll('table');
+            if (tables.length > 0) {
+                suggestions.push({ type: 'warn', text: '<strong>' + tables.length + ' table(s) found.</strong> Ensure tables are used for data, not layout. Use CSS Grid or Flexbox instead.' });
+            }
+
+            // Ensure score is in range
+            score = Math.max(0, Math.min(100, score));
+
+            // Update UI
+            document.getElementById('resultsSection').style.display = 'block';
+
+            // Score ring
+            var circumference = 2 * Math.PI * 52;
+            var offset = circumference - (score / 100) * circumference;
+            var ring = document.getElementById('scoreRing');
+            var color;
+            if (score >= 80) color = '#10B981';
+            else if (score >= 60) color = '#F59E0B';
+            else if (score >= 40) color = '#F97316';
+            else color = '#EF4444';
+            ring.style.stroke = color;
+            ring.style.strokeDashoffset = offset;
+            document.getElementById('scoreValue').textContent = score;
+            document.getElementById('scoreValue').style.color = color;
+
+            var label;
+            if (score >= 90) label = 'Excellent';
+            else if (score >= 80) label = 'Good';
+            else if (score >= 60) label = 'Fair';
+            else if (score >= 40) label = 'Needs Improvement';
+            else label = 'Poor';
+            document.getElementById('scoreLabel').textContent = label;
+
+            // Details
+            var detailsHtml = '';
+            details.forEach(function(d) {
+                detailsHtml += '<div class="perf-detail-row"><span class="perf-detail-label">' + d.label + '</span><span class="perf-detail-value">' + d.value + '</span></div>';
+            });
+            document.getElementById('detailsList').innerHTML = detailsHtml;
+
+            // Suggestions
+            var sugHtml = '';
+            suggestions.forEach(function(s) {
+                var iconSvg;
+                if (s.type === 'good') iconSvg = '<svg class="sug-icon good" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
+                else if (s.type === 'warn') iconSvg = '<svg class="sug-icon warn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+                else iconSvg = '<svg class="sug-icon bad" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
+                sugHtml += '<div class="perf-suggestion">' + iconSvg + '<div class="sug-text">' + s.text + '</div></div>';
+            });
+            document.getElementById('suggestionsList').innerHTML = sugHtml;
+            
+            showToast('Analysis complete! Score: ' + score);
         }
-    });
+
+        document.getElementById('btnAnalyze').addEventListener('click', analyze);
+
+        document.getElementById('btnSample').addEventListener('click', function() {
+            document.getElementById('htmlInput').value = sampleHtml;
+        });
+
+        document.getElementById('btnPaste').addEventListener('click', function() {
+            navigator.clipboard.readText().then(function(text) {
+                document.getElementById('htmlInput').value = text;
+                showToast('Content pasted from clipboard');
+            }).catch(function() {
+                showToast('Unable to read clipboard');
+            });
+        });
+
+        document.getElementById('btnClear').addEventListener('click', function() {
+            document.getElementById('htmlInput').value = '';
+            document.getElementById('resultsSection').style.display = 'none';
+            showToast('Cleared');
+        });
+    }
     </script>
 </body>
 </html>

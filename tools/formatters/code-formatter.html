@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Formatter - ToolBox</title>
     <meta name="description" content="Format code">
-    
+
     <!-- Favicon -->
     <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dark.css">
     <link rel="stylesheet" href="../../assets/css/tools.css">
-    
+
     <style>
         /* Tool Page Custom Styles */
         .workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -38,7 +38,16 @@
         .textarea-label { font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: var(--font-size-sm); color: var(--color-text); }
         .btn-group { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem 0; }
         .char-count { font-size: 12px; color: var(--color-text-tertiary); text-align: right; margin-top: 0.25rem; }
-        
+        .message-box { padding: 0.75rem 1rem; border-radius: var(--radius-md); margin-bottom: 1rem; font-size: 14px; display: none; }
+        .message-box.show { display: block; }
+        .error-box { background: rgba(220, 38, 38, 0.1); border: 1px solid rgba(220, 38, 38, 0.3); color: #dc2626; }
+        .success-box { background: rgba(22, 163, 74, 0.1); border: 1px solid rgba(22, 163, 74, 0.3); color: #16a34a; }
+        .tool-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem; }
+        .tool-tabs__item { padding: 0.5rem 1rem; border: none; background: transparent; color: var(--color-text-tertiary); cursor: pointer; border-radius: var(--radius-md); transition: all 0.2s; }
+        .tool-tabs__item:hover { background: var(--color-bg-secondary); color: var(--color-text); }
+        .tool-tabs__item--active { background: var(--color-primary); color: white; }
+        .lang-label { font-size: 14px; }
+
         @media (max-width: 768px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -65,10 +74,10 @@
             </div>
         </div>
     </header>
-    
+
     <!-- Breadcrumb -->
     <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_formatters" data-i18n="cat_formatters">Formatters</a> / <span>Code Formatter</span></div></div>
-    
+
     <!-- Main Content -->
     <main class="tool-page">
         <div class="container tool-layout">
@@ -79,17 +88,29 @@
                     <h1>Code Formatter</h1>
                     <p>Format code</p>
                 </div>
-                
+
                 <!-- Tool Workspace -->
                 <div class="tool-workspace">
+                    <!-- Message Boxes -->
+                    <div class="message-box error-box" id="errorMsg"></div>
+                    <div class="message-box success-box" id="successMsg"></div>
+
+                    <!-- Language Tabs -->
+                    <div class="tool-tabs">
+                        <button class="tool-tabs__item tool-tabs__item--active" data-lang="javascript">JavaScript</button>
+                        <button class="tool-tabs__item" data-lang="html">HTML</button>
+                        <button class="tool-tabs__item" data-lang="css">CSS</button>
+                    </div>
+
                     <div class="workspace-grid">
                         <div>
                             <div class="textarea-label">
                                 <i data-lucide="file-text"></i>
                                 <span data-i18n="input_label">Input</span>
+                                <span class="lang-label" id="langLabel" style="margin-left:auto;">JavaScript</span>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter text..."></textarea>
+                                <textarea id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Paste your JavaScript code here..."></textarea>
                             </div>
                             <div class="char-count"><span id="inputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
@@ -99,18 +120,20 @@
                                 <span data-i18n="output_label">Output</span>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="outputArea" data-i18n-placeholder="output_placeholder" placeholder="Result..." readonly></textarea>
+                                <div id="outputArea" style="min-height:200px;padding:1rem;border:1px solid var(--color-border);border-radius:var(--radius-lg);background:var(--color-bg);color:var(--color-text);font-family:'Courier New',monospace;font-size:14px;white-space:pre-wrap;overflow:auto;"><span style="color:#8b949e;">Formatted code will appear here...</span></div>
                             </div>
                             <div class="char-count"><span id="outputCount">0</span> <span data-i18n="char_count">characters</span></div>
                         </div>
                     </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span>Process</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
-                        <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
+                        <button class="btn btn-primary" id="btnFormat"><i data-lucide="play"></i><span data-i18n="btn_format">Format</span></button>
+                        <button class="btn btn-secondary" id="btnMinify"><i data-lucide="minimize-2"></i><span data-i18n="btn_minify">Minify</span></button>
+                        <button class="btn btn-secondary" id="btnCopy"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
+                        <button class="btn btn-secondary" id="btnPaste"><i data-lucide="clipboard"></i><span data-i18n="btn_paste">Paste</span></button>
+                        <button class="btn btn-danger" id="btnClear"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
                 </div>
-                
+
                 <!-- Ad Slot -->
                 <div class="ad-slot" style="margin-top:2rem">
                     <span data-i18n="ad_label">Advertisement</span>
@@ -123,7 +146,7 @@
             </aside>
         </div>
     </main>
-    
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container footer-container">
@@ -136,20 +159,20 @@
             <p class="footer-copyright">&copy; 2024 ToolBox. <span data-i18n="footer_rights">All rights reserved.</span></p>
         </div>
     </footer>
-    
+
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
-    
+
     <!-- Back to Top -->
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
         <i data-lucide="chevron-up"></i>
     </button>
-    
+
     <!-- Scripts -->
     <script src="../../assets/js/utils.js"></script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/app.js"></script>
-    
+
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
@@ -158,317 +181,317 @@
         if (typeof I18n !== 'undefined') {
             I18n.init();
         }
-    });
-    
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        if (toast) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-    }
-    
-    function copyOutput() {
-        const output = document.getElementById('outputArea');
-        if (!output || !output.value) {
-            showToast('Nothing to copy');
-            return;
-        }
-        navigator.clipboard.writeText(output.value).then(() => {
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        }).catch(() => {
-            output.select();
-            document.execCommand('copy');
-            showToast(typeof I18n !== 'undefined' ? I18n.t('toast.copied') : 'Copied!');
-        });
-    }
-    
-    function clearAll() {
-        const input = document.getElementById('inputArea');
-        const output = document.getElementById('outputArea');
-        const inputCount = document.getElementById('inputCount');
-        const outputCount = document.getElementById('outputCount');
-        if (input) input.value = '';
-        if (output) output.value = '';
-        if (inputCount) inputCount.textContent = '0';
-        if (outputCount) outputCount.textContent = '0';
-        showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
-    }
-    
-    function getIndent() {
-        const val = document.getElementById('indentSize').value;
-        return val === 'tab' ? '\t' : ' '.repeat(parseInt(val));
-      }
 
-      function escapeHtml(str) {
-        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      }
-
-      // Tab switching
-      document.querySelectorAll('.tool-tabs__item').forEach(function(tab) {
-        tab.addEventListener('click', function() {
-          document.querySelectorAll('.tool-tabs__item').forEach(function(t) { t.classList.remove('tool-tabs__item--active'); });
-          this.classList.add('tool-tabs__item--active');
-          currentLang = this.getAttribute('data-lang');
-          langLabel.textContent = currentLang === 'javascript' ? 'JavaScript' : currentLang.toUpperCase();
-          const placeholders = { html: 'Paste your HTML code here...', css: 'Paste your CSS code here...', javascript: 'Paste your JavaScript code here...' };
-          input.placeholder = placeholders[currentLang];
-        });
-      });
-
-      // HTML Formatter
-      function formatHTML(code) {
-        const indent = getIndent();
-        // Remove existing whitespace
-        code = code.replace(/>\s+</g, '><').trim();
-        let formatted = '';
-        let level = 0;
-        const selfClosing = /^<(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)\b/i;
-        const closingTag = /^<\//;
-        const openingTag = /^<[a-zA-Z]/;
-
-        // Split into tokens
-        const tokens = code.match(/(<[^>]+>|[^<]+)/g) || [];
-        tokens.forEach(function(token) {
-          token = token.trim();
-          if (!token) return;
-
-          if (closingTag.test(token)) {
-            level = Math.max(0, level - 1);
-            formatted += indent.repeat(level) + token + '\n';
-          } else if (selfClosing.test(token)) {
-            formatted += indent.repeat(level) + token + '\n';
-          } else if (openingTag.test(token)) {
-            formatted += indent.repeat(level) + token + '\n';
-            if (!token.endsWith('/>')) level++;
-          } else {
-            // Text content
-            const text = token.replace(/\s+/g, ' ').trim();
-            if (text) {
-              formatted += indent.repeat(level) + text + '\n';
-            }
-          }
-        });
-
-        return formatted.trim();
-      }
-
-      // CSS Formatter
-      function formatCSS(code) {
-        const indent = getIndent();
-        // Remove extra whitespace
-        code = code.replace(/\s*{\s*/g, ' {\n').replace(/\s*}\s*/g, '\n}\n\n').replace(/;\s*/g, ';\n');
-        const lines = code.split('\n');
-        let formatted = '';
-        let inBlock = false;
-
-        lines.forEach(function(line) {
-          line = line.trim();
-          if (!line) return;
-
-          if (line.endsWith('{')) {
-            formatted += line + '\n';
-            inBlock = true;
-          } else if (line === '}') {
-            formatted += line + '\n';
-            inBlock = false;
-          } else if (inBlock) {
-            formatted += indent + line + '\n';
-          } else {
-            formatted += line + '\n';
-          }
-        });
-
-        return formatted.trim();
-      }
-
-      // JS Formatter
-      function formatJS(code) {
-        const indent = getIndent();
-        // Simple brace-based indentation
-        let formatted = '';
-        let level = 0;
-        let inString = false;
-        let stringChar = '';
-        let inComment = false;
-        let inLineComment = false;
-
-        // Process character by character
-        let i = 0;
-        while (i < code.length) {
-          // Handle line comments
-          if (!inString && !inComment && code[i] === '/' && code[i+1] === '/') {
-            let end = code.indexOf('\n', i);
-            if (end === -1) end = code.length;
-            let comment = code.substring(i, end);
-            formatted += indent.repeat(level) + comment + '\n';
-            i = end;
-            continue;
-          }
-
-          // Handle block comments
-          if (!inString && !inLineComment && code[i] === '/' && code[i+1] === '*') {
-            let end = code.indexOf('*/', i + 2);
-            if (end === -1) end = code.length - 2;
-            let comment = code.substring(i, end + 2);
-            formatted += indent.repeat(level) + comment + '\n';
-            i = end + 2;
-            continue;
-          }
-
-          // Handle strings
-          if (!inComment && !inLineComment && (code[i] === '"' || code[i] === "'" || code[i] === '`')) {
-            if (!inString) {
-              inString = true;
-              stringChar = code[i];
-              formatted += code[i];
-              i++;
-              continue;
-            } else if (code[i] === stringChar && code[i-1] !== '\\') {
-              inString = false;
-              formatted += code[i];
-              i++;
-              continue;
-            }
-          }
-
-          if (inString || inLineComment) {
-            formatted += code[i];
-            i++;
-            continue;
-          }
-
-          // Handle braces
-          if (code[i] === '{') {
-            formatted = formatted.trimEnd() + ' {\n';
-            level++;
-            i++;
-            continue;
-          }
-          if (code[i] === '}') {
-            level = Math.max(0, level - 1);
-            formatted = formatted.trimEnd() + '\n' + indent.repeat(level) + '}\n';
-            i++;
-            continue;
-          }
-          if (code[i] === ';') {
-            formatted += ';\n';
-            i++;
-            // Skip whitespace
-            while (i < code.length && code[i] === ' ' || code[i] === '\t' || code[i] === '\r' || code[i] === '\n') i++;
-            continue;
-          }
-
-          formatted += code[i];
-          i++;
-        }
-
-        // Indent each line
-        const lines = formatted.split('\n');
-        let result = [];
-        lines.forEach(function(line) {
-          line = line.trim();
-          if (!line) return;
-          if (line === '{' || line === '}') {
-            result.push(line);
-          } else if (line.endsWith('{')) {
-            result.push(line);
-          } else {
-            result.push(indent.repeat(level) + line);
-          }
-        });
-
-        // Re-process with proper indentation
-        let finalResult = [];
-        let lvl = 0;
-        result.forEach(function(line) {
-          if (line === '}') {
-            lvl = Math.max(0, lvl - 1);
-            finalResult.push(indent.repeat(lvl) + line);
-          } else if (line.endsWith('{')) {
-            finalResult.push(indent.repeat(lvl) + line);
-            lvl++;
-          } else {
-            finalResult.push(indent.repeat(lvl) + line);
-          }
-        });
-
-        return finalResult.join('\n').trim();
-      }
-
-      function minifyCode(code) {
-        if (currentLang === 'html') {
-          return code.replace(/>\s+</g, '><').replace(/\s+/g, ' ').trim();
-        } else if (currentLang === 'css') {
-          return code.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s*{\s*/g, '{').replace(/\s*}\s*/g, '}').replace(/\s*:\s*/g, ':').replace(/\s*;\s*/g, ';').replace(/\s*,\s*/g, ',').trim();
-        } else {
-          return code.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ').trim();
-        }
-      }
-
-      document.getElementById('btnFormat').addEventListener('click', function() {
-        errorMsg.classList.remove('show');
-        successMsg.classList.remove('show');
-        const val = input.value.trim();
-        if (!val) { errorMsg.textContent = 'Please enter code.'; errorMsg.classList.add('show'); return; }
-        try {
-          if (currentLang === 'html') lastResult = formatHTML(val);
-          else if (currentLang === 'css') lastResult = formatCSS(val);
-          else lastResult = formatJS(val);
-          output.textContent = lastResult;
-          successMsg.textContent = (currentLang === 'javascript' ? 'JavaScript' : currentLang.toUpperCase()) + ' formatted successfully!';
-          successMsg.classList.add('show');
-        } catch (e) {
-          errorMsg.textContent = 'Error: ' + e.message;
-          errorMsg.classList.add('show');
-        }
-      });
-
-      document.getElementById('btnMinify').addEventListener('click', function() {
-        errorMsg.classList.remove('show');
-        successMsg.classList.remove('show');
-        const val = input.value.trim();
-        if (!val) { errorMsg.textContent = 'Please enter code.'; errorMsg.classList.add('show'); return; }
-        lastResult = minifyCode(val);
-        output.textContent = lastResult;
-        successMsg.textContent = 'Minified! Size: ' + lastResult.length + ' characters.';
-        successMsg.classList.add('show');
-      });
-
-      function copyResult() {
-        if (!lastResult) return;
-        navigator.clipboard.writeText(lastResult).then(function() {
-          successMsg.textContent = 'Copied to clipboard!';
-          successMsg.classList.add('show');
-        });
-      }
-      document.getElementById('btnCopy').addEventListener('click', copyResult);
-      document.getElementById('btnCopyOutput').addEventListener('click', copyResult);
-
-      document.getElementById('btnClear').addEventListener('click', function() {
-        input.value = '';
-        output.innerHTML = '<span style="color:#8b949e;">Formatted code will appear here...</span>';
-        lastResult = '';
-        errorMsg.classList.remove('show');
-        successMsg.classList.remove('show');
-      });
-
-      document.getElementById('btnPaste').addEventListener('click', function() {
-        navigator.clipboard.readText().then(function(text) { input.value = text; }).catch(function() {});
-      });
-    })();
-  </script>
-
-    // Input character counter
-    document.addEventListener('DOMContentLoaded', () => {
+        // Initialize character counter
         const inputArea = document.getElementById('inputArea');
         const inputCount = document.getElementById('inputCount');
+        const outputArea = document.getElementById('outputArea');
+        const outputCount = document.getElementById('outputCount');
+        const langLabel = document.getElementById('langLabel');
+
         if (inputArea && inputCount) {
             inputArea.addEventListener('input', () => {
                 inputCount.textContent = inputArea.value.length;
             });
         }
+
+        // Variables
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+        let lastResult = '';
+        let currentLang = 'javascript';
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2500);
+            }
+        }
+
+        function showError(msg) {
+            errorMsg.textContent = msg;
+            errorMsg.classList.add('show');
+            successMsg.classList.remove('show');
+        }
+
+        function showSuccess(msg) {
+            successMsg.textContent = msg;
+            successMsg.classList.add('show');
+            errorMsg.classList.remove('show');
+        }
+
+        function clearMessages() {
+            errorMsg.classList.remove('show');
+            successMsg.classList.remove('show');
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tool-tabs__item').forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tool-tabs__item').forEach(function(t) { t.classList.remove('tool-tabs__item--active'); });
+                this.classList.add('tool-tabs__item--active');
+                currentLang = this.getAttribute('data-lang');
+                langLabel.textContent = currentLang === 'javascript' ? 'JavaScript' : currentLang.toUpperCase();
+                const placeholders = { html: 'Paste your HTML code here...', css: 'Paste your CSS code here...', javascript: 'Paste your JavaScript code here...' };
+                inputArea.placeholder = placeholders[currentLang];
+            });
+        });
+
+        // HTML Formatter
+        function formatHTML(code) {
+            const indent = '  ';
+            // Remove existing whitespace
+            code = code.replace(/>\s+</g, '><').trim();
+            let formatted = '';
+            let level = 0;
+            const selfClosing = /^<(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)\b/i;
+            const closingTag = /^<\//;
+            const openingTag = /^<[a-zA-Z]/;
+
+            // Split into tokens
+            const tokens = code.match(/(<[^>]+>|[^<]+)/g) || [];
+            tokens.forEach(function(token) {
+                token = token.trim();
+                if (!token) return;
+
+                if (closingTag.test(token)) {
+                    level = Math.max(0, level - 1);
+                    formatted += indent.repeat(level) + token + '\n';
+                } else if (selfClosing.test(token)) {
+                    formatted += indent.repeat(level) + token + '\n';
+                } else if (openingTag.test(token)) {
+                    formatted += indent.repeat(level) + token + '\n';
+                    if (!token.endsWith('/>')) level++;
+                } else {
+                    // Text content
+                    const text = token.replace(/\s+/g, ' ').trim();
+                    if (text) {
+                        formatted += indent.repeat(level) + text + '\n';
+                    }
+                }
+            });
+
+            return formatted.trim();
+        }
+
+        // CSS Formatter
+        function formatCSS(code) {
+            const indent = '  ';
+            // Remove extra whitespace
+            code = code.replace(/\s*{\s*/g, ' {\n').replace(/\s*}\s*/g, '\n}\n\n').replace(/;\s*/g, ';\n');
+            const lines = code.split('\n');
+            let formatted = '';
+            let inBlock = false;
+
+            lines.forEach(function(line) {
+                line = line.trim();
+                if (!line) return;
+
+                if (line.endsWith('{')) {
+                    formatted += line + '\n';
+                    inBlock = true;
+                } else if (line === '}') {
+                    formatted += line + '\n';
+                    inBlock = false;
+                } else if (inBlock) {
+                    formatted += indent + line + '\n';
+                } else {
+                    formatted += line + '\n';
+                }
+            });
+
+            return formatted.trim();
+        }
+
+        // JS Formatter
+        function formatJS(code) {
+            const indent = '  ';
+            // Simple brace-based indentation
+            let formatted = '';
+            let level = 0;
+            let inString = false;
+            let stringChar = '';
+            let inComment = false;
+            let inLineComment = false;
+
+            // Process character by character
+            let i = 0;
+            while (i < code.length) {
+                // Handle line comments
+                if (!inString && !inComment && code[i] === '/' && code[i+1] === '/') {
+                    let end = code.indexOf('\n', i);
+                    if (end === -1) end = code.length;
+                    let comment = code.substring(i, end);
+                    formatted += indent.repeat(level) + comment + '\n';
+                    i = end;
+                    continue;
+                }
+
+                // Handle block comments
+                if (!inString && !inLineComment && code[i] === '/' && code[i+1] === '*') {
+                    let end = code.indexOf('*/', i + 2);
+                    if (end === -1) end = code.length - 2;
+                    let comment = code.substring(i, end + 2);
+                    formatted += indent.repeat(level) + comment + '\n';
+                    i = end + 2;
+                    continue;
+                }
+
+                // Handle strings
+                if (!inComment && !inLineComment && (code[i] === '"' || code[i] === "'" || code[i] === '`')) {
+                    if (!inString) {
+                        inString = true;
+                        stringChar = code[i];
+                        formatted += code[i];
+                        i++;
+                        continue;
+                    } else if (code[i] === stringChar && code[i-1] !== '\\') {
+                        inString = false;
+                        formatted += code[i];
+                        i++;
+                        continue;
+                    }
+                }
+
+                if (inString || inLineComment) {
+                    formatted += code[i];
+                    i++;
+                    continue;
+                }
+
+                // Handle braces
+                if (code[i] === '{') {
+                    formatted = formatted.trimEnd() + ' {\n';
+                    level++;
+                    i++;
+                    continue;
+                }
+                if (code[i] === '}') {
+                    level = Math.max(0, level - 1);
+                    formatted = formatted.trimEnd() + '\n' + indent.repeat(level) + '}\n';
+                    i++;
+                    continue;
+                }
+                if (code[i] === ';') {
+                    formatted += ';\n';
+                    i++;
+                    // Skip whitespace
+                    while (i < code.length && (code[i] === ' ' || code[i] === '\t' || code[i] === '\r' || code[i] === '\n')) i++;
+                    continue;
+                }
+
+                formatted += code[i];
+                i++;
+            }
+
+            // Indent each line
+            const lines = formatted.split('\n');
+            let result = [];
+            lines.forEach(function(line) {
+                line = line.trim();
+                if (!line) return;
+                if (line === '{' || line === '}') {
+                    result.push(line);
+                } else if (line.endsWith('{')) {
+                    result.push(line);
+                } else {
+                    result.push(indent.repeat(level) + line);
+                }
+            });
+
+            // Re-process with proper indentation
+            let finalResult = [];
+            let lvl = 0;
+            result.forEach(function(line) {
+                if (line === '}') {
+                    lvl = Math.max(0, lvl - 1);
+                    finalResult.push(indent.repeat(lvl) + line);
+                } else if (line.endsWith('{')) {
+                    finalResult.push(indent.repeat(lvl) + line);
+                    lvl++;
+                } else {
+                    finalResult.push(indent.repeat(lvl) + line);
+                }
+            });
+
+            return finalResult.join('\n').trim();
+        }
+
+        function minifyCode(code) {
+            if (currentLang === 'html') {
+                return code.replace(/>\s+</g, '><').replace(/\s+/g, ' ').trim();
+            } else if (currentLang === 'css') {
+                return code.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s*{\s*/g, '{').replace(/\s*}\s*/g, '}').replace(/\s*:\s*/g, ':').replace(/\s*;\s*/g, ';').replace(/\s*,\s*/g, ',').trim();
+            } else {
+                return code.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ').trim();
+            }
+        }
+
+        function updateOutputCount() {
+            if (outputArea && outputCount && lastResult) {
+                outputCount.textContent = lastResult.length;
+            }
+        }
+
+        // Format button
+        document.getElementById('btnFormat').addEventListener('click', function() {
+            clearMessages();
+            const val = inputArea.value.trim();
+            if (!val) { showError('Please enter code.'); return; }
+            try {
+                if (currentLang === 'html') lastResult = formatHTML(val);
+                else if (currentLang === 'css') lastResult = formatCSS(val);
+                else lastResult = formatJS(val);
+                outputArea.textContent = lastResult;
+                showSuccess((currentLang === 'javascript' ? 'JavaScript' : currentLang.toUpperCase()) + ' formatted successfully!');
+                updateOutputCount();
+            } catch (e) {
+                showError('Error: ' + e.message);
+            }
+        });
+
+        // Minify button
+        document.getElementById('btnMinify').addEventListener('click', function() {
+            clearMessages();
+            const val = inputArea.value.trim();
+            if (!val) { showError('Please enter code.'); return; }
+            lastResult = minifyCode(val);
+            outputArea.textContent = lastResult;
+            showSuccess('Minified! Size: ' + lastResult.length + ' characters.');
+            updateOutputCount();
+        });
+
+        // Copy button
+        document.getElementById('btnCopy').addEventListener('click', function() {
+            if (!lastResult) { showError('No result to copy.'); return; }
+            navigator.clipboard.writeText(lastResult).then(function() {
+                showSuccess('Copied to clipboard!');
+            }).catch(function() {
+                showError('Failed to copy.');
+            });
+        });
+
+        // Paste button
+        document.getElementById('btnPaste').addEventListener('click', function() {
+            navigator.clipboard.readText().then(function(text) {
+                inputArea.value = text;
+                inputCount.textContent = text.length;
+            }).catch(function() {
+                showError('Failed to read clipboard.');
+            });
+        });
+
+        // Clear button
+        document.getElementById('btnClear').addEventListener('click', function() {
+            inputArea.value = '';
+            outputArea.innerHTML = '<span style="color:#8b949e;">Formatted code will appear here...</span>';
+            inputCount.textContent = '0';
+            outputCount.textContent = '0';
+            lastResult = '';
+            clearMessages();
+        });
     });
     </script>
 </body>
