@@ -246,26 +246,44 @@
       return parseFloat(selected) || 15;
     }
 
+    // PayPal Client ID
+    const PAYPAL_CLIENT_ID = 'AV1ibSI5cMM1DDR7SxiahHlHxkf6JC3XAYExWEyINq9KHVQbwB5wYWQPZ6cEbdWpuV8D1ZGSMwD4irN8';
+
     // Load PayPal SDK and render button
     function loadPayPalButton() {
-      const clientId = PayPal && PayPal.PAYPAL_CLIENT_ID ? PayPal.PAYPAL_CLIENT_ID : 'AV1ibSI5cMM1DDR7SxiahHlHxkf6JC3XAYExWEyINq9KHVQbwB5wYWQPZ6cEbdWpuV8D1ZGSMwD4irN8';
       const container = document.getElementById('paypal-button-container');
-      if (!container) return;
+      if (!container) {
+        console.error('PayPal container not found');
+        return;
+      }
 
       // Check if already loaded
-      if (container.querySelector('.paypal-buttons')) {
+      if (typeof paypal !== 'undefined' && container.querySelector('.paypal-buttons')) {
         return;
       }
 
       const script = document.createElement('script');
-      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD`;
+      script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD&intent=capture`;
       script.async = true;
       script.onload = function() {
+        console.log('PayPal SDK loaded');
         if (typeof paypal !== 'undefined') {
           renderPayPalButton();
+        } else {
+          console.error('PayPal SDK not available after load');
+          showPayPalError(container);
         }
       };
+      script.onerror = function() {
+        console.error('Failed to load PayPal SDK');
+        showPayPalError(container);
+      };
       document.head.appendChild(script);
+    }
+
+    // Show error message
+    function showPayPalError(container) {
+      container.innerHTML = '<div class="paypal-error" style="padding: 16px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; color: #dc2626; text-align: center;">PayPal 加载失败，请刷新页面重试</div>';
     }
 
     // Render PayPal button with current amount
