@@ -26,9 +26,9 @@ const App = (() => {
   /**
    * Application entry point, called on DOMContentLoaded
    */
-  function init() {
+  async function init() {
     initTheme();
-    initI18n();
+    await initI18n();
     initSearch();
     initSidebar();
     initMobileMenu();
@@ -134,35 +134,18 @@ const App = (() => {
   /**
    * Initialize i18n module and bind language toggle button
    */
-  function initI18n() {
+  async function initI18n() {
     if (typeof I18n !== 'undefined' && typeof I18n.init === 'function') {
-      I18n.init();
+      await I18n.init();
     }
 
-    // Support both homepage (#langToggle) and tool pages (.lang-btn)
-    const langToggle = $('#langToggle') || $('.lang-btn');
+    // Update language button label after i18n is initialized
+    updateLangLabel();
 
-    if (langToggle) {
-      langToggle.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (typeof I18n !== 'undefined' && typeof I18n.setLang === 'function' && typeof I18n.getLang === 'function') {
-          const currentLang = I18n.getLang();
-          I18n.setLang(currentLang === 'en' ? 'zh' : 'en');
-        }
-        // Update button text to show current language
+    // Listen for language changes to update button label
+    if (typeof I18n !== 'undefined' && typeof I18n.onLangChange === 'function') {
+      I18n.onLangChange(() => {
         updateLangLabel();
-      });
-
-      // Set initial label
-      updateLangLabel();
-    }
-
-    // Also bind theme toggle for tool pages
-    const themeToggle = $('#themeToggle') || $('.theme-btn');
-    if (themeToggle) {
-      themeToggle.addEventListener('click', (e) => {
-        e.preventDefault();
-        toggleTheme();
       });
     }
   }

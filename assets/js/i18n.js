@@ -265,11 +265,23 @@ const I18n = (() => {
     await setLang(savedLang);
 
     // 绑定语言切换按钮事件
-    document.querySelectorAll('[data-lang-switch]').forEach(btn => {
+    // 支持 data-lang-switch 属性或 #langToggle / .lang-btn 按钮
+    const langButtons = document.querySelectorAll('[data-lang-switch], #langToggle, .lang-btn');
+    langButtons.forEach(btn => {
+      // 避免重复绑定
+      if (btn.dataset.langBound) return;
+      btn.dataset.langBound = 'true';
+      
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         const targetLang = btn.getAttribute('data-lang-switch');
-        setLang(targetLang);
+        // 如果 data-lang-switch 没有值或为空，则自动切换语言
+        if (!targetLang || targetLang === '') {
+          const nextLang = currentLang === 'en' ? 'zh' : 'en';
+          setLang(nextLang);
+        } else {
+          setLang(targetLang);
+        }
       });
     });
 
