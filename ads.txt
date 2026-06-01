@@ -1,1 +1,4 @@
-google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+# UseEasyTool - Google AdSense
+# 网站: https://useeasytool.com
+# 
+google.com, pub-5246764554303000, DIRECT, f08c47fec0942fa0

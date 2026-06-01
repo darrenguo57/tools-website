@@ -2251,3 +2251,318 @@ html.dark .header-search input:focus {
   margin: 0 auto;
   padding: 0 var(--space-4);
 }
+
+
+/* ----------------------------------------------------------
+   24. AdSense / Advertisement Styles
+   ---------------------------------------------------------- */
+
+/* Ad Container */
+.ad-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90px;
+  margin: var(--space-6) 0;
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.ad-container.horizontal {
+  min-height: 90px;
+}
+
+.ad-container.square {
+  min-height: 250px;
+  max-width: 300px;
+}
+
+.ad-container.vertical {
+  min-height: 600px;
+  max-width: 160px;
+}
+
+/* Ad Label */
+.ad-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-bottom: var(--space-2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Ad Placeholder (before AdSense is approved) */
+.ad-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.ad-placeholder i {
+  width: 24px;
+  height: 24px;
+  margin-bottom: var(--space-2);
+  opacity: 0.5;
+}
+
+/* Ad in Sidebar */
+.ad-sidebar {
+  position: sticky;
+  top: calc(var(--nav-height) + var(--space-4));
+  margin-bottom: var(--space-6);
+}
+
+/* Ad in Content */
+.ad-inline {
+  margin: var(--space-8) 0;
+}
+
+/* Ad after specific elements */
+.ad-after-features {
+  margin: var(--space-10) 0;
+}
+
+/* Responsive Ad Container */
+.ad-responsive {
+  width: 100%;
+  max-width: 728px;
+  margin: var(--space-6) auto;
+}
+
+.ad-mobile {
+  max-width: 320px;
+}
+
+/* Dark mode adjustments for ads */
+[data-theme="dark"] .ad-container {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+[data-theme="dark"] .ad-placeholder {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Loading animation for ads */
+.ad-loading {
+  position: relative;
+}
+
+.ad-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: ad-spin 1s linear infinite;
+}
+
+@keyframes ad-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .ad-container {
+    min-height: 100px;
+    margin: var(--space-4) 0;
+  }
+
+  .ad-sidebar {
+    position: static;
+    margin-bottom: var(--space-4);
+  }
+}
+
+
+/* ----------------------------------------------------------
+   25. PayPal Button Styles
+   ---------------------------------------------------------- */
+
+/* PayPal Custom Container */
+.paypal-custom-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.paypal-amount-options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+}
+
+.paypal-amount-option {
+  cursor: pointer;
+  text-align: center;
+}
+
+.paypal-amount-option input {
+  display: none;
+}
+
+.paypal-amount-option .amount-label {
+  display: block;
+  padding: var(--space-3);
+  background: var(--color-bg);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  font-size: var(--font-size-lg);
+  transition: all var(--transition-fast);
+}
+
+.paypal-amount-option .amount-tag {
+  display: block;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-1);
+}
+
+.paypal-amount-option input:checked + .amount-label {
+  border-color: var(--color-primary);
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--color-primary);
+}
+
+.paypal-amount-option:hover .amount-label {
+  border-color: var(--color-primary);
+}
+
+.paypal-custom-input {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.paypal-custom-input label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.paypal-custom-input input {
+  width: 80px;
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+/* PayPal Messages */
+.paypal-success,
+.paypal-cancel,
+.paypal-error {
+  text-align: center;
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+}
+
+.paypal-success {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.paypal-success .success-icon {
+  width: 48px;
+  height: 48px;
+  background: #22c55e;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-3);
+  font-size: 24px;
+}
+
+.paypal-success h3 {
+  color: #22c55e;
+  margin: 0 0 var(--space-2) 0;
+}
+
+.paypal-success p {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.paypal-success .payer-name {
+  margin-top: var(--space-3);
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.paypal-cancel {
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.paypal-cancel p {
+  margin: 0;
+  color: #f59e0b;
+}
+
+.paypal-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.paypal-error p {
+  margin: 0;
+  color: #ef4444;
+}
+
+/* PayPal Button Container */
+#paypal-button-container {
+  min-height: 45px;
+}
+
+/* Submit Alternative */
+.submit-alternative {
+  text-align: center;
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  margin-top: var(--space-4);
+}
+
+.submit-alternative p {
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--space-4) 0;
+  font-size: var(--font-size-sm);
+}
+
+.submit-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.submit-btn.secondary:hover {
+  background: rgba(37, 99, 235, 0.1);
+}
+
+.paypal-button-container {
+  margin-bottom: var(--space-4);
+}
+
+@media (max-width: 767px) {
+  .paypal-amount-options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

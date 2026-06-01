@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="assets/css/dark.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.453.0"></script>
+  <!-- AdSense Script -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR-PUBLISHER-ID" crossorigin="anonymous"></script> -->
 </head>
 <body>
   <!-- Navigation -->
@@ -43,6 +45,15 @@
         </div>
         <h1 data-i18n="custom_heading">Request a Custom Tool</h1>
         <p data-i18n="custom_subheading">Tell us what you need. Pay what you want - your contribution supports development and helps bring your idea to life.</p>
+      </div>
+
+      <!-- AdSense Banner (Top) -->
+      <div class="ad-container horizontal">
+        <span class="ad-placeholder">
+          <i data-lucide="megaphone"></i>
+          <span>Advertisement</span>
+        </span>
+        <!-- Replace with: <ins class="adsbygoogle" data-ad-client="ca-pub-YOUR-ID" data-ad-slot="SLOT-ID" data-ad-format="horizontal"></ins> -->
       </div>
 
       <!-- How it Works -->
@@ -128,17 +139,40 @@
 
             <div class="payment-note">
               <i data-lucide="info"></i>
-              <span data-i18n="custom_payment_note">Payment options: PayPal, Alipay, WeChat Pay. You'll be redirected after submitting.</span>
+              <span data-i18n="custom_payment_note">Choose your contribution amount above. Complete payment via PayPal after submitting.</span>
             </div>
           </div>
 
-          <!-- Submit -->
-          <button type="submit" class="submit-btn">
-            <i data-lucide="send"></i>
-            <span data-i18n="custom_submit_btn">Submit Request & Continue to Payment</span>
-          </button>
+          <!-- PayPal Button -->
+          <div class="contribution-section">
+            <h3 data-i18n="custom_paypal_title">Complete Payment</h3>
+            <div id="paypal-button-container" class="paypal-button-container">
+              <!-- PayPal buttons will be rendered here -->
+            </div>
+            <div class="payment-note">
+              <i data-lucide="shield-check"></i>
+              <span data-i18n="custom_payment_security">Secure payment via PayPal. You don't need a PayPal account if you use a credit card.</span>
+            </div>
+          </div>
+
+          <!-- Submit (Alternative: Email Request) -->
+          <div class="submit-alternative">
+            <p data-i18n="custom_no_payment">Prefer to request without payment first?</p>
+            <button type="button" id="emailRequestBtn" class="submit-btn secondary">
+              <i data-lucide="mail"></i>
+              <span data-i18n="custom_email_only">Submit Request via Email Only</span>
+            </button>
+          </div>
         </form>
       </section>
+
+      <!-- AdSense (After Form) -->
+      <div class="ad-container horizontal">
+        <span class="ad-placeholder">
+          <i data-lucide="megaphone"></i>
+          <span>Advertisement</span>
+        </span>
+      </div>
 
       <!-- FAQ -->
       <section class="custom-section">
@@ -168,9 +202,9 @@
         <h2 data-i18n="custom_alt_title">Prefer to Contact Us Directly?</h2>
         <p data-i18n="custom_alt_desc">You can also reach us via:</p>
         <div class="alt-contact-methods">
-          <a href="mailto:darrenguo57@gmail.com" class="alt-contact-btn">
+          <a href="mailto:support@useeasytool.com" class="alt-contact-btn">
             <i data-lucide="mail"></i>
-            <span>darrenguo57@gmail.com</span>
+            <span>support@useeasytool.com</span>
           </a>
           <a href="https://github.com/useeasytool/useeasytool.github.io/issues" target="_blank" rel="noopener" class="alt-contact-btn">
             <i data-lucide="github"></i>
@@ -207,16 +241,59 @@
 
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/app.js"></script>
+  <script src="assets/js/paypal.js"></script>
   <script>
     if (typeof lucide !== 'undefined') {
       lucide.createIcons();
     }
 
-    // Form submission handler
-    document.getElementById('customToolForm').addEventListener('submit', function(e) {
+    // Initialize PayPal buttons when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get selected amount
+      const selectedAmount = document.querySelector('input[name="amount"]:checked')?.value || '15';
+      let amount = selectedAmount === 'custom' ? (document.getElementById('customAmount')?.value || '15') : selectedAmount;
+      amount = parseFloat(amount) || 15;
+
+      // Initialize PayPal with selected amount
+      if (typeof PayPal !== 'undefined') {
+        PayPal.createCustomAmountButton('paypal-button-container', {
+          presetAmounts: [
+            { id: 'coffee', label: 'Coffee ☕', value: 5 },
+            { id: 'lunch', label: 'Lunch 🍱', value: 15 },
+            { id: 'support', label: 'Support 💪', value: 30 },
+            { id: 'sponsor', label: 'Sponsor 🌟', value: 50 }
+          ],
+          description: 'Custom Tool Request - UseEasyTool',
+          onSuccess: function(data) {
+            console.log('Payment successful:', data);
+            // Here you would typically:
+            // 1. Send payment confirmation to your server
+            // 2. Store the request details
+            // 3. Send confirmation email to user
+          },
+          onCancel: function() {
+            console.log('Payment cancelled');
+          }
+        });
+      }
+    });
+
+    // Custom amount input handling
+    document.querySelectorAll('input[name="amount"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        const customInput = document.getElementById('customAmount');
+        if (this.value === 'custom') {
+          customInput.focus();
+        }
+      });
+    });
+
+    // Email-only request button
+    document.getElementById('emailRequestBtn').addEventListener('click', function(e) {
       e.preventDefault();
       
-      const formData = new FormData(this);
+      const form = document.getElementById('customToolForm');
+      const formData = new FormData(form);
       const toolName = formData.get('toolName');
       const toolDescription = formData.get('toolDescription');
       const useCase = formData.get('useCase');
@@ -234,24 +311,18 @@
         `Description:\n${toolDescription}\n\n` +
         `Use Case:\n${useCase || 'Not specified'}\n\n` +
         `Email: ${email || 'Not provided'}\n\n` +
-        `Contribution Amount: $${amount}`
+        `Contribution Amount: $${amount}\n\n` +
+        `---\nSent from UseEasyTool Custom Tool Request Form`
       );
 
       // Open email client
-      window.location.href = `mailto:darrenguo57@gmail.com?subject=${subject}&body=${body}`;
-      
-      // Show success message
-      alert('Your request is being prepared. Please send the email to complete your submission.');
+      window.location.href = `mailto:support@useeasytool.com?subject=${subject}&body=${body}`;
     });
 
-    // Custom amount input handling
-    document.querySelectorAll('input[name="amount"]').forEach(radio => {
-      radio.addEventListener('change', function() {
-        const customInput = document.getElementById('customAmount');
-        if (this.value === 'custom') {
-          customInput.focus();
-        }
-      });
+    // Prevent form default submit (we handle via PayPal or email)
+    document.getElementById('customToolForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Form data is collected by PayPal or email button
     });
   </script>
 </body>
