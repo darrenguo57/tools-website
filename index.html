@@ -113,6 +113,9 @@
           <i data-lucide="sun" class="theme-icon-light"></i>
           <i data-lucide="moon" class="theme-icon-dark"></i>
         </button>
+        <button class="btn-icon mobile-search-btn" id="mobileSearchBtn" aria-label="Search">
+          <i data-lucide="search"></i>
+        </button>
         <button class="btn-icon hamburger" id="hamburgerBtn" data-mobile-menu-toggle aria-label="Menu">
           <i data-lucide="menu"></i>
         </button>
@@ -195,14 +198,45 @@
         <p data-i18n="welcome_desc">A comprehensive collection of free tools for developers, designers, and everyone. No installation required.</p>
       </section>
 
-      <!-- AdSense 自动广告位 - 顶部横幅 -->
-      <div class="ad-container ad-responsive">
-        <span class="ad-placeholder">
-          <i data-lucide="megaphone"></i>
-          <span>Advertisement</span>
-        </span>
-        <!-- 手动广告位代码（可选） -->
-        <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-YOUR-ID" data-ad-slot="SLOT-ID" data-ad-format="auto" data-full-width-responsive="true"></ins> -->
+      <!-- Mobile Category Bar -->
+      <div class="mobile-category-bar" id="mobileCategoryBar">
+        <div class="mobile-category-scroll">
+          <button class="mobile-category-btn active" data-category="all">
+            <span data-i18n="cat_all">All</span>
+          </button>
+          <button class="mobile-category-btn" data-category="converters">
+            <i data-lucide="repeat"></i>
+            <span data-i18n="cat_converters">Converters</span>
+          </button>
+          <button class="mobile-category-btn" data-category="calculators">
+            <i data-lucide="calculator"></i>
+            <span data-i18n="cat_calculators">Calculators</span>
+          </button>
+          <button class="mobile-category-btn" data-category="image-tools">
+            <i data-lucide="image"></i>
+            <span data-i18n="cat_image_tools">Image</span>
+          </button>
+          <button class="mobile-category-btn" data-category="generators">
+            <i data-lucide="sparkles"></i>
+            <span data-i18n="cat_generators">Generators</span>
+          </button>
+          <button class="mobile-category-btn" data-category="formatters">
+            <i data-lucide="braces"></i>
+            <span data-i18n="cat_formatters">Formatters</span>
+          </button>
+          <button class="mobile-category-btn" data-category="crypto">
+            <i data-lucide="shield"></i>
+            <span data-i18n="cat_crypto">Encryption</span>
+          </button>
+          <button class="mobile-category-btn" data-category="charts">
+            <i data-lucide="bar-chart-3"></i>
+            <span data-i18n="cat_charts">Charts</span>
+          </button>
+          <button class="mobile-category-btn" data-category="testing">
+            <i data-lucide="flask-conical"></i>
+            <span data-i18n="cat_testing">Testing</span>
+          </button>
+        </div>
       </div>
 
       <!-- Custom Tool CTA Banner -->
@@ -661,11 +695,6 @@
         <p>No tools found matching your search.</p>
       </div>
 
-      <!-- Ad Slot -->
-      <div class="ad-slot" id="adSlotBottom">
-        <span data-i18n="ad_label">Advertisement</span>
-      </div>
-
     </main>
   </div>
 
@@ -742,6 +771,23 @@
   <!-- Mobile Sidebar Overlay -->
   <div class="sidebar-overlay" id="sidebarOverlay" data-mobile-overlay></div>
 
+  <!-- Mobile Search Overlay -->
+  <div class="mobile-search-overlay" id="mobileSearchOverlay">
+    <div class="mobile-search-header">
+      <div class="mobile-search-input-wrapper">
+        <i data-lucide="search"></i>
+        <input type="text" id="mobileSearchInput" class="mobile-search-input" placeholder="Search tools..." data-i18n-placeholder="search_placeholder">
+        <button class="mobile-search-clear" id="mobileSearchClear" aria-label="Clear">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <button class="mobile-search-cancel" id="mobileSearchCancel">Cancel</button>
+    </div>
+    <div class="mobile-search-results" id="mobileSearchResults">
+      <p class="mobile-search-hint">Type to search tools...</p>
+    </div>
+  </div>
+
   <!-- Back to Top -->
   <button class="back-to-top" id="backToTop" data-back-to-top aria-label="Back to top">
     <i data-lucide="chevron-up"></i>
@@ -757,6 +803,142 @@
     if (typeof lucide !== 'undefined') {
       lucide.createIcons();
     }
+
+    // Mobile Search Functionality
+    (function() {
+      const mobileSearchBtn = document.getElementById('mobileSearchBtn');
+      const mobileSearchOverlay = document.getElementById('mobileSearchOverlay');
+      const mobileSearchInput = document.getElementById('mobileSearchInput');
+      const mobileSearchClear = document.getElementById('mobileSearchClear');
+      const mobileSearchCancel = document.getElementById('mobileSearchCancel');
+      const mobileSearchResults = document.getElementById('mobileSearchResults');
+      const desktopSearchInput = document.getElementById('searchInput');
+      const toolsGrid = document.getElementById('toolsGrid');
+
+      if (mobileSearchBtn && mobileSearchOverlay) {
+        // Open mobile search
+        mobileSearchBtn.addEventListener('click', function() {
+          mobileSearchOverlay.classList.add('active');
+          document.body.style.overflow = 'hidden';
+          setTimeout(function() {
+            mobileSearchInput.focus();
+          }, 100);
+        });
+
+        // Close mobile search
+        function closeMobileSearch() {
+          mobileSearchOverlay.classList.remove('active');
+          document.body.style.overflow = '';
+          mobileSearchInput.value = '';
+          mobileSearchResults.innerHTML = '<p class="mobile-search-hint">Type to search tools...</p>';
+        }
+
+        mobileSearchCancel.addEventListener('click', closeMobileSearch);
+        mobileSearchClear.addEventListener('click', function() {
+          mobileSearchInput.value = '';
+          mobileSearchResults.innerHTML = '<p class="mobile-search-hint">Type to search tools...</p>';
+          mobileSearchInput.focus();
+        });
+
+        // Search as you type
+        mobileSearchInput.addEventListener('input', function() {
+          const query = this.value.trim().toLowerCase();
+          if (!query) {
+            mobileSearchResults.innerHTML = '<p class="mobile-search-hint">Type to search tools...</p>';
+            return;
+          }
+
+          const cards = toolsGrid.querySelectorAll('.tool-card');
+          let matchCount = 0;
+          let resultsHTML = '';
+
+          cards.forEach(function(card) {
+            const nameEn = (card.dataset.nameEn || '').toLowerCase();
+            const nameZh = (card.dataset.nameZh || '').toLowerCase();
+            const desc = card.querySelector('p');
+            const descText = desc ? desc.textContent.toLowerCase() : '';
+            
+            if (nameEn.includes(query) || nameZh.includes(query) || descText.includes(query)) {
+              matchCount++;
+              if (matchCount <= 10) {
+                const icon = card.querySelector('.tool-card-icon i')?.outerHTML || '<i data-lucide="tool"></i>';
+                const name = card.querySelector('h3')?.textContent || '';
+                const cat = card.querySelector('.tool-card-tag')?.textContent || '';
+                const href = card.getAttribute('href') || '#';
+                resultsHTML += '<a href="' + href + '" class="mobile-search-result-item"><div class="mobile-search-result-icon">' + icon + '</div><div class="mobile-search-result-info"><span class="mobile-search-result-name">' + name + '</span><span class="mobile-search-result-cat">' + cat + '</span></div></a>';
+              }
+            }
+          });
+
+          if (matchCount === 0) {
+            mobileSearchResults.innerHTML = '<p class="mobile-search-hint">No tools found</p>';
+          } else if (matchCount > 10) {
+            mobileSearchResults.innerHTML = resultsHTML + '<p class="mobile-search-hint">' + (matchCount - 10) + ' more results. Use desktop search for all.</p>';
+          } else {
+            mobileSearchResults.innerHTML = resultsHTML;
+          }
+
+          // Re-init icons
+          if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+          }
+        });
+
+        // Sync with desktop search
+        mobileSearchInput.addEventListener('input', function() {
+          if (desktopSearchInput) {
+            desktopSearchInput.value = this.value;
+            desktopSearchInput.dispatchEvent(new Event('input'));
+          }
+        });
+      }
+    })();
+
+    // Mobile Category Selection
+    (function() {
+      const mobileCategoryBar = document.getElementById('mobileCategoryBar');
+      const desktopSearchInput = document.getElementById('searchInput');
+
+      if (mobileCategoryBar) {
+        mobileCategoryBar.addEventListener('click', function(e) {
+          const btn = e.target.closest('.mobile-category-btn');
+          if (!btn) return;
+
+          const category = btn.dataset.category;
+          
+          // Update active state
+          mobileCategoryBar.querySelectorAll('.mobile-category-btn').forEach(function(b) {
+            b.classList.remove('active');
+          });
+          btn.classList.add('active');
+
+          // Update sidebar (desktop)
+          const sidebarItems = document.querySelectorAll('.sidebar-item');
+          sidebarItems.forEach(function(item) {
+            item.classList.remove('active');
+            if (item.dataset.category === category) {
+              item.classList.add('active');
+            }
+          });
+
+          // Filter tools
+          const cards = document.querySelectorAll('.tool-card');
+          cards.forEach(function(card) {
+            if (category === 'all' || card.dataset.category === category) {
+              card.style.display = '';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+
+          // Clear search
+          if (desktopSearchInput) {
+            desktopSearchInput.value = '';
+          }
+          document.getElementById('noResults').style.display = 'none';
+        });
+      }
+    })();
   </script>
 </body>
 </html>
