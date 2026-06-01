@@ -1785,3 +1785,469 @@ html.dark .header-search input:focus {
     font-size: var(--font-size-xl);
   }
 }
+
+
+/* ----------------------------------------------------------
+   23. Custom Tool Banner & Page Styles
+   ---------------------------------------------------------- */
+
+/* Custom Tool Banner (Homepage) */
+.custom-tool-banner {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #7c3aed 100%);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  margin-bottom: var(--space-8);
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.25);
+}
+
+.custom-tool-banner-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.custom-tool-banner-icon {
+  width: 56px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.custom-tool-banner-icon i {
+  width: 28px;
+  height: 28px;
+  color: #fff;
+}
+
+.custom-tool-banner-text {
+  flex: 1;
+  min-width: 200px;
+}
+
+.custom-tool-banner-text h2 {
+  color: #fff;
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  margin: 0 0 var(--space-1) 0;
+}
+
+.custom-tool-banner-text p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: var(--font-size-sm);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.custom-tool-banner-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: #fff;
+  color: var(--color-primary);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.custom-tool-banner-btn:hover {
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.custom-tool-banner-btn i {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 767px) {
+  .custom-tool-banner-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .custom-tool-banner-text {
+    min-width: auto;
+  }
+}
+
+
+/* Custom Tool Page */
+.custom-tool-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-4);
+}
+
+.custom-tool-header {
+  text-align: center;
+  margin-bottom: var(--space-10);
+}
+
+.custom-tool-header-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #7c3aed 100%);
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-4);
+}
+
+.custom-tool-header-icon i {
+  width: 40px;
+  height: 40px;
+  color: #fff;
+}
+
+.custom-tool-header h1 {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  margin: 0 0 var(--space-3) 0;
+}
+
+.custom-tool-header p {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+
+/* Custom Section */
+.custom-section {
+  margin-bottom: var(--space-10);
+}
+
+.custom-section h2 {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  margin: 0 0 var(--space-6) 0;
+}
+
+
+/* How It Works */
+.how-it-works {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
+.step {
+  text-align: center;
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+}
+
+.step-number {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #7c3aed 100%);
+  color: #fff;
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-4);
+}
+
+.step h3 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  margin: 0 0 var(--space-2) 0;
+}
+
+.step p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+@media (max-width: 767px) {
+  .how-it-works {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Custom Form */
+.custom-form-section {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+}
+
+.custom-tool-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.form-group label {
+  font-weight: 500;
+  font-size: var(--font-size-sm);
+}
+
+.form-group input,
+.form-group textarea {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-base);
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition: border-color var(--transition-fast);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+
+/* Contribution Section */
+.contribution-section {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  margin-top: var(--space-4);
+}
+
+.contribution-section h3 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  margin: 0 0 var(--space-2) 0;
+}
+
+.contribution-section p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--space-5) 0;
+}
+
+.amount-options {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-3);
+}
+
+.amount-option {
+  cursor: pointer;
+}
+
+.amount-option input {
+  display: none;
+}
+
+.amount-label {
+  display: block;
+  text-align: center;
+  padding: var(--space-3) var(--space-2);
+  background: var(--color-bg);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  font-size: var(--font-size-lg);
+  transition: all var(--transition-fast);
+}
+
+.amount-tag {
+  display: block;
+  text-align: center;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-1);
+}
+
+.amount-option input:checked + .amount-label {
+  border-color: var(--color-primary);
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--color-primary);
+}
+
+.amount-option:hover .amount-label {
+  border-color: var(--color-primary);
+}
+
+.custom-amount-input {
+  width: 60px;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  margin-top: var(--space-2);
+}
+
+.payment-note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  padding: var(--space-3);
+  background: rgba(37, 99, 235, 0.1);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.payment-note i {
+  width: 18px;
+  height: 18px;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+@media (max-width: 767px) {
+  .amount-options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+/* Submit Button */
+.submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #7c3aed 100%);
+  color: #fff;
+  padding: var(--space-4) var(--space-6);
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  margin-top: var(--space-4);
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+}
+
+.submit-btn i {
+  width: 20px;
+  height: 20px;
+}
+
+
+/* FAQ */
+.custom-faq {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.custom-faq .faq-item {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+
+.custom-faq .faq-item h4 {
+  font-weight: 600;
+  margin: 0 0 var(--space-2) 0;
+}
+
+.custom-faq .faq-item p {
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+
+/* Alternative Contact */
+.alt-contact {
+  text-align: center;
+  padding: var(--space-8);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+}
+
+.alt-contact h2 {
+  margin-bottom: var(--space-2);
+}
+
+.alt-contact p {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-5);
+}
+
+.alt-contact-methods {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.alt-contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  color: var(--color-text);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.alt-contact-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.alt-contact-btn i {
+  width: 18px;
+  height: 18px;
+}
+
+
+/* Page Content (for static pages) */
+.page-content {
+  margin-left: 0;
+  max-width: 100%;
+  padding-top: calc(var(--nav-height) + var(--space-8));
+}
+
+.page-content .container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}

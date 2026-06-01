@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="custom_page_title">Request Custom Tool - UseEasyTool</title>
+  <meta name="description" data-i18n="custom_page_description" content="Request a custom tool development. Pay what you want - your contribution supports development.">
+  <link rel="canonical" href="https://useeasytool.com/custom-tool.html">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/dark.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="navbar-logo">
+        <i data-lucide="toolbox"></i>
+        <span>UseEasyTool</span>
+      </a>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language">
+          <span class="lang-label">EN</span>
+        </button>
+        <button class="btn-icon" id="themeToggle" data-theme-toggle aria-label="Toggle Theme">
+          <i data-lucide="sun" class="theme-icon-light"></i>
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content page-content">
+    <div class="container custom-tool-container">
+      
+      <!-- Header -->
+      <div class="custom-tool-header">
+        <div class="custom-tool-header-icon">
+          <i data-lucide="sparkles"></i>
+        </div>
+        <h1 data-i18n="custom_heading">Request a Custom Tool</h1>
+        <p data-i18n="custom_subheading">Tell us what you need. Pay what you want - your contribution supports development and helps bring your idea to life.</p>
+      </div>
+
+      <!-- How it Works -->
+      <section class="custom-section">
+        <h2 data-i18n="custom_how_title">How It Works</h2>
+        <div class="how-it-works">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3 data-i18n="custom_step1_title">Describe Your Need</h3>
+            <p data-i18n="custom_step1_desc">Tell us what tool you need and how it should work</p>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3 data-i18n="custom_step2_title">Choose Your Contribution</h3>
+            <p data-i18n="custom_step2_desc">Pay any amount - it's both support and motivation</p>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3 data-i18n="custom_step3_title">We Build It</h3>
+            <p data-i18n="custom_step3_desc">We'll develop and add your tool to the platform</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Request Form -->
+      <section class="custom-section custom-form-section">
+        <h2 data-i18n="custom_form_title">Submit Your Request</h2>
+        
+        <form class="custom-tool-form" id="customToolForm">
+          <!-- Tool Description -->
+          <div class="form-group">
+            <label for="toolName" data-i18n="custom_form_name_label">Tool Name (Optional)</label>
+            <input type="text" id="toolName" name="toolName" data-i18n-placeholder="custom_form_name_placeholder" placeholder="e.g., PDF Merger, Color Palette Generator">
+          </div>
+
+          <div class="form-group">
+            <label for="toolDescription" data-i18n="custom_form_desc_label">Describe the Tool You Need *</label>
+            <textarea id="toolDescription" name="toolDescription" rows="5" required data-i18n-placeholder="custom_form_desc_placeholder" placeholder="What should the tool do? What inputs does it take? What outputs should it produce? Any specific features?"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="useCase" data-i18n="custom_form_usecase_label">Use Case (Optional)</label>
+            <textarea id="useCase" name="useCase" rows="3" data-i18n-placeholder="custom_form_usecase_placeholder" placeholder="How would you use this tool? What problem does it solve for you?"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="email" data-i18n="custom_form_email_label">Your Email (Optional)</label>
+            <input type="email" id="email" name="email" data-i18n-placeholder="custom_form_email_placeholder" placeholder="We'll notify you when your tool is ready">
+          </div>
+
+          <!-- Contribution Section -->
+          <div class="contribution-section">
+            <h3 data-i18n="custom_contribution_title">Your Contribution</h3>
+            <p data-i18n="custom_contribution_desc">Choose an amount that works for you. Every contribution helps!</p>
+            
+            <div class="amount-options">
+              <label class="amount-option">
+                <input type="radio" name="amount" value="5">
+                <span class="amount-label">$5</span>
+                <span class="amount-tag" data-i18n="custom_amount_coffee">Coffee ☕</span>
+              </label>
+              <label class="amount-option">
+                <input type="radio" name="amount" value="15" checked>
+                <span class="amount-label">$15</span>
+                <span class="amount-tag" data-i18n="custom_amount_lunch">Lunch 🍱</span>
+              </label>
+              <label class="amount-option">
+                <input type="radio" name="amount" value="30">
+                <span class="amount-label">$30</span>
+                <span class="amount-tag" data-i18n="custom_amount_support">Support 💪</span>
+              </label>
+              <label class="amount-option">
+                <input type="radio" name="amount" value="50">
+                <span class="amount-label">$50</span>
+                <span class="amount-tag" data-i18n="custom_amount_sponsor">Sponsor 🌟</span>
+              </label>
+              <label class="amount-option custom-amount-option">
+                <input type="radio" name="amount" value="custom">
+                <span class="amount-label" data-i18n="custom_amount_custom">Custom</span>
+                <input type="number" id="customAmount" min="1" max="1000" placeholder="$" class="custom-amount-input">
+              </label>
+            </div>
+
+            <div class="payment-note">
+              <i data-lucide="info"></i>
+              <span data-i18n="custom_payment_note">Payment options: PayPal, Alipay, WeChat Pay. You'll be redirected after submitting.</span>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="submit-btn">
+            <i data-lucide="send"></i>
+            <span data-i18n="custom_submit_btn">Submit Request & Continue to Payment</span>
+          </button>
+        </form>
+      </section>
+
+      <!-- FAQ -->
+      <section class="custom-section">
+        <h2 data-i18n="custom_faq_title">Frequently Asked Questions</h2>
+        <div class="custom-faq">
+          <div class="faq-item">
+            <h4 data-i18n="custom_faq1_q">What if my tool idea is simple?</h4>
+            <p data-i18n="custom_faq1_a">Simple tools are welcome! Even a $5 contribution helps cover our time. We'll add useful tools to the platform for everyone.</p>
+          </div>
+          <div class="faq-item">
+            <h4 data-i18n="custom_faq2_q">How long does development take?</h4>
+            <p data-i18n="custom_faq2_a">Typically 1-2 weeks for simple tools, longer for complex ones. We'll email you with updates if you provide your email.</p>
+          </div>
+          <div class="faq-item">
+            <h4 data-i18n="custom_faq3_q">What if I can't pay?</h4>
+            <p data-i18n="custom_faq3_a">You can still submit your idea! Select the smallest amount or $0. We prioritize paid requests but consider all suggestions.</p>
+          </div>
+          <div class="faq-item">
+            <h4 data-i18n="custom_faq4_q">Will the tool be public?</h4>
+            <p data-i18n="custom_faq4_a">Yes, custom tools are added to UseEasyTool for everyone to use. If you need a private tool, mention it in your request.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Alternative Contact -->
+      <section class="custom-section alt-contact">
+        <h2 data-i18n="custom_alt_title">Prefer to Contact Us Directly?</h2>
+        <p data-i18n="custom_alt_desc">You can also reach us via:</p>
+        <div class="alt-contact-methods">
+          <a href="mailto:support@useeasytool.com" class="alt-contact-btn">
+            <i data-lucide="mail"></i>
+            <span>support@useeasytool.com</span>
+          </a>
+          <a href="https://github.com/useeasytool/useeasytool.github.io/issues" target="_blank" rel="noopener" class="alt-contact-btn">
+            <i data-lucide="github"></i>
+            <span>GitHub Issues</span>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-bottom">
+        <div class="footer-brand">
+          <a href="index.html" class="logo"><i data-lucide="toolbox"></i><span>UseEasyTool</span></a>
+        </div>
+        <div class="footer-links-group">
+          <div class="footer-col">
+            <h5 data-i18n="footer_col_resources">Resources</h5>
+            <a href="about.html" data-i18n="footer_about">About</a>
+            <a href="privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
+            <a href="terms.html" data-i18n="footer_terms">Terms of Service</a>
+            <a href="contact.html" data-i18n="footer_contact">Contact</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2024 UseEasyTool. <span data-i18n="footer_rights">All rights reserved.</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+
+    // Form submission handler
+    document.getElementById('customToolForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const toolName = formData.get('toolName');
+      const toolDescription = formData.get('toolDescription');
+      const useCase = formData.get('useCase');
+      const email = formData.get('email');
+      let amount = formData.get('amount');
+      
+      if (amount === 'custom') {
+        amount = document.getElementById('customAmount').value || '0';
+      }
+
+      // Build mailto link with form data
+      const subject = encodeURIComponent(`Custom Tool Request: ${toolName || 'New Tool'}`);
+      const body = encodeURIComponent(
+        `Tool Name: ${toolName || 'Not specified'}\n\n` +
+        `Description:\n${toolDescription}\n\n` +
+        `Use Case:\n${useCase || 'Not specified'}\n\n` +
+        `Email: ${email || 'Not provided'}\n\n` +
+        `Contribution Amount: $${amount}`
+      );
+
+      // Open email client
+      window.location.href = `mailto:support@useeasytool.com?subject=${subject}&body=${body}`;
+      
+      // Show success message
+      alert('Your request is being prepared. Please send the email to complete your submission.');
+    });
+
+    // Custom amount input handling
+    document.querySelectorAll('input[name="amount"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        const customInput = document.getElementById('customAmount');
+        if (this.value === 'custom') {
+          customInput.focus();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

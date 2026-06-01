@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="contact_title">Contact Us - UseEasyTool</title>
+  <meta name="description" data-i18n="contact_description" content="Contact UseEasyTool - Get in touch with us for feedback, suggestions, or support.">
+  <link rel="canonical" href="https://useeasytool.com/contact.html">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/dark.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="navbar-logo">
+        <i data-lucide="toolbox"></i>
+        <span>UseEasyTool</span>
+      </a>
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language">
+          <span class="lang-label">EN</span>
+        </button>
+        <button class="btn-icon" id="themeToggle" data-theme-toggle aria-label="Toggle Theme">
+          <i data-lucide="sun" class="theme-icon-light"></i>
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content page-content">
+    <div class="container">
+      <h1 data-i18n="contact_heading">Contact Us</h1>
+      
+      <section class="contact-section">
+        <p data-i18n="contact_intro">We'd love to hear from you! Whether you have a question, suggestion, or found a bug, feel free to reach out.</p>
+      </section>
+
+      <section class="contact-section">
+        <h2 data-i18n="contact_ways_title">Ways to Reach Us</h2>
+        
+        <div class="contact-methods">
+          <div class="contact-method">
+            <div class="contact-icon"><i data-lucide="mail"></i></div>
+            <div class="contact-info">
+              <h3 data-i18n="contact_email_title">Email</h3>
+              <p data-i18n="contact_email_text">For general inquiries and support:</p>
+              <a href="mailto:support@useeasytool.com" class="contact-link">support@useeasytool.com</a>
+            </div>
+          </div>
+
+          <div class="contact-method">
+            <div class="contact-icon"><i data-lucide="github"></i></div>
+            <div class="contact-info">
+              <h3 data-i18n="contact_github_title">GitHub</h3>
+              <p data-i18n="contact_github_text">Report bugs or contribute code:</p>
+              <a href="https://github.com/useeasytool/useeasytool.github.io" target="_blank" rel="noopener" class="contact-link">github.com/useeasytool</a>
+            </div>
+          </div>
+
+          <div class="contact-method">
+            <div class="contact-icon"><i data-lucide="message-circle"></i></div>
+            <div class="contact-info">
+              <h3 data-i18n="contact_feedback_title">Feedback</h3>
+              <p data-i18n="contact_feedback_text">Have a tool suggestion? Let us know!</p>
+              <span data-i18n="contact_feedback_note">We read every message and appreciate your input.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact-section">
+        <h2 data-i18n="contact_response_title">Response Time</h2>
+        <p data-i18n="contact_response_text">We typically respond to inquiries within 24-48 hours. For bug reports, please include as much detail as possible to help us resolve the issue quickly.</p>
+      </section>
+
+      <section class="contact-section">
+        <h2 data-i18n="contact_faq_title">Frequently Asked Questions</h2>
+        <div class="faq-list">
+          <div class="faq-item">
+            <h4 data-i18n="contact_faq_1_q">Is UseEasyTool free to use?</h4>
+            <p data-i18n="contact_faq_1_a">Yes! All our tools are completely free to use. No registration or payment required.</p>
+          </div>
+          <div class="faq-item">
+            <h4 data-i18n="contact_faq_2_q">Is my data safe?</h4>
+            <p data-i18n="contact_faq_2_a">Absolutely. All processing happens in your browser. We never upload or store your data on our servers.</p>
+          </div>
+          <div class="faq-item">
+            <h4 data-i18n="contact_faq_3_q">Can I suggest a new tool?</h4>
+            <p data-i18n="contact_faq_3_a">Yes! We welcome suggestions. Send us an email or open an issue on GitHub.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-bottom">
+        <div class="footer-brand">
+          <a href="index.html" class="logo"><i data-lucide="toolbox"></i><span>UseEasyTool</span></a>
+        </div>
+        <div class="footer-links-group">
+          <div class="footer-col">
+            <h5 data-i18n="footer_col_resources">Resources</h5>
+            <a href="about.html" data-i18n="footer_about">About</a>
+            <a href="privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
+            <a href="terms.html" data-i18n="footer_terms">Terms of Service</a>
+            <a href="contact.html" data-i18n="footer_contact">Contact</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2024 UseEasyTool. <span data-i18n="footer_rights">All rights reserved.</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>
