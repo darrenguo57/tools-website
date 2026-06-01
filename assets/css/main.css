@@ -2667,15 +2667,16 @@ html.dark .header-search input:focus {
    Mobile Category Bar
    ---------------------------------------------------------- */
 
-/* Mobile Category Bar - Hidden on Desktop */
+/* Mobile Category Bar - Always hidden by default */
 .mobile-category-bar {
   display: none;
 }
 
-@media (max-width: 1023px) {
+/* Show category bar ONLY on mobile screens (<= 767px) */
+@media (max-width: 767px) {
   .mobile-category-bar {
     display: block;
-    margin: var(--space-4) 0;
+    margin: var(--space-3) 0;
   }
 }
 
@@ -2771,8 +2772,15 @@ html.dark .header-search input:focus {
   overflow-y: auto;
 }
 
-.mobile-search-overlay.active {
-  display: block;
+/* Only show on mobile when active */
+@media (max-width: 767px) {
+  .mobile-search-overlay {
+    display: none;
+  }
+  
+  .mobile-search-overlay.active {
+    display: block;
+  }
 }
 
 .mobile-search-header {
