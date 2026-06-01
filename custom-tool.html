@@ -232,51 +232,108 @@
 
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/app.js"></script>
-  <script src="assets/js/paypal.js"></script>
   <script>
     if (typeof lucide !== 'undefined') {
       lucide.createIcons();
     }
 
-    // Initialize PayPal buttons when page loads
-    document.addEventListener('DOMContentLoaded', function() {
-      // Get selected amount
-      const selectedAmount = document.querySelector('input[name="amount"]:checked')?.value || '15';
-      let amount = selectedAmount === 'custom' ? (document.getElementById('customAmount')?.value || '15') : selectedAmount;
-      amount = parseFloat(amount) || 15;
-
-      // Initialize PayPal with selected amount
-      if (typeof PayPal !== 'undefined') {
-        PayPal.createCustomAmountButton('paypal-button-container', {
-          presetAmounts: [
-            { id: 'coffee', label: 'Coffee ☕', value: 5 },
-            { id: 'lunch', label: 'Lunch 🍱', value: 15 },
-            { id: 'support', label: 'Support 💪', value: 30 },
-            { id: 'sponsor', label: 'Sponsor 🌟', value: 50 }
-          ],
-          description: 'Custom Tool Request - UseEasyTool',
-          onSuccess: function(data) {
-            console.log('Payment successful:', data);
-            // Here you would typically:
-            // 1. Send payment confirmation to your server
-            // 2. Store the request details
-            // 3. Send confirmation email to user
-          },
-          onCancel: function() {
-            console.log('Payment cancelled');
-          }
-        });
+    // Get current selected amount from HTML form
+    function getSelectedAmount() {
+      const selected = document.querySelector('input[name="amount"]:checked')?.value || '15';
+      if (selected === 'custom') {
+        return parseFloat(document.getElementById('customAmount')?.value) || 15;
       }
+      return parseFloat(selected) || 15;
+    }
+
+    // Load PayPal SDK and render button
+    function loadPayPalButton() {
+      const clientId = PayPal && PayPal.PAYPAL_CLIENT_ID ? PayPal.PAYPAL_CLIENT_ID : 'AV1ibSI5cMM1DDR7SxiahHlHxkf6JC3XAYExWEyINq9KHVQbwB5wYWQPZ6cEbdWpuV8D1ZGSMwD4irN8';
+      const container = document.getElementById('paypal-button-container');
+      if (!container) return;
+
+      // Check if already loaded
+      if (container.querySelector('.paypal-buttons')) {
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD`;
+      script.async = true;
+      script.onload = function() {
+        if (typeof paypal !== 'undefined') {
+          renderPayPalButton();
+        }
+      };
+      document.head.appendChild(script);
+    }
+
+    // Render PayPal button with current amount
+    function renderPayPalButton() {
+      const container = document.getElementById('paypal-button-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const amount = getSelectedAmount();
+
+      paypal.Buttons({
+        style: {
+          layout: 'vertical',
+          color: 'blue',
+          shape: 'rect',
+          label: 'paypal'
+        },
+        createOrder: function(data, actions) {
+          return actions.order.create({
+            purchase_units: [{
+              description: 'Custom Tool Request - UseEasyTool',
+              amount: {
+                value: amount.toFixed(2)
+              }
+            }]
+          });
+        },
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(details) {
+            console.log('Payment successful:', data);
+            container.innerHTML = `
+              <div class="paypal-success">
+                <div class="success-icon">✓</div>
+                <h3 data-i18n="paypal_success_title">Thank You!</h3>
+                <p data-i18n="paypal_success_text">Your support helps us keep the tools free.</p>
+              </div>
+            `;
+          });
+        },
+        onCancel: function(data) {
+          console.log('Payment cancelled');
+        },
+        onError: function(err) {
+          console.error('PayPal Error:', err);
+        }
+      }).render('#paypal-button-container');
+    }
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      loadPayPalButton();
     });
 
-    // Custom amount input handling
-    document.querySelectorAll('input[name="amount"]').forEach(radio => {
+    // Update PayPal button when amount selection changes
+    document.querySelectorAll('input[name="amount"]').forEach(function(radio) {
       radio.addEventListener('change', function() {
         const customInput = document.getElementById('customAmount');
         if (this.value === 'custom') {
           customInput.focus();
         }
+        // Re-render button with new amount
+        setTimeout(renderPayPalButton, 100);
       });
+    });
+
+    // Update button when custom amount input changes
+    document.getElementById('customAmount')?.addEventListener('input', function() {
+      setTimeout(renderPayPalButton, 100);
     });
 
     // Email-only request button
