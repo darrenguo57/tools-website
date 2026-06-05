@@ -42,6 +42,38 @@
         
         @media (max-width: 768px) { .screenshot-controls { flex-direction: column; } }
     </style>
+
+  <!-- SEO Meta Tags -->
+  <link rel="canonical" href="https://useeasytool.com/tools/image-tools/screenshot.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Screenshot Tool - UseEasyTool">
+  <meta property="og:description" content="Capture screenshots from HTML">
+  <meta property="og:url" content="https://useeasytool.com/tools/image-tools/screenshot.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta property="og:image" content="https://useeasytool.com/assets/images/og-image.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Screenshot Tool - UseEasyTool">
+  <meta name="twitter:description" content="Capture screenshots from HTML">
+  <meta name="twitter:image" content="https://useeasytool.com/assets/images/og-image.png">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Screenshot Tool - UseEasyTool",
+    "url": "https://useeasytool.com/tools/image-tools/screenshot.html",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "Capture screenshots from HTML"
+  }
+  </script>
 </head>
 <body>
     <!-- Header -->
@@ -219,7 +251,39 @@
         const bgStyle = bg === 'transparent' ? 'background:transparent' : 'background:' + bg;
         
         doc.open();
-        doc.write('<!DOCTYPE html><html><head><style>body{margin:0;padding:20px;font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif;' + bgStyle + ';}</style></head><body>' + html + '</body></html>');
+        doc.write('<!DOCTYPE html><html><head><style>body{margin:0;padding:20px;font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif;' + bgStyle + ';}</style>
+  <!-- SEO Meta Tags -->
+  <link rel="canonical" href="https://useeasytool.com/tools/image-tools/screenshot.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Screenshot Tool - UseEasyTool">
+  <meta property="og:description" content="Capture screenshots from HTML">
+  <meta property="og:url" content="https://useeasytool.com/tools/image-tools/screenshot.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta property="og:image" content="https://useeasytool.com/assets/images/og-image.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Screenshot Tool - UseEasyTool">
+  <meta name="twitter:description" content="Capture screenshots from HTML">
+  <meta name="twitter:image" content="https://useeasytool.com/assets/images/og-image.png">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Screenshot Tool - UseEasyTool",
+    "url": "https://useeasytool.com/tools/image-tools/screenshot.html",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "Capture screenshots from HTML"
+  }
+  </script>
+</head><body>' + html + '</body></html>');
         doc.close();
     
         document.getElementById('previewStatus').textContent = 'Preview loaded';
