@@ -486,5 +486,10 @@
   "custom_faq4_q": "Will the tool be public?",
   "custom_faq4_a": "Yes, custom tools are added to UseEasyTool for everyone to use. If you need a private tool, mention it in your request.",
   "custom_alt_title": "Prefer to Contact Us Directly?",
-  "custom_alt_desc": "You can also reach us via:"
+  "custom_alt_desc": "You can also reach us via:",
+  "tool_how_to_use": "How to Use",
+  "tool_step_input": "Enter or paste your content in the input area above",
+  "tool_step_action": "Click the action button to process your data",
+  "tool_step_output": "View the results in the output area below",
+  "tool_step_copy": "Copy the results to clipboard or download as needed"
 }

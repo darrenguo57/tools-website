@@ -486,5 +486,10 @@
   "custom_faq4_q": "工具会公开吗？",
   "custom_faq4_a": "是的，定制工具会添加到 UseEasyTool 供所有人使用。如果您需要私有工具，请在请求中说明。",
   "custom_alt_title": "想直接联系我们？",
-  "custom_alt_desc": "您也可以通过以下方式联系我们："
+  "custom_alt_desc": "您也可以通过以下方式联系我们：",
+  "tool_how_to_use": "使用方法",
+  "tool_step_input": "在上方输入区域输入或粘贴内容",
+  "tool_step_action": "点击操作按钮处理数据",
+  "tool_step_output": "在下方输出区域查看结果",
+  "tool_step_copy": "复制结果到剪贴板或按需下载"
 }

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regex Beginner Tutorial: Master Regular Expressions from Scratch - UseEasyTool Blog</title>
+  <meta name="description" content="Learn regular expressions from scratch with this hands-on beginner tutorial. Includes practical regex patterns for email validation, URL matching, phone numbers, and more.">
+  <meta name="keywords" content="regex, regular expressions, regex tutorial, regex beginner, email regex, URL regex, phone regex, pattern matching, developer tools">
+  <meta name="author" content="UseEasyTool Team">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Regex Beginner Tutorial: Master Regular Expressions from Scratch">
+  <meta property="og:description" content="Learn regular expressions from scratch with practical examples: email validation, URL matching, phone numbers, and real-world regex patterns for developers.">
+  <meta property="og:url" content="https://UseEasyTool.example.com/blog/articles/regex-beginner-tutorial.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta property="article:published_time" content="2024-03-15">
+  <meta property="article:tag" content="regex">
+  <meta property="article:tag" content="tutorial">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Regex Beginner Tutorial: Master Regular Expressions from Scratch">
+  <meta name="twitter:description" content="Learn regular expressions from scratch with practical examples: email validation, URL matching, phone numbers, and real-world regex patterns.">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Regex Beginner Tutorial: Master Regular Expressions from Scratch",
+    "description": "Learn regular expressions from scratch with this hands-on beginner tutorial. Includes practical regex patterns for email validation, URL matching, phone numbers, and more.",
+    "image": "https://UseEasyTool.example.com/assets/images/blog/regex-beginner-tutorial.jpg",
+    "datePublished": "2024-03-15",
+    "dateModified": "2024-03-15",
+    "author": {
+      "@type": "Organization",
+      "name": "UseEasyTool Team"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "UseEasyTool",
+      "url": "https://UseEasyTool.example.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://UseEasyTool.example.com/assets/images/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://UseEasyTool.example.com/blog/articles/regex-beginner-tutorial.html"
+    },
+    "keywords": ["regex", "regular expressions", "regex tutorial", "pattern matching", "email validation", "URL matching"]
+  }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="../../assets/css/blog.css">
+</head>
+<body>
+
+  <!-- ========== Navigation ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo">
+        <i data-lucide="UseEasyTool"></i>
+        <span>UseEasyTool</span>
+      </a>
+
+      <div class="navbar-search">
+        <i data-lucide="search"></i>
+        <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+      </div>
+
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language">
+          <span class="lang-label">EN</span>
+        </button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="theme-icon-light"></i>
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+        </button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== Main Layout ========== -->
+  <div class="main-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3 data-i18n="sidebar_categories">Categories</h3>
+      </div>
+      <ul class="sidebar-list">
+        <li>
+          <a href="../../index.html" class="sidebar-item" data-category="all">
+            <i data-lucide="layout-grid"></i>
+            <span data-i18n="cat_all">All Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=converters" class="sidebar-item" data-category="converters">
+            <i data-lucide="repeat"></i>
+            <span data-i18n="cat_converters">Converters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=calculators" class="sidebar-item" data-category="calculators">
+            <i data-lucide="calculator"></i>
+            <span data-i18n="cat_calculators">Calculators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=image-tools" class="sidebar-item" data-category="image-tools">
+            <i data-lucide="image"></i>
+            <span data-i18n="cat_image_tools">Image Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=generators" class="sidebar-item" data-category="generators">
+            <i data-lucide="sparkles"></i>
+            <span data-i18n="cat_generators">Generators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=formatters" class="sidebar-item" data-category="formatters">
+            <i data-lucide="braces"></i>
+            <span data-i18n="cat_formatters">Formatters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=crypto" class="sidebar-item" data-category="crypto">
+            <i data-lucide="shield"></i>
+            <span data-i18n="cat_crypto">Encryption</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=charts" class="sidebar-item" data-category="charts">
+            <i data-lucide="bar-chart-3"></i>
+            <span data-i18n="cat_charts">Charts</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=testing" class="sidebar-item" data-category="testing">
+            <i data-lucide="flask-conical"></i>
+            <span data-i18n="cat_testing">Testing</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="article-detail">
+
+        <!-- Article Hero -->
+        <header class="article-hero">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="../../index.html">Home</a>
+            <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+            <a href="../index.html">Blog</a>
+            <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+            <span class="breadcrumb-current">Regex Beginner Tutorial</span>
+          </nav>
+
+          <div class="article-hero__tags">
+            <span class="blog-tag">regex</span>
+            <span class="blog-tag">tutorial</span>
+          </div>
+
+          <h1 class="article-hero__title">Regex Beginner Tutorial: Master Regular Expressions from Scratch</h1>
+
+          <div class="article-hero__meta">
+            <div class="article-hero__author">
+              <div class="article-hero__author-avatar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <div class="article-hero__author-info">
+                <span class="article-hero__author-name">UseEasyTool Team</span>
+                <span class="article-hero__author-role">Developer Tools Experts</span>
+              </div>
+            </div>
+            <div class="article-hero__stats">
+              <span class="article-hero__stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                March 15, 2024
+              </span>
+              <span class="article-hero__stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                8 min read
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Article Cover -->
+        <div class="article-cover">
+          <div class="article-card__image-placeholder" style="height:360px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+        </div>
+
+        <!-- Article Content -->
+        <article class="article-content">
+
+          <h2>What Are Regular Expressions</h2>
+          <p>Regular expressions — commonly called <strong>regex</strong> or <strong>regexp</strong> — are patterns used to match character combinations in strings. Think of them as a powerful search language: instead of searching for an exact word, you describe a <em>pattern</em> of characters, and the regex engine finds all strings that fit that pattern.</p>
+          <p>Regex is deeply embedded in nearly every programming language and developer tool. You will find it in JavaScript, Python, Java, C#, PHP, Ruby, Go, shell scripts with <code>grep</code> and <code>sed</code>, text editors like VS Code and Sublime Text, databases, and even spreadsheet formulas. Once you learn regex, you carry a superpower that works everywhere.</p>
+          <p>The syntax might look intimidating at first — a typical regex like <code>^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$</code> can seem like line noise. But regex is built from a small set of building blocks that fit together logically. This tutorial will walk you through each one.</p>
+
+          <h2>Regex Fundamentals: The Building Blocks</h2>
+          <p>Every regex is composed from three categories of tokens. Once you understand these, you can read and write any pattern.</p>
+
+          <h3>1. Literal Characters</h3>
+          <p>These are the simplest building blocks: they match exactly themselves. The regex <code>cat</code> matches the literal substring "cat" — nothing more, nothing less. It will match inside "catalog", "scatter", and "wildcat". Case matters: <code>cat</code> does not match "Cat" unless you enable case-insensitive mode (the <code>i</code> flag).</p>
+
+          <h3>2. Metacharacters</h3>
+          <p>Metacharacters have special meaning in regex and do not match themselves. The twelve regex metacharacters you need to know are:</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Metacharacter</th>
+                <th>Name</th>
+                <th>Matches</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>.</code></td><td>Dot</td><td>Any single character except newline</td></tr>
+              <tr><td><code>^</code></td><td>Caret</td><td>Start of string (or start of line in multiline mode)</td></tr>
+              <tr><td><code>$</code></td><td>Dollar</td><td>End of string (or end of line in multiline mode)</td></tr>
+              <tr><td><code>*</code></td><td>Star</td><td>Zero or more of the preceding token</td></tr>
+              <tr><td><code>+</code></td><td>Plus</td><td>One or more of the preceding token</td></tr>
+              <tr><td><code>?</code></td><td>Question mark</td><td>Zero or one of the preceding token (makes it optional)</td></tr>
+              <tr><td><code>{n,m}</code></td><td>Curly braces</td><td>Between n and m occurrences of the preceding token</td></tr>
+              <tr><td><code>|</code></td><td>Pipe</td><td>Alternation (logical OR) — matches left or right side</td></tr>
+              <tr><td><code>( )</code></td><td>Parentheses</td><td>Grouping and capturing</td></tr>
+              <tr><td><code>[ ]</code></td><td>Square brackets</td><td>Character class — matches any one character inside</td></tr>
+              <tr><td><code>\</code></td><td>Backslash</td><td>Escapes a metacharacter to match it literally</td></tr>
+            </tbody>
+          </table>
+          <p>If you need to match a literal metacharacter, escape it with a backslash. For example, <code>\.</code> matches a literal period, and <code>\+</code> matches a literal plus sign.</p>
+
+          <h3>3. Shorthand Character Classes</h3>
+          <p>Shorthand classes save typing for common character groupings:</p>
+          <pre><code>\d  →  [0-9]                Any digit
+\D  →  [^0-9]               Any non-digit
+\w  →  [a-zA-Z0-9_]         Word character (letters, digits, underscore)
+\W  →  [^a-zA-Z0-9_]        Non-word character
+\s  →  [ \t\n\r\f\v]        Whitespace (space, tab, newline, etc.)
+\S  →  [^ \t\n\r\f\v]       Non-whitespace</code></pre>
+          <p>These are the backbone of real-world patterns. For example, <code>\d{3}-\d{3}-\d{4}</code> matches a US phone number format like "555-123-4567".</p>
+
+          <h2>Practical Regex Patterns You Can Use Today</h2>
+          <p>Learning regex theory is important, but nothing beats seeing how patterns solve real problems. Here are battle-tested regex patterns for common validation tasks, with explanations of how each one works.</p>
+
+          <h3>Email Validation</h3>
+          <pre><code>^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$</code></pre>
+          <p><strong>Breakdown:</strong></p>
+          <ul>
+            <li><code>^</code> — Start of the string.</li>
+            <li><code>[a-zA-Z0-9._%+-]+</code> — The local part (before the @): one or more letters, digits, dots, underscores, percent signs, plus signs, or hyphens.</li>
+            <li><code>@</code> — The literal at sign.</li>
+            <li><code>[a-zA-Z0-9.-]+</code> — The domain name: one or more letters, digits, dots, or hyphens.</li>
+            <li><code>\.</code> — A literal dot separating the domain from the TLD.</li>
+            <li><code>[a-zA-Z]{2,}</code> — The top-level domain: two or more letters (e.g., com, org, io, online).</li>
+            <li><code>$</code> — End of the string.</li>
+          </ul>
+
+          <h3>URL Matching</h3>
+          <pre><code>^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$</code></pre>
+          <p><strong>Breakdown:</strong></p>
+          <ul>
+            <li><code>^https?:\/\/</code> — Matches <code>http://</code> or <code>https://</code>. The <code>s?</code> makes the "s" optional.</li>
+            <li><code>(www\.)?</code> — Optionally matches <code>www.</code> at the start of the domain.</li>
+            <li><code>[-a-zA-Z0-9@:%._\+~#=]{1,256}</code> — The domain name: 1 to 256 allowed characters.</li>
+            <li><code>\.[a-zA-Z0-9()]{1,6}</code> — A dot followed by the TLD (1-6 characters).</li>
+            <li><code>\b</code> — A word boundary to ensure the TLD ends cleanly.</li>
+            <li><code>([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$</code> — The optional path, query string, and fragment.</li>
+          </ul>
+
+          <h3>Phone Number Matching (International)</h3>
+          <pre><code>^\+?[\d\s\-().]{7,15}$</code></pre>
+          <p><strong>Breakdown:</strong></p>
+          <ul>
+            <li><code>^\+?</code> — Optional leading plus sign for international prefix.</li>
+            <li><code>[\d\s\-().]{7,15}</code> — Between 7 and 15 characters consisting of digits, spaces, hyphens, parentheses, or dots. This covers formats like <code>+1 (555) 123-4567</code>, <code>555.123.4567</code>, and <code>+44-20-7946-0958</code>.</li>
+            <li><code>$</code> — End of string.</li>
+          </ul>
+
+          <h3>Strong Password Validation</h3>
+          <pre><code>^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':\"\\|,.<>\/?]).{8,}$</code></pre>
+          <p><strong>Breakdown:</strong></p>
+          <ul>
+            <li><code>^</code> — Start of string.</li>
+            <li><code>(?=.*[a-z])</code> — Positive lookahead: at least one lowercase letter exists somewhere ahead.</li>
+            <li><code>(?=.*[A-Z])</code> — Positive lookahead: at least one uppercase letter.</li>
+            <li><code>(?=.*\d)</code> — Positive lookahead: at least one digit.</li>
+            <li><code>(?=.*[!@#$%^&*()_+\-=\[\]{};':\"\\|,.<>\/?])</code> — Positive lookahead: at least one special character.</li>
+            <li><code>.{8,}</code> — Total length of 8 or more characters.</li>
+            <li><code>$</code> — End of string.</li>
+          </ul>
+
+          <h3>Date Format Extraction (YYYY-MM-DD)</h3>
+          <pre><code>\b\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\b</code></pre>
+          <p><strong>Breakdown:</strong></p>
+          <ul>
+            <li><code>\b</code> — Word boundary.</li>
+            <li><code>\d{4}</code> — Exactly four digits for the year.</li>
+            <li><code>-</code> — Literal hyphen.</li>
+            <li><code>(0[1-9]|1[0-2])</code> — Month: 01-09 or 10-12.</li>
+            <li><code>-</code> — Literal hyphen.</li>
+            <li><code>(0[1-9]|[12]\d|3[01])</code> — Day: 01-09, 10-29, or 30-31.</li>
+            <li><code>\b</code> — Word boundary.</li>
+          </ul>
+
+          <h2>Beyond the Basics: Advanced Techniques</h2>
+          <p>Once you are comfortable with fundamental patterns, these techniques unlock significantly more expressive power.</p>
+
+          <h3>Lookaheads and Lookbehinds</h3>
+          <p>Lookaround assertions let you check for a pattern <em>without consuming characters</em> — the regex engine peeks ahead or behind without moving its current position in the string.</p>
+          <pre><code># Positive lookahead: match "q" only if followed by "u"
+q(?=u)  →  matches "q" in "queen", not "q" in "Iraq"
+
+# Negative lookahead: match "q" only if NOT followed by "u"
+q(?!u)  →  matches "q" in "Iraq", not "q" in "queen"
+
+# Positive lookbehind: match digits only if preceded by "$"
+(?&lt;=\$)\d+  →  matches "100" in "$100", not "100" in "abc100"
+
+# Negative lookbehind: match digits NOT preceded by "$"
+(?&lt;!\$)\d+  →  matches "100" in "abc100", not "100" in "$100"</code></pre>
+
+          <h3>Non-Capturing Groups</h3>
+          <p>By default, parentheses create capturing groups that store matched text for later use (accessible via <code>$1</code>, <code>\1</code>, or <code>match.groups()</code>). When you only need grouping for structural purposes — such as alternation — use <code>(?: )</code> to avoid the overhead of capturing:</p>
+          <pre><code># Capturing group: stores "dog" or "cat" as $1
+^(dog|cat) food$
+
+# Non-capturing group: groups without storing
+^(?:dog|cat) food$</code></pre>
+
+          <h3>Greedy vs Lazy Quantifiers</h3>
+          <p>By default, <code>*</code>, <code>+</code>, and <code>{n,m}</code> are <strong>greedy</strong> — they match as many characters as possible. Appending <code>?</code> makes them <strong>lazy</strong>, matching as few characters as possible. This distinction is critical when the pattern appears multiple times in a string:</p>
+          <pre><code># Greedy: matches from first &lt;p&gt; to last &lt;/p&gt;
+&lt;p&gt;.*&lt;\/p&gt;
+
+# Lazy: matches each &lt;p&gt;...&lt;/p&gt; pair individually
+&lt;p&gt;.*?&lt;\/p&gt;
+
+# Input: "&lt;p&gt;First&lt;/p&gt;&lt;p&gt;Second&lt;/p&gt;"
+# Greedy matches: "&lt;p&gt;First&lt;/p&gt;&lt;p&gt;Second&lt;/p&gt;" (one match)
+# Lazy matches:   "&lt;p&gt;First&lt;/p&gt;" and "&lt;p&gt;Second&lt;/p&gt;" (two matches)</code></pre>
+
+          <h2>Regex in Your Favorite Languages</h2>
+          <p>Regex syntax is largely portable, but each language has its own API for applying patterns. Here is how to use the patterns from this tutorial in four popular languages:</p>
+
+          <pre><code>// JavaScript
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+console.log(emailRegex.test("user@example.com"));  // true
+console.log("Contact: user@example.com".match(emailRegex));
+
+# Python
+import re
+email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+print(bool(re.match(email_regex, "user@example.com")))  # True
+# Extract all emails from text:
+text = "Email a@b.com and c@d.org"
+print(re.findall(email_regex, text))  # ['a@b.com', 'c@d.org']
+
+// Java
+import java.util.regex.*;
+Pattern emailRegex = Pattern.compile(
+    "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+);
+Matcher m = emailRegex.matcher("user@example.com");
+System.out.println(m.matches());  // true
+
+# Ruby / grep / sed
+echo "user@example.com" | grep -E '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'</code></pre>
+
+          <h2>Conclusion</h2>
+          <p>Regular expressions are one of the most valuable skills a developer can learn. A handful of patterns — character classes, quantifiers, anchors, and groups — cover the vast majority of real-world use cases. Start with simple patterns and build complexity incrementally, testing each step as you go. The patterns in this tutorial are production-ready and will serve you well across form validation, log parsing, data extraction, and search-and-replace workflows. Ready to test your own regex? Use our <a href="../../tools/testers/regex.html">free online regex tester</a> to write, test, and debug your regular expressions with real-time matching and explanation.</p>
+
+        </article>
+
+        <!-- Article Footer -->
+        <footer class="article-footer">
+          <div class="article-footer__share">
+            <span class="article-footer__share-label">Share this article:</span>
+            <div class="article-footer__share-buttons">
+              <button class="article-footer__share-btn" aria-label="Share on Twitter" onclick="window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(window.location.href) + '&text=' + encodeURIComponent(document.title), '_blank')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+              </button>
+              <button class="article-footer__share-btn" aria-label="Share on LinkedIn" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(window.location.href), '_blank')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              </button>
+              <button class="article-footer__share-btn" aria-label="Copy link" onclick="navigator.clipboard.writeText(window.location.href)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+            </div>
+          </div>
+        </footer>
+
+        <!-- Related Articles -->
+        <section class="article-related">
+          <h2 class="article-related__title">Related Articles</h2>
+          <div class="article-related__grid">
+            <a href="json-formatting-guide.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">How to Format JSON Like a Pro</h3>
+                <p class="article-card__excerpt">Learn the best practices for formatting JSON data, including indentation, key sorting, and validation.</p>
+              </div>
+            </a>
+            <a href="markdown-vs-html-guide.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">Markdown vs HTML: A Comparison Guide</h3>
+                <p class="article-card__excerpt">Understand the differences between two markup languages and when to use each one.</p>
+              </div>
+            </a>
+            <a href="../index.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">View All Articles</h3>
+                <p class="article-card__excerpt">Browse our complete collection of developer tutorials, guides, and tips.</p>
+              </div>
+            </a>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links">
+        <a href="#" data-i18n="footer_about">About</a>
+        <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="#" data-i18n="footer_terms">Terms of Service</a>
+        <a href="#" data-i18n="footer_contact">Contact</a>
+      </div>
+      <p class="footer-copyright">&copy; 2024 UseEasyTool. <span data-i18n="footer_rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Scripts -->
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+</body>
+</html>
