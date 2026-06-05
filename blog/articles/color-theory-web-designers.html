@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Theory for Web Designers: A Practical Guide - UseEasyTool Blog</title>
+  <meta name="description" content="Master color theory for web design with this practical guide. Learn color wheel principles, harmony schemes, CSS variables, accessibility contrast ratios, and color psychology to build beautiful, inclusive interfaces.">
+  <meta name="keywords" content="color theory, web design, color wheel, color schemes, CSS variables, color accessibility, WCAG contrast, color psychology, developer tools">
+  <meta name="author" content="UseEasyTool Team">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Color Theory for Web Designers: A Practical Guide">
+  <meta property="og:description" content="Master color theory for web design: color wheel principles, harmony schemes, CSS variables, accessibility contrast ratios, and color psychology.">
+  <meta property="og:url" content="https://UseEasyTool.example.com/blog/articles/color-theory-web-designers.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta property="article:published_time" content="2024-04-01">
+  <meta property="article:tag" content="color">
+  <meta property="article:tag" content="design">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Color Theory for Web Designers: A Practical Guide">
+  <meta name="twitter:description" content="Master color theory for web design: color wheel principles, harmony schemes, CSS variables, accessibility contrast ratios, and color psychology.">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Color Theory for Web Designers: A Practical Guide",
+    "description": "Master color theory for web design with this practical guide. Learn color wheel principles, harmony schemes, CSS variables, accessibility contrast ratios, and color psychology to build beautiful, inclusive interfaces.",
+    "image": "https://UseEasyTool.example.com/assets/images/blog/color-theory-web-designers.jpg",
+    "datePublished": "2024-04-01",
+    "dateModified": "2024-04-01",
+    "author": {
+      "@type": "Organization",
+      "name": "UseEasyTool Team"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "UseEasyTool",
+      "url": "https://UseEasyTool.example.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://UseEasyTool.example.com/assets/images/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://UseEasyTool.example.com/blog/articles/color-theory-web-designers.html"
+    },
+    "keywords": ["color theory", "web design", "color wheel", "color schemes", "CSS variables", "color accessibility", "WCAG", "color psychology"]
+  }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="../../assets/css/blog.css">
+</head>
+<body>
+
+  <!-- ========== Navigation ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo">
+        <i data-lucide="UseEasyTool"></i>
+        <span>UseEasyTool</span>
+      </a>
+
+      <div class="navbar-search">
+        <i data-lucide="search"></i>
+        <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+      </div>
+
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language">
+          <span class="lang-label">EN</span>
+        </button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="theme-icon-light"></i>
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+        </button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== Main Layout ========== -->
+  <div class="main-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3 data-i18n="sidebar_categories">Categories</h3>
+      </div>
+      <ul class="sidebar-list">
+        <li>
+          <a href="../../index.html" class="sidebar-item" data-category="all">
+            <i data-lucide="layout-grid"></i>
+            <span data-i18n="cat_all">All Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=converters" class="sidebar-item" data-category="converters">
+            <i data-lucide="repeat"></i>
+            <span data-i18n="cat_converters">Converters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=calculators" class="sidebar-item" data-category="calculators">
+            <i data-lucide="calculator"></i>
+            <span data-i18n="cat_calculators">Calculators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=image-tools" class="sidebar-item" data-category="image-tools">
+            <i data-lucide="image"></i>
+            <span data-i18n="cat_image_tools">Image Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=generators" class="sidebar-item" data-category="generators">
+            <i data-lucide="sparkles"></i>
+            <span data-i18n="cat_generators">Generators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=formatters" class="sidebar-item" data-category="formatters">
+            <i data-lucide="braces"></i>
+            <span data-i18n="cat_formatters">Formatters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=crypto" class="sidebar-item" data-category="crypto">
+            <i data-lucide="shield"></i>
+            <span data-i18n="cat_crypto">Encryption</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=charts" class="sidebar-item" data-category="charts">
+            <i data-lucide="bar-chart-3"></i>
+            <span data-i18n="cat_charts">Charts</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=testing" class="sidebar-item" data-category="testing">
+            <i data-lucide="flask-conical"></i>
+            <span data-i18n="cat_testing">Testing</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="article-detail">
+
+        <!-- Article Hero -->
+        <header class="article-hero">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="../../index.html">Home</a>
+            <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+            <a href="../index.html">Blog</a>
+            <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+            <span class="breadcrumb-current">Color Theory for Web Designers</span>
+          </nav>
+
+          <div class="article-hero__tags">
+            <span class="blog-tag">color</span>
+            <span class="blog-tag">design</span>
+          </div>
+
+          <h1 class="article-hero__title">Color Theory for Web Designers: A Practical Guide</h1>
+
+          <div class="article-hero__meta">
+            <div class="article-hero__author">
+              <div class="article-hero__author-avatar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <div class="article-hero__author-info">
+                <span class="article-hero__author-name">UseEasyTool Team</span>
+                <span class="article-hero__author-role">Developer Tools Experts</span>
+              </div>
+            </div>
+            <div class="article-hero__stats">
+              <span class="article-hero__stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                April 1, 2024
+              </span>
+              <span class="article-hero__stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                7 min read
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Article Cover -->
+        <div class="article-cover">
+          <div class="article-card__image-placeholder" style="height:360px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+        </div>
+
+        <!-- Article Content -->
+        <article class="article-content">
+
+          <h2>Why Color Theory Matters in Web Design</h2>
+          <p>Color is the first thing users notice about a website — often before they read a single word. Research shows that people make a subconscious judgment about a product or environment within <strong>90 seconds</strong> of initial viewing, and up to 90% of that assessment is based on color alone. In web design, color influences brand perception, guides user attention, communicates hierarchy, evokes emotion, and directly impacts conversion rates.</p>
+          <p>The challenge for web designers is that color is not purely subjective. It is governed by consistent, learnable principles — the same principles artists and designers have used for centuries. Color theory provides a systematic framework for choosing colors that work together harmoniously and communicate the right message. When combined with modern CSS capabilities and accessibility standards, color theory becomes a practical engineering tool, not just an artistic one.</p>
+
+          <h2>The Color Wheel and Color Models</h2>
+          <p>The traditional color wheel organizes hues in a circle, revealing the mathematical relationships between colors. For web design, two color models are essential:</p>
+
+          <h3>RGB (Red, Green, Blue)</h3>
+          <p>RGB is an <strong>additive</strong> color model used by screens. Colors are created by mixing red, green, and blue light at varying intensities from 0 to 255. At full intensity (255, 255, 255), you get white; at zero (0, 0, 0), you get black. CSS accepts RGB in several formats:</p>
+          <pre><code>/* All of these produce the same vibrant blue */
+color: rgb(59, 130, 246);
+color: #3B82F6;
+color: hsl(217, 91%, 60%);</code></pre>
+
+          <h3>HSL (Hue, Saturation, Lightness)</h3>
+          <p>HSL is far more intuitive for designers because it mirrors how humans think about color. Instead of mixing channels, you specify:</p>
+          <ul>
+            <li><strong>Hue</strong> (0-360): the base color — 0 is red, 120 is green, 240 is blue.</li>
+            <li><strong>Saturation</strong> (0-100%): the intensity. 0% is completely gray, 100% is pure vivid color.</li>
+            <li><strong>Lightness</strong> (0-100%): 0% is black, 50% is the pure hue, 100% is white.</li>
+          </ul>
+          <p>HSL makes it trivial to create variations of a color — darken by lowering lightness, desaturate for a muted tone, or shift hue for an analogous scheme. This is why modern design systems like Tailwind CSS and Radix UI are built on HSL-based color palettes.</p>
+
+          <h3>Color Wheel Relationships</h3>
+          <p>With HSL, the color wheel becomes a 360-degree circle. Key color positions are:</p>
+          <table>
+            <thead>
+              <tr><th>Color</th><th>Hue</th><th>Hex Example</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Red</td><td>0 (or 360)</td><td><code>#EF4444</code></td></tr>
+              <tr><td>Orange</td><td>30</td><td><code>#F97316</code></td></tr>
+              <tr><td>Yellow</td><td>60</td><td><code>#EAB308</code></td></tr>
+              <tr><td>Green</td><td>120</td><td><code>#22C55E</code></td></tr>
+              <tr><td>Cyan</td><td>180</td><td><code>#06B6D4</code></td></tr>
+              <tr><td>Blue</td><td>240</td><td><code>#3B82F6</code></td></tr>
+              <tr><td>Purple</td><td>270</td><td><code>#8B5CF6</code></td></tr>
+              <tr><td>Magenta</td><td>300</td><td><code>#D946EF</code></td></tr>
+            </tbody>
+          </table>
+
+          <h2>Color Harmony: Proven Schemes That Work</h2>
+          <p>Color harmony schemes are formulas built from the geometric relationships on the color wheel. Each scheme produces a distinct mood and suits different types of interfaces.</p>
+
+          <h3>Monochromatic</h3>
+          <p>Uses a single hue with variations in saturation and lightness. The result is clean, cohesive, and elegant. Monochromatic palettes are excellent for <strong>minimalist designs, dashboards, and content-heavy sites</strong> where color should not compete with information. For example, a blue monochromatic scheme might use <code>hsl(220, 90%, 60%)</code> as the base with lighter tints for backgrounds and darker shades for text.</p>
+
+          <h3>Analogous</h3>
+          <p>Uses colors that are adjacent on the color wheel, typically spanning 30-60 degrees. Analogous palettes feel natural and harmonious because they appear together in nature — think of a sunset gradient from orange to red to purple. An analogous CSS example:</p>
+          <pre><code>/* Analogous: blue → teal → green */
+--color-primary: hsl(220, 70%, 50%);    /* Blue */
+--color-secondary: hsl(190, 70%, 48%);  /* Teal */
+--color-accent: hsl(160, 70%, 45%);     /* Green */</code></pre>
+
+          <h3>Complementary</h3>
+          <p>Uses colors from opposite sides of the color wheel (180 degrees apart). Complementary schemes create maximum contrast and visual energy. The most famous example is blue and orange — used extensively in movie posters and action-oriented interfaces. Use complementary colors for <strong>call-to-action buttons</strong> against backgrounds, but apply them sparingly: too much of both creates tension.</p>
+          <pre><code>/* Complementary: blue + orange */
+--color-primary: hsl(220, 70%, 50%);    /* Blue */
+--color-cta: hsl(40, 90%, 55%);         /* Orange */</code></pre>
+
+          <h3>Triadic</h3>
+          <p>Uses three colors equally spaced on the color wheel (120 degrees apart). Triadic palettes are vibrant and balanced — the primary colors (red, yellow, blue) are the most basic triadic scheme. They work well for <strong>playful brands, educational platforms, and applications targeting younger audiences</strong>. The key is to let one color dominate and use the other two as accents.</p>
+
+          <h2>Implementing Color Systems with CSS Variables</h2>
+          <p>Modern CSS custom properties (variables) make it possible to build flexible, maintainable color systems that adapt to themes and contexts. Instead of hardcoding hex values throughout your stylesheet, define a semantic color palette once and reference it everywhere.</p>
+
+          <pre><code>/* ===== Design Tokens: Raw Color Scale ===== */
+:root {
+  /* Gray scale for text, borders, and surfaces */
+  --gray-50:  hsl(220, 20%, 98%);
+  --gray-100: hsl(220, 15%, 94%);
+  --gray-200: hsl(220, 15%, 88%);
+  --gray-300: hsl(220, 15%, 78%);
+  --gray-500: hsl(220, 10%, 55%);
+  --gray-700: hsl(220, 12%, 35%);
+  --gray-900: hsl(220, 15%, 16%);
+
+  /* Brand color scale (blue) */
+  --brand-50:  hsl(217, 91%, 95%);
+  --brand-100: hsl(217, 91%, 88%);
+  --brand-500: hsl(217, 91%, 60%);
+  --brand-700: hsl(217, 91%, 38%);
+  --brand-900: hsl(217, 91%, 22%);
+}
+
+/* ===== Semantic Tokens: Where Colors Are Used ===== */
+:root {
+  --color-bg:            var(--gray-50);
+  --color-surface:       var(--gray-100);
+  --color-border:        var(--gray-200);
+  --color-text:          var(--gray-900);
+  --color-text-muted:    var(--gray-500);
+  --color-primary:       var(--brand-500);
+  --color-primary-hover: var(--brand-700);
+  --color-primary-bg:    var(--brand-50);
+}
+
+/* Dark theme override */
+[data-theme="dark"] {
+  --color-bg:            var(--gray-900);
+  --color-surface:       var(--gray-700);
+  --color-border:        var(--gray-500);
+  --color-text:          var(--gray-50);
+  --color-text-muted:    var(--gray-300);
+}</code></pre>
+
+          <p>This layered approach — raw color scale at the bottom, semantic tokens on top — means you can swap the entire look of a site by changing a handful of variables. It also makes dark mode trivial: reset the semantic tokens to darker raw values, and every component automatically reflects the change.</p>
+
+          <h2>Designing for Accessibility: Color Contrast and Beyond</h2>
+          <p>An estimated <strong>1 in 12 men and 1 in 200 women</strong> have some form of color vision deficiency (CVD). Designing accessible color palettes is not optional — it is required by law in many jurisdictions under WCAG 2.1 guidelines, and it makes your product usable for everyone.</p>
+
+          <h3>WCAG Contrast Ratios</h3>
+          <p>The Web Content Accessibility Guidelines define minimum contrast ratios between text and background:</p>
+          <table>
+            <thead>
+              <tr><th>Level</th><th>Normal Text</th><th>Large Text (≥18px bold or ≥24px)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>AA (minimum)</strong></td><td>4.5:1</td><td>3:1</td></tr>
+              <tr><td><strong>AAA (enhanced)</strong></td><td>7:1</td><td>4.5:1</td></tr>
+            </tbody>
+          </table>
+          <p>Contrast ratio is calculated using the relative luminance of two colors. For example, black text (<code>#000000</code>) on a white background (<code>#FFFFFF</code>) has a ratio of 21:1 — far exceeding AAA. But medium gray text (<code>#767676</code>) on a white background drops to 4.54:1, barely meeting AA.</p>
+
+          <h3>Don't Rely on Color Alone</h3>
+          <p>Never use color as the sole means of conveying information. Error states need both a red border <em>and</em> an icon or text label. Charts should use patterns or labels in addition to colors. Links should be underlined, not just colored differently from surrounding text. This ensures that users with CVD, screen reader users, and people viewing your site in grayscale can all access the same information.</p>
+
+          <pre><code>/* ❌ Bad: color is the only indicator of an error */
+.input-error {
+  border-color: #EF4444;
+}
+
+/* ✅ Good: color + icon + helper text for redundancy */
+.input-error {
+  border-color: #EF4444;
+  background-image: url("data:image/svg+xml,..."); /* warning icon */
+}
+.input-error + .helper-text {
+  color: #EF4444;
+  font-weight: 500;
+}</code></pre>
+
+          <h3>Testing Your Palette</h3>
+          <p>Always test your color combinations with a contrast checker. Tools like the <a href="https://webaim.org/resources/contrastchecker/" target="_blank" rel="noopener">WebAIM Contrast Checker</a> and built-in browser DevTools (Lighthouse accessibility audits, the contrast ratio indicator in the color picker) make this straightforward. For CVD simulation, Chrome DevTools can render your page as seen through protanopia, deuteranopia, and tritanopia filters.</p>
+
+          <h2>Conclusion</h2>
+          <p>Color theory bridges the gap between artistic intuition and systematic design. By understanding the color wheel, applying proven harmony schemes, building maintainable color systems with CSS variables, and validating every combination against accessibility standards, you can create interfaces that are both beautiful and inclusive. The best color palettes are not the loudest — they are the ones that communicate clearly, guide attention effectively, and work for every user. Explore our <a href="../../tools/testers/color-picker.html">color picker tool</a> to experiment with HSL values and harmony schemes, or use the <a href="../../tools/testers/css-gradient.html">CSS gradient generator</a> to create smooth transitions between your chosen colors.</p>
+
+        </article>
+
+        <!-- Article Footer -->
+        <footer class="article-footer">
+          <div class="article-footer__share">
+            <span class="article-footer__share-label">Share this article:</span>
+            <div class="article-footer__share-buttons">
+              <button class="article-footer__share-btn" aria-label="Share on Twitter" onclick="window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(window.location.href) + '&text=' + encodeURIComponent(document.title), '_blank')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+              </button>
+              <button class="article-footer__share-btn" aria-label="Share on LinkedIn" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(window.location.href), '_blank')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              </button>
+              <button class="article-footer__share-btn" aria-label="Copy link" onclick="navigator.clipboard.writeText(window.location.href)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+            </div>
+          </div>
+        </footer>
+
+        <!-- Related Articles -->
+        <section class="article-related">
+          <h2 class="article-related__title">Related Articles</h2>
+          <div class="article-related__grid">
+            <a href="image-compression-tips.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">Image Compression Tips</h3>
+                <p class="article-card__excerpt">Reduce file sizes without losing quality — learn about formats, lossy vs lossless, and automation.</p>
+              </div>
+            </a>
+            <a href="markdown-vs-html-guide.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">Markdown vs HTML: A Comparison Guide</h3>
+                <p class="article-card__excerpt">Understand the differences between two markup languages and when to use each one.</p>
+              </div>
+            </a>
+            <a href="../index.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">View All Articles</h3>
+                <p class="article-card__excerpt">Browse our complete collection of developer tutorials, guides, and tips.</p>
+              </div>
+            </a>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links">
+        <a href="../../about.html" data-i18n="footer_about">About</a>
+        <a href="../../privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="../../terms.html" data-i18n="footer_terms">Terms of Service</a>
+        <a href="../../contact.html" data-i18n="footer_contact">Contact</a>
+      </div>
+      <p class="footer-copyright">&copy; 2024 UseEasyTool. <span data-i18n="footer_rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Scripts -->
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+</body>
+</html>

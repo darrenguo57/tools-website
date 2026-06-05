@@ -248,6 +248,7 @@
                     <div class="tool-icon"><i data-lucide="brackets"></i></div>
                     <h1>Regex Tester</h1>
                     <p>Test regex patterns</p>
+                    <p class="tool-description-detail" data-i18n="tool_regex_detail">Regular expressions are powerful but notoriously tricky to debug. Our interactive tester shows real-time match highlighting, capture groups, and detailed error explanations. Test against multiple input strings simultaneously and export your validated patterns for JavaScript, Python, PHP, and Java.</p>
                 </div>
                 
                 <!-- Tool Workspace -->
@@ -326,6 +327,25 @@
         <li data-i18n="tool_step_output">View the results in the output area below</li>
         <li data-i18n="tool_step_copy">Copy the results to clipboard or download as needed</li>
       </ol>
+    </section>
+
+    <!-- Usage Examples -->
+    <section class="usage-examples">
+      <h2 data-i18n="usage_examples_title">Usage Examples</h2>
+      <div class="examples-grid">
+        <div class="example-item">
+          <h3 data-i18n="regex_example_1_title">Email Validation</h3>
+          <p data-i18n="regex_example_1_desc">Test the pattern <code>/^[\w.-]+@[\w.-]+\.\w{2,}$/</code> against common email formats. See real-time match highlighting for valid and invalid addresses.</p>
+        </div>
+        <div class="example-item">
+          <h3 data-i18n="regex_example_2_title">Phone Number Extraction</h3>
+          <p data-i18n="regex_example_2_desc">Use <code>/\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/</code> to extract all US phone numbers from a block of text. Supports formats like 555-123-4567 and 555.123.4567.</p>
+        </div>
+        <div class="example-item">
+          <h3 data-i18n="regex_example_3_title">URL Parsing</h3>
+          <p data-i18n="regex_example_3_desc">Decompose URLs with <code>/^(https?):\/\/([^\/:]+)(?::(\d+))?(\/.*)?$/</code> to capture protocol, domain, port, and path separately for web scraping and analytics.</p>
+        </div>
+      </div>
     </section>
     </main>
     

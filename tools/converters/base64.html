@@ -110,6 +110,7 @@
                     <div class="tool-icon"><i data-lucide="arrow-left-right"></i></div>
                     <h1>Base64 Encoder/Decoder</h1>
                     <p>Encode and decode Base64 strings online</p>
+                    <p class="tool-description-detail" data-i18n="tool_base64_detail">Base64 encoding converts binary data into ASCII text using 64 characters (A-Z, a-z, 0-9, +, /). It's widely used in email attachments (MIME), JSON Web Tokens, data URIs, and API authentication. Our tool processes data entirely in your browser — nothing is uploaded to any server.</p>
                 </div>
 
                 <!-- Tool Workspace -->
@@ -158,6 +159,25 @@
         <li data-i18n="tool_step_output">View the results in the output area below</li>
         <li data-i18n="tool_step_copy">Copy the results to clipboard or download as needed</li>
       </ol>
+    </section>
+
+    <!-- Usage Examples -->
+    <section class="usage-examples">
+      <h2 data-i18n="usage_examples_title">Usage Examples</h2>
+      <div class="examples-grid">
+        <div class="example-item">
+          <h3 data-i18n="base64_example_1_title">Encoding for API Authentication</h3>
+          <p data-i18n="base64_example_1_desc">Encode 'username:password' to 'dXNlcm5hbWU6cGFzc3dvcmQ=' for HTTP Basic Auth headers. Most REST APIs accept Base64-encoded credentials in the Authorization header.</p>
+        </div>
+        <div class="example-item">
+          <h3 data-i18n="base64_example_2_title">Embedding Images in CSS</h3>
+          <p data-i18n="base64_example_2_desc">Convert a small icon to Base64 and embed it directly in your CSS: background-image: url(data:image/png;base64,iVBORw0KG...). Eliminates extra HTTP requests for small assets.</p>
+        </div>
+        <div class="example-item">
+          <h3 data-i18n="base64_example_3_title">Data URI in HTML</h3>
+          <p data-i18n="base64_example_3_desc">Embed Base64-encoded SVG directly in an &lt;img&gt; tag for self-contained HTML documents that don't require external file dependencies.</p>
+        </div>
+      </div>
     </section>
     </main>
 

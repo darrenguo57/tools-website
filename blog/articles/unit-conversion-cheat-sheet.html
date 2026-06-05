@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit Conversion Cheat Sheet: Essential Conversions for Developers - UseEasyTool Blog</title>
+  <meta name="description" content="A comprehensive unit conversion cheat sheet for developers. Quick reference tables for length, weight, temperature, data storage, time, and speed conversions with exact formulas.">
+  <meta name="keywords" content="unit conversion, length conversion, weight conversion, temperature conversion, data storage units, time conversion, developer reference, cheat sheet, developer tools">
+  <meta name="author" content="UseEasyTool Team">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Unit Conversion Cheat Sheet: Essential Conversions for Developers">
+  <meta property="og:description" content="A comprehensive unit conversion cheat sheet for developers. Quick reference tables for length, weight, temperature, data storage, time, and speed conversions.">
+  <meta property="og:url" content="https://UseEasyTool.example.com/blog/articles/unit-conversion-cheat-sheet.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta property="article:published_time" content="2024-04-15">
+  <meta property="article:tag" content="converter">
+  <meta property="article:tag" content="reference">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Unit Conversion Cheat Sheet: Essential Conversions for Developers">
+  <meta name="twitter:description" content="A comprehensive unit conversion cheat sheet for developers. Quick reference tables for length, weight, temperature, data storage, and more.">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Unit Conversion Cheat Sheet: Essential Conversions for Developers",
+    "description": "A comprehensive unit conversion cheat sheet for developers. Quick reference tables for length, weight, temperature, data storage, time, and speed conversions with exact formulas.",
+    "image": "https://UseEasyTool.example.com/assets/images/blog/unit-conversion-cheat-sheet.jpg",
+    "datePublished": "2024-04-15",
+    "dateModified": "2024-04-15",
+    "author": {
+      "@type": "Organization",
+      "name": "UseEasyTool Team"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "UseEasyTool",
+      "url": "https://UseEasyTool.example.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://UseEasyTool.example.com/assets/images/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://UseEasyTool.example.com/blog/articles/unit-conversion-cheat-sheet.html"
+    },
+    "keywords": ["unit conversion", "length conversion", "weight conversion", "temperature conversion", "data storage units", "time conversion", "developer reference"]
+  }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="../../assets/css/blog.css">
+</head>
+<body>
+
+  <!-- ========== Navigation ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo">
+        <i data-lucide="UseEasyTool"></i>
+        <span>UseEasyTool</span>
+      </a>
+
+      <div class="navbar-search">
+        <i data-lucide="search"></i>
+        <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+      </div>
+
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language">
+          <span class="lang-label">EN</span>
+        </button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="theme-icon-light"></i>
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+        </button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== Main Layout ========== -->
+  <div class="main-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3 data-i18n="sidebar_categories">Categories</h3>
+      </div>
+      <ul class="sidebar-list">
+        <li>
+          <a href="../../index.html" class="sidebar-item" data-category="all">
+            <i data-lucide="layout-grid"></i>
+            <span data-i18n="cat_all">All Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=converters" class="sidebar-item" data-category="converters">
+            <i data-lucide="repeat"></i>
+            <span data-i18n="cat_converters">Converters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=calculators" class="sidebar-item" data-category="calculators">
+            <i data-lucide="calculator"></i>
+            <span data-i18n="cat_calculators">Calculators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=image-tools" class="sidebar-item" data-category="image-tools">
+            <i data-lucide="image"></i>
+            <span data-i18n="cat_image_tools">Image Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=generators" class="sidebar-item" data-category="generators">
+            <i data-lucide="sparkles"></i>
+            <span data-i18n="cat_generators">Generators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=formatters" class="sidebar-item" data-category="formatters">
+            <i data-lucide="braces"></i>
+            <span data-i18n="cat_formatters">Formatters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=crypto" class="sidebar-item" data-category="crypto">
+            <i data-lucide="shield"></i>
+            <span data-i18n="cat_crypto">Encryption</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=charts" class="sidebar-item" data-category="charts">
+            <i data-lucide="bar-chart-3"></i>
+            <span data-i18n="cat_charts">Charts</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=testing" class="sidebar-item" data-category="testing">
+            <i data-lucide="flask-conical"></i>
+            <span data-i18n="cat_testing">Testing</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="article-detail">
+
+        <!-- Article Hero -->
+        <header class="article-hero">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="../../index.html">Home</a>
+            <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+            <a href="../index.html">Blog</a>
+            <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+            <span class="breadcrumb-current">Unit Conversion Cheat Sheet</span>
+          </nav>
+
+          <div class="article-hero__tags">
+            <span class="blog-tag">converter</span>
+            <span class="blog-tag">reference</span>
+          </div>
+
+          <h1 class="article-hero__title">Unit Conversion Cheat Sheet: Essential Conversions for Developers</h1>
+
+          <div class="article-hero__meta">
+            <div class="article-hero__author">
+              <div class="article-hero__author-avatar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <div class="article-hero__author-info">
+                <span class="article-hero__author-name">UseEasyTool Team</span>
+                <span class="article-hero__author-role">Developer Tools Experts</span>
+              </div>
+            </div>
+            <div class="article-hero__stats">
+              <span class="article-hero__stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                April 15, 2024
+              </span>
+              <span class="article-hero__stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                5 min read
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Article Cover -->
+        <div class="article-cover">
+          <div class="article-card__image-placeholder" style="height:360px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+          </div>
+        </div>
+
+        <!-- Article Content -->
+        <article class="article-content">
+
+          <h2>Why Every Developer Needs a Conversion Reference</h2>
+          <p>Unit conversions come up constantly in software development — from calculating viewport dimensions and API rate limits to converting data storage sizes and handling internationalization. Memorizing every formula is impractical. This cheat sheet gives you the exact formulas and reference tables you need, organized by category, so you can look them up in seconds.</p>
+          <p>Each section includes the <strong>exact conversion formula</strong> and a <strong>quick-reference table</strong> for the most common values. Bookmark this page — or better yet, use our online tools linked at the end of the article for instant, accurate conversions.</p>
+
+          <h2>Length and Distance</h2>
+          <p>Length conversions are among the most frequent in web development (CSS units, responsive breakpoints) and backend work (geolocation, mapping APIs).</p>
+
+          <h3>Metric ↔ Imperial</h3>
+          <pre><code># Core formulas
+inches  = centimeters / 2.54
+cm      = inches × 2.54
+feet    = meters × 3.28084
+meters  = feet / 3.28084
+miles   = kilometers / 1.60934
+km      = miles × 1.60934</code></pre>
+
+          <table>
+            <thead>
+              <tr><th>From</th><th>To</th><th>Multiply by</th><th>Common Example</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1 inch</td><td>cm</td><td>2.54</td><td>8.5″ × 2.54 = 21.59 cm (A4 width)</td></tr>
+              <tr><td>1 cm</td><td>inches</td><td>0.393701</td><td>30 cm ≈ 11.81″</td></tr>
+              <tr><td>1 foot</td><td>meters</td><td>0.3048</td><td>6 ft = 1.83 m</td></tr>
+              <tr><td>1 meter</td><td>feet</td><td>3.28084</td><td>100 m ≈ 328 ft</td></tr>
+              <tr><td>1 mile</td><td>km</td><td>1.60934</td><td>Marathon = 42.195 km ≈ 26.2 mi</td></tr>
+              <tr><td>1 km</td><td>miles</td><td>0.621371</td><td>5 km ≈ 3.11 mi</td></tr>
+            </tbody>
+          </table>
+
+          <h3>CSS / Screen Units</h3>
+          <p>For web development, these conversions are especially handy when working with design handoffs from Figma or Sketch (which use pixels) and translating them to responsive units:</p>
+          <table>
+            <thead>
+              <tr><th>Conversion</th><th>Formula</th><th>Note</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>px → rem</td><td>px / 16</td><td>Assumes 1rem = 16px (browser default)</td></tr>
+              <tr><td>px → em</td><td>px / parentFontSize</td><td>em is relative to the parent element</td></tr>
+              <tr><td>rem → px</td><td>rem × 16</td><td>1rem = root font size (usually 16px)</td></tr>
+              <tr><td>vw (viewport width)</td><td>(px / viewportWidth) × 100</td><td>e.g. 1200px viewport: 600px = 50vw</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Weight and Mass</h2>
+          <p>Weight conversions matter in e-commerce (product specs), health/fitness APIs, and scientific computing. Note the distinction: <strong>mass</strong> (kg, lb) measures matter; <strong>weight</strong> is mass × gravity.</p>
+
+          <pre><code># Core formulas
+pounds  = kilograms × 2.20462
+kg      = pounds / 2.20462
+ounces  = grams / 28.3495
+grams   = ounces × 28.3495</code></pre>
+
+          <table>
+            <thead>
+              <tr><th>From</th><th>To</th><th>Multiply by</th><th>Common Example</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1 kg</td><td>lb</td><td>2.20462</td><td>70 kg ≈ 154.3 lb</td></tr>
+              <tr><td>1 lb</td><td>kg</td><td>0.453592</td><td>150 lb ≈ 68.0 kg</td></tr>
+              <tr><td>1 g</td><td>oz</td><td>0.035274</td><td>500 g ≈ 17.6 oz</td></tr>
+              <tr><td>1 oz</td><td>g</td><td>28.3495</td><td>16 oz (1 lb) = 453.6 g</td></tr>
+              <tr><td>1 kg</td><td>stones (UK)</td><td>0.157473</td><td>70 kg ≈ 11.0 stones</td></tr>
+              <tr><td>1 metric ton</td><td>kg</td><td>1000</td><td>1 t = 1000 kg</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Temperature</h2>
+          <p>Temperature is the one category where the formula is not a simple multiplication — it involves both scaling and offset. This trips up many developers.</p>
+
+          <pre><code># Exact formulas
+celsius     = (fahrenheit - 32) × 5/9
+fahrenheit  = celsius × 9/5 + 32
+celsius     = kelvin - 273.15
+kelvin      = celsius + 273.15
+
+# JavaScript quick functions
+const fToC = (f) => Math.round(((f - 32) * 5/9) * 10) / 10;
+const cToF = (c) => Math.round((c * 9/5 + 32) * 10) / 10;</code></pre>
+
+          <table>
+            <thead>
+              <tr><th>°C</th><th>°F</th><th>K</th><th>Context</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>-40</td><td>-40</td><td>233.15</td><td>Only temperature where °C = °F</td></tr>
+              <tr><td>-18</td><td>0</td><td>255.15</td><td>0°F — very cold day</td></tr>
+              <tr><td>0</td><td>32</td><td>273.15</td><td>Water freezes</td></tr>
+              <tr><td>20</td><td>68</td><td>293.15</td><td>Room temperature</td></tr>
+              <tr><td>37</td><td>98.6</td><td>310.15</td><td>Human body temperature</td></tr>
+              <tr><td>100</td><td>212</td><td>373.15</td><td>Water boils</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Data Storage Units</h2>
+          <p>Data storage is measured in powers of 2 (binary) in some contexts and powers of 10 (decimal) in others. This distinction is a common source of confusion — hard drive manufacturers use decimal (1 GB = 10⁹ bytes), while operating systems and RAM use binary (1 GiB = 2³⁰ bytes).</p>
+
+          <pre><code># Binary (IEC standard, used by OS/memory)
+1 KiB = 1,024 bytes    (kibibyte)
+1 MiB = 1,024 KiB      (mebibyte)
+1 GiB = 1,024 MiB      (gibibyte)
+1 TiB = 1,024 GiB      (tebibyte)
+
+# Decimal (SI standard, used by drive manufacturers)
+1 KB  = 1,000 bytes    (kilobyte)
+1 MB  = 1,000 KB       (megabyte)
+1 GB  = 1,000 MB       (gigabyte)
+1 TB  = 1,000 GB       (terabyte)
+
+# Why your 500 GB drive shows ~465 GiB in Windows:
+500 × 10⁹ / 2³⁰ ≈ 465.66 GiB</code></pre>
+
+          <table>
+            <thead>
+              <tr><th>Unit (binary)</th><th>Bytes</th><th>Unit (decimal)</th><th>Bytes</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1 KiB</td><td>1,024</td><td>1 KB</td><td>1,000</td></tr>
+              <tr><td>1 MiB</td><td>1,048,576</td><td>1 MB</td><td>1,000,000</td></tr>
+              <tr><td>1 GiB</td><td>1,073,741,824</td><td>1 GB</td><td>1,000,000,000</td></tr>
+              <tr><td>1 TiB</td><td>1,099,511,627,776</td><td>1 TB</td><td>1,000,000,000,000</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Time Units</h2>
+          <p>Time conversions are straightforward in principle, but watch out for months (variable length) and leap years when doing date arithmetic in code. Always prefer built-in libraries (like <code>dayjs</code>, <code>date-fns</code>, or Python's <code>datetime</code>) over hand-rolled formulas.</p>
+
+          <pre><code># Exact relationships
+1 minute  = 60 seconds
+1 hour    = 3,600 seconds  = 60 minutes
+1 day     = 86,400 seconds = 24 hours
+1 week    = 604,800 seconds = 7 days
+1 year    = 31,536,000 seconds (365 days)
+1 year    = 31,622,400 seconds (366 days, leap year)
+
+# Unix timestamp (seconds since Jan 1 1970)
+timestamp = Date.now() / 1000   # JavaScript: ms → seconds
+datetime.fromtimestamp(ts)        # Python: seconds → datetime</code></pre>
+
+          <table>
+            <thead>
+              <tr><th>Duration</th><th>In Seconds</th><th>In Common Units</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1 minute</td><td>60</td><td>60 s</td></tr>
+              <tr><td>1 hour</td><td>3,600</td><td>60 min</td></tr>
+              <tr><td>1 day</td><td>86,400</td><td>24 hr</td></tr>
+              <tr><td>1 week</td><td>604,800</td><td>7 days</td></tr>
+              <tr><td>1 month (avg)</td><td>2,629,746</td><td>~30.44 days</td></tr>
+              <tr><td>1 year (non-leap)</td><td>31,536,000</td><td>365 days</td></tr>
+              <tr><td>1 year (leap)</td><td>31,622,400</td><td>366 days</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Speed and Rate Conversions</h2>
+          <p>Speed conversions are common in performance monitoring (requests per second), networking (Mbps), and geospatial applications (km/h, mph, knots).</p>
+
+          <pre><code># Common speed conversions
+mps  = kmph / 3.6          # meters per second ← km per hour
+kmph = mps × 3.6            # km per hour ← meters per second
+mph  = kmph / 1.60934        # miles per hour ← km per hour
+knots = kmph / 1.852         # nautical miles per hour
+
+# Network speed: bits vs bytes
+1 Mbps  = 1,000,000 bits/s   (decimal, network marketing)
+1 MB/s  = 8,000,000 bits/s   (8 bits per byte)
+# So a "100 Mbps" connection downloads at ~12.5 MB/s in theory</code></pre>
+
+          <table>
+            <thead>
+              <tr><th>From</th><th>To</th><th>Factor</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1 m/s</td><td>km/h</td><td>× 3.6</td><td>10 m/s = 36 km/h</td></tr>
+              <tr><td>1 km/h</td><td>mph</td><td>× 0.621371</td><td>100 km/h ≈ 62.1 mph</td></tr>
+              <tr><td>1 mph</td><td>km/h</td><td>× 1.60934</td><td>60 mph ≈ 96.6 km/h</td></tr>
+              <tr><td>1 knot</td><td>km/h</td><td>× 1.852</td><td>1 knot = 1.852 km/h</td></tr>
+              <tr><td>1 Mbps</td><td>MB/s</td><td>/ 8</td><td>100 Mbps ≈ 12.5 MB/s</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Conclusion</h2>
+          <p>Unit conversions are a fact of life in software development. Whether you are building a responsive layout, processing sensor data, calculating file sizes, or working with international users, having these formulas at your fingertips saves time and prevents bugs. Bookmark this cheat sheet for quick reference, and for instant, accurate conversions without manual math, try our <a href="../../tools/converters/unit.html">universal unit converter</a> and <a href="../../tools/converters/number-base.html">number base converter</a> — both support all the categories covered in this guide and more.</p>
+
+        </article>
+
+        <!-- Article Footer -->
+        <footer class="article-footer">
+          <div class="article-footer__share">
+            <span class="article-footer__share-label">Share this article:</span>
+            <div class="article-footer__share-buttons">
+              <button class="article-footer__share-btn" aria-label="Share on Twitter" onclick="window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(window.location.href) + '&text=' + encodeURIComponent(document.title), '_blank')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+              </button>
+              <button class="article-footer__share-btn" aria-label="Share on LinkedIn" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(window.location.href), '_blank')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              </button>
+              <button class="article-footer__share-btn" aria-label="Copy link" onclick="navigator.clipboard.writeText(window.location.href)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+            </div>
+          </div>
+        </footer>
+
+        <!-- Related Articles -->
+        <section class="article-related">
+          <h2 class="article-related__title">Related Articles</h2>
+          <div class="article-related__grid">
+            <a href="image-compression-tips.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">Image Compression Tips</h3>
+                <p class="article-card__excerpt">Reduce file sizes without losing quality — learn about formats, lossy vs lossless, and automation.</p>
+              </div>
+            </a>
+            <a href="regex-beginner-tutorial.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">Regex Beginner Tutorial</h3>
+                <p class="article-card__excerpt">Master regular expressions from scratch with practical examples and code snippets.</p>
+              </div>
+            </a>
+            <a href="../index.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">View All Articles</h3>
+                <p class="article-card__excerpt">Browse our complete collection of developer tutorials, guides, and tips.</p>
+              </div>
+            </a>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links">
+        <a href="../../about.html" data-i18n="footer_about">About</a>
+        <a href="../../privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="../../terms.html" data-i18n="footer_terms">Terms of Service</a>
+        <a href="../../contact.html" data-i18n="footer_contact">Contact</a>
+      </div>
+      <p class="footer-copyright">&copy; 2024 UseEasyTool. <span data-i18n="footer_rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Scripts -->
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+</body>
+</html>
