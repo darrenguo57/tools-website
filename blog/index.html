@@ -40,7 +40,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@0.453.0"></script>
@@ -149,40 +149,81 @@
     <!-- Main Content -->
     <main class="main-content">
 
-      <!-- Blog Header -->
-      <section class="blog-header">
-        <h1 class="blog-header__title" data-i18n="blog_title">Blog</h1>
-        <p class="blog-header__desc" data-i18n="blog_desc">Tips, tutorials, and in-depth guides to help you get the most out of developer tools and web technologies.</p>
+      <!-- Blog Hero -->
+      <section class="blog-hero">
+        <div class="blog-hero__content">
+          <h1 class="blog-hero__title" data-i18n="blog_hero_title">Blog</h1>
+          <p class="blog-hero__subtitle" data-i18n="blog_hero_subtitle">Tips, guides, and insights about online tools</p>
+          <div class="blog-hero__search">
+            <svg class="blog-hero__search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="blog-hero__search-input" id="blogSearchInput" data-i18n-placeholder="blog_search_placeholder" placeholder="Search articles...">
+            <button class="blog-hero__search-clear" id="blogSearchClear" style="display:none;">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+        </div>
       </section>
-
-      <!-- Blog Search -->
-      <div class="blog-search">
-        <svg class="blog-search__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="blog-search__input" id="blogSearchInput" data-i18n-placeholder="blog_search_placeholder" placeholder="Search articles...">
-        <button class="blog-search__clear" id="blogSearchClear" style="display:none;">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
 
       <!-- Tags Filter -->
       <div class="blog-tags" id="blogTags">
         <!-- Tags will be rendered by JS -->
       </div>
 
-      <!-- Article Grid -->
-      <div class="article-grid" id="articleGrid">
-        <!-- Articles will be rendered by JS -->
-      </div>
+      <!-- Blog Layout: Main + Sidebar -->
+      <div class="blog-layout">
+        <div class="blog-layout__main">
 
-      <!-- No Results -->
-      <div id="noResults" style="display:none; text-align:center; padding: 60px 20px;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 16px; opacity:0.4;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <p style="font-size: var(--font-size-lg); color: var(--color-text-secondary);" data-i18n="blog_no_results">No articles found matching your search.</p>
-      </div>
+          <!-- Featured Article -->
+          <div class="featured-article" id="featuredArticle">
+            <!-- Featured article rendered by JS -->
+          </div>
 
-      <!-- Pagination -->
-      <div class="pagination" id="pagination">
-        <!-- Pagination will be rendered by JS -->
+          <!-- Article Grid -->
+          <div class="article-grid article-grid--2col" id="articleGrid">
+            <!-- Articles will be rendered by JS -->
+          </div>
+
+          <!-- No Results -->
+          <div id="noResults" style="display:none; text-align:center; padding: 60px 20px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 16px; opacity:0.4;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <p style="font-size: var(--font-size-lg); color: var(--color-text-secondary);" data-i18n="blog_no_results">No articles found matching your search.</p>
+          </div>
+
+          <!-- Load More -->
+          <div class="load-more" id="loadMoreContainer">
+            <button class="load-more__btn" id="loadMoreBtn" data-i18n="blog_load_more">Load More</button>
+          </div>
+
+        </div>
+
+        <!-- Desktop Sidebar -->
+        <aside class="blog-sidebar-desktop" id="blogSidebar">
+          <!-- Popular Articles -->
+          <div class="sidebar-widget">
+            <h4 class="sidebar-widget__title" data-i18n="blog_popular">Popular Articles</h4>
+            <ul class="sidebar-popular" id="popularArticles">
+              <!-- Rendered by JS -->
+            </ul>
+          </div>
+
+          <!-- Tag Cloud -->
+          <div class="sidebar-widget">
+            <h4 class="sidebar-widget__title" data-i18n="blog_tags">Tags</h4>
+            <div class="sidebar-tag-cloud" id="tagCloud">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Newsletter -->
+          <div class="sidebar-widget sidebar-widget--newsletter">
+            <h4 class="sidebar-widget__title" data-i18n="blog_subscribe">Subscribe to Newsletter</h4>
+            <p class="sidebar-widget__desc">Get the latest tips and guides delivered to your inbox.</p>
+            <div class="newsletter-form">
+              <input type="email" class="newsletter-form__input" data-i18n-placeholder="blog_email_placeholder" placeholder="Enter your email">
+              <button class="newsletter-form__btn" data-i18n="blog_subscribe_btn">Subscribe</button>
+            </div>
+          </div>
+        </aside>
       </div>
 
     </main>
@@ -191,13 +232,22 @@
   <!-- ========== Footer ========== -->
   <footer class="footer">
     <div class="footer-container">
-      <div class="footer-links">
-        <a href="#" data-i18n="footer_about">About</a>
-        <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
-        <a href="#" data-i18n="footer_terms">Terms of Service</a>
-        <a href="#" data-i18n="footer_contact">Contact</a>
+      <div class="footer-bottom">
+        <div class="footer-brand">
+          <a href="../index.html" class="logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a>
+        </div>
+        <div class="footer-links-group">
+          <div class="footer-col">
+            <h5 data-i18n="footer_col_resources">Resources</h5>
+            <a href="index.html" data-i18n="footer_blog">Blog</a>
+            <a href="../about.html" data-i18n="footer_about">About</a>
+            <a href="../contact.html" data-i18n="footer_contact">Contact</a>
+          </div>
+        </div>
       </div>
-      <p class="footer-copyright">&copy; 2024 UseEasyTool. <span data-i18n="footer_rights">All rights reserved.</span></p>
+      <div class="footer-copyright">
+        <p>&copy; 2024 UseEasyTool. <span data-i18n="footer_rights">All rights reserved.</span></p>
+      </div>
     </div>
   </footer>
 
@@ -403,14 +453,19 @@
     let currentSearch = '';
     let currentPage = 1;
     const articlesPerPage = 6;
+    let displayedCount = 0;
 
     // ===== DOM Elements =====
     const articleGrid = document.getElementById('articleGrid');
+    const featuredArticle = document.getElementById('featuredArticle');
     const blogTags = document.getElementById('blogTags');
     const blogSearchInput = document.getElementById('blogSearchInput');
     const blogSearchClear = document.getElementById('blogSearchClear');
-    const pagination = document.getElementById('pagination');
     const noResults = document.getElementById('noResults');
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    const loadMoreContainer = document.getElementById('loadMoreContainer');
+    const popularArticles = document.getElementById('popularArticles');
+    const tagCloud = document.getElementById('tagCloud');
 
     // ===== Utility Functions =====
     function getLang() {
@@ -439,7 +494,7 @@
       });
     }
 
-    // ===== Render Tags =====
+    // ===== Render Tags Filter =====
     function renderTags() {
       var tagCountMap = {};
       articles.forEach(function(article) {
@@ -463,36 +518,127 @@
         btn.addEventListener('click', function() {
           currentTag = this.getAttribute('data-tag');
           currentPage = 1;
+          displayedCount = 0;
           renderTags();
+          renderFeatured();
           renderArticles();
-          renderPagination();
+          updateLoadMore();
         });
       });
     }
 
-    // ===== Render Articles =====
+    // ===== Render Tag Cloud (Sidebar) =====
+    function renderTagCloud() {
+      var tagCountMap = {};
+      articles.forEach(function(article) {
+        article.tags.forEach(function(tag) {
+          tagCountMap[tag] = (tagCountMap[tag] || 0) + 1;
+        });
+      });
+
+      var tags = Object.keys(tagCountMap).sort();
+      var html = '';
+      tags.forEach(function(tag) {
+        html += '<a href="#" class="sidebar-tag-cloud__item' + (currentTag === tag ? ' sidebar-tag-cloud__item--active' : '') + '" data-tag="' + tag + '">' + tag + '</a>';
+      });
+
+      tagCloud.innerHTML = html;
+
+      tagCloud.querySelectorAll('.sidebar-tag-cloud__item').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          currentTag = this.getAttribute('data-tag');
+          currentPage = 1;
+          displayedCount = 0;
+          renderTags();
+          renderTagCloud();
+          renderFeatured();
+          renderArticles();
+          updateLoadMore();
+        });
+      });
+    }
+
+    // ===== Render Popular Articles (Sidebar) =====
+    function renderPopularArticles() {
+      var popular = articles.slice(0, 5);
+      var lang = getLang();
+      var html = '';
+
+      popular.forEach(function(article, index) {
+        var title = lang === 'zh' ? article.titleZh : article.title;
+        html += '<li class="sidebar-popular__item">';
+        html += '  <a href="' + article.file + '" class="sidebar-popular__link">';
+        html += '    <span class="sidebar-popular__num">' + (index + 1) + '</span>';
+        html += '    <span class="sidebar-popular__title">' + title + '</span>';
+        html += '  </a>';
+        html += '</li>';
+      });
+
+      popularArticles.innerHTML = html;
+    }
+
+    // ===== Render Featured Article =====
+    function renderFeatured() {
+      var filtered = getFilteredArticles();
+      if (filtered.length === 0) {
+        featuredArticle.style.display = 'none';
+        return;
+      }
+
+      var lang = getLang();
+      var article = filtered[0];
+      var title = lang === 'zh' ? article.titleZh : article.title;
+      var excerpt = lang === 'zh' ? article.excerptZh : article.excerpt;
+
+      var html = '<a href="' + article.file + '" class="featured-article__card">';
+      html += '  <div class="featured-article__image">';
+      html += '    <div class="featured-article__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>';
+      html += '    <span class="featured-article__badge" data-i18n="blog_featured">Featured</span>';
+      html += '  </div>';
+      html += '  <div class="featured-article__body">';
+      html += '    <div class="featured-article__meta">';
+      html += '      <span class="featured-article__date"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ' + formatDate(article.date) + '</span>';
+      html += '      <span class="featured-article__read-time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ' + article.readTime + ' min read</span>';
+      html += '    </div>';
+      html += '    <h2 class="featured-article__title">' + title + '</h2>';
+      html += '    <p class="featured-article__excerpt">' + excerpt + '</p>';
+      html += '    <div class="featured-article__tags">';
+      article.tags.forEach(function(tag) {
+        html += '<span class="featured-article__tag">' + tag + '</span>';
+      });
+      html += '    </div>';
+      html += '  </div>';
+      html += '</a>';
+
+      featuredArticle.innerHTML = html;
+      featuredArticle.style.display = '';
+    }
+
+    // ===== Render Articles Grid =====
     function renderArticles() {
       var filtered = getFilteredArticles();
-      var totalPages = Math.ceil(filtered.length / articlesPerPage);
-      if (currentPage > totalPages) currentPage = totalPages || 1;
+      var lang = getLang();
 
-      var start = (currentPage - 1) * articlesPerPage;
-      var end = start + articlesPerPage;
-      var pageArticles = filtered.slice(start, end);
+      // Skip the first article (featured)
+      var gridArticles = filtered.slice(1);
 
-      if (pageArticles.length === 0) {
+      if (gridArticles.length === 0 && filtered.length <= 1) {
         articleGrid.style.display = 'none';
-        noResults.style.display = 'block';
+        if (filtered.length === 0) {
+          noResults.style.display = 'block';
+          featuredArticle.style.display = 'none';
+        } else {
+          noResults.style.display = 'none';
+        }
         return;
       }
 
       articleGrid.style.display = '';
       noResults.style.display = 'none';
 
-      var lang = getLang();
       var html = '';
-
-      pageArticles.forEach(function(article) {
+      gridArticles.forEach(function(article) {
         var title = lang === 'zh' ? article.titleZh : article.title;
         var excerpt = lang === 'zh' ? article.excerptZh : article.excerpt;
 
@@ -521,87 +667,68 @@
       articleGrid.innerHTML = html;
     }
 
-    // ===== Render Pagination =====
-    function renderPagination() {
+    // ===== Update Load More Button =====
+    function updateLoadMore() {
       var filtered = getFilteredArticles();
-      var totalPages = Math.ceil(filtered.length / articlesPerPage);
-
-      if (totalPages <= 1) {
-        pagination.style.display = 'none';
-        return;
+      if (filtered.length <= 1) {
+        loadMoreContainer.style.display = 'none';
+      } else {
+        loadMoreContainer.style.display = '';
       }
-
-      pagination.style.display = '';
-
-      var html = '';
-
-      // Previous button
-      html += '<button class="pagination__btn' + (currentPage === 1 ? ' pagination__btn--disabled' : '') + '" data-page="prev">';
-      html += '  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
-      html += '</button>';
-
-      // Page numbers
-      for (var i = 1; i <= totalPages; i++) {
-        html += '<button class="pagination__btn' + (i === currentPage ? ' pagination__btn--active' : '') + '" data-page="' + i + '">' + i + '</button>';
-      }
-
-      // Next button
-      html += '<button class="pagination__btn' + (currentPage === totalPages ? ' pagination__btn--disabled' : '') + '" data-page="next">';
-      html += '  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
-      html += '</button>';
-
-      pagination.innerHTML = html;
-
-      // Bind pagination events
-      pagination.querySelectorAll('.pagination__btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          if (this.classList.contains('pagination__btn--disabled')) return;
-          var page = this.getAttribute('data-page');
-          if (page === 'prev') {
-            currentPage = Math.max(1, currentPage - 1);
-          } else if (page === 'next') {
-            currentPage = Math.min(totalPages, currentPage + 1);
-          } else {
-            currentPage = parseInt(page, 10);
-          }
-          renderArticles();
-          renderPagination();
-          // Scroll to top of grid
-          articleGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-      });
     }
+
+    // ===== Load More Handler =====
+    loadMoreBtn.addEventListener('click', function() {
+      // Placeholder functionality - could expand to show more articles
+      this.textContent = 'Loading...';
+      var self = this;
+      setTimeout(function() {
+        self.textContent = 'No more articles';
+        self.disabled = true;
+        self.classList.add('load-more__btn--disabled');
+      }, 800);
+    });
 
     // ===== Search =====
     blogSearchInput.addEventListener('input', function() {
       currentSearch = this.value.trim();
       currentPage = 1;
+      displayedCount = 0;
       blogSearchClear.style.display = currentSearch ? 'flex' : 'none';
+      renderFeatured();
       renderArticles();
-      renderPagination();
+      updateLoadMore();
     });
 
     blogSearchClear.addEventListener('click', function() {
       blogSearchInput.value = '';
       currentSearch = '';
       currentPage = 1;
+      displayedCount = 0;
       blogSearchClear.style.display = 'none';
+      renderFeatured();
       renderArticles();
-      renderPagination();
+      updateLoadMore();
       blogSearchInput.focus();
     });
 
     // ===== Language Change Observer =====
     var langObserver = new MutationObserver(function() {
+      renderFeatured();
       renderArticles();
       renderTags();
+      renderTagCloud();
+      renderPopularArticles();
     });
     langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
 
     // ===== Init =====
     renderTags();
+    renderTagCloud();
+    renderPopularArticles();
+    renderFeatured();
     renderArticles();
-    renderPagination();
+    updateLoadMore();
 
   })();
   </script>

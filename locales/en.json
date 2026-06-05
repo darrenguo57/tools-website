@@ -539,5 +539,16 @@
   "regex_example_2_title": "Phone Number Extraction",
   "regex_example_2_desc": "Use //b/d{3}[-.]?/d{3}[-.]?/d{4}/b/ to extract all US phone numbers from a block of text. Supports formats like 555-123-4567 and 555.123.4567.",
   "regex_example_3_title": "URL Parsing",
-  "regex_example_3_desc": "Decompose URLs with /^(https?):///([^/:]+)(?::(/d+))?(//.*)?$/ to capture protocol, domain, port, and path separately for web scraping and analytics."
+  "regex_example_3_desc": "Decompose URLs with /^(https?):///([^/:]+)(?::(/d+))?(//.*)?$/ to capture protocol, domain, port, and path separately for web scraping and analytics.",
+  "footer_resources": "Resources",
+  "footer_blog": "Blog",
+  "blog_hero_title": "Blog",
+  "blog_hero_subtitle": "Tips, guides, and insights about online tools",
+  "blog_featured": "Featured",
+  "blog_load_more": "Load More",
+  "blog_popular": "Popular Articles",
+  "blog_tags": "Tags",
+  "blog_subscribe": "Subscribe to Newsletter",
+  "blog_email_placeholder": "Enter your email",
+  "blog_subscribe_btn": "Subscribe"
 }

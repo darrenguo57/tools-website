@@ -539,5 +539,16 @@
   "regex_example_2_title": "电话号码提取",
   "regex_example_2_desc": "使用 /\\b\\d{3}[-.]?\\d{3}[-.]?\\d{4}\\b/ 从文本块中提取所有美国电话号码。支持 555-123-4567 和 555.123.4567 等格式。",
   "regex_example_3_title": "URL 解析",
-  "regex_example_3_desc": "使用 /^(https?):\\/\\/([^\\/:]+)(?::(\\d+))?(\\/.*)?$/ 分解 URL，分别捕获协议、域名、端口和路径，用于网页抓取和分析。"
+  "regex_example_3_desc": "使用 /^(https?):\\/\\/([^\\/:]+)(?::(\\d+))?(\\/.*)?$/ 分解 URL，分别捕获协议、域名、端口和路径，用于网页抓取和分析。",
+  "footer_resources": "资源",
+  "footer_blog": "博客",
+  "blog_hero_title": "博客",
+  "blog_hero_subtitle": "关于在线工具的技巧、指南和见解",
+  "blog_featured": "精选",
+  "blog_load_more": "加载更多",
+  "blog_popular": "热门文章",
+  "blog_tags": "标签",
+  "blog_subscribe": "订阅 Newsletter",
+  "blog_email_placeholder": "输入您的邮箱",
+  "blog_subscribe_btn": "订阅"
 }

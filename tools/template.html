@@ -47,13 +47,14 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@0.453.0"></script>
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/tools.css">
   <link rel="stylesheet" href="../assets/css/dark.css" media="(prefers-color-scheme: dark)">
 </head>
 <body>
@@ -72,6 +73,7 @@
       </div>
 
       <div class="navbar-actions">
+        <a href="../blog/index.html" class="navbar-link" data-i18n="nav_blog">Blog</a>
         <button class="btn-icon" id="langToggle" aria-label="Toggle Language">
           <span class="lang-label">EN</span>
         </button>
@@ -150,28 +152,91 @@
           </a>
         </li>
       </ul>
+
+      <!-- Popular Tools (Sidebar) -->
+      <div class="sidebar-section sidebar-popular-tools">
+        <div class="sidebar-section-header">
+          <h4 data-i18n="popular_tools">Popular Tools</h4>
+        </div>
+        <div class="sidebar-tool-list">
+          <a href="converters/base64.html" class="sidebar-tool-item">
+            <div class="sidebar-tool-icon"><i data-lucide="arrow-left-right"></i></div>
+            <div class="sidebar-tool-info">
+              <span class="sidebar-tool-name" data-i18n="tool_base64">Base64</span>
+              <span class="sidebar-tool-tag" data-i18n="cat_converters">Converters</span>
+            </div>
+          </a>
+          <a href="generators/qrcode.html" class="sidebar-tool-item">
+            <div class="sidebar-tool-icon"><i data-lucide="qr-code"></i></div>
+            <div class="sidebar-tool-info">
+              <span class="sidebar-tool-name" data-i18n="tool_qr_code">QR Code</span>
+              <span class="sidebar-tool-tag" data-i18n="cat_generators">Generators</span>
+            </div>
+          </a>
+          <a href="formatters/json-formatter.html" class="sidebar-tool-item">
+            <div class="sidebar-tool-icon"><i data-lucide="braces"></i></div>
+            <div class="sidebar-tool-info">
+              <span class="sidebar-tool-name" data-i18n="tool_json_format">JSON Formatter</span>
+              <span class="sidebar-tool-tag" data-i18n="cat_formatters">Formatters</span>
+            </div>
+          </a>
+          <a href="crypto/hash.html" class="sidebar-tool-item">
+            <div class="sidebar-tool-icon"><i data-lucide="lock"></i></div>
+            <div class="sidebar-tool-info">
+              <span class="sidebar-tool-name" data-i18n="tool_hash">Hash</span>
+              <span class="sidebar-tool-tag" data-i18n="cat_crypto">Encryption</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Ad Slot (Sidebar) -->
+      <div class="sidebar-section sidebar-ad">
+        <div class="ad-slot ad-sidebar">
+          <span class="ad-label">Advertisement</span>
+          <div class="ad-placeholder">
+            <i data-lucide="image"></i>
+            <span>Ad Space</span>
+          </div>
+        </div>
+      </div>
     </aside>
 
     <!-- Main Content -->
     <main class="main-content tool-page">
 
       <!-- Breadcrumb -->
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="../index.html" data-i18n="breadcrumb_home">Home</a>
-        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
-        <a href="../index.html?category=category-name" class="breadcrumb-category" data-i18n="cat_category_name">Category</a>
-        <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
-        <span class="breadcrumb-current" data-i18n="tool_name">Tool Name</span>
+      <nav class="breadcrumb breadcrumb--refined" aria-label="Breadcrumb">
+        <ol class="breadcrumb-list">
+          <li class="breadcrumb-item">
+            <a href="../index.html" class="breadcrumb-link">
+              <i data-lucide="home" class="breadcrumb-home-icon"></i>
+              <span data-i18n="breadcrumb_home">Home</span>
+            </a>
+          </li>
+          <li class="breadcrumb-separator-wrapper">
+            <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="../index.html?category=category-name" class="breadcrumb-link breadcrumb-category" data-i18n="cat_category_name">Category</a>
+          </li>
+          <li class="breadcrumb-separator-wrapper">
+            <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+          </li>
+          <li class="breadcrumb-item breadcrumb-item--current">
+            <span class="breadcrumb-current" data-i18n="tool_name">Tool Name</span>
+          </li>
+        </ol>
       </nav>
 
       <!-- Tool Header -->
       <section class="tool-header">
-        <div class="tool-header-icon">
+        <div class="tool-header__icon">
           <i data-lucide="icon-name"></i>
         </div>
         <div class="tool-header-info">
-          <h1 data-i18n="tool_name">Tool Name</h1>
-          <p class="tool-description" data-i18n="tool_name_desc">Tool description goes here. Explain what this tool does and its main features.</p>
+          <h1 class="tool-header__title" data-i18n="tool_name" style="font-family: var(--font-family-heading);">Tool Name</h1>
+          <p class="tool-header__desc" data-i18n="tool_name_desc">Tool description goes here. Explain what this tool does and its main features.</p>
           <span class="tool-card-tag" data-i18n="cat_category_name">Category</span>
         </div>
       </section>
@@ -181,67 +246,75 @@
         <div class="tool-workspace">
 
           <!-- Input Area -->
-          <div class="tool-panel tool-input-panel">
-            <div class="tool-panel-header">
-              <h3 data-i18n="input_label">Input</h3>
-              <div class="tool-panel-actions">
-                <button class="btn btn-sm" id="btnPaste" data-i18n="btn_paste">
+          <div class="tool-panel tool-input-panel tool-input-panel--primary">
+            <div class="tool-panel__header">
+              <h3 class="tool-panel__title" data-i18n="input_label">Input</h3>
+              <div class="tool-panel__actions">
+                <button class="btn btn-sm btn-ghost" id="btnPaste" data-i18n="btn_paste">
                   <i data-lucide="clipboard-paste"></i> Paste
                 </button>
-                <button class="btn btn-sm" id="btnClear" data-i18n="btn_clear">
+                <button class="btn btn-sm btn-ghost" id="btnClear" data-i18n="btn_clear">
                   <i data-lucide="trash-2"></i> Clear
                 </button>
               </div>
             </div>
-            <div class="tool-panel-body">
-              <!-- Tool-specific input goes here -->
-              <textarea class="tool-textarea" id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter your input here..."></textarea>
+            <div class="tool-panel__body">
+              <div class="tool-textarea-wrapper">
+                <!-- Line Numbers -->
+                <div class="line-numbers" id="inputLineNumbers" aria-hidden="true">1</div>
+                <!-- Tool-specific input goes here -->
+                <textarea class="tool-textarea tool-input__field" id="inputArea" data-i18n-placeholder="input_placeholder" placeholder="Enter your input here..." style="font-family: var(--font-family-mono);"></textarea>
+              </div>
             </div>
           </div>
 
           <!-- Action Buttons -->
-          <div class="tool-actions">
-            <button class="btn btn-primary" id="btnConvert" data-i18n="btn_convert">
+          <div class="tool-actions tool-actions--center">
+            <button class="btn btn-primary btn-icon-shift" id="btnConvert" data-i18n="btn_convert">
               <i data-lucide="arrow-right"></i> Convert
             </button>
-            <button class="btn btn-secondary" id="btnSwap" data-i18n="btn_swap">
+            <button class="btn btn-secondary btn-icon-shift" id="btnSwap" data-i18n="btn_swap">
               <i data-lucide="arrow-left-right"></i> Swap
             </button>
-            <button class="btn btn-secondary" id="btnCopy" data-i18n="btn_copy">
+            <button class="btn btn-secondary btn-icon-shift" id="btnCopy" data-i18n="btn_copy">
               <i data-lucide="copy"></i> Copy
             </button>
-            <button class="btn btn-secondary" id="btnDownload" data-i18n="btn_download">
+            <button class="btn btn-secondary btn-icon-shift" id="btnDownload" data-i18n="btn_download">
               <i data-lucide="download"></i> Download
             </button>
           </div>
 
           <!-- Output Area -->
-          <div class="tool-panel tool-output-panel">
-            <div class="tool-panel-header">
-              <h3 data-i18n="output_label">Output</h3>
-              <div class="tool-panel-actions">
-                <button class="btn btn-sm" id="btnCopyOutput" data-i18n="btn_copy">
+          <div class="tool-panel tool-output-panel tool-input-panel--secondary">
+            <div class="tool-panel__header">
+              <h3 class="tool-panel__title" data-i18n="output_label">Output</h3>
+              <div class="tool-panel__actions">
+                <button class="btn btn-sm btn-ghost" id="btnCopyOutput" data-i18n="btn_copy">
                   <i data-lucide="copy"></i> Copy
                 </button>
-                <button class="btn btn-sm" id="btnDownloadOutput" data-i18n="btn_download">
+                <button class="btn btn-sm btn-ghost" id="btnDownloadOutput" data-i18n="btn_download">
                   <i data-lucide="download"></i> Download
                 </button>
               </div>
             </div>
-            <div class="tool-panel-body">
-              <!-- Tool-specific output goes here -->
-              <textarea class="tool-textarea" id="outputArea" readonly data-i18n-placeholder="output_placeholder" placeholder="Output will appear here..."></textarea>
+            <div class="tool-panel__body">
+              <div class="tool-textarea-wrapper">
+                <!-- Line Numbers -->
+                <div class="line-numbers" id="outputLineNumbers" aria-hidden="true">1</div>
+                <!-- Tool-specific output goes here -->
+                <textarea class="tool-textarea tool-output__content" id="outputArea" readonly data-i18n-placeholder="output_placeholder" placeholder="Output will appear here..." style="font-family: var(--font-family-mono);"></textarea>
+              </div>
             </div>
           </div>
 
           <!-- Tool Options (optional) -->
-          <div class="tool-options" id="toolOptions">
-            <h3 data-i18n="options_label">Options</h3>
+          <div class="tool-settings" id="toolOptions">
+            <h3 class="tool-settings__title" data-i18n="options_label">Options</h3>
             <div class="tool-options-grid">
               <!-- Tool-specific options go here -->
               <div class="tool-option">
                 <label for="option1" data-i18n="option_1">Option 1</label>
-                <select id="option1" class="tool-select">
+                <select id="option1" class="tool-select form-select">
                   <option value="default">Default</option>
                 </select>
               </div>
@@ -253,15 +326,37 @@
       </section>
 
       <!-- Tool Description / How to Use -->
-      <section class="tool-description-section">
-        <h2 data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-description-content">
-          <ol>
-            <li data-i18n="step_1">Enter your input in the input area above.</li>
-            <li data-i18n="step_2">Configure any options if available.</li>
-            <li data-i18n="step_3">Click the convert/process button.</li>
-            <li data-i18n="step_4">View the result in the output area.</li>
-          </ol>
+      <section class="tool-info">
+        <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
+              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
+              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
+              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">4</div>
+            <div class="tool-step__content">
+              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
+              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -303,13 +398,36 @@
   <!-- ========== Footer ========== -->
   <footer class="footer">
     <div class="footer-container">
-      <div class="footer-links">
-        <a href="../about.html" data-i18n="footer_about">About</a>
-        <a href="../privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
-        <a href="../terms.html" data-i18n="footer_terms">Terms of Service</a>
-        <a href="../contact.html" data-i18n="footer_contact">Contact</a>
+      <div class="footer-bottom">
+        <div class="footer-brand">
+          <a href="../index.html" class="logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a>
+        </div>
+        <div class="footer-links-group">
+          <div class="footer-col">
+            <h5 data-i18n="footer_col_product">Product</h5>
+            <a href="../index.html#converters" data-i18n="cat_converters">Converters</a>
+            <a href="../index.html#calculators" data-i18n="cat_calculators">Calculators</a>
+            <a href="../index.html#image-tools" data-i18n="cat_image_tools">Image Tools</a>
+            <a href="../index.html#generators" data-i18n="cat_generators">Generators</a>
+          </div>
+          <div class="footer-col">
+            <h5 data-i18n="footer_col_more">More</h5>
+            <a href="../index.html#formatters" data-i18n="cat_formatters">Formatters</a>
+            <a href="../index.html#crypto" data-i18n="cat_crypto">Encryption</a>
+            <a href="../index.html#charts" data-i18n="cat_charts">Charts</a>
+            <a href="../index.html#testing" data-i18n="cat_testing">Testing</a>
+          </div>
+          <div class="footer-col">
+            <h5 data-i18n="footer_col_resources">Resources</h5>
+            <a href="../blog/index.html" data-i18n="footer_blog">Blog</a>
+            <a href="../about.html" data-i18n="footer_about">About</a>
+            <a href="../contact.html" data-i18n="footer_contact">Contact</a>
+          </div>
+        </div>
       </div>
-      <p class="footer-copyright">&copy; 2024 UseEasyTool. <span data-i18n="footer_rights">All rights reserved.</span></p>
+      <div class="footer-copyright">
+        <p>&copy; 2024 UseEasyTool. <span data-i18n="footer_rights">All rights reserved.</span></p>
+      </div>
     </div>
   </footer>
 

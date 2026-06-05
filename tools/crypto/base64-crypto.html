@@ -10,9 +10,9 @@
     <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
     
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@0.453.0"></script>
@@ -91,28 +91,34 @@
   </script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container header-inner">
-            <a href="../../index.html" class="logo">
-                <i data-lucide="UseEasyTool"></i>
-                <span>UseEasyTool</span>
-            </a>
-            <div class="header-search">
-                <i data-lucide="search"></i>
-                <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
-            </div>
-            <div class="header-actions">
-                <button class="lang-btn" id="langToggle" aria-label="Toggle Language">
-                    <span class="lang-label">EN</span>
-                </button>
-                <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">
-                    <i data-lucide="sun" class="theme-icon-light"></i>
-                    <i data-lucide="moon" class="theme-icon-dark"></i>
-                </button>
-            </div>
-        </div>
-    </header>
+    <!-- ========== Navigation ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo">
+        <i data-lucide="UseEasyTool"></i>
+        <span>UseEasyTool</span>
+      </a>
+
+      <div class="navbar-search">
+        <i data-lucide="search"></i>
+        <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+      </div>
+
+      <div class="navbar-actions">
+        <a href="../../blog/index.html" class="navbar-link" data-i18n="nav_blog">Blog</a>
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language">
+          <span class="lang-label">EN</span>
+        </button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="theme-icon-light"></i>
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+        </button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
     
     <!-- Breadcrumb -->
     <div class="breadcrumb"><div class="container"><a href="../../index.html" data-i18n="breadcrumb_home">Home</a> / <a href="../../index.html#cat_crypto" data-i18n="cat_crypto">Encryption</a> / <span>Base64 Encrypt</span></div></div>
@@ -135,7 +141,7 @@
                         <button class="btn btn-secondary active" id="encodeBtn" onclick="setMode('encode')">
                             <i data-lucide="lock"></i> Encode
                         </button>
-                        <button class="btn btn-secondary" id="decodeBtn" onclick="setMode('decode')">
+                        <button class="btn btn-secondary btn-icon-shift" id="decodeBtn" onclick="setMode('decode')">
                             <i data-lucide="unlock"></i> Decode
                         </button>
                     </div>
@@ -163,9 +169,9 @@
                         </div>
                     </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="process()"><i data-lucide="play"></i><span data-i18n="btn_process">Process</span></button>
-                        <button class="btn btn-secondary" onclick="swapValues()"><i data-lucide="arrow-up-down"></i><span>Swap</span></button>
-                        <button class="btn btn-secondary" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
+                        <button class="btn btn-primary btn-icon-shift" onclick="process()"><i data-lucide="play"></i><span data-i18n="btn_process">Process</span></button>
+                        <button class="btn btn-secondary btn-icon-shift" onclick="swapValues()"><i data-lucide="arrow-up-down"></i><span>Swap</span></button>
+                        <button class="btn btn-secondary btn-icon-shift" onclick="copyOutput()"><i data-lucide="copy"></i><span data-i18n="btn_copy">Copy</span></button>
                         <button class="btn btn-danger" onclick="clearAll()"><i data-lucide="trash-2"></i><span data-i18n="btn_clear">Clear</span></button>
                     </div>
                 </div>
@@ -175,30 +181,78 @@
             </aside>
         </div>
     
-    <!-- How to Use -->
-    <section class="tool-guide">
-      <h3 data-i18n="tool_how_to_use">How to Use</h3>
-      <ol class="tool-guide-steps">
-        <li data-i18n="tool_step_input">Enter or paste your content in the input area above</li>
-        <li data-i18n="tool_step_action">Click the action button to process your data</li>
-        <li data-i18n="tool_step_output">View the results in the output area below</li>
-        <li data-i18n="tool_step_copy">Copy the results to clipboard or download as needed</li>
-      </ol>
-    </section>
+    <!-- Tool Description / How to Use -->
+      <section class="tool-info">
+        <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
+        <div class="tool-steps">
+          <div class="tool-step">
+            <div class="tool-step__number">1</div>
+            <div class="tool-step__content">
+              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
+              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">2</div>
+            <div class="tool-step__content">
+              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
+              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">3</div>
+            <div class="tool-step__content">
+              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
+              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
+            </div>
+          </div>
+          <div class="tool-step">
+            <div class="tool-step__number">4</div>
+            <div class="tool-step__content">
+              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
+              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
     
     <!-- Footer -->
-    <footer class="footer">
-        <div class="container footer-container">
-            <div class="footer-links">
-                <a href="../about.html" data-i18n="footer_about">About</a>
-                <a href="../privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
-                <a href="../terms.html" data-i18n="footer_terms">Terms of Service</a>
-                <a href="../contact.html" data-i18n="footer_contact">Contact</a>
-            </div>
-            <p class="footer-copyright">&copy; 2024 UseEasyTool. <span data-i18n="footer_rights">All rights reserved.</span></p>
+    <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-bottom">
+        <div class="footer-brand">
+          <a href="../../index.html" class="logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a>
         </div>
-    </footer>
+        <div class="footer-links-group">
+          <div class="footer-col">
+            <h5 data-i18n="footer_col_product">Product</h5>
+            <a href="../../index.html#converters" data-i18n="cat_converters">Converters</a>
+            <a href="../../index.html#calculators" data-i18n="cat_calculators">Calculators</a>
+            <a href="../../index.html#image-tools" data-i18n="cat_image_tools">Image Tools</a>
+            <a href="../../index.html#generators" data-i18n="cat_generators">Generators</a>
+          </div>
+          <div class="footer-col">
+            <h5 data-i18n="footer_col_more">More</h5>
+            <a href="../../index.html#formatters" data-i18n="cat_formatters">Formatters</a>
+            <a href="../../index.html#crypto" data-i18n="cat_crypto">Encryption</a>
+            <a href="../../index.html#charts" data-i18n="cat_charts">Charts</a>
+            <a href="../../index.html#testing" data-i18n="cat_testing">Testing</a>
+          </div>
+          <div class="footer-col">
+            <h5 data-i18n="footer_col_resources">Resources</h5>
+            <a href="../../blog/index.html" data-i18n="footer_blog">Blog</a>
+            <a href="../../about.html" data-i18n="footer_about">About</a>
+            <a href="../../contact.html" data-i18n="footer_contact">Contact</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2024 UseEasyTool. <span data-i18n="footer_rights">All rights reserved.</span></p>
+      </div>
+    </div>
+  </footer>
     
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
