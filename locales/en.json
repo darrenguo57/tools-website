@@ -1,6 +1,6 @@
 {
   "site": {
-    "title": "ToolBox",
+    "title": "UseEasyTool",
     "description": "A collection of useful online tools for developers and designers."
   },
   "nav": {
@@ -63,7 +63,7 @@
     "tools": "Tools"
   },
   "footer": {
-    "copyright": "ToolBox. All rights reserved.",
+    "copyright": "UseEasyTool. All rights reserved.",
     "builtWith": "Built with"
   },
   "common": {
