@@ -278,6 +278,9 @@
 
     <script>
     // Global variables
+    function getThemeColor(varName) {
+        return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    }
     const canvas = document.getElementById('ganttCanvas');
     const ctx = canvas ? canvas.getContext('2d') : null;
 
@@ -372,7 +375,7 @@
       ctx.scale(dpr, dpr);
 
       // Background
-      ctx.fillStyle = '#FAFBFC';
+      ctx.fillStyle = getThemeColor('--color-bg-secondary');
       ctx.fillRect(0, 0, chartW, totalH);
 
       // Time range
@@ -384,12 +387,12 @@
       const dayW = (chartW - labelW - padding) / totalDays;
 
       // Header background
-      ctx.fillStyle = '#F1F5F9';
+      ctx.fillStyle = getThemeColor('--color-bg-tertiary');
       ctx.fillRect(0, 0, chartW, headerH);
 
       // Header text
       ctx.font = '600 12px Inter, sans-serif';
-      ctx.fillStyle = '#6B7280';
+      ctx.fillStyle = getThemeColor('--color-text-tertiary');
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
       ctx.fillText('Task', padding, headerH / 2);
@@ -400,7 +403,7 @@
       while (startDate <= maxDate) {
         const x = labelW + (startDate - minDate) / (1000*60*60*24) * dayW;
         if (startDate.getDate() === 1 || col === 0) {
-          ctx.fillStyle = '#374151';
+          ctx.fillStyle = getThemeColor('--color-text-secondary');
           ctx.font = '600 11px Inter, sans-serif';
           ctx.fillText(startDate.toLocaleDateString('en', { month: 'short', year: 'numeric' }), x + 4, headerH / 2 - 8);
         }
@@ -414,7 +417,7 @@
       }
 
       // Grid lines
-      ctx.strokeStyle = '#E5E7EB';
+      ctx.strokeStyle = getThemeColor('--color-border-light');
       ctx.lineWidth = 0.5;
       const gridDate = new Date(minDate);
       while (gridDate <= maxDate) {
@@ -434,13 +437,13 @@
 
         // Alternating row bg
         if (i % 2 === 0) {
-          ctx.fillStyle = '#FFFFFF';
+          ctx.fillStyle = getThemeColor('--color-surface');
           ctx.fillRect(0, y, chartW, rowH);
         }
 
         // Task label
         ctx.font = '500 13px Inter, sans-serif';
-        ctx.fillStyle = '#1F2937';
+        ctx.fillStyle = getThemeColor('--color-text');
         ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
         ctx.fillText(task.name, padding, y + rowH / 2);
@@ -501,7 +504,6 @@
       link.href = canvas.toDataURL('image/png');
       link.click();
     });
-  })();
   </script>
 </body>
 </html>

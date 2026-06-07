@@ -343,17 +343,29 @@
         showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
     }
     
-    function flattenData(node, depth, parentColor) {
-      const scheme = colorSchemes[document.getElementById('colorScheme').value] || colorSchemes.vibrant;
-      if (!node.children || node.children.length === 0) {
-        return [{ name: node.name, value: node.value, depth, color: parentColor || scheme[0] }];
-      }
-      const color = scheme[depth % scheme.length];
-      let items = [];
-      node.children.forEach(child => {
-        items = items.concat(flattenData(child, depth + 1, color));
+    function getTableData() {
+      const data = [];
+      const rows = document.querySelectorAll('#treemapBody tr');
+      rows.forEach(row => {
+        const name = row.querySelector('.tm-name') ? row.querySelector('.tm-name').value.trim() : '';
+        const value = row.querySelector('.tm-value') ? parseFloat(row.querySelector('.tm-value').value) : 0;
+        const parent = row.querySelector('.tm-parent') ? row.querySelector('.tm-parent').value.trim() : '';
+        const color = row.querySelector('.tm-color') ? row.querySelector('.tm-color').value : '';
+        if (name && value > 0) {
+          data.push({ name, value, parent: parent || null, color: color || null });
+        }
       });
-      return items;
+      return data;
+    }
+
+    function flattenData(data, depth, parentColor) {
+      const scheme = colorSchemes['vibrant'] || colorSchemes.vibrant;
+      return data.map((item, i) => ({
+        name: item.name,
+        value: item.value,
+        depth: item.parent ? 1 : 0,
+        color: item.color || parentColor || scheme[i % scheme.length]
+      }));
     }
 
     function squarify(items, rect) {
@@ -423,7 +435,7 @@
     }
 
     function drawTreemap() {
-      const data = JSON.parse(document.getElementById('jsonInput').value);
+      const data = getTableData();
       const items = flattenData(data, 0);
       if (items.length === 0) return;
 
@@ -492,9 +504,6 @@
       link.click();
     });
 
-    // Load sample on start
-    document.getElementById('jsonInput').value = JSON.stringify(sampleData, null, 2);
-  })();
   </script>
 </body>
 </html>

@@ -303,7 +303,7 @@
         showToast(typeof I18n !== 'undefined' ? I18n.t('toast.cleared') : 'Cleared');
     }
     
-    function renderDiagram() {
+    async function renderDiagram() {
       const code = document.getElementById('mermaidInput').value.trim();
       if (!code) return;
       const preview = document.getElementById('mermaidPreview');
@@ -350,7 +350,6 @@
       };
       img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
     });
-  })();
   </script>
 </body>
 </html>

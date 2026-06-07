@@ -7,36 +7,75 @@
    1. Dark Theme CSS Variables
    ---------------------------------------------------------- */
 html.dark {
-  /* --- Background & Surface --- */
-  --color-bg: #0B0F1A;
-  --color-bg-secondary: #111827;
-  --color-bg-tertiary: #1F2937;
-  --color-surface: #151C2C;
-  --color-surface-hover: #1E293B;
+  /* --- Background & Surface (synced with main.css :root) --- */
+  --color-bg: #0A0E1A;
+  --color-bg-secondary: #0D1321;
+  --color-bg-tertiary: #111827;
+  --color-surface: #111827;
+  --color-surface-hover: #1A2236;
 
-  /* --- Text --- */
+  /* --- Text (synced with main.css :root) --- */
   --color-text: #F1F5F9;
   --color-text-secondary: #94A3B8;
   --color-text-tertiary: #64748B;
-  --color-text-inverse: #0B0F1A;
-  --color-text-link: #60A5FA;
-  --color-text-link-hover: #93C5FD;
+  --color-text-inverse: #0A0E1A;
+  --color-text-link: #5C7AFF;
+  --color-text-link-hover: #8BA1FF;
 
-  /* --- Border --- */
-  --color-border: #1E293B;
-  --color-border-light: #1E293B;
-  --color-border-focus: #3B82F6;
+  /* --- Border (synced with main.css :root) --- */
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-light: rgba(255, 255, 255, 0.05);
+  --color-border-focus: #3B5BFF;
 
-  /* --- Primary Color --- */
-  --color-primary: #3B82F6;
-  --color-primary-hover: #60A5FA;
-  --color-primary-light: rgba(59, 130, 246, 0.15);
-  --color-primary-dark: #2563EB;
+  /* --- Primary Color (synced with main.css :root) --- */
+  --color-primary: #3B5BFF;
+  --color-primary-hover: #5C7AFF;
+  --color-primary-light: rgba(59, 91, 255, 0.15);
+  --color-primary-dark: #2A46D9;
 
-  /* --- Shadow Adjustments (darker, more pronounced) --- */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+  /* --- Secondary Color (synced with main.css :root) --- */
+  --color-secondary: #FF6B35;
+  --color-secondary-hover: #FF8F5C;
+  --color-secondary-light: rgba(255, 107, 53, 0.15);
+
+  /* --- Status Colors (synced with main.css :root) --- */
+  --color-success: #34D399;
+  --color-success-light: rgba(52, 211, 153, 0.15);
+  --color-warning: #FBBF24;
+  --color-warning-light: rgba(251, 191, 36, 0.15);
+  --color-error: #F87171;
+  --color-error-light: rgba(248, 113, 113, 0.15);
+  --color-info: #22D3EE;
+  --color-info-light: rgba(34, 211, 238, 0.15);
+
+  /* --- Shadow Adjustments (synced with main.css :root) --- */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px rgba(59, 91, 255, 0.3), 0 0 40px rgba(59, 91, 255, 0.1);
+  --shadow-glow-strong: 0 0 30px rgba(59, 91, 255, 0.4), 0 0 60px rgba(59, 91, 255, 0.15);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+  --shadow-inner-light: inset 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+
+  /* --- Gradients (synced with main.css :root) --- */
+  --gradient-primary: linear-gradient(135deg, #1A2B6B 0%, #3B5BFF 100%);
+  --gradient-primary-soft: linear-gradient(135deg, rgba(59, 91, 255, 0.2) 0%, rgba(59, 91, 255, 0.05) 100%);
+  --gradient-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+  --gradient-glow: radial-gradient(ellipse at center, rgba(59, 91, 255, 0.15) 0%, transparent 70%);
+
+  /* --- Glassmorphism (synced with main.css :root) --- */
+  --glass-bg: rgba(17, 24, 39, 0.7);
+  --glass-bg-light: rgba(17, 24, 39, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-light: rgba(255, 255, 255, 0.05);
+  --glass-blur: blur(20px) saturate(180%);
+
+  /* --- Grid Background (synced with main.css :root) --- */
+  --grid-bg: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+  --grid-bg-size: 24px 24px;
+
+  color-scheme: dark;
 }
 
 /* ----------------------------------------------------------

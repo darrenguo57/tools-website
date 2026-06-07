@@ -374,7 +374,7 @@
 
       const showTrend = document.getElementById('showTrendline').checked;
       const showGrid = document.getElementById('showGrid').checked;
-      const hasBubble = points.some(p => p.r > 5);
+      const hasBubble = points.some(p => p.r && p.r > 0);
 
       document.getElementById('chartPlaceholder').style.display = 'none';
       const canvas = document.getElementById('chartCanvas');
@@ -472,7 +472,6 @@
       link.href = document.getElementById('chartCanvas').toDataURL('image/png', 1.0);
       link.click();
     });
-  })();
   </script>
 </body>
 </html>

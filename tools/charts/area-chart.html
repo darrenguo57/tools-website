@@ -380,7 +380,8 @@
 
       if (labels.length === 0 || datasets.length === 0) return;
 
-      document.getElementById('chartPlaceholder').style.display = 'none';
+      const placeholder = document.getElementById('chartPlaceholder');
+      if (placeholder) placeholder.style.display = 'none';
       const canvas = document.getElementById('chartCanvas');
       canvas.style.display = 'block';
       if (chartInstance) chartInstance.destroy();
@@ -416,6 +417,10 @@
       });
     }
 
+    document.getElementById('fillOpacity').addEventListener('input', function() {
+        document.getElementById('fillOpacityValue').textContent = this.value + '%';
+    });
+
     document.getElementById('btnGenerate').addEventListener('click', generate);
 
     document.getElementById('btnDownloadPNG').addEventListener('click', () => {
@@ -425,7 +430,6 @@
       link.href = document.getElementById('chartCanvas').toDataURL('image/png', 1.0);
       link.click();
     });
-  })();
   </script>
 </body>
 </html>

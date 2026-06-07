@@ -267,6 +267,9 @@
 
     <script>
     // Global variables
+    function getThemeColor(varName) {
+        return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    }
     const canvas = document.getElementById('gaugeCanvas');
     const ctx = canvas ? canvas.getContext('2d') : null;
 
@@ -326,16 +329,16 @@
       const value = parseFloat(document.getElementById('gaugeValue').value) || 0;
       const min = parseFloat(document.getElementById('gaugeMin').value) || 0;
       const max = parseFloat(document.getElementById('gaugeMax').value) || 100;
-      const unit = document.getElementById('gaugeUnit').value;
-      const title = document.getElementById('gaugeTitle').value;
-      const style = document.getElementById('gaugeStyle').value;
-      const greenEnd = parseFloat(document.getElementById('greenEnd').value) || 60;
-      const yellowEnd = parseFloat(document.getElementById('yellowEnd').value) || 80;
-      const redEnd = parseFloat(document.getElementById('redEnd').value) || 100;
+      const unit = document.getElementById('gaugeUnit') ? document.getElementById('gaugeUnit').value : '';
+      const title = document.getElementById('gaugeTitle') ? document.getElementById('gaugeTitle').value : '';
+      const style = document.getElementById('gaugeStyle') ? document.getElementById('gaugeStyle').value : 'arc';
+      const greenEnd = parseFloat(document.getElementById('greenEnd') ? document.getElementById('greenEnd').value : 60);
+      const yellowEnd = parseFloat(document.getElementById('yellowEnd') ? document.getElementById('yellowEnd').value : 80);
+      const redEnd = parseFloat(document.getElementById('redEnd') ? document.getElementById('redEnd').value : 100);
 
       const cx = 250, cy = 220;
       const radius = 160;
-      const lineWidth = 25;
+      const lineWidth = parseInt(document.getElementById('gaugeThickness') ? document.getElementById('gaugeThickness').value : 25);
 
       let startAngle, endAngle;
       if (style === 'half') { startAngle = Math.PI; endAngle = 2 * Math.PI; }
@@ -391,7 +394,7 @@
         ctx.beginPath();
         ctx.moveTo(cx + innerR * Math.cos(angle), cy + innerR * Math.sin(angle));
         ctx.lineTo(cx + outerR * Math.cos(angle), cy + outerR * Math.sin(angle));
-        ctx.strokeStyle = '#9CA3AF';
+        ctx.strokeStyle = getThemeColor('--color-text-tertiary');
         ctx.lineWidth = 2;
         ctx.lineCap = 'round';
         ctx.stroke();
@@ -399,7 +402,7 @@
         // Labels
         const labelR = radius + lineWidth / 2 + 18;
         const labelVal = min + (i / tickCount) * range;
-        ctx.fillStyle = '#6B7280';
+        ctx.fillStyle = getThemeColor('--color-text-tertiary');
         ctx.font = '500 11px Inter, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -417,34 +420,43 @@
       ctx.lineTo(needleLen, 0);
       ctx.lineTo(0, 3);
       ctx.closePath();
-      ctx.fillStyle = '#374151';
+      ctx.fillStyle = getThemeColor('--color-text-secondary');
       ctx.fill();
       ctx.restore();
 
       // Center circle
       ctx.beginPath();
       ctx.arc(cx, cy, 12, 0, Math.PI * 2);
-      ctx.fillStyle = '#374151';
+      ctx.fillStyle = getThemeColor('--color-text-secondary');
       ctx.fill();
       ctx.beginPath();
       ctx.arc(cx, cy, 6, 0, Math.PI * 2);
-      ctx.fillStyle = '#fff';
+      ctx.fillStyle = getThemeColor('--color-text-inverse');
       ctx.fill();
 
       // Value text
-      ctx.fillStyle = '#1F2937';
+      ctx.fillStyle = getThemeColor('--color-text');
       ctx.font = '700 36px Inter, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(clampedValue + unit, cx, cy + 50);
 
       // Title
-      ctx.fillStyle = '#6B7280';
+      ctx.fillStyle = getThemeColor('--color-text-tertiary');
       ctx.font = '500 14px Inter, sans-serif';
       ctx.fillText(title, cx, cy + 80);
     }
 
     document.getElementById('btnGenerate').addEventListener('click', drawGauge);
+
+    document.getElementById('gaugeValue').addEventListener('input', function() {
+        document.getElementById('gaugeValueDisplay').textContent = this.value + '%';
+        drawGauge();
+    });
+    document.getElementById('gaugeThickness').addEventListener('input', function() {
+        document.getElementById('gaugeThicknessDisplay').textContent = this.value;
+        drawGauge();
+    });
 
     document.getElementById('btnDownloadPNG').addEventListener('click', () => {
       const link = document.createElement('a');
@@ -452,7 +464,6 @@
       link.href = canvas.toDataURL('image/png');
       link.click();
     });
-  })();
   </script>
 </body>
 </html>

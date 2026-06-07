@@ -158,56 +158,87 @@
    ---------------------------------------------------------- */
 /* Light Theme (activated via html.light) */
 html.light {
+  /* 背景：纯白到极浅灰 */
+  --color-bg: #FFFFFF;
+  --color-bg-secondary: #F5F5F7;  /* Apple 风格浅灰 */
+  --color-bg-tertiary: #E8E8ED;
+
+  /* 表面：纯白 */
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #F5F5F7;
+
+  /* 文字：纯黑到深灰 */
+  --color-text: #1D1D1F;  /* Apple 风格近黑 */
+  --color-text-secondary: #6E6E73;  /* Apple 风格中灰 */
+  --color-text-tertiary: #86868B;  /* Apple 风格浅灰 */
+  --color-text-inverse: #FFFFFF;
+
+  /* 边框：浅灰 */
+  --color-border: #D2D2D7;  /* Apple 风格边框灰 */
+  --color-border-light: #E5E5EA;
+  --color-border-focus: #3B5BFF;
+
+  /* 主色保持电光蓝 */
   --color-primary: #3B5BFF;
   --color-primary-hover: #2A46D9;
-  --color-primary-light: rgba(59, 91, 255, 0.1);
-  --color-primary-dark: #1A2B6B;
+  --color-primary-light: rgba(59, 91, 255, 0.08);
+  --color-primary-dark: #1E3ABF;
+  --color-primary-text: #FFFFFF;
 
+  /* 辅助色 */
   --color-secondary: #FF6B35;
-  --color-secondary-hover: #E55A2B;
-  --color-secondary-light: rgba(255, 107, 53, 0.1);
+  --color-secondary-hover: #E55A25;
 
-  --color-success: #10B981;
-  --color-success-light: rgba(16, 185, 129, 0.1);
-  --color-warning: #F59E0B;
-  --color-warning-light: rgba(245, 158, 11, 0.1);
-  --color-error: #EF4444;
-  --color-error-light: rgba(239, 68, 68, 0.1);
-  --color-info: #06B6D4;
-  --color-info-light: rgba(6, 182, 212, 0.1);
-
-  --color-bg: #FAFAFA;
-  --color-bg-secondary: #F8FAFC;
-  --color-bg-tertiary: #F1F5F9;
-  --color-surface: #FFFFFF;
-  --color-surface-hover: #F8FAFC;
-
-  --color-text: #0F172A;
-  --color-text-secondary: #64748B;
-  --color-text-tertiary: #94A3B8;
-  --color-text-inverse: #FFFFFF;
+  /* 链接 */
   --color-text-link: #3B5BFF;
   --color-text-link-hover: #2A46D9;
 
-  --color-border: #E2E8F0;
-  --color-border-light: #F1F5F9;
-  --color-border-focus: #3B5BFF;
+  /* 状态色 */
+  --color-success: #30D158;  /* Apple 绿 */
+  --color-warning: #FF9F0A;  /* Apple 橙 */
+  --color-error: #FF3B30;    /* Apple 红 */
+  --color-info: #3B5BFF;
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
-  --shadow-glow: 0 0 20px rgba(59, 91, 255, 0.15), 0 0 40px rgba(59, 91, 255, 0.05);
+  /* 阴影 - 苹果风格柔和阴影 */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.1), 0 8px 20px rgba(0, 0, 0, 0.06);
+
+  /* 发光效果在浅色模式下更柔和 */
+  --shadow-glow: 0 0 20px rgba(59, 91, 255, 0.12), 0 0 40px rgba(59, 91, 255, 0.04);
   --shadow-glow-strong: 0 0 30px rgba(59, 91, 255, 0.2), 0 0 60px rgba(59, 91, 255, 0.08);
-  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
-  --shadow-inner-light: inset 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  --shadow-inner: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-inner-light: inset 0 1px 2px rgba(0, 0, 0, 0.04);
 
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-bg-light: rgba(255, 255, 255, 0.4);
-  --glass-border: rgba(0, 0, 0, 0.08);
-  --glass-border-light: rgba(0, 0, 0, 0.05);
+  /* 渐变 */
+  --gradient-primary: linear-gradient(135deg, #1A2B6B 0%, #3B5BFF 100%);
+  --gradient-primary-soft: linear-gradient(135deg, rgba(59, 91, 255, 0.05) 0%, rgba(59, 91, 255, 0.1) 100%);
+  --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #F5F5F7 100%);
+  --gradient-glow: radial-gradient(ellipse at center, rgba(59, 91, 255, 0.08) 0%, transparent 70%);
 
-  --grid-bg: radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.04) 1px, transparent 0);
+  /* 玻璃效果 */
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-bg-light: rgba(255, 255, 255, 0.5);
+  --glass-border: rgba(0, 0, 0, 0.06);
+  --glass-border-light: rgba(0, 0, 0, 0.03);
+  --glass-blur: 20px;
+
+  /* 网格背景 */
+  --grid-bg: radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.03) 1px, transparent 0);
+  --grid-bg-size: 24px 24px;
+
+  /* 滚动条 */
+  --scrollbar-track: #F5F5F7;
+  --scrollbar-thumb: #D2D2D7;
+  --scrollbar-thumb-hover: #AEAEB2;
+
+  /* 代码块 */
+  --code-bg: #F5F5F7;
+  --code-border: #E5E5EA;
+  --code-text: #1D1D1F;
+
+  color-scheme: light;
 }
 
 

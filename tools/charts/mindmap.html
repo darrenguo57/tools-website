@@ -246,6 +246,9 @@
 
     <script>
     // Global variables
+    function getThemeColor(varName) {
+        return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    }
     const canvas = document.getElementById('mindmapCanvas');
     const ctx = canvas ? canvas.getContext('2d') : null;
     let treeRoot = null;
@@ -354,7 +357,7 @@
       ctx.stroke();
 
       // Text
-      ctx.fillStyle = node.level === 0 ? '#1F2937' : '#374151';
+      ctx.fillStyle = node.level === 0 ? getThemeColor('--color-text') : getThemeColor('--color-text-secondary');
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(node.text, node.x, node.y);
@@ -363,11 +366,11 @@
       if (node.children.length > 0) {
         const ix = node.x + w/2 + 10;
         const iy = node.y;
-        ctx.fillStyle = '#9CA3AF';
+        ctx.fillStyle = getThemeColor('--color-text-tertiary');
         ctx.beginPath();
         ctx.arc(ix, iy, 8, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = '#fff';
+        ctx.fillStyle = getThemeColor('--color-text-inverse');
         ctx.font = 'bold 12px Inter, sans-serif';
         ctx.fillText(node.collapsed ? '+' : '-', ix, iy);
       }
@@ -444,7 +447,6 @@
       link.href = canvas.toDataURL('image/png');
       link.click();
     });
-  })();
   </script>
 </body>
 </html>

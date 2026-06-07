@@ -159,39 +159,39 @@
                                 </label>
                             </div>
                             <div class="textarea-wrap">
-                                <textarea id="textInput" placeholder="Enter text here to generate word cloud...&#10;&#10;One word per line, or use format: word:weight&#10;Example:&#10;javascript:100&#10;python:80&#10;html:60">javascript 100
-python 80
-html 60
-css 50
-react 70
-vue 40
-angular 30
-node 65
-typescript 55
-java 45
-csharp 35
-php 25
-ruby 20
-swift 15
-kotlin 10
-typescript 55
-go 30
-rust 25
-docker 40
-kubernetes 35
-aws 50
-azure 30
-gcp 25
-devops 45
-agile 30
-scrum 25
-ci 35
-cd 30
-git 55
-github 50
-gitlab 30
-jenkins 35
-terraform 25</textarea>
+                                <textarea id="textInput" placeholder="Enter text here to generate word cloud...&#10;&#10;One word per line, or use format: word:weight&#10;Example:&#10;javascript:100&#10;python:80&#10;html:60">javascript:100
+python:80
+html:60
+css:50
+react:70
+vue:40
+angular:30
+node:65
+typescript:55
+java:45
+csharp:35
+php:25
+ruby:20
+swift:15
+kotlin:10
+typescript:55
+go:30
+rust:25
+docker:40
+kubernetes:35
+aws:50
+azure:30
+gcp:25
+devops:45
+agile:30
+scrum:25
+ci:35
+cd:30
+git:55
+github:50
+gitlab:30
+jenkins:35
+terraform:25</textarea>
                             </div>
                             <div class="btn-group">
                                 <button class="btn btn-primary btn-icon-shift" id="btnGenerate"><i data-lucide="play"></i><span>Generate</span></button>
@@ -299,6 +299,9 @@ terraform 25</textarea>
 
     <script>
     // Global variables
+    function getThemeColor(varName) {
+        return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    }
     const colorSchemes = {
       vibrant: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#06B6D4'],
       pastel: ['#93C5FD', '#86EFAC', '#FCD34D', '#FCA5A5', '#C4B5FD', '#F9A8D4', '#67E8F9'],
@@ -420,7 +423,7 @@ terraform 25</textarea>
         },
         rotateRatio: 0.3,
         rotationSteps: 2,
-        backgroundColor: '#FAFBFC',
+        backgroundColor: getThemeColor('--color-bg-secondary') || '#FAFBFC',
         drawOutOfBound: false,
         shrinkToFit: true
       };
@@ -440,7 +443,6 @@ terraform 25</textarea>
       link.href = document.getElementById('wordcloudCanvas').toDataURL('image/png');
       link.click();
     });
-  })();
   </script>
 </body>
 </html>

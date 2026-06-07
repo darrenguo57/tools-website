@@ -270,6 +270,9 @@
 
     <script>
     // Global variables
+    function getThemeColor(varName) {
+        return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    }
     const canvas = document.getElementById('networkCanvas');
     const ctx = canvas ? canvas.getContext('2d') : null;
     let nodes = [];
@@ -322,20 +325,30 @@
     }
     
     function parseInput() {
-      const nodeNames = document.getElementById('nodesInput').value.split(',').map(s => s.trim()).filter(Boolean);
-      const edgeLines = document.getElementById('edgesInput').value.trim().split('\n').filter(Boolean);
-      const edgeList = edgeLines.map(l => {
-        const parts = l.split('->').map(s => s.trim());
-        return parts.length === 2 ? { source: parts[0], target: parts[1] } : null;
-      }).filter(Boolean);
+      const nodesList = [];
+      const edgesList = [];
+      const rows = document.querySelectorAll('#nodeBody tr');
+      rows.forEach(row => {
+        const nameInput = row.querySelector('.node-name');
+        const connInput = row.querySelector('.node-connections');
+        if (nameInput && nameInput.value.trim()) {
+          nodesList.push({ id: nameInput.value.trim(), label: nameInput.value.trim() });
+          if (connInput) {
+            const targets = connInput.value.split(',').map(s => s.trim()).filter(Boolean);
+            targets.forEach(target => {
+              edgesList.push({ source: nameInput.value.trim(), target: target });
+            });
+          }
+        }
+      });
 
-      nodes = nodeNames.map((name, i) => ({
-        id: name, label: name,
+      nodes = nodesList.map((n, i) => ({
+        id: n.id, label: n.label,
         x: 0, y: 0, vx: 0, vy: 0,
         color: colors[i % colors.length]
       }));
 
-      edges = edgeList.map(e => ({
+      edges = edgesList.map(e => ({
         source: nodes.find(n => n.id === e.source),
         target: nodes.find(n => n.id === e.target)
       })).filter(e => e.source && e.target);
@@ -411,13 +424,13 @@
       const dpr = window.devicePixelRatio || 1;
       const w = canvas.width / dpr;
       const h = canvas.height / dpr;
-      const nodeR = parseInt(document.getElementById('nodeSize').value);
+      const nodeR = document.getElementById('nodeSize') ? parseInt(document.getElementById('nodeSize').value) : 20;
 
       ctx.clearRect(0, 0, w, h);
 
       // Draw edges
       edges.forEach(e => {
-        ctx.strokeStyle = '#D1D5DB';
+        ctx.strokeStyle = getThemeColor('--color-border');
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(e.source.x, e.source.y);
@@ -429,7 +442,7 @@
         const arrowLen = 10;
         const ax = e.target.x - Math.cos(angle) * (nodeR + 4);
         const ay = e.target.y - Math.sin(angle) * (nodeR + 4);
-        ctx.fillStyle = '#9CA3AF';
+        ctx.fillStyle = getThemeColor('--color-text-tertiary');
         ctx.beginPath();
         ctx.moveTo(ax, ay);
         ctx.lineTo(ax - arrowLen * Math.cos(angle - 0.3), ay - arrowLen * Math.sin(angle - 0.3));
@@ -455,12 +468,12 @@
         ctx.shadowBlur = 0;
 
         // Border
-        ctx.strokeStyle = '#fff';
+        ctx.strokeStyle = getThemeColor('--color-surface');
         ctx.lineWidth = 3;
         ctx.stroke();
 
         // Label
-        ctx.fillStyle = '#fff';
+        ctx.fillStyle = getThemeColor('--color-text-inverse');
         ctx.font = '600 ' + Math.max(10, nodeR * 0.6) + 'px Inter, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -480,7 +493,7 @@
       canvas.style.height = '500px';
       ctx.scale(dpr, dpr);
 
-      const layout = document.getElementById('layout').value;
+      const layout = document.getElementById('layout') ? document.getElementById('layout').value : 'force';
       applyLayout(layout);
       draw();
     }
@@ -493,7 +506,6 @@
       link.href = canvas.toDataURL('image/png');
       link.click();
     });
-  })();
   </script>
 </body>
 </html>

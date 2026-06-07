@@ -275,7 +275,7 @@
     let tick = 0;
     let dataPoints = [];
     let labels = [];
-    const speedSlider = { value: 500 };
+
 
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') {
@@ -409,7 +409,7 @@
       document.getElementById('btnStart').disabled = true;
       document.getElementById('btnPause').disabled = false;
       initChart();
-      intervalId = setInterval(addDataPoint, parseInt(speedSlider.value));
+      intervalId = setInterval(addDataPoint, parseInt(document.getElementById('speedSlider').value));
       updateStatus();
     }
 
@@ -443,8 +443,14 @@
       }
     });
 
+    document.getElementById('speedSlider').addEventListener('input', function() {
+        if (isRunning) {
+            clearInterval(intervalId);
+            intervalId = setInterval(addDataPoint, parseInt(this.value));
+        }
+    });
+
     updateStatus();
-  })();
   </script>
 </body>
 </html>
