@@ -453,19 +453,63 @@
         }
         
         const bitLength = parseInt(document.getElementById('keyLength').value);
+        const pubEl = document.getElementById('publicKey');
+        const privEl = document.getElementById('privateKey');
+        pubEl.textContent = 'Generating...';
+        privEl.textContent = 'Generating...';
         showToast('Generating ' + bitLength + '-bit key pair...');
-        
-        setTimeout(() => {
-            try {
-                const crypt = new JSEncrypt({ default_key_size: bitLength });
-                crypt.getKey();
-                document.getElementById('publicKey').textContent = crypt.getPublicKey();
-                document.getElementById('privateKey').textContent = crypt.getPrivateKey();
-                showToast('Key pair generated successfully');
-            } catch (e) {
-                showToast('Error generating key pair: ' + e.message);
-            }
-        }, 50);
+
+        // 先 fetch JSEncrypt 源码，再内联注入 Worker，避免 importScripts 跨域限制
+        fetch('https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.3.2/jsencrypt.min.js')
+            .then(response => response.text())
+            .then(jsencryptSrc => {
+                const workerCode = jsencryptSrc + '\n' + `
+                    self.onmessage = function(e) {
+                        try {
+                            var crypt = new JSEncrypt({ default_key_size: e.data.bitLength });
+                            crypt.getKey();
+                            self.postMessage({
+                                publicKey: crypt.getPublicKey(),
+                                privateKey: crypt.getPrivateKey()
+                            });
+                        } catch (err) {
+                            self.postMessage({ error: err.message });
+                        }
+                    };
+                `;
+                const blob = new Blob([workerCode], { type: 'application/javascript' });
+                const workerUrl = URL.createObjectURL(blob);
+                const worker = new Worker(workerUrl);
+
+                worker.onmessage = function(e) {
+                    if (e.data.error) {
+                        pubEl.textContent = '-';
+                        privEl.textContent = '-';
+                        showToast('Error generating key pair: ' + e.data.error);
+                    } else {
+                        pubEl.textContent = e.data.publicKey;
+                        privEl.textContent = e.data.privateKey;
+                        showToast('Key pair generated successfully');
+                    }
+                    worker.terminate();
+                    URL.revokeObjectURL(workerUrl);
+                };
+
+                worker.onerror = function(err) {
+                    pubEl.textContent = '-';
+                    privEl.textContent = '-';
+                    showToast('Worker error: ' + err.message);
+                    worker.terminate();
+                    URL.revokeObjectURL(workerUrl);
+                };
+
+                worker.postMessage({ bitLength: bitLength });
+            })
+            .catch(err => {
+                pubEl.textContent = '-';
+                privEl.textContent = '-';
+                showToast('Failed to load JSEncrypt: ' + err.message);
+            });
     }
 
     function copyKey(id) {

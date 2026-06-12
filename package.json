@@ -1,0 +1,27 @@
+{
+  "name": "tool",
+  "version": "1.0.0",
+  "description": "> 60+ Free Online Tools for Developers and Designers",
+  "main": "service-worker.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "npx playwright test --reporter=list"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darrenguo57/tools-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/darrenguo57/tools-website/issues"
+  },
+  "homepage": "https://github.com/darrenguo57/tools-website#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "playwright": "^1.60.0"
+  }
+}

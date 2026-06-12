@@ -33,6 +33,15 @@ const App = (() => {
     initSidebar();
     initMobileMenu();
     initBackToTop();
+    
+    // 暴露全局方法供测试直接调用，避免事件冒泡问题
+    window.AppFilter = {
+      setCategory: setActiveCategory,
+      search: (query) => {
+        searchQuery = query.trim().toLowerCase();
+        filterToolCards();
+      }
+    };
   }
 
   // ========== Theme Toggle ==========
@@ -182,18 +191,22 @@ const App = (() => {
     const searchInput = $('#searchInput');
     if (!searchInput) return;
 
-    // Debounced search handler
-    const debouncedSearch = (typeof Utils !== 'undefined' && typeof Utils.debounce === 'function')
-      ? Utils.debounce((query) => {
-          searchQuery = query.trim().toLowerCase();
-          filterToolCards();
-        }, DEBOUNCE_DELAY)
-      : (query) => {
-          searchQuery = query.trim().toLowerCase();
-          filterToolCards();
-        };
+    // Debounced search handler - 使用原生实现避免依赖 Utils
+    let debounceTimer;
+    const debouncedSearch = (query) => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        searchQuery = query.trim().toLowerCase();
+        filterToolCards();
+      }, DEBOUNCE_DELAY);
+    };
 
     searchInput.addEventListener('input', (e) => {
+      debouncedSearch(e.target.value);
+    });
+    
+    // 同时支持 'keyup' 事件以确保测试中的 dispatchEvent 能触发
+    searchInput.addEventListener('keyup', (e) => {
       debouncedSearch(e.target.value);
     });
 

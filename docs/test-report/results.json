@@ -1,0 +1,3937 @@
+{
+  "config": {
+    "configFile": "C:\\Users\\Administrator\\.trae-cn\\work\\6a285e285824dcf476e40447\\playwright.config.js",
+    "rootDir": "C:/Users/Administrator/.trae-cn/work/6a285e285824dcf476e40447/tests",
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/Administrator/.trae-cn/work/6a285e285824dcf476e40447/playwright-output",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/Administrator/.trae-cn/work/6a285e285824dcf476e40447/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "html",
+        {
+          "open": "never",
+          "outputFolder": "./html-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "./json-report/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.60.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "smoke.spec.js",
+      "file": "smoke.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "smoke test - homepage loads",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "2c14808d47b386fba9eb-e92719f08b528017ee4e",
+          "file": "smoke.spec.js",
+          "line": 3,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "test-calculators.spec.js",
+      "file": "test-calculators.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "标准计算器",
+          "file": "test-calculators.spec.js",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "5 + 3 = 8",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec0d2a391bc3117fa1ed-e87f7504689d3156a7b9",
+              "file": "test-calculators.spec.js",
+              "line": 9,
+              "column": 3
+            },
+            {
+              "title": "5 / 0 = Error",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec0d2a391bc3117fa1ed-bc468f1b5a5dfacb7be0",
+              "file": "test-calculators.spec.js",
+              "line": 34,
+              "column": 3
+            },
+            {
+              "title": "点击 C 清零",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec0d2a391bc3117fa1ed-0a2047f0c30998828aeb",
+              "file": "test-calculators.spec.js",
+              "line": 57,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "科学计算器",
+          "file": "test-calculators.spec.js",
+          "line": 77,
+          "column": 6,
+          "specs": [
+            {
+              "title": "sin(30) 包含 0.5",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec0d2a391bc3117fa1ed-34819e170b3dc21225ca",
+              "file": "test-calculators.spec.js",
+              "line": 83,
+              "column": 3
+            },
+            {
+              "title": "log(100) 包含 2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec0d2a391bc3117fa1ed-34262ef8c75f9ab8361c",
+              "file": "test-calculators.spec.js",
+              "line": 110,
+              "column": 3
+            },
+            {
+              "title": "5! = 120",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec0d2a391bc3117fa1ed-c77630ffc2cbc635b92d",
+              "file": "test-calculators.spec.js",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "2^10 = 1024",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec0d2a391bc3117fa1ed-bb3a229f30e74572e066",
+              "file": "test-calculators.spec.js",
+              "line": 159,
+              "column": 3
+            },
+            {
+              "title": "sqrt(16) = 4",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec0d2a391bc3117fa1ed-cbd45946885f8cc9eea9",
+              "file": "test-calculators.spec.js",
+              "line": 190,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "BMI 计算器",
+          "file": "test-calculators.spec.js",
+          "line": 215,
+          "column": 6,
+          "specs": [
+            {
+              "title": "175cm 70kg BMI 约 22.86",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec0d2a391bc3117fa1ed-5255305a80681c44c5fc",
+              "file": "test-calculators.spec.js",
+              "line": 221,
+              "column": 3
+            },
+            {
+              "title": "输入 0 显示错误提示",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec0d2a391bc3117fa1ed-8c6b53217affd1fbe4df",
+              "file": "test-calculators.spec.js",
+              "line": 251,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "贷款计算器",
+          "file": "test-calculators.spec.js",
+          "line": 265,
+          "column": 6,
+          "specs": [
+            {
+              "title": "贷款 100000 4.5% 30年 月供约 506.69",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec0d2a391bc3117fa1ed-c0fccfc04f85adc39cec",
+              "file": "test-calculators.spec.js",
+              "line": 271,
+              "column": 3
+            },
+            {
+              "title": "贷款 100000 0% 12月 月供 8333.33",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec0d2a391bc3117fa1ed-3b8e8d2a7474d9e9799c",
+              "file": "test-calculators.spec.js",
+              "line": 293,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "年龄计算器",
+          "file": "test-calculators.spec.js",
+          "line": 315,
+          "column": 6,
+          "specs": [
+            {
+              "title": "2000-01-15 年龄约 26",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec0d2a391bc3117fa1ed-b394a2aae8844d8b3b0a",
+              "file": "test-calculators.spec.js",
+              "line": 321,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "密码强度检测",
+          "file": "test-calculators.spec.js",
+          "line": 340,
+          "column": 6,
+          "specs": [
+            {
+              "title": "123456 显示弱密码",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec0d2a391bc3117fa1ed-c9c01d097ac1f249ffda",
+              "file": "test-calculators.spec.js",
+              "line": 346,
+              "column": 3
+            },
+            {
+              "title": "强密码显示强",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec0d2a391bc3117fa1ed-c0b3177458742458df07",
+              "file": "test-calculators.spec.js",
+              "line": 356,
+              "column": 3
+            },
+            {
+              "title": "逐字符输入实时更新强度",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec0d2a391bc3117fa1ed-4fb023e629e1858c52b3",
+              "file": "test-calculators.spec.js",
+              "line": 366,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "test-charts-and-testers.spec.js",
+      "file": "test-charts-and-testers.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "基础图表",
+          "file": "test-charts-and-testers.spec.js",
+          "line": 10,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CHART-001: 页面加载后默认有数据，点击 Generate，验证 canvas 出现",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-56b2a6f6cef0764e2385",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 15,
+              "column": 3
+            },
+            {
+              "title": "TC-CHART-002: 切换图表类型为 Pie Chart，生成，验证 canvas 更新",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-4dd0f29a957b575765c9",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 24,
+              "column": 3
+            },
+            {
+              "title": "TC-CHART-003: 添加数据行，生成，验证正常",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-d5e5d411a46b3038a313",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 35,
+              "column": 3
+            },
+            {
+              "title": "TC-CHART-004: 点击 Clear Data，验证数据清空",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-d5477ec19374ba9657c3",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 48,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "高级图表",
+          "file": "test-charts-and-testers.spec.js",
+          "line": 67,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CHART-005: 点击 Sample 按钮加载示例数据，生成，验证图表渲染",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-050c9ce193545c23c0c0",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 72,
+              "column": 3
+            },
+            {
+              "title": "TC-CHART-006: 输入无效 JSON，生成，验证错误提示",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-20de954679f29a2e1840",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 84,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "流程图",
+          "file": "test-charts-and-testers.spec.js",
+          "line": 102,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CHART-007: 输入 Mermaid 语法，渲染，验证 SVG 出现",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-23edf8543e04996c0b23",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 107,
+              "column": 3
+            },
+            {
+              "title": "TC-CHART-008: 空输入，验证不渲染",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-c316ac5e7fecac86a9cb",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 121,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "思维导图",
+          "file": "test-charts-and-testers.spec.js",
+          "line": 141,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CHART-009: 输入缩进文本，生成，验证 canvas 出现",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-f10519eaeadeabf447f0",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 146,
+              "column": 3
+            },
+            {
+              "title": "TC-CHART-010: 空输入，验证不渲染",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-adf0a2b27d92dedd29c2",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 160,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "词云",
+          "file": "test-charts-and-testers.spec.js",
+          "line": 179,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CHART-011: 输入文本，生成，验证 canvas 出现",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-8ee898d7af0a160ea93e",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 184,
+              "column": 3
+            },
+            {
+              "title": "TC-CHART-012: 空输入，验证不生成",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-2b854ae8f21402b3c4ba",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 198,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "甘特图",
+          "file": "test-charts-and-testers.spec.js",
+          "line": 217,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CHART-013: 页面加载，验证图表区域存在",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-2f49b2ffa5814954738d",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 218,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "仪表盘",
+          "file": "test-charts-and-testers.spec.js",
+          "line": 229,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CHART-014: 页面加载，验证图表区域存在",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-f8ef46df510ed632ac95",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 230,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "网络关系图",
+          "file": "test-charts-and-testers.spec.js",
+          "line": 240,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CHART-015: 页面加载，验证图表区域存在",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-86f74a77491705169d4e",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 241,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "实时图表",
+          "file": "test-charts-and-testers.spec.js",
+          "line": 251,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CHART-016: 页面加载，验证图表区域存在",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-a7e374a12d2cc0d16e31",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 252,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "散点图",
+          "file": "test-charts-and-testers.spec.js",
+          "line": 262,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CHART-017: 页面加载，验证图表区域存在",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-5f07c0671ab5d68744de",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 263,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "树状图",
+          "file": "test-charts-and-testers.spec.js",
+          "line": 273,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CHART-018: 页面加载，验证图表区域存在",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-bbf65b226a4f89dc3ec8",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 274,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "面积图",
+          "file": "test-charts-and-testers.spec.js",
+          "line": 284,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CHART-019: 页面加载，验证图表区域存在",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-3ad9ee79a092b4c445a6",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 285,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "正则测试",
+          "file": "test-charts-and-testers.spec.js",
+          "line": 295,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-TEST-001: 输入正则 \\d+，测试文本 abc123def，验证匹配高亮 123",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-cf045aba131210c4f1e4",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 300,
+              "column": 3
+            },
+            {
+              "title": "TC-TEST-002: 开启全局标志 g，验证多次匹配",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-2dc3ed20b97aacdb1ab3",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 321,
+              "column": 3
+            },
+            {
+              "title": "TC-TEST-003: 输入无效正则 [，验证错误提示",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-46d86e9e1799926a5939",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 344,
+              "column": 3
+            },
+            {
+              "title": "TC-TEST-004: 空正则，验证显示原始文本",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-f1d569704768cd0dbe0c",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 353,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "颜色选择器",
+          "file": "test-charts-and-testers.spec.js",
+          "line": 371,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-TEST-005: 页面加载，验证颜色预览和 HEX/RGB 值显示",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-19a03c2bfeae725b1152",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 376,
+              "column": 3
+            },
+            {
+              "title": "TC-TEST-006: 输入 HEX #ff0000，验证 RGB 显示 255, 0, 0",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-645d3543dc8662707ab4",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 388,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "CSS 渐变",
+          "file": "test-charts-and-testers.spec.js",
+          "line": 403,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-TEST-007: 页面加载，验证渐变预览和 CSS 代码显示",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-183ad120b4d39aae289c",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 408,
+              "column": 3
+            },
+            {
+              "title": "TC-TEST-008: 点击 Random，验证渐变变化",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-8b771df3c2082271a575",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 417,
+              "column": 3
+            },
+            {
+              "title": "TC-TEST-009: 点击 Copy CSS，验证剪贴板",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-9ca31b8b0770f4b172de",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 432,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "性能测试",
+          "file": "test-charts-and-testers.spec.js",
+          "line": 448,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-TEST-010: 输入 HTML 代码，点击 Analyze，验证评分显示",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-e27b0d8cf6411aaf228f",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 453,
+              "column": 3
+            },
+            {
+              "title": "TC-TEST-011: 空输入，验证提示",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15d278407a1cfc47ea4a-96526d0c49a4436fb650",
+              "file": "test-charts-and-testers.spec.js",
+              "line": 468,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "test-converters.spec.js",
+      "file": "test-converters.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Base64 编解码",
+          "file": "test-converters.spec.js",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "编码 Hello World 为 Base64",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-12401b23ff809fa26c69",
+              "file": "test-converters.spec.js",
+              "line": 9,
+              "column": 3
+            },
+            {
+              "title": "解码 Base64 为 Hello World",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-acd2562b195069019a41",
+              "file": "test-converters.spec.js",
+              "line": 21,
+              "column": 3
+            },
+            {
+              "title": "空输入编码后输出为空",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-ef9350dac53fad4092dc",
+              "file": "test-converters.spec.js",
+              "line": 33,
+              "column": 3
+            },
+            {
+              "title": "中文编码后解码还原",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-2a961dbe6bd54b919f2f",
+              "file": "test-converters.spec.js",
+              "line": 45,
+              "column": 3
+            },
+            {
+              "title": "点击清除按钮清空输入输出",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-e2c0e20a6be15599e3a2",
+              "file": "test-converters.spec.js",
+              "line": 66,
+              "column": 3
+            },
+            {
+              "title": "无效 Base64 解码显示错误提示",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-8aa9202d8e661aad9b33",
+              "file": "test-converters.spec.js",
+              "line": 82,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "URL 编解码",
+          "file": "test-converters.spec.js",
+          "line": 94,
+          "column": 6,
+          "specs": [
+            {
+              "title": "URL 编码包含 %20",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-af47255c53905fa027d2",
+              "file": "test-converters.spec.js",
+              "line": 100,
+              "column": 3
+            },
+            {
+              "title": "URL 解码中文",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-f81a5432625635cd7668",
+              "file": "test-converters.spec.js",
+              "line": 113,
+              "column": 3
+            },
+            {
+              "title": "URL 编码后解码双向一致",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-3503f7de55ee71f5c29e",
+              "file": "test-converters.spec.js",
+              "line": 125,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "JSON/YAML 转换",
+          "file": "test-converters.spec.js",
+          "line": 146,
+          "column": 6,
+          "specs": [
+            {
+              "title": "JSON 转 YAML",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-faaa965c5a923c158b0a",
+              "file": "test-converters.spec.js",
+              "line": 152,
+              "column": 3
+            },
+            {
+              "title": "YAML 转 JSON",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-d5c3bf479f536e106e7c",
+              "file": "test-converters.spec.js",
+              "line": 165,
+              "column": 3
+            },
+            {
+              "title": "无效 JSON 转换显示错误",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-8454dac8f10d8563491b",
+              "file": "test-converters.spec.js",
+              "line": 178,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Markdown/HTML 转换",
+          "file": "test-converters.spec.js",
+          "line": 190,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Markdown 转 HTML 包含 h1 和 strong",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-7b89aa1642f214cfa8ef",
+              "file": "test-converters.spec.js",
+              "line": 196,
+              "column": 3
+            },
+            {
+              "title": "HTML 转 Markdown",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-b0963fb8a61c51c4da19",
+              "file": "test-converters.spec.js",
+              "line": 210,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "进制转换",
+          "file": "test-converters.spec.js",
+          "line": 224,
+          "column": 6,
+          "specs": [
+            {
+              "title": "十进制 42 转二进制 101010",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-20b68ec4b2600ed25864",
+              "file": "test-converters.spec.js",
+              "line": 230,
+              "column": 3
+            },
+            {
+              "title": "十进制 255 转十六进制 FF",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-62ec98d04c3b2eee753f",
+              "file": "test-converters.spec.js",
+              "line": 252,
+              "column": 3
+            },
+            {
+              "title": "十六进制 1A3F 转十进制 6719",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-85fa23d4c0d7db2aa11f",
+              "file": "test-converters.spec.js",
+              "line": 271,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "时间戳转换",
+          "file": "test-converters.spec.js",
+          "line": 290,
+          "column": 6,
+          "specs": [
+            {
+              "title": "时间戳 1718000000 转换包含 2024",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-97f52ec6961b307ddca4",
+              "file": "test-converters.spec.js",
+              "line": 296,
+              "column": 3
+            },
+            {
+              "title": "获取当前时间戳输出非空",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-24af7816b4ea0b411c71",
+              "file": "test-converters.spec.js",
+              "line": 314,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "单位换算",
+          "file": "test-converters.spec.js",
+          "line": 325,
+          "column": 6,
+          "specs": [
+            {
+              "title": "0 摄氏度等于 32 华氏度",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-2ef680c6afc11f93bdba",
+              "file": "test-converters.spec.js",
+              "line": 331,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "HTML 实体编解码",
+          "file": "test-converters.spec.js",
+          "line": 351,
+          "column": 6,
+          "specs": [
+            {
+              "title": "HTML 实体编码包含 &lt;",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-03a29842448b159c5418",
+              "file": "test-converters.spec.js",
+              "line": 357,
+              "column": 3
+            },
+            {
+              "title": "HTML 实体解码包含 <div>",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "23abb69112427f4a65fd-996f5c1ed8fe5f913a30",
+              "file": "test-converters.spec.js",
+              "line": 370,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "test-crypto.spec.js",
+      "file": "test-crypto.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "加解密工具测试",
+          "file": "test-crypto.spec.js",
+          "line": 3,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "AES 加解密",
+              "file": "test-crypto.spec.js",
+              "line": 8,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-CRY-001: 输入明文和密钥，CBC 模式加密，验证输出非空",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "9ed8fd1c174cda426327-fd9a3c961ae0aefe97ca",
+                  "file": "test-crypto.spec.js",
+                  "line": 10,
+                  "column": 5
+                },
+                {
+                  "title": "TC-CRY-002: 用加密结果解密，验证还原为 Hello World",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "9ed8fd1c174cda426327-d618a8c75ee762a64a61",
+                  "file": "test-crypto.spec.js",
+                  "line": 40,
+                  "column": 5
+                },
+                {
+                  "title": "TC-CRY-003: 空密钥加密，验证错误提示",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "9ed8fd1c174cda426327-c77d6d0b4b86e5e3c464",
+                  "file": "test-crypto.spec.js",
+                  "line": 84,
+                  "column": 5
+                },
+                {
+                  "title": "TC-CRY-004: 切换 ECB 模式，加密解密，验证正常",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "9ed8fd1c174cda426327-de07588635963b5803a2",
+                  "file": "test-crypto.spec.js",
+                  "line": 107,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "RSA 加解密",
+              "file": "test-crypto.spec.js",
+              "line": 141,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-CRY-005: 生成 1024 位密钥对，验证公钥私钥非空",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "9ed8fd1c174cda426327-ad17566b19c375b04579",
+                  "file": "test-crypto.spec.js",
+                  "line": 143,
+                  "column": 5
+                },
+                {
+                  "title": "TC-CRY-006: 用公钥加密，用私钥解密，验证还原",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "9ed8fd1c174cda426327-d0dd9c6d6e1237aa0bee",
+                  "file": "test-crypto.spec.js",
+                  "line": 174,
+                  "column": 5
+                },
+                {
+                  "title": "TC-CRY-007: 错误密钥解密，验证失败提示",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "9ed8fd1c174cda426327-7d9f26e23c6d4ec7954b",
+                  "file": "test-crypto.spec.js",
+                  "line": 209,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "哈希生成",
+              "file": "test-crypto.spec.js",
+              "line": 262,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-CRY-008: 输入 Hello World，验证 MD5 = b10a8db164e0754105b7a99be72e3fe5",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "9ed8fd1c174cda426327-68065af9a0abc9f75d11",
+                  "file": "test-crypto.spec.js",
+                  "line": 264,
+                  "column": 5
+                },
+                {
+                  "title": "TC-CRY-009: 验证 SHA-256 非空且为 64 字符",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "9ed8fd1c174cda426327-28fc637bca9036167209",
+                  "file": "test-crypto.spec.js",
+                  "line": 286,
+                  "column": 5
+                },
+                {
+                  "title": "TC-CRY-010: 空输入，验证显示 \"-\"",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "9ed8fd1c174cda426327-4b0197591f879721cf72",
+                  "file": "test-crypto.spec.js",
+                  "line": 309,
+                  "column": 5
+                },
+                {
+                  "title": "TC-CRY-011: 输入后实时计算（无需点击按钮）",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "9ed8fd1c174cda426327-46f1e27032d9dde4d3a1",
+                  "file": "test-crypto.spec.js",
+                  "line": 327,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "HMAC 计算",
+              "file": "test-crypto.spec.js",
+              "line": 348,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-CRY-012: 输入消息和密钥，算法 SHA256，计算，验证结果非空",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "9ed8fd1c174cda426327-6341d196c40dda32f211",
+                  "file": "test-crypto.spec.js",
+                  "line": 350,
+                  "column": 5
+                },
+                {
+                  "title": "TC-CRY-013: 空消息，验证提示",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "9ed8fd1c174cda426327-c2b5d77ea0bdc867e0e5",
+                  "file": "test-crypto.spec.js",
+                  "line": 382,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Base64 加密",
+              "file": "test-crypto.spec.js",
+              "line": 411,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-CRY-014: 输入文本，加密，验证输出非空",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "9ed8fd1c174cda426327-7534ebc8d2d0f27f4496",
+                  "file": "test-crypto.spec.js",
+                  "line": 413,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "URL 签名",
+              "file": "test-crypto.spec.js",
+              "line": 441,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-CRY-015: 输入 URL 和密钥，生成签名，验证输出非空",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "9ed8fd1c174cda426327-fd85e74621c15778fc31",
+                  "file": "test-crypto.spec.js",
+                  "line": 443,
+                  "column": 5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "test-formatters.spec.js",
+      "file": "test-formatters.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "格式化工具测试",
+          "file": "test-formatters.spec.js",
+          "line": 3,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "JSON 格式化",
+              "file": "test-formatters.spec.js",
+              "line": 8,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-FMT-001: 输入 JSON，格式化，验证输出包含缩进和 name",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6d008b8041418e8a1e61-818a9cdf5e86067b7796",
+                  "file": "test-formatters.spec.js",
+                  "line": 10,
+                  "column": 5
+                },
+                {
+                  "title": "TC-FMT-002: 输入格式化后的 JSON，点击 Minify，验证输出为单行",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6d008b8041418e8a1e61-8dfda384b47113d4eb8f",
+                  "file": "test-formatters.spec.js",
+                  "line": 32,
+                  "column": 5
+                },
+                {
+                  "title": "TC-FMT-003: 输入无效 JSON，验证错误提示",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6d008b8041418e8a1e61-0da2b52dc03ee0d7e1f5",
+                  "file": "test-formatters.spec.js",
+                  "line": 53,
+                  "column": 5
+                },
+                {
+                  "title": "TC-FMT-004: 空输入，验证提示",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6d008b8041418e8a1e61-ee5d479373583cc12932",
+                  "file": "test-formatters.spec.js",
+                  "line": 73,
+                  "column": 5
+                },
+                {
+                  "title": "TC-FMT-005: 点击清除，验证清空",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6d008b8041418e8a1e61-592af0e89bcd5c728fa8",
+                  "file": "test-formatters.spec.js",
+                  "line": 93,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "SQL 格式化",
+              "file": "test-formatters.spec.js",
+              "line": 117,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-FMT-006: 输入 SQL，格式化，验证 SELECT 大写和换行",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6d008b8041418e8a1e61-0e83c2bb903e64d11fce",
+                  "file": "test-formatters.spec.js",
+                  "line": 119,
+                  "column": 5
+                },
+                {
+                  "title": "TC-FMT-007: 点击 Minify，验证输出为单行",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6d008b8041418e8a1e61-1a4e4d58432c4d1376c1",
+                  "file": "test-formatters.spec.js",
+                  "line": 142,
+                  "column": 5
+                },
+                {
+                  "title": "TC-FMT-008: 空输入，验证提示",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6d008b8041418e8a1e61-ffa5ce6c97cf251ff3dd",
+                  "file": "test-formatters.spec.js",
+                  "line": 163,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "XML 格式化",
+              "file": "test-formatters.spec.js",
+              "line": 186,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-FMT-009: 输入 XML，格式化，验证缩进",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6d008b8041418e8a1e61-00f29fd5917122275cca",
+                  "file": "test-formatters.spec.js",
+                  "line": 188,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "代码格式化",
+              "file": "test-formatters.spec.js",
+              "line": 214,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-FMT-010: 输入 JS 代码，格式化，验证缩进",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6d008b8041418e8a1e61-e8295295256d20fadee7",
+                  "file": "test-formatters.spec.js",
+                  "line": 216,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "代码对比",
+              "file": "test-formatters.spec.js",
+              "line": 245,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-FMT-011: 左右输入不同内容，对比，验证差异高亮",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6d008b8041418e8a1e61-9c2dc41637de341f499c",
+                  "file": "test-formatters.spec.js",
+                  "line": 247,
+                  "column": 5
+                },
+                {
+                  "title": "TC-FMT-012: 两侧相同内容，对比，验证无差异或全部灰色",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6d008b8041418e8a1e61-35df0f1bac47b1c5c404",
+                  "file": "test-formatters.spec.js",
+                  "line": 271,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "文本差异",
+              "file": "test-formatters.spec.js",
+              "line": 299,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-FMT-013: 输入不同文本，验证差异显示",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6d008b8041418e8a1e61-3622fba12e2aa0545cc3",
+                  "file": "test-formatters.spec.js",
+                  "line": 301,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "CSV 查看器",
+              "file": "test-formatters.spec.js",
+              "line": 329,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-FMT-014: 输入 CSV 数据，解析，验证表格 3 行",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6d008b8041418e8a1e61-f2305c497963dd251d14",
+                  "file": "test-formatters.spec.js",
+                  "line": 331,
+                  "column": 5
+                },
+                {
+                  "title": "TC-FMT-015: 点击表头排序，验证排序变化",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6d008b8041418e8a1e61-41fb0f69221e02215061",
+                  "file": "test-formatters.spec.js",
+                  "line": 355,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "JSON 可视化",
+              "file": "test-formatters.spec.js",
+              "line": 389,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-FMT-016: 输入 JSON，可视化，验证树形结构显示",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6d008b8041418e8a1e61-78fd26b35c8a32512977",
+                  "file": "test-formatters.spec.js",
+                  "line": 391,
+                  "column": 5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "test-generators.spec.js",
+      "file": "test-generators.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "生成器工具测试",
+          "file": "test-generators.spec.js",
+          "line": 3,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "UUID 生成器",
+              "file": "test-generators.spec.js",
+              "line": 8,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-GEN-001: 页面加载后自动生成 UUID，验证格式",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-b758e11de9959fb2de7e",
+                  "file": "test-generators.spec.js",
+                  "line": 10,
+                  "column": 5
+                },
+                {
+                  "title": "TC-GEN-002: 切换到 v1，生成，验证 UUID 格式",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-562fa536a0e4c7364d65",
+                  "file": "test-generators.spec.js",
+                  "line": 23,
+                  "column": 5
+                },
+                {
+                  "title": "TC-GEN-003: 设置数量为 5，生成，验证生成 5 个 UUID",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-ba48dd9eef883ceae1e9",
+                  "file": "test-generators.spec.js",
+                  "line": 54,
+                  "column": 5
+                },
+                {
+                  "title": "TC-GEN-004: 开启大写，生成，验证 UUID 为大写",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-e82fe9887f76d56fc9b0",
+                  "file": "test-generators.spec.js",
+                  "line": 80,
+                  "column": 5
+                },
+                {
+                  "title": "TC-GEN-005: 开启去连字符，生成，验证 UUID 无连字符",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-2c421753ac339a776fff",
+                  "file": "test-generators.spec.js",
+                  "line": 106,
+                  "column": 5
+                },
+                {
+                  "title": "TC-GEN-006: 点击清除，验证列表清空",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-fe6288c116831a920707",
+                  "file": "test-generators.spec.js",
+                  "line": 133,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "QR Code 生成器",
+              "file": "test-generators.spec.js",
+              "line": 158,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-GEN-007: 输入 URL，生成，验证 canvas 或 img 元素出现",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-ebc6e68c3d8d7f734e17",
+                  "file": "test-generators.spec.js",
+                  "line": 160,
+                  "column": 5
+                },
+                {
+                  "title": "TC-GEN-008: 空输入，验证不生成或提示",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-43cf8afc802e8684b8da",
+                  "file": "test-generators.spec.js",
+                  "line": 180,
+                  "column": 5
+                },
+                {
+                  "title": "TC-GEN-009: 修改颜色，生成，验证正常",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-d78692bdb2376af2caa1",
+                  "file": "test-generators.spec.js",
+                  "line": 203,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "密码生成器",
+              "file": "test-generators.spec.js",
+              "line": 233,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-GEN-010: 页面加载自动生成密码，验证密码非空",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-26553bfa8cdf84e3bb23",
+                  "file": "test-generators.spec.js",
+                  "line": 235,
+                  "column": 5
+                },
+                {
+                  "title": "TC-GEN-011: 设置长度 16，生成，验证密码长度 16",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-d6ae8b9b223439576aee",
+                  "file": "test-generators.spec.js",
+                  "line": 247,
+                  "column": 5
+                },
+                {
+                  "title": "TC-GEN-012: 关闭所有字符集，验证提示信息",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-589800f255492eb9b6e3",
+                  "file": "test-generators.spec.js",
+                  "line": 274,
+                  "column": 5
+                },
+                {
+                  "title": "TC-GEN-013: 生成后点击复制，验证剪贴板",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-00003346f8972263cf6e",
+                  "file": "test-generators.spec.js",
+                  "line": 298,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "条形码生成器",
+              "file": "test-generators.spec.js",
+              "line": 322,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-GEN-014: 输入数据，格式 CODE128，生成，验证 SVG 出现",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-500f435a4bb3f99f7abd",
+                  "file": "test-generators.spec.js",
+                  "line": 324,
+                  "column": 5
+                },
+                {
+                  "title": "TC-GEN-015: 选择 EAN13 格式，输入 12 位数字，生成，验证正常",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-ab7fb07c0f36769da2d2",
+                  "file": "test-generators.spec.js",
+                  "line": 350,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Nano ID 生成器",
+              "file": "test-generators.spec.js",
+              "line": 380,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-GEN-016: 生成 Nano ID，验证非空且长度合理（默认 21）",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-f7440108eaace959d370",
+                  "file": "test-generators.spec.js",
+                  "line": 382,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Lorem Ipsum 生成器",
+              "file": "test-generators.spec.js",
+              "line": 405,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-GEN-017: 生成，验证输出包含 Lorem ipsum 文本",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-fd77898d1a7d21ed9fbd",
+                  "file": "test-generators.spec.js",
+                  "line": 407,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "随机数生成器",
+              "file": "test-generators.spec.js",
+              "line": 429,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-GEN-018: 设置范围 1-100，生成，验证结果在 1-100 之间",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-abb2e451df1b2a0d0d33",
+                  "file": "test-generators.spec.js",
+                  "line": 431,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "假数据生成器",
+              "file": "test-generators.spec.js",
+              "line": 462,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "TC-GEN-019: 生成假数据，验证输出非空",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "b36cf2d2c334c23689d3-a4bcba50e2c2186546df",
+                  "file": "test-generators.spec.js",
+                  "line": 464,
+                  "column": 5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "test-global.spec.js",
+      "file": "test-global.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "首页导航",
+          "file": "test-global.spec.js",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "首页加载后工具卡片数量 >= 60",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "382a1b973515976c9fb1-d7141723224d61af884f",
+              "file": "test-global.spec.js",
+              "line": 5,
+              "column": 3
+            },
+            {
+              "title": "点击 Base64 卡片跳转到正确页面",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "382a1b973515976c9fb1-6e63619622468b747f78",
+              "file": "test-global.spec.js",
+              "line": 14,
+              "column": 3
+            },
+            {
+              "title": "导航栏分类链接存在",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "382a1b973515976c9fb1-6967930af3a882e6227d",
+              "file": "test-global.spec.js",
+              "line": 23,
+              "column": 3
+            },
+            {
+              "title": "工具卡片图标显示",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "382a1b973515976c9fb1-65e06063d4e3ebeaa6fd",
+              "file": "test-global.spec.js",
+              "line": 31,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "搜索过滤",
+          "file": "test-global.spec.js",
+          "line": 40,
+          "column": 6,
+          "specs": [
+            {
+              "title": "搜索 base64 过滤结果少于总数",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "382a1b973515976c9fb1-7027ff301563da7eb3ad",
+              "file": "test-global.spec.js",
+              "line": 42,
+              "column": 3
+            },
+            {
+              "title": "搜索不存在的工具显示无结果",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "382a1b973515976c9fb1-1da15473c51581d6f232",
+              "file": "test-global.spec.js",
+              "line": 60,
+              "column": 3
+            },
+            {
+              "title": "清空搜索框后所有卡片恢复",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "382a1b973515976c9fb1-cb27ae82f4198a8350b8",
+              "file": "test-global.spec.js",
+              "line": 75,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "分类筛选",
+          "file": "test-global.spec.js",
+          "line": 94,
+          "column": 6,
+          "specs": [
+            {
+              "title": "点击转换工具分类显示 8 个工具",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "382a1b973515976c9fb1-7f2e07f9959f7c07bb27",
+              "file": "test-global.spec.js",
+              "line": 96,
+              "column": 3
+            },
+            {
+              "title": "点击全部恢复所有卡片",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "382a1b973515976c9fb1-9e70b55bffd92f3089c1",
+              "file": "test-global.spec.js",
+              "line": 109,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "主题切换",
+          "file": "test-global.spec.js",
+          "line": 131,
+          "column": 6,
+          "specs": [
+            {
+              "title": "切换暗色主题添加 dark class",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "382a1b973515976c9fb1-ee8e45f33bdef56fcf80",
+              "file": "test-global.spec.js",
+              "line": 133,
+              "column": 3
+            },
+            {
+              "title": "再次点击移除 dark class",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "382a1b973515976c9fb1-dd177f24327c2f37013c",
+              "file": "test-global.spec.js",
+              "line": 147,
+              "column": 3
+            },
+            {
+              "title": "暗色主题导航到工具页面后保持",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "382a1b973515976c9fb1-17e6d99395bae3144cd0",
+              "file": "test-global.spec.js",
+              "line": 166,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "语言切换",
+          "file": "test-global.spec.js",
+          "line": 183,
+          "column": 6,
+          "specs": [
+            {
+              "title": "切换到中文显示中文文本",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "382a1b973515976c9fb1-9face07e387b237f7665",
+              "file": "test-global.spec.js",
+              "line": 185,
+              "column": 3
+            },
+            {
+              "title": "切换回英文显示英文文本",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "382a1b973515976c9fb1-2882cf1a0b9d98aa091e",
+              "file": "test-global.spec.js",
+              "line": 197,
+              "column": 3
+            },
+            {
+              "title": "中文状态下进入工具页面显示中文 UI",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "382a1b973515976c9fb1-0877a8fd68401e6acae2",
+              "file": "test-global.spec.js",
+              "line": 215,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "回到顶部",
+          "file": "test-global.spec.js",
+          "line": 233,
+          "column": 6,
+          "specs": [
+            {
+              "title": "滚动页面后回到顶部按钮出现",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "382a1b973515976c9fb1-7e3aee79a1f91a65fcf3",
+              "file": "test-global.spec.js",
+              "line": 235,
+              "column": 3
+            },
+            {
+              "title": "点击回到顶部页面滚到顶部",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "382a1b973515976c9fb1-614a7487c158a3121ab8",
+              "file": "test-global.spec.js",
+              "line": 246,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "页脚",
+          "file": "test-global.spec.js",
+          "line": 262,
+          "column": 6,
+          "specs": [
+            {
+              "title": "页脚链接存在",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "382a1b973515976c9fb1-e0ba86ad90399c5b16f5",
+              "file": "test-global.spec.js",
+              "line": 264,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "test-image-tools-and-seo.spec.js",
+      "file": "test-image-tools-and-seo.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "图片压缩",
+          "file": "test-image-tools-and-seo.spec.js",
+          "line": 10,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-IMG-001: 页面加载，验证上传区域存在",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-a743d2b610df54ea84b4",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 11,
+              "column": 3
+            },
+            {
+              "title": "TC-IMG-002: 验证质量滑块存在且可调节",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-d1be3bac80a985bbf267",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 17,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "图片裁剪旋转",
+          "file": "test-image-tools-and-seo.spec.js",
+          "line": 32,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-IMG-009: 页面加载，验证上传区域和旋转按钮存在",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-1f04869178720fd61a03",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 33,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "图片滤镜",
+          "file": "test-image-tools-and-seo.spec.js",
+          "line": 47,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-IMG-015: 页面加载，验证上传区域和滤镜选项存在",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-1c18342dc455e822437a",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 48,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "格式转换",
+          "file": "test-image-tools-and-seo.spec.js",
+          "line": 62,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-IMG-020: 页面加载，验证上传区域和格式选择存在",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-ded7d6776f73830788b4",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 63,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "尺寸调整",
+          "file": "test-image-tools-and-seo.spec.js",
+          "line": 77,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-IMG-024: 页面加载，验证上传区域存在",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-f97927ddc75945f89157",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 78,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "图片 Base64",
+          "file": "test-image-tools-and-seo.spec.js",
+          "line": 88,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-IMG-025: 页面加载，验证上传区域存在",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-291872a398d78d33fcc2",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 89,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "调色板",
+          "file": "test-image-tools-and-seo.spec.js",
+          "line": 99,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-IMG-026: 页面加载，验证上传区域和提取按钮存在",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-b3736d1d5d7dba347e6b",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 100,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "截图工具",
+          "file": "test-image-tools-and-seo.spec.js",
+          "line": 114,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-IMG-027: 页面加载，验证工具界面存在",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-be0b407dcdd3507cf27c",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 115,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "博客列表页",
+          "file": "test-image-tools-and-seo.spec.js",
+          "line": 126,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-BLOG-001: 页面加载，验证文章列表显示",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-7b5523a9c26a835e1f8a",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 127,
+              "column": 3
+            },
+            {
+              "title": "TC-BLOG-002: 验证至少有 10 篇文章",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-d67a6d0945f7bd08d072",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 134,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "博客文章",
+          "file": "test-image-tools-and-seo.spec.js",
+          "line": 145,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-BLOG-003: 文章页面加载，验证标题和内容显示",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-34189ad195c27c49a828",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 146,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "SEO 验证",
+          "file": "test-image-tools-and-seo.spec.js",
+          "line": 160,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-SEO-001: 首页检查 title 标签包含 Free Online Tools",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-d6f735870bc0eab1905d",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 161,
+              "column": 3
+            },
+            {
+              "title": "TC-SEO-002: 首页检查 meta description 存在",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-f8e9ec654849d8e1ef8d",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 167,
+              "column": 3
+            },
+            {
+              "title": "TC-SEO-003: 首页检查 canonical 链接",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-ec65bd8e77383baa2967",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 177,
+              "column": 3
+            },
+            {
+              "title": "TC-SEO-004: 首页检查 OG 标签 (og:title, og:description)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-180b9121b4563f937370",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 187,
+              "column": 3
+            },
+            {
+              "title": "TC-SEO-005: 验证 sitemap.xml 可访问且包含 URL",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-1017bc9eca97e2de1b22",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 201,
+              "column": 3
+            },
+            {
+              "title": "TC-SEO-006: 验证 robots.txt 可访问",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-4ee77e3d99cad0080d3a",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 210,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "响应式布局",
+          "file": "test-image-tools-and-seo.spec.js",
+          "line": 222,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-RESP-001: 设置 viewport 375x667，验证首页不水平溢出",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-5cac05e6c2e32becabf0",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 223,
+              "column": 3
+            },
+            {
+              "title": "TC-RESP-002: 设置 viewport 768x1024，验证首页正常",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-a01b783e4711766d0934",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 234,
+              "column": 3
+            },
+            {
+              "title": "TC-RESP-003: 设置 viewport 1920x1080，验证首页正常",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-bfdf0ea941fdd005f514",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 243,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "404 页面",
+          "file": "test-image-tools-and-seo.spec.js",
+          "line": 256,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-SEO-007: 访问 /nonexistent-page，验证 404 页面显示",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "42aa98c71d3c87149dd8-8de2eccae0714b6904ac",
+              "file": "test-image-tools-and-seo.spec.js",
+              "line": 257,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-06-09T19:38:45.883Z",
+    "duration": 389.62,
+    "expected": 0,
+    "skipped": 159,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
