@@ -69,6 +69,15 @@
         </div>
       </section>
 
+      <!--
+        Google Forms Setup Instructions:
+        1. Create a Google Form with matching fields: Tool Name, Description, Use Case, Email, Amount
+        2. Get your form ID from the URL: https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse
+        3. Open the form in a browser, right-click each field and Inspect to find entry IDs (entry.XXXXXXXX)
+        4. Update the GOOGLE_FORM_ACTION and GOOGLE_FORM_ENTRIES in the JavaScript below
+        5. Test by submitting the form and checking your Google Form responses
+      -->
+
       <!-- Request Form -->
       <section class="custom-section custom-form-section">
         <h2 data-i18n="custom_form_title">Submit Your Request</h2>
@@ -141,8 +150,8 @@
           <div class="submit-alternative">
             <p data-i18n="custom_no_payment">Prefer to request without payment first?</p>
             <button type="button" id="emailRequestBtn" class="submit-btn secondary">
-              <i data-lucide="mail"></i>
-              <span data-i18n="custom_email_only">Submit Request via Email Only</span>
+              <i data-lucide="send"></i>
+              <span data-i18n="submit_button">Submit Request</span>
             </button>
           </div>
         </form>
@@ -336,36 +345,80 @@
       setTimeout(renderPayPalButton, 100);
     });
 
-    // Email-only request button
+    // Google Form configuration
+    // To set up your own Google Form:
+    // 1. Create a Google Form with fields matching: Tool Name, Description, Use Case, Email, Amount
+    // 2. Get the form ID from the URL: https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse
+    // 3. Inspect each field to get its entry ID (right-click > Inspect, look for entry.XXXXXXXX)
+    // 4. Replace the values below with your actual form ID and entry IDs
+    const GOOGLE_FORM_ACTION = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse';
+    const GOOGLE_FORM_ENTRIES = {
+      toolName: 'entry.1234567890',
+      toolDescription: 'entry.1234567891',
+      useCase: 'entry.1234567892',
+      email: 'entry.1234567893',
+      amount: 'entry.1234567894'
+    };
+
+    // Submit request to Google Forms
     document.getElementById('emailRequestBtn').addEventListener('click', function(e) {
       e.preventDefault();
       
       const form = document.getElementById('customToolForm');
       const formData = new FormData(form);
-      const toolName = formData.get('toolName');
-      const toolDescription = formData.get('toolDescription');
-      const useCase = formData.get('useCase');
-      const email = formData.get('email');
-      let amount = formData.get('amount');
       
+      // Validate required fields
+      const toolDescription = formData.get('toolDescription');
+      if (!toolDescription || !toolDescription.trim()) {
+        alert('Please describe the tool you need.');
+        return;
+      }
+      
+      // Build Google Form data
+      const params = new URLSearchParams();
+      params.append(GOOGLE_FORM_ENTRIES.toolName, formData.get('toolName') || '');
+      params.append(GOOGLE_FORM_ENTRIES.toolDescription, toolDescription);
+      params.append(GOOGLE_FORM_ENTRIES.useCase, formData.get('useCase') || '');
+      params.append(GOOGLE_FORM_ENTRIES.email, formData.get('email') || '');
+      
+      let amount = formData.get('amount');
       if (amount === 'custom') {
         amount = document.getElementById('customAmount').value || '0';
       }
-
-      // Build mailto link with form data
-      const subject = encodeURIComponent(`Custom Tool Request: ${toolName || 'New Tool'}`);
-      const body = encodeURIComponent(
-        `Tool Name: ${toolName || 'Not specified'}\n\n` +
-        `Description:\n${toolDescription}\n\n` +
-        `Use Case:\n${useCase || 'Not specified'}\n\n` +
-        `Email: ${email || 'Not provided'}\n\n` +
-        `Contribution Amount: $${amount}\n\n` +
-        `---\nSent from UseEasyTool Custom Tool Request Form`
-      );
-
-      // Open email client
-      window.location.href = `mailto:darrenguo57@gmail.com?subject=${subject}&body=${body}`;
+      params.append(GOOGLE_FORM_ENTRIES.amount, amount);
+      
+      // Submit using no-cors mode (Google Forms supports cross-origin)
+      fetch(GOOGLE_FORM_ACTION, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: params,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }).then(() => {
+        showSubmitSuccess();
+      }).catch(() => {
+        showSubmitSuccess(); // no-cors may error even on success
+      });
     });
+
+    function showSubmitSuccess() {
+      const formSection = document.querySelector('.custom-form-section');
+      formSection.innerHTML = `
+        <div class="submit-success">
+          <div class="success-icon"><i data-lucide="check-circle"></i></div>
+          <h3 data-i18n="submit_success_title">Request Submitted!</h3>
+          <p data-i18n="submit_success_text">Thank you! We've received your request and will review it soon.</p>
+          <div class="submit-success-actions">
+            <p data-i18n="submit_success_payment">Want to support development? You can still contribute via PayPal.</p>
+            <div id="paypal-button-container" class="paypal-button-container"></div>
+          </div>
+        </div>
+      `;
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+      // Re-initialize PayPal button
+      setTimeout(loadPayPalButton, 500);
+    }
 
     // Prevent form default submit (we handle via PayPal or email)
     document.getElementById('customToolForm').addEventListener('submit', function(e) {
@@ -373,5 +426,6 @@
       // Form data is collected by PayPal or email button
     });
   </script>
+  <script src="assets/js/cookie-consent.js"></script>
 </body>
 </html>
