@@ -3,38 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tool Name - UseEasyTool</title>
-  <meta name="description" content="Free online tool for developers and designers. Fast, easy, and no installation required.">
-  <meta name="keywords" content="online tool, free tool, developer tool">
+  <title>Tool Name - Free Online Tool | UseEasyTool</title>
+  <meta name="description" content="Free online Tool Name for developers and designers. Fast, easy, and no installation required. Use directly in your browser.">
+  <meta name="keywords" content="online tool, free tool, developer tool, Tool Name">
   <meta name="author" content="UseEasyTool">
   <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://useeasytool.com/tools/CATEGORY/tool-name.html">
+
+  <!-- Favicon -->
+  <link rel="icon" href="../../assets/images/favicon.svg" type="image/svg+xml">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Tool Name - UseEasyTool">
-  <meta property="og:description" content="Free online tool for developers and designers. Fast, easy, and no installation required.">
-  <meta property="og:url" content="https://useeasytool.com/tools/tool-name.html">
+  <meta property="og:title" content="Tool Name - Free Online Tool | UseEasyTool">
+  <meta property="og:description" content="Free online Tool Name for developers and designers. Fast, easy, and no installation required.">
+  <meta property="og:url" content="https://useeasytool.com/tools/CATEGORY/tool-name.html">
   <meta property="og:site_name" content="UseEasyTool">
+  <meta property="og:image" content="https://useeasytool.com/assets/images/og-image.png">
+  <meta property="og:locale" content="en_US">
 
   <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Tool Name - UseEasyTool">
-  <meta name="twitter:description" content="Free online tool for developers and designers.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tool Name - Free Online Tool | UseEasyTool">
+  <meta name="twitter:description" content="Free online Tool Name for developers and designers. Fast, easy, and no installation required.">
+  <meta name="twitter:image" content="https://useeasytool.com/assets/images/og-image.png">
 
-  <!-- Structured Data -->
+  <!-- Structured Data (static template placeholder, enhanced by dynamic script below) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "Tool Name",
-    "url": "https://useeasytool.com/tools/tool-name.html",
-    "description": "Free online tool for developers and designers.",
+    "url": "https://useeasytool.com/tools/CATEGORY/tool-name.html",
+    "description": "Free online Tool Name for developers and designers. Fast, easy, and no installation required.",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Any",
     "offers": {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "UseEasyTool",
+      "url": "https://useeasytool.com"
     },
     "isPartOf": {
       "@type": "WebSite",
@@ -447,5 +459,57 @@
   <script src="../assets/js/utils.js"></script>
   <script src="../assets/js/app.js"></script>
   <script src="../../assets/js/cookie-consent.js"></script>
+
+  <!-- Dynamic WebApplication Structured Data -->
+  <script>
+  (function() {
+    // Remove the static placeholder JSON-LD if it still contains template defaults
+    var existingLd = document.querySelectorAll('script[type="application/ld+json"]');
+    existingLd.forEach(function(el) {
+      try {
+        var data = JSON.parse(el.textContent);
+        if (data.name === 'Tool Name' && data['@type'] === 'WebApplication') {
+          el.parentNode.removeChild(el);
+        }
+      } catch(e) {}
+    });
+
+    var toolName = document.querySelector('h1') ? document.querySelector('h1').textContent.trim() : 'Online Tool';
+    var metaDesc = document.querySelector('meta[name="description"]');
+    var toolDesc = metaDesc ? metaDesc.getAttribute('content') : 'Free online tool for developers and designers.';
+    var canonical = document.querySelector('link[rel="canonical"]');
+    var toolUrl = canonical ? canonical.getAttribute('href') : window.location.href;
+
+    var structuredData = {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": toolName,
+      "description": toolDesc,
+      "url": toolUrl,
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "UseEasyTool",
+        "url": "https://useeasytool.com"
+      },
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "UseEasyTool",
+        "url": "https://useeasytool.com/"
+      }
+    };
+
+    var script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(structuredData);
+    document.head.appendChild(script);
+  })();
+  </script>
 </body>
 </html>

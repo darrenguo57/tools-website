@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Encode and Decode Base64 Online - UseEasyTool Blog</title>
+  <meta name="description" content="Learn how to encode and decode Base64 strings online with our free tool. Step-by-step guide covering what Base64 is, why it's used, and practical encoding examples.">
+  <meta name="keywords" content="how to encode base64, base64 decode online, base64 encoder decoder, base64 encoding, base64 decoding, online base64 tool">
+  <meta name="author" content="UseEasyTool Team">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="How to Encode and Decode Base64 Online - UseEasyTool Blog">
+  <meta property="og:description" content="A complete guide to Base64 encoding and decoding. Learn how to use our free online Base64 encoder/decoder tool.">
+  <meta property="og:url" content="https://useeasytool.com/blog/articles/base64-encode-decode-guide.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta property="article:published_time" content="2026-07-22">
+  <meta property="article:tag" content="base64">
+  <meta property="article:tag" content="encoding">
+  <meta property="article:tag" content="converter">
+  <meta property="article:tag" content="tutorial">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="How to Encode and Decode Base64 Online">
+  <meta name="twitter:description" content="Learn how to encode and decode Base64 strings online with our free tool.">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "How to Encode and Decode Base64 Online",
+    "description": "Learn how to encode and decode Base64 strings online with our free tool. Step-by-step guide covering what Base64 is, why it's used, and practical encoding examples.",
+    "image": "https://useeasytool.com/assets/images/blog/base64-encode-decode-guide.jpg",
+    "datePublished": "2026-07-22",
+    "dateModified": "2026-07-22",
+    "author": {
+      "@type": "Organization",
+      "name": "UseEasyTool Team"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "UseEasyTool",
+      "url": "https://useeasytool.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://useeasytool.com/assets/images/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://useeasytool.com/blog/articles/base64-encode-decode-guide.html"
+    },
+    "keywords": ["base64", "encoding", "decoding", "base64 encoder decoder", "online tool"]
+  }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="../assets/css/blog.css">
+</head>
+<body>
+
+  <!-- ========== Navigation ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo">
+        <i data-lucide="UseEasyTool"></i>
+        <span>UseEasyTool</span>
+      </a>
+
+      <div class="navbar-search">
+        <i data-lucide="search"></i>
+        <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+      </div>
+
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language">
+          <span class="lang-label">EN</span>
+        </button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="theme-icon-light"></i>
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+        </button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== Main Layout ========== -->
+  <div class="main-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3 data-i18n="sidebar_categories">Categories</h3>
+      </div>
+      <ul class="sidebar-list">
+        <li>
+          <a href="../index.html" class="sidebar-item" data-category="all">
+            <i data-lucide="layout-grid"></i>
+            <span data-i18n="cat_all">All Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=converters" class="sidebar-item" data-category="converters">
+            <i data-lucide="repeat"></i>
+            <span data-i18n="cat_converters">Converters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=calculators" class="sidebar-item" data-category="calculators">
+            <i data-lucide="calculator"></i>
+            <span data-i18n="cat_calculators">Calculators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=image-tools" class="sidebar-item" data-category="image-tools">
+            <i data-lucide="image"></i>
+            <span data-i18n="cat_image_tools">Image Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=generators" class="sidebar-item" data-category="generators">
+            <i data-lucide="sparkles"></i>
+            <span data-i18n="cat_generators">Generators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=formatters" class="sidebar-item" data-category="formatters">
+            <i data-lucide="braces"></i>
+            <span data-i18n="cat_formatters">Formatters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=crypto" class="sidebar-item" data-category="crypto">
+            <i data-lucide="shield"></i>
+            <span data-i18n="cat_crypto">Encryption</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=charts" class="sidebar-item" data-category="charts">
+            <i data-lucide="bar-chart-3"></i>
+            <span data-i18n="cat_charts">Charts</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=testing" class="sidebar-item" data-category="testing">
+            <i data-lucide="flask-conical"></i>
+            <span data-i18n="cat_testing">Testing</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="article-detail">
+
+        <!-- Article Hero -->
+        <header class="article-hero">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="../index.html">Home</a>
+            <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+            <a href="../index.html">Blog</a>
+            <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+            <span class="breadcrumb-current">How to Encode and Decode Base64 Online</span>
+          </nav>
+
+          <div class="article-hero__tags">
+            <span class="blog-tag">base64</span>
+            <span class="blog-tag">encoding</span>
+            <span class="blog-tag">converter</span>
+            <span class="blog-tag">tutorial</span>
+          </div>
+
+          <h1 class="article-hero__title">How to Encode and Decode Base64 Online</h1>
+
+          <div class="article-hero__meta">
+            <div class="article-hero__author">
+              <div class="article-hero__author-avatar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <div class="article-hero__author-info">
+                <span class="article-hero__author-name">UseEasyTool Team</span>
+                <span class="article-hero__author-role">Developer Tools Expert</span>
+              </div>
+            </div>
+            <div class="article-hero__stats">
+              <span class="article-hero__stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                July 22, 2026
+              </span>
+              <span class="article-hero__stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                8 min read
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Article Cover -->
+        <div class="article-cover">
+          <div class="article-card__image-placeholder" style="height:360px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+        </div>
+
+        <article class="article-content">
+
+          <p>Base64 is one of the most widely used encoding schemes in computing. Whether you are embedding images in HTML, transmitting binary data over text-based protocols, or working with API authentication, understanding how to encode and decode Base64 is an essential skill. In this comprehensive guide, we will cover everything you need to know about Base64 encoding and decoding, including how to use our free <a href="../tools/converters/base64.html">online Base64 encoder/decoder tool</a>.</p>
+
+          <h2>What Is Base64 Encoding?</h2>
+
+          <p>Base64 is a binary-to-text encoding scheme that converts binary data into a string of ASCII characters. It works by dividing the input data into groups of three bytes (24 bits) and then splitting each group into four sets of six bits. Each six-bit group is mapped to a character from a set of 64 characters: the uppercase letters A through Z, lowercase letters a through z, digits 0 through 9, plus <code>+</code> and <code>/</code>. The <code>=</code> character is used for padding when the input length is not a multiple of three bytes.</p>
+
+          <p>The result is a text representation that is safe for transmission through channels that only reliably support text content, such as email, HTML, and JSON.</p>
+
+          <h2>Why Do We Need Base64 Encoding?</h2>
+
+          <p>Base64 solves a fundamental problem in computing: many communication channels and data formats are designed to handle text, not raw binary data. Here are the primary reasons developers use Base64 encoding:</p>
+
+          <ul>
+            <li><strong>Data integrity over text protocols:</strong> Email systems (SMTP), HTTP headers, and URL parameters can corrupt or misinterpret raw binary data. Base64 ensures that binary content travels safely through these channels.</li>
+            <li><strong>Embedding resources in text formats:</strong> You can embed images directly in HTML or CSS using Base64-encoded data URIs, eliminating the need for separate image files.</li>
+            <li><strong>API and web authentication:</strong> HTTP Basic Authentication encodes credentials as <code>username:password</code> in Base64 before sending them in the <code>Authorization</code> header.</li>
+            <li><strong>Storing complex data in cookies and tokens:</strong> JWT (JSON Web Tokens) use Base64URL encoding to represent header, payload, and signature sections as compact strings.</li>
+            <li><strong>XML and JSON transport:</strong> Binary files can be wrapped in Base64 strings to be included in XML documents or JSON payloads without breaking the format.</li>
+          </ul>
+
+          <h2>How Base64 Encoding Works: A Step-by-Step Example</h2>
+
+          <p>Let's walk through how the word <code>Man</code> is encoded into Base64. The ASCII values for M, a, and n are 77, 97, and 110 respectively.</p>
+
+          <p>Step 1 -- Convert each character to its 8-bit binary representation:</p>
+          <pre><code>M  = 01001101
+a  = 01100001
+n  = 01101110</code></pre>
+
+          <p>Step 2 -- Combine the three bytes into a single 24-bit sequence:</p>
+          <pre><code>010011010110000101101110</code></pre>
+
+          <p>Step 3 -- Split into four 6-bit groups:</p>
+          <pre><code>010011 010110 000101 101110</code></pre>
+
+          <p>Step 4 -- Convert each 6-bit group to its decimal value and look up the corresponding Base64 character:</p>
+          <pre><code>19 -> T
+22 -> W
+5  -> F
+46 -> u</code></pre>
+
+          <p>So <code>Man</code> encodes to <code>TWFu</code>. When the input length is not a multiple of three, padding with <code>=</code> characters is added to make the output length a multiple of four.</p>
+
+          <h2>How to Encode and Decode Base64 Online</h2>
+
+          <p>Using our <a href="../tools/converters/base64.html">free online Base64 encoder and decoder</a>, you can convert text to Base64 and back in seconds. Here is how:</p>
+
+          <h3>Encoding Text to Base64</h3>
+          <ol>
+            <li>Navigate to the <a href="../tools/converters/base64.html">Base64 Encoder/Decoder tool</a> on UseEasyTool.</li>
+            <li>In the input text area, paste or type the text you want to encode. For example, type <code>Hello, World!</code></li>
+            <li>Select the <strong>Encode</strong> option (this is typically the default mode).</li>
+            <li>Click the <strong>Convert</strong> or <strong>Encode</strong> button.</li>
+            <li>The output area will display the Base64-encoded result: <code>SGVsbG8sIFdvcmxkIQ==</code></li>
+            <li>Click <strong>Copy</strong> to copy the result to your clipboard.</li>
+          </ol>
+
+          <h3>Decoding Base64 to Text</h3>
+          <ol>
+            <li>Open the <a href="../tools/converters/base64.html">Base64 tool</a>.</li>
+            <li>Paste your Base64 string into the input area.</li>
+            <li>Select the <strong>Decode</strong> option.</li>
+            <li>Click <strong>Convert</strong> or <strong>Decode</strong>.</li>
+            <li>The original text or data will appear in the output area.</li>
+          </ol>
+
+          <h2>Common Use Cases for Base64 Encoding</h2>
+
+          <h3>Embedding Images in HTML and CSS</h3>
+          <p>One of the most popular uses of Base64 is embedding small images directly in HTML or CSS files using data URIs. This reduces the number of HTTP requests and is particularly useful for small icons and logos.</p>
+          <pre><code>&lt;img src="data:image/png;base64,iVBORw0KGgoAAAANS..." alt="Icon"&gt;</code></pre>
+
+          <h3>Data Transmission and APIs</h3>
+          <p>When sending binary files (such as images or PDFs) through REST APIs, Base64 encoding allows the binary content to be included as a string field in JSON payloads. Many cloud services, including AWS S3 and SendGrid, accept Base64-encoded file uploads.</p>
+
+          <h3>HTTP Basic Authentication</h3>
+          <p>APIs that use Basic Auth require you to send credentials in Base64 format. The header format is:</p>
+          <pre><code>Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=</code></pre>
+          <p>Where <code>dXNlcm5hbWU6cGFzc3dvcmQ=</code> is the Base64 encoding of <code>username:password</code>.</p>
+
+          <h3>Email Attachments (MIME)</h3>
+          <p>Email protocols like SMTP are designed for text. MIME (Multipurpose Internet Mail Extensions) uses Base64 to encode binary attachments so they can be sent as part of the email body.</p>
+
+          <h2>Encoding Base64 Manually in Programming Languages</h2>
+
+          <p>While our online tool handles the conversion instantly, you may sometimes need to encode or decode Base64 in your code. Here are quick examples in popular languages:</p>
+
+          <h3>JavaScript / TypeScript</h3>
+          <pre><code>// Encode
+const encoded = btoa('Hello, World!');
+console.log(encoded); // "SGVsbG8sIFdvcmxkIQ=="
+
+// Decode
+const decoded = atob('SGVsbG8sIFdvcmxkIQ==');
+console.log(decoded); // "Hello, World!"</code></pre>
+
+          <h3>Python</h3>
+          <pre><code>import base64
+
+# Encode
+encoded = base64.b64encode(b'Hello, World!')
+print(encoded)  # b'SGVsbG8sIFdvcmxkIQ=='
+
+# Decode
+decoded = base64.b64decode(b'SGVsbG8sIFdvcmxkIQ==')
+print(decoded)  # b'Hello, World!'</code></pre>
+
+          <h3>Java</h3>
+          <pre><code>import java.util.Base64;
+
+// Encode
+String encoded = Base64.getEncoder().encodeToString("Hello, World!".getBytes());
+System.out.println(encoded); // "SGVsbG8sIFdvcmxkIQ=="
+
+// Decode
+byte[] decoded = Base64.getDecoder().decode("SGVsbG8sIFdvcmxkIQ==");
+System.out.println(new String(decoded)); // "Hello, World!"</code></pre>
+
+          <h2>Base64 Variants You Should Know</h2>
+
+          <p>While standard Base64 is the most common, there are important variants:</p>
+
+          <ul>
+            <li><strong>Base64URL:</strong> Replaces <code>+</code> with <code>-</code> and <code>/</code> with <code>_</code>, and removes padding. Used in JWT tokens and URL-safe contexts.</li>
+            <li><strong>Base32:</strong> Uses a 32-character alphabet (A-Z and 2-7). Produces longer output but is more human-readable. Used in Google Authenticator TOTP codes.</li>
+            <li><strong>Base16 (Hex):</strong> Uses only hexadecimal characters (0-9 and A-F). Each byte becomes two characters. Simple and widely used.</li>
+          </ul>
+
+          <h2>Limitations of Base64 Encoding</h2>
+
+          <p>While Base64 is incredibly useful, it is important to understand its limitations:</p>
+
+          <ul>
+            <li><strong>Size increase:</strong> Base64 encoded data is approximately 33% larger than the original binary data. Three bytes of input become four bytes of output. For large files, this can significantly increase bandwidth and storage requirements.</li>
+            <li><strong>Not encryption:</strong> Base64 is an encoding scheme, not encryption. Anyone can decode Base64 strings. Never use it to protect sensitive data. Always combine it with proper encryption (such as AES) for security.</li>
+            <li><strong>No compression:</strong> Base64 does not compress data. If file size is a concern, compress the data first (using gzip, for example) and then encode the compressed result.</li>
+            <li><strong>Processing overhead:</strong> Encoding and decoding require CPU resources. For very high-throughput systems, this overhead should be considered in performance planning.</li>
+          </ul>
+
+          <h2>Tips for Working with Base64 Effectively</h2>
+
+          <ul>
+            <li>Always validate Base64 input before decoding to avoid errors. Our <a href="../tools/converters/base64.html">online tool</a> handles validation automatically.</li>
+            <li>When encoding large files, consider chunking the input to avoid memory issues.</li>
+            <li>Use Base64URL variant when the encoded string will appear in URLs or query parameters.</li>
+            <li>For repeated encoding/decoding in applications, use built-in language libraries rather than custom implementations for better performance and security.</li>
+          </ul>
+
+          <h2>Conclusion</h2>
+
+          <p>Base64 encoding is a fundamental technique that every developer encounters regularly. From embedding images in web pages to authenticating API requests, it bridges the gap between binary data and text-based systems. Whether you need a quick one-off conversion or are debugging an encoding issue in your application, our <a href="../tools/converters/base64.html">free Base64 encoder/decoder tool</a> provides a fast, reliable way to encode and decode Base64 online without installing anything.</p>
+
+          <p>Try it today -- visit the <a href="../tools/converters/base64.html">Base64 Encoder/Decoder</a> and convert your first string in seconds.</p>
+
+        </article>
+
+        <!-- Article Footer -->
+        <footer class="article-footer">
+          <div class="article-footer__share">
+            <span class="article-footer__share-label">Share this article:</span>
+            <div class="article-footer__share-buttons">
+              <button class="article-footer__share-btn" aria-label="Share on Twitter" onclick="window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(window.location.href) + '&text=' + encodeURIComponent(document.title), '_blank')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+              </button>
+              <button class="article-footer__share-btn" aria-label="Share on LinkedIn" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(window.location.href), '_blank')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              </button>
+              <button class="article-footer__share-btn" aria-label="Copy link" onclick="navigator.clipboard.writeText(window.location.href)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+            </div>
+          </div>
+        </footer>
+
+        <!-- Related Articles -->
+        <section class="article-related">
+          <h2 class="article-related__title">Related Articles</h2>
+          <div class="article-related__grid">
+            <a href="base64-encoding-explained.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">Base64 Encoding Explained</h3>
+                <p class="article-card__excerpt">A comprehensive guide to Base64 encoding principles and use cases.</p>
+              </div>
+            </a>
+            <a href="base64-vs-url-encoding.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">Base64 vs URL Encoding: When to Use Which?</h3>
+                <p class="article-card__excerpt">Understand the key differences between Base64 and URL encoding.</p>
+              </div>
+            </a>
+            <a href="index.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">View All Articles</h3>
+                <p class="article-card__excerpt">Browse our complete collection of developer tutorials, guides, and tips.</p>
+              </div>
+            </a>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links">
+        <a href="#" data-i18n="footer_about">About</a>
+        <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="#" data-i18n="footer_terms">Terms of Service</a>
+        <a href="#" data-i18n="footer_contact">Contact</a>
+      </div>
+      <p class="footer-copyright">&copy; 2024 UseEasyTool. <span data-i18n="footer_rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/utils.js"></script>
+</body>
+</html>

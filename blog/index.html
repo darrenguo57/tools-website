@@ -281,7 +281,8 @@
         readTime: 5,
         tags: ['json', 'formatter'],
         image: '../assets/images/blog/json-formatting-guide.jpg',
-        file: 'articles/json-formatting-guide.html'
+        file: 'articles/json-formatting-guide.html',
+        date: '2026-05-15'
       },
       {
         id: 'base64-encoding-explained',
@@ -292,7 +293,8 @@
         readTime: 6,
         tags: ['base64', 'converter', 'encoding'],
         image: '../assets/images/blog/base64-encoding-explained.jpg',
-        file: 'articles/base64-encoding-explained.html'
+        file: 'articles/base64-encoding-explained.html',
+        date: '2026-05-18'
       },
       {
         id: 'password-security-guide',
@@ -303,7 +305,8 @@
         readTime: 7,
         tags: ['password', 'security'],
         image: '../assets/images/blog/password-security-guide.jpg',
-        file: 'articles/password-security-guide.html'
+        file: 'articles/password-security-guide.html',
+        date: '2026-05-20'
       },
       {
         id: 'aes-encryption-explained',
@@ -315,7 +318,8 @@
         readTime: 8,
         tags: ['encryption', 'security', 'aes'],
         image: '../assets/images/blog/aes-encryption-explained.jpg',
-        file: 'articles/aes-encryption-guide.html'
+        file: 'articles/aes-encryption-guide.html',
+        date: '2026-06-15'
       },
       {
         id: 'image-compression-tips',
@@ -327,7 +331,8 @@
         readTime: 5,
         tags: ['image', 'compression'],
         image: '../assets/images/blog/image-compression-tips.jpg',
-        file: 'articles/image-compression-tips.html'
+        file: 'articles/image-compression-tips.html',
+        date: '2026-05-22'
       },
       {
         id: 'regex-beginner-tutorial',
@@ -339,7 +344,8 @@
         readTime: 6,
         tags: ['regex', 'tutorial'],
         image: '../assets/images/blog/regex-beginner-tutorial.jpg',
-        file: 'articles/regex-beginner-tutorial.html'
+        file: 'articles/regex-beginner-tutorial.html',
+        date: '2026-05-24'
       },
       {
         id: 'color-theory-web-design',
@@ -351,7 +357,8 @@
         readTime: 5,
         tags: ['color', 'design'],
         image: '../assets/images/blog/color-theory-web-design.jpg',
-        file: 'articles/color-theory-web-designers.html'
+        file: 'articles/color-theory-web-designers.html',
+        date: '2026-05-26'
       },
       {
         id: 'unit-conversion-cheat-sheet',
@@ -363,7 +370,8 @@
         readTime: 4,
         tags: ['converter', 'reference'],
         image: '../assets/images/blog/unit-conversion-cheat-sheet.jpg',
-        file: 'articles/unit-conversion-cheat-sheet.html'
+        file: 'articles/unit-conversion-cheat-sheet.html',
+        date: '2026-05-28'
       },
       {
         id: 'markdown-vs-html-guide',
@@ -375,7 +383,8 @@
         readTime: 5,
         tags: ['markdown', 'html'],
         image: '../assets/images/blog/markdown-vs-html-guide.jpg',
-        file: 'articles/markdown-vs-html-guide.html'
+        file: 'articles/markdown-vs-html-guide.html',
+        date: '2026-05-30'
       },
       {
         id: 'data-visualization-best-practices',
@@ -387,7 +396,8 @@
         readTime: 6,
         tags: ['chart', 'visualization'],
         image: '../assets/images/blog/data-visualization-best-practices.jpg',
-        file: 'articles/data-visualization-best-practices.html'
+        file: 'articles/data-visualization-best-practices.html',
+        date: '2026-06-01'
       },
       {
         id: 'base64-vs-url-encoding',
@@ -453,6 +463,32 @@
         image: '../assets/images/blog/free-online-tools-developers.jpg',
         file: 'articles/free-online-tools-developers.html',
         date: '2026-06-05'
+      },
+      {
+        id: 'base64-encode-decode-guide',
+        title: 'How to Encode and Decode Base64 Online',
+        titleZh: '如何在线编码和解码 Base64',
+        excerpt: 'Learn how to encode and decode Base64 strings online with our free tool. Step-by-step guide covering what Base64 is, why it is used, and practical encoding examples.',
+        excerptZh: '学习如何使用我们的免费工具在线编码和解码 Base64 字符串，涵盖原理、用途和实操示例',
+        readTime: 8,
+        tags: ['base64', 'encoding', 'converter', 'tutorial'],
+        featured: false,
+        image: '../assets/images/blog/base64-encode-decode-guide.jpg',
+        file: 'articles/base64-encode-decode-guide.html',
+        date: '2026-07-22'
+      },
+      {
+        id: 'best-online-json-formatter',
+        title: 'Best Online JSON Formatter and Validator - Complete Guide',
+        titleZh: '最佳在线 JSON 格式化器和验证器 - 完整指南',
+        excerpt: 'Discover the best online JSON formatter and validator. Learn how to format, validate, and beautify JSON data with our free tool. Complete guide with examples and best practices.',
+        excerptZh: '探索最佳在线 JSON 格式化与验证工具。通过我们的免费工具学习如何格式化、验证和美化 JSON 数据',
+        readTime: 9,
+        tags: ['json', 'formatter', 'validator', 'developer-tools'],
+        featured: false,
+        image: '../assets/images/blog/best-online-json-formatter.jpg',
+        file: 'articles/best-online-json-formatter.html',
+        date: '2026-07-22'
       }
     ];
 
@@ -481,7 +517,9 @@
     }
 
     function formatDate(dateStr) {
+      if (!dateStr) return '';
       const date = new Date(dateStr);
+      if (isNaN(date.getTime())) return dateStr || '';
       return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     }
 
