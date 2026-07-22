@@ -1,13 +1,81 @@
+# UseEasyTool Robots Configuration
+
+# 默认规则：允许所有爬虫
 User-agent: *
 Allow: /
 
-# Sitemap location
+# Sitemap
 Sitemap: https://useeasytool.com/sitemap.xml
 
-# Disallow admin or private areas (if any)
+# 禁止访问非公开区域
 Disallow: /admin/
 Disallow: /private/
 Disallow: /temp/
+Disallow: /assets/js/
+Disallow: /assets/css/
 
-# Crawl delay for politeness (optional)
-# Crawl-delay: 1
+# ========================================
+# AI 爬虫策略 (GEO - Generative Engine Optimization)
+# 允许 AI 爬虫抓取博客内容，用于 AI 搜索引用
+# ========================================
+
+# GPTBot (OpenAI / ChatGPT) - 允许抓取博客
+User-agent: GPTBot
+Allow: /blog/
+Allow: /sitemap.xml
+Disallow: /
+
+# ChatGPT-User (ChatGPT 用户点击链接时的预抓取) - 允许博客
+User-agent: ChatGPT-User
+Allow: /blog/
+Allow: /sitemap.xml
+Disallow: /
+
+# ClaudeBot (Anthropic / Claude) - 允许抓取博客
+User-agent: ClaudeBot
+Allow: /blog/
+Allow: /sitemap.xml
+Disallow: /
+
+# PerplexityBot (Perplexity AI) - 允许抓取博客
+User-agent: PerplexityBot
+Allow: /blog/
+Allow: /sitemap.xml
+Disallow: /
+
+# Google-Extended (Google Gemini / AI 模型训练) - 允许抓取博客
+User-agent: Google-Extended
+Allow: /blog/
+Allow: /sitemap.xml
+Disallow: /
+
+# Google Gemini (Google AI 搜索) - 允许抓取博客
+User-agent: GoogleOther
+Allow: /blog/
+Allow: /sitemap.xml
+Disallow: /
+
+# Bytespider (字节跳动 / 豆包) - 允许抓取博客
+User-agent: Bytespider
+Allow: /blog/
+Allow: /sitemap.xml
+Disallow: /
+
+# Cohere-Bot (Cohere AI) - 允许抓取博客
+User-agent: cohere-bot
+Allow: /blog/
+Allow: /sitemap.xml
+Disallow: /
+
+# 恶意爬虫 - 全部禁止
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
