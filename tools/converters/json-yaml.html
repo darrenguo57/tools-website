@@ -165,36 +165,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+        <div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The JSON/YAML Converter bidirectionally transforms data between JSON (JavaScript Object Notation) and YAML (YAML Ain't Markup Language) formats. JSON is the de facto standard for API communication, while YAML is preferred for configuration files due to its human-readable syntax with minimal punctuation. This tool preserves data types, nested structures, arrays, and comments during conversion.</p>
+
+    <h3>Input Guide</h3>
+    <p>Enter valid JSON with proper quoting of keys and string values, or paste YAML with correct indentation (spaces, not tabs). The tool supports complex nested objects, arrays of objects, and mixed data types. For JSON input, ensure there are no trailing commas. For YAML, maintain consistent indentation levels (typically 2 spaces).</p>
+
+    <h3>Output</h3>
+    <p>JSON output is compact or prettified based on your preference, with proper quoting and no comments. YAML output uses clean indentation, removes excessive braces, and presents data in a natural reading flow. The converter validates syntax and reports specific line numbers for any parsing errors detected in the input.</p>
+
+    <h3>Tips &amp; Notes</h3>
+    <ul>
+      <li>YAML does not allow tabs for indentation — always use spaces.</li>
+      <li>JSON keys must be double-quoted; YAML keys do not require quotes unless they contain special characters.</li>
+      <li>Comments in YAML are stripped when converting to JSON since JSON does not support comments.</li>
+      <li>Very large files (over 10MB) may cause browser performance issues; consider splitting them.</li>
+    </ul>
+
+    <h3>Common Use Cases</h3>
+    <p>DevOps engineers convert Kubernetes manifests and Docker Compose files between formats. Developers translate OpenAPI specifications, package.json configurations, and CI/CD pipeline definitions. Data engineers use it to prepare configuration templates for cloud infrastructure tools like Terraform and Ansible. Technical writers prefer YAML for documentation examples due to its readability.</p>
+  </div>
       </section>
     </main>
 

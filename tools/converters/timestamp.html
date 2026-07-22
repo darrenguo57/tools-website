@@ -181,36 +181,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+        <div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Timestamp Converter translates between Unix timestamps (epoch time) and human-readable date formats. Unix timestamps count the number of seconds (or milliseconds) since January 1, 1970, 00:00:00 UTC — the Unix epoch. This tool is essential for developers working with APIs, databases, logs, and distributed systems where machine-readable time formats are standard.</p>
+
+    <h3>Input Guide</h3>
+    <p>Enter a Unix timestamp in seconds or milliseconds, or input an ISO 8601 date string like <code>2024-06-15T14:30:00Z</code>. The tool auto-detects whether your timestamp is in seconds or milliseconds based on its magnitude. You can also use locale-specific date formats or pick a date from the calendar widget.</p>
+
+    <h3>Output</h3>
+    <p>The output provides multiple representations: UTC time, local timezone time, relative time (e.g., "3 hours ago"), and the original timestamp value. Additional details include the day of the week, week number, and whether the date falls during daylight saving time. The tool handles leap years and leap seconds correctly.</p>
+
+    <h3>Tips &amp; Notes</h3>
+    <ul>
+      <li>Unix timestamps in milliseconds have 13 digits; seconds have 10 digits — verify which format your system uses.</li>
+      <li>Always consider timezone offsets when converting timestamps for user-facing displays.</li>
+      <li>The Unix epoch does not account for leap seconds; some systems may drift slightly over decades.</li>
+      <li>Use ISO 8601 format for unambiguous date representation across international teams.</li>
+    </ul>
+
+    <h3>Common Use Cases</h3>
+    <p>Backend developers debug API responses containing epoch timestamps. Database administrators query and update date fields in PostgreSQL, MongoDB, and MySQL. DevOps engineers correlate log entries from servers in different timezones. Mobile developers convert server timestamps to local time for user interfaces. Security analysts examine JWT token expiration claims.</p>
+  </div>
       </section>
     </main>
 

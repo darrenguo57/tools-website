@@ -206,36 +206,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Area Chart tool creates filled line charts that emphasize volume or cumulative totals over time. It supports normal, stacked, and percentage modes, as well as smooth, linear, and stepped curve styles. Area charts are excellent for showing trends in continuous data, such as website traffic, revenue accumulation, or resource consumption.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Enter category labels as comma-separated values. Add one or more series by providing a name, color, and comma-separated data values. The number of values in each series must match the number of labels. Choose the chart mode: Normal overlays transparent areas, Stacked sums series vertically, and Percentage normalizes to 100%. Adjust fill opacity and curve style to suit your narrative.</p>
+    
+    <h3>Output</h3>
+    <p>The output is an interactive area chart with a legend, tooltips, and responsive scaling. Stacked mode helps viewers see part-to-whole relationships. Percentage mode is useful for comparing proportional contributions across categories. The fill opacity slider lets you balance visibility of overlapping areas. Export the chart as a PNG for dashboards, reports, or blog posts.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Stacked areas should not include negative values; use normal mode for mixed signs.</li>
+      <li>Smooth curves look appealing but can imply false intermediate values.</li>
+      <li>Stepped curves are ideal for discrete measurements like daily counts.</li>
+      <li>Limit series count to five or fewer to maintain visual clarity.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Web analysts track daily user sessions by traffic source. Financial planners visualize monthly savings contributions against targets. Operations teams monitor server resource usage over time. Climate researchers compare temperature ranges across seasons. Sales directors show pipeline progression through funnel stages.</p>
+  </div>
       </section>
     </main>
     

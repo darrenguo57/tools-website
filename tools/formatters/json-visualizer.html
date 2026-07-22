@@ -207,36 +207,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The JSON Visualizer transforms raw JSON text into an interactive, collapsible tree diagram. Instead of reading through dense text blocks, you can expand and collapse nodes, search for specific keys, and visually trace the hierarchy of nested objects and arrays. This makes it ideal for exploring deeply structured data such as NoSQL documents, complex API responses, or multi-level configuration files.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Enter or paste valid JSON into the text area. The visualizer supports any standard JSON structure including nested objects, arrays, and primitive values. Ensure your JSON is syntactically correct before visualization; the tool will display a parse error if your input contains trailing commas, unquoted keys, or mismatched brackets. You can also load sample data to see how the tree rendering works.</p>
+    
+    <h3>Output</h3>
+    <p>The output is an interactive tree rendered directly in the browser. Each object and array becomes a collapsible node. Clicking a node expands or collapses its children. Primitive values are shown inline with their data types indicated by color coding. A search box lets you filter keys and values in real time, and the matched items are highlighted automatically.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Use the collapse-all button to get a high-level overview before drilling into details.</li>
+      <li>Very deep nesting (more than 20 levels) may impact rendering performance.</li>
+      <li>Copy any individual value by clicking the copy icon next to it.</li>
+      <li>Dark mode is supported and adapts the tree colors automatically.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>This tool is frequently used to inspect Elasticsearch responses, analyze Firebase document structures, explore GraphQL query results, and review geoJSON datasets. Data analysts and backend engineers also use it when onboarding to new APIs whose response schemas are not yet fully documented.</p>
+  </div>
       </section>
     </main>
 

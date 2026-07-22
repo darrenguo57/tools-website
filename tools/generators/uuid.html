@@ -187,36 +187,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+        <div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The UUID (Universally Unique Identifier) Generator creates standardized 128-bit identifiers formatted as 36-character strings. UUIDs are designed to be unique across both space and time, making them ideal for database primary keys, session tokens, distributed system identifiers, and API resource IDs. The tool supports UUID versions 1, 4, and 7, each suited to different technical requirements.</p>
+
+    <h3>Input Guide</h3>
+    <p>Select the UUID version and specify how many identifiers to generate (1-1000). Version 1 UUIDs incorporate a timestamp and MAC address for chronological sorting. Version 4 UUIDs are completely random and offer the best unpredictability. Version 7 UUIDs combine timestamp prefixing with randomness, enabling database-friendly sequential insertion while maintaining uniqueness. Click "Generate" to create your batch.</p>
+
+    <h3>Output</h3>
+    <p>UUIDs are displayed in standard 8-4-4-4-12 format (e.g., <code>550e8400-e29b-41d4-a716-446655440000</code>). You can copy individual IDs, copy the entire batch, or download as a text file. The tool validates each generated UUID against RFC 4122 standards. A count indicator shows how many identifiers were successfully created in the batch.</p>
+
+    <h3>Tips &amp; Notes</h3>
+    <ul>
+      <li>Version 4 UUIDs have 2^122 possible values — the chance of collision is astronomically low.</li>
+      <li>Use Version 7 for database primary keys to avoid index fragmentation caused by random insertion order.</li>
+      <li>Never use UUIDs for security tokens alone — they are unique but not cryptographically random by default.</li>
+      <li>Some systems require lowercase UUIDs; the tool provides both uppercase and lowercase options.</li>
+    </ul>
+
+    <h3>Common Use Cases</h3>
+    <p>Backend developers assign unique IDs to user accounts and orders in microservices architectures. Database architects design sharded databases where auto-increment is impractical. Mobile developers create offline-first apps that generate IDs without server contact. DevOps engineers tag Docker containers and Kubernetes resources. API designers construct RESTful resource URLs with opaque, non-sequential identifiers.</p>
+  </div>
       </section>
     </main>
 

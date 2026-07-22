@@ -164,36 +164,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+        <div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Base64 Converter is a versatile utility that encodes plain text into Base64 format and decodes Base64 strings back to readable text. Base64 is a binary-to-text encoding scheme widely used to transmit data over media that are designed to deal with textual information, such as email attachments, URL parameters, and JSON payloads. It ensures that binary data remains intact without modification during transport.</p>
+
+    <h3>Input Guide</h3>
+    <p>For <strong>encoding</strong>, enter any plain text, JSON, XML, or code snippets into the input field. The tool supports multilingual characters and special symbols. For <strong>decoding</strong>, paste a valid Base64 string — with or without the <code>data:</code> prefix. If the input contains invalid characters or incorrect padding, the tool will display a clear error message indicating the issue.</p>
+
+    <h3>Output</h3>
+    <p>The encoded output is a standard Base64 string using the RFC 4648 alphabet (A-Z, a-z, 0-9, +, /) with optional padding. The decoded output restores the original text exactly as it was entered. You can copy the result to your clipboard with one click or download it as a text file for local use.</p>
+
+    <h3>Tips &amp; Notes</h3>
+    <ul>
+      <li>Base64 encoding increases data size by approximately 33% — factor this in when encoding large content.</li>
+      <li>Always verify that decoded output matches expectations, especially with non-ASCII characters.</li>
+      <li>Use the URL-safe variant (replacing + with - and / with _) when embedding in URLs.</li>
+      <li>Base64 is not encryption — it is merely encoding and provides no security on its own.</li>
+    </ul>
+
+    <h3>Common Use Cases</h3>
+    <p>Developers use this tool to embed small images directly into CSS or HTML as data URIs, encode authentication tokens for API requests, serialize binary data into JSON payloads, and debug encoded strings received from third-party services. It is also commonly used to safely transmit special characters through systems that only support plain text.</p>
+  </div>
       </section>
 
     <!-- Usage Examples -->

@@ -262,36 +262,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Hash Generator computes cryptographic hash values for any input text or file using algorithms such as MD5, SHA-1, SHA-256, SHA-512, and RIPEMD-160. A hash function produces a fixed-length string that uniquely represents your data. Even a tiny change in the input yields a completely different hash, making this tool essential for integrity verification and fingerprinting.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Enter text in the input area or upload a file. The tool treats text as UTF-8 by default. If you are hashing binary data, use the file upload option. Select your desired algorithm from the dropdown; SHA-256 is recommended for most security applications, while MD5 is provided for legacy compatibility only. You can also compute HMAC hashes if you supply a secret key.</p>
+    
+    <h3>Output</h3>
+    <p>The output is a hexadecimal string representing the hash digest. For each algorithm, the output length is fixed: MD5 produces 32 characters, SHA-256 produces 64 characters, and SHA-512 produces 128 characters. A base64-encoded version is also available. If you hash a file, the filename and size are displayed alongside the result.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>MD5 and SHA-1 are considered broken for security purposes; use SHA-256 or higher.</li>
+      <li>Hashing is one-way; you cannot recover the original input from the hash.</li>
+      <li>Always verify file hashes after downloading software from the internet.</li>
+      <li>The tool runs entirely in your browser; no data is sent to any server.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Software developers verify download integrity by comparing SHA-256 checksums. DevOps engineers validate Docker image layers. Database administrators store password hashes. Forensic analysts create file fingerprints for evidence chains. API designers generate cache-busting keys for static assets.</p>
+  </div>
       </section>
     </main>
     

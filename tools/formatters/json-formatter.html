@@ -181,36 +181,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The JSON Formatter is a developer utility designed to transform raw, minified, or poorly structured JSON data into a clean, human-readable format. It validates your JSON syntax in real time, highlights structural errors with precise line numbers, and applies consistent indentation so you can inspect nested objects and arrays effortlessly. Whether you are debugging API responses, reviewing configuration files, or sharing data samples with teammates, this tool ensures your JSON is both valid and visually organized.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Paste your JSON content directly into the input area. The tool accepts strings, numbers, booleans, null values, objects, and arrays. Make sure your input begins with an opening brace <code>{</code> or bracket <code>[</code> and ends with the corresponding closing character. If you are copying from a browser console or an API client, ensure no trailing commas or unquoted keys remain, as these are common sources of syntax errors in hand-written JSON.</p>
+    
+    <h3>Output</h3>
+    <p>The formatter produces properly indented JSON with two-space indentation by default. You can toggle between compact, two-space, and four-space formats. If the input is invalid, the output panel displays an error message with the approximate line and column where parsing failed. Valid output can be copied to your clipboard or downloaded as a <code>.json</code> file.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Large JSON payloads (above 5 MB) may take a moment to process; consider using the compact view first.</li>
+      <li>Unicode characters are preserved exactly as written.</li>
+      <li>The formatter does not alter key ordering; it only adjusts whitespace.</li>
+      <li>Always validate JSON from untrusted sources before using it in production.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Developers use this tool to inspect REST API responses, format configuration files for Node.js or Python applications, clean up exported database records, and prepare structured data examples for documentation. It is also helpful when reviewing webhook payloads or cloud event logs that arrive as single-line strings.</p>
+  </div>
       </section>
 
     <!-- Usage Examples -->

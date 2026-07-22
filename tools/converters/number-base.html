@@ -180,36 +180,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+        <div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Number Base Converter transforms integers between different numerical bases, supporting binary (base-2), octal (base-8), decimal (base-10), hexadecimal (base-16), and any custom base from 2 to 36. It is an indispensable tool for computer scientists, embedded systems engineers, and anyone working with low-level data representation, memory addresses, or digital logic.</p>
+
+    <h3>Input Guide</h3>
+    <p>Enter a number in the source base field and select its current base. The tool accepts digits 0-9 and letters A-Z (case-insensitive) for bases above 10. For binary, only 0 and 1 are valid. For hexadecimal, digits 0-9 and letters A-F are accepted. The input is validated in real time, with invalid characters highlighted.</p>
+
+    <h3>Output</h3>
+    <p>The tool simultaneously displays the converted value in all supported bases. You get binary, octal, decimal, and hexadecimal representations instantly. For bases above 16, the output uses the standard alphanumeric notation. Large numbers are handled accurately up to JavaScript's integer precision limits.</p>
+
+    <h3>Tips &amp; Notes</h3>
+    <ul>
+      <li>Binary numbers are often grouped in sets of 4 or 8 digits for readability — use the formatting toggle.</li>
+      <li>Hexadecimal is the standard representation for memory addresses and color codes in web development.</li>
+      <li>Base-36 uses all digits and letters, making it useful for compact URL shortener codes.</li>
+      <li>Negative numbers are displayed using two's complement notation when relevant.</li>
+    </ul>
+
+    <h3>Common Use Cases</h3>
+    <p>Programmers use this tool when debugging memory dumps, converting IP address segments, interpreting microcontroller register values, and understanding network protocol headers. Web developers frequently convert between decimal and hexadecimal for CSS color values. Cryptography enthusiasts work with large numbers in various bases for algorithm analysis.</p>
+  </div>
       </section>
     </main>
 

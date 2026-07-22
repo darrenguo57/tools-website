@@ -533,6 +533,30 @@
   line-height: var(--line-height-relaxed);
 }
 
+/* Tool Guide Content (Detailed Tutorials) */
+.tool-guide-content h3 {
+  font-size: 1.125rem;
+  margin: 0 0 12px 0;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.tool-guide-content p {
+  margin: 0 0 16px 0;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+
+.tool-guide-content ul {
+  margin: 0 0 16px 0;
+  padding-left: 20px;
+}
+
+.tool-guide-content li {
+  margin-bottom: 8px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
 
 /* ----------------------------------------------------------
    8. Tool Options / Settings Panel

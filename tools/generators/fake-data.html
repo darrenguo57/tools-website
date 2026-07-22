@@ -188,36 +188,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+        <div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Fake Data Generator produces realistic-looking test data for software development, database seeding, and UI prototyping. It generates names, emails, phone numbers, addresses, companies, credit card numbers, IP addresses, dates, and URLs. All data is algorithmically generated and does not correspond to real individuals or valid financial instruments, making it safe for testing environments.</p>
+
+    <h3>Input Guide</h3>
+    <p>Select the data types you need by clicking the toggle chips. At least one type must be selected. Specify the number of records (1-100). Choose the output format: Table (HTML), JSON (for APIs), or CSV (for spreadsheets). Click "Generate" to create the dataset. The data is randomly assembled from predefined pools of realistic components, ensuring plausible but fictional results.</p>
+
+    <h3>Output</h3>
+    <p>Table format renders an HTML table suitable for direct viewing. JSON format produces an array of objects with proper data types. CSV format creates comma-separated values with quoted fields for compatibility with Excel, Google Sheets, and database import tools. All formats can be copied to the clipboard or downloaded as files. Credit card numbers pass the Luhn algorithm check but are not valid for transactions.</p>
+
+    <h3>Tips &amp; Notes</h3>
+    <ul>
+      <li>Generated email addresses use real domains but random usernames — do not send actual emails to them.</li>
+      <li>Credit card numbers are structurally valid but will be rejected by payment processors.</li>
+      <li>IP addresses are randomly generated and may coincidentally match real addresses — use only in isolated test environments.</li>
+      <li>For GDPR compliance testing, this data is synthetic and contains no personally identifiable information of real people.</li>
+    </ul>
+
+    <h3>Common Use Cases</h3>
+    <p>Developers populate test databases with realistic data volumes for performance testing. UI designers fill tables, forms, and dashboards with content during prototyping. QA engineers create boundary test cases with varying data lengths and formats. Sales teams demonstrate CRM software with populated contact records. Educators teach database concepts with realistic sample datasets. Data scientists generate training data for machine learning models requiring structured inputs.</p>
+  </div>
       </section>
     </main>
 

@@ -213,36 +213,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+        <div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Image Base64 Encoder/Decoder converts image files to Base64 data URLs and vice versa. Base64 encoding embeds binary image data directly into text-based formats like HTML, CSS, and JSON. This eliminates separate HTTP requests for small images, reducing page load latency. The tool supports PNG, JPEG, WebP, and GIF formats and provides ready-to-use HTML img tags and CSS background URLs.</p>
+
+    <h3>Input Guide</h3>
+    <p>For encoding, drag and drop an image or select one from your device. The tool automatically detects the image MIME type. For decoding, paste a Base64 string or data URL (e.g., <code>data:image/png;base64,iVBORw0...</code>) into the text area. The decoded output is displayed as a downloadable image. You can also paste partial Base64 strings without the data URL prefix.</p>
+
+    <h3>Output</h3>
+    <p>Encoded output provides three formats: the raw Base64 string, a complete data URL, and a ready-to-use HTML <code>&lt;img&gt;</code> tag. The tool displays the original file size and the encoded string length. Decoded output shows the image preview with format, dimensions, and approximate file size. One-click copying is available for all output formats.</p>
+
+    <h3>Tips &amp; Notes</h3>
+    <ul>
+      <li>Base64 encoding increases file size by approximately 33% — only use it for images under 5KB.</li>
+      <li>Data URLs block CSS rendering if used extensively; use sparingly for critical above-the-fold content.</li>
+      <li>HTTP/2 and HTTP/3 reduce the benefit of Base64 encoding since multiplexing handles multiple requests efficiently.</li>
+      <li>Cache considerations: Base64 images cannot be cached separately from the containing document.</li>
+    </ul>
+
+    <h3>Common Use Cases</h3>
+    <p>Frontend developers embed tiny icons and decorative elements directly in CSS to eliminate sprite sheets. Email designers inline images to ensure they display correctly across all email clients. API developers include image previews in JSON responses. Mobile developers reduce app bundle complexity by embedding small assets. Technical writers include screenshots in Markdown files that render on platforms without image hosting.</p>
+  </div>
       </section>
     </main>
     

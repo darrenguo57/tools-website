@@ -190,36 +190,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+        <div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Screenshot Tool captures rendered HTML as static images using the html2canvas library. It converts HTML markup, CSS styling, and inline SVG into PNG screenshots directly in the browser. This is invaluable for generating social media cards, email previews, code snippets as images, and visual regression test baselines. You control dimensions, scale factor, and background color for precise output.</p>
+
+    <h3>Input Guide</h3>
+    <p>Type or paste valid HTML code into the text area. The HTML should include inline styles or be self-contained. Set the capture width to control the viewport size. Choose a scale factor (1x, 2x, or 3x) for retina-quality output. Select a background color or transparent background. Click "Preview" to render the HTML in an iframe first, then "Capture" to generate the screenshot.</p>
+
+    <h3>Output</h3>
+    <p>The screenshot is generated as a PNG image and displayed in the result area. The tool reports the actual pixel dimensions of the captured image. You can download the PNG or copy it to the clipboard. For high-DPI displays, use 2x or 3x scaling to ensure crisp text and edges. The output preserves fonts, colors, borders, shadows, and most CSS properties accurately.</p>
+
+    <h3>Tips &amp; Notes</h3>
+    <ul>
+      <li>External resources (images, fonts) must be accessible via CORS or they may not render in the screenshot.</li>
+      <li>Complex CSS properties like backdrop-filter and mix-blend-mode may have limited support.</li>
+      <li>Fixed-position elements may appear differently in screenshots compared to browser rendering.</li>
+      <li>For best results, use web-safe fonts or embed font files via data URIs in your HTML.</li>
+    </ul>
+
+    <h3>Common Use Cases</h3>
+    <p>Frontend developers generate shareable images of UI components for documentation. Marketing teams create visual tweets and LinkedIn posts from HTML templates. Designers export design system components as image assets. Educators create coding tutorial images showing both code and rendered output. Support teams capture reproducible bug reports with exact visual state. Recruiters create formatted resume previews from HTML templates.</p>
+  </div>
       </section>
     </main>
     

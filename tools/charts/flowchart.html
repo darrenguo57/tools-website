@@ -167,36 +167,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Flowchart tool generates diagrams from simple text descriptions using Mermaid.js syntax. You can define nodes, edges, shapes, and subgraphs to model processes, decision trees, system architectures, and workflows. The tool renders the diagram in real time, making it easy to iterate on complex logic without wrestling with drag-and-drop editors.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Write your diagram using Mermaid flowchart syntax. Nodes are defined with identifiers like <code>A[Start]</code> or <code>B{Decision}</code>. Arrows connect nodes with <code>--></code>. You can style nodes with classes, group them into subgraphs, and add directional hints such as <code>TD</code> for top-down or <code>LR</code> for left-to-right. The built-in editor provides syntax highlighting and live error detection.</p>
+    
+    <h3>Output</h3>
+    <p>The output is a scalable SVG diagram that can be zoomed and panned. Nodes are interactive: hover to see full text if labels are long. You can download the diagram as an SVG for embedding in documentation, or as a PNG for slide decks. The text description remains editable, so you can version-control your diagrams alongside your code.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Use meaningful node IDs so the source remains readable as diagrams grow.</li>
+      <li>Subgraphs help organize large diagrams into logical sections.</li>
+      <li>Style classes keep visual consistency across multiple diagrams.</li>
+      <li>Long labels can be split across lines with HTML <code>&lt;br&gt;</code> tags.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Engineering teams document deployment pipelines and CI/CD flows. Product managers map user onboarding journeys. Support teams create troubleshooting decision trees. Compliance officers illustrate approval workflows. Educators teach algorithms by visualizing control flow step by step.</p>
+  </div>
       </section>
     </main>
     

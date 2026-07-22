@@ -178,36 +178,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The SQL Formatter beautifies raw SQL queries into consistently indented, readable code. It supports standard SELECT, INSERT, UPDATE, DELETE, CREATE, and ALTER statements, along with JOINs, subqueries, CTEs, and window functions. By standardizing keyword capitalization and line breaks, the formatter helps teams maintain clean query libraries and makes debugging complex logic significantly faster.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Paste your SQL query into the input area. The tool works with single statements or batches separated by semicolons. You can choose formatting dialects such as MySQL, PostgreSQL, SQL Server, or SQLite. If your query contains placeholders like <code>?</code> or named parameters, they are preserved in the output. Avoid pasting binary or non-text data; only standard SQL text is supported.</p>
+    
+    <h3>Output</h3>
+    <p>The output is a consistently formatted SQL statement with logical indentation for subqueries, JOIN conditions, and CASE expressions. You can toggle between uppercase and lowercase keywords. The formatted query is displayed in a syntax-highlighted editor and can be copied or downloaded as a <code>.sql</code> file. Errors such as unmatched parentheses are flagged with inline warnings.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Choose the correct SQL dialect for the most accurate formatting rules.</li>
+      <li>Comments are preserved and re-indented along with the code.</li>
+      <li>Very long IN lists may be collapsed into multi-line form for readability.</li>
+      <li>Always review formatted DDL statements before running them in production.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Database administrators use this formatter to standardize stored procedures before committing them to version control. Data analysts clean up ad-hoc queries exported from BI tools. Backend developers refactor legacy queries during migrations, and technical writers prepare readable examples for tutorials and documentation.</p>
+  </div>
       </section>
     </main>
 

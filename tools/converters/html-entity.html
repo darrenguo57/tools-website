@@ -170,36 +170,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+        <div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The HTML Entity Converter encodes special characters into their corresponding HTML entities and decodes entities back to regular characters. HTML entities are essential for displaying reserved characters (<code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>), non-ASCII symbols, and invisible characters safely in web pages without being interpreted as markup or causing encoding issues.</p>
+
+    <h3>Input Guide</h3>
+    <p>For encoding, paste text containing special characters, Unicode symbols, or reserved HTML characters. For decoding, paste text containing entities like <code>&amp;lt;</code>, <code>&amp;amp;</code>, <code>&amp;#169;</code>, or named entities like <code>&amp;copy;</code>. The tool supports decimal numeric entities, hexadecimal numeric entities, and all standard named character references defined in HTML5.</p>
+
+    <h3>Output</h3>
+    <p>Encoded output replaces each special character with the appropriate entity reference. You can choose between named entities (where available) and numeric entities. Decoded output restores the original characters, including Unicode symbols like emojis and mathematical notation. The tool preserves line breaks and whitespace formatting.</p>
+
+    <h3>Tips &amp; Notes</h3>
+    <ul>
+      <li>Always encode <code>&lt;</code>, <code>&gt;</code>, and <code>&amp;</code> when embedding user content in HTML to prevent XSS attacks.</li>
+      <li>Named entities like <code>&amp;copy;</code> are more readable than numeric equivalents like <code>&amp;#169;</code>.</li>
+      <li>Not all named entities are supported in older browsers — use numeric entities for maximum compatibility.</li>
+      <li>Emojis and some Unicode characters require numeric entities since named equivalents may not exist.</li>
+    </ul>
+
+    <h3>Common Use Cases</h3>
+    <p>Web developers sanitize user-generated content before rendering it in HTML templates. Content editors prepare text for CMS platforms that strip raw HTML. Email designers encode special characters for maximum client compatibility. Technical writers include code examples in documentation without triggering parser errors. E-commerce managers display currency symbols and trademark signs correctly across all browsers.</p>
+  </div>
       </section>
     </main>
 

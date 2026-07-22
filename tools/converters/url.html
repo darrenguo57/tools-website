@@ -170,36 +170,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+        <div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The URL Encoder/Decoder handles percent-encoding and decoding of Uniform Resource Locators. URLs can only be sent over the Internet using the ASCII character set, so non-ASCII characters, spaces, and reserved symbols must be converted into a valid format. This tool automatically handles RFC 3986 compliant encoding while preserving URL structure and query parameter separators.</p>
+
+    <h3>Input Guide</h3>
+    <p>Paste any URL, query string, or form data that needs encoding. For decoding, paste a percent-encoded string such as <code>Hello%20World%21</code>. The tool intelligently detects whether to encode or decode based on your selected mode. You can also process individual query parameters or entire URLs with multiple parameters.</p>
+
+    <h3>Output</h3>
+    <p>Encoded output replaces unsafe characters with percent signs followed by two hexadecimal digits (e.g., space becomes <code>%20</code>). Decoded output restores the original characters. The tool preserves structural characters like <code>?</code>, <code>&amp;</code>, and <code>=</code> in URL mode, or fully encodes everything in raw mode.</p>
+
+    <h3>Tips &amp; Notes</h3>
+    <ul>
+      <li>Double-encoding is a common mistake — verify that your input is not already encoded before processing.</li>
+      <li>Use "Encode URI Component" mode for individual query parameter values to avoid breaking URL structure.</li>
+      <li>Certain characters like <code>#</code>, <code>&amp;</code>, and <code>=</code> have special meaning in URLs and should always be encoded in query values.</li>
+      <li>The plus sign (+) represents a space in application/x-www-form-urlencoded data but not in standard percent-encoding.</li>
+    </ul>
+
+    <h3>Common Use Cases</h3>
+    <p>This tool is essential when constructing API requests with dynamic query parameters, handling user-generated content in URLs, debugging broken links caused by special characters, processing OAuth callback URLs, and preparing data for HTML form submissions. Frontend and backend developers alike rely on URL encoding for safe data transmission.</p>
+  </div>
       </section>
     </main>
 

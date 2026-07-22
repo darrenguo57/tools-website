@@ -189,36 +189,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Base64 Crypto tool provides Base64 encoding and decoding with optional AES encryption. Base64 is a binary-to-text encoding scheme that represents data as ASCII characters, making it safe to embed in JSON, XML, URLs, and email bodies. When combined with AES encryption, you can transform sensitive plaintext into an encrypted Base64 string that can only be decrypted with the correct password.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Enter the text you want to encode or the Base64 string you want to decode. For encryption, check the Encrypt option and enter a strong passphrase. The tool uses AES-256-GCM by default, which provides both confidentiality and authentication. If you are decoding, ensure the input is valid Base64; the tool will warn you about invalid characters or incorrect padding.</p>
+    
+    <h3>Output</h3>
+    <p>For encoding, the output is a Base64 string. For decoding, the output is the original text or binary data. When encryption is enabled, the output is a Base64-encoded ciphertext that includes the nonce and authentication tag. The encrypted output can be safely shared over public channels, but the passphrase must be kept secret.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Base64 is not encryption by itself; it only obscures data. Use AES encryption for secrets.</li>
+      <li>The encoded output is roughly 33% larger than the original binary data.</li>
+      <li>Never hard-code encryption passphrases in client-side JavaScript for production.</li>
+      <li>Store the nonce alongside the ciphertext; it is required for decryption.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Developers embed small images directly into CSS or HTML as Base64 data URIs. API clients encode binary payloads in JSON fields. Mobile apps encrypt local configuration values before storing them. System administrators encode certificates and keys for safe transport via chat or email.</p>
+  </div>
       </section>
     </main>
     

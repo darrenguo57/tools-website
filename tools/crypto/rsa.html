@@ -325,36 +325,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The RSA tool demonstrates asymmetric cryptography by generating public-private key pairs, encrypting messages with the public key, and decrypting with the private key. RSA is widely used for secure key exchange, digital signatures, and certificate-based authentication. This educational tool uses standard RSA-OAEP padding and supports key sizes from 512 to 4096 bits.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Click Generate Keys to create a new key pair. The public key can be shared openly, while the private key must be kept secret. To encrypt, enter plaintext and select the recipient's public key. To decrypt, paste the ciphertext and provide the matching private key. The tool accepts PEM-formatted keys. Key generation may take a few seconds for 2048-bit and larger keys.</p>
+    
+    <h3>Output</h3>
+    <p>Key generation produces a PEM-encoded public key and private key. Encryption output is a Base64-encoded ciphertext. Decryption recovers the original plaintext. If the keys do not match or the ciphertext is corrupted, the tool returns an error. The maximum plaintext length depends on the key size and padding scheme; longer messages should use hybrid encryption.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Key sizes below 2048 bits are considered weak and should not be used in production.</li>
+      <li>Never share your private key; treat it like a password.</li>
+      <li>RSA encryption is slower than AES; encrypt large files with AES and protect the AES key with RSA.</li>
+      <li>The tool runs locally; generated keys are not stored or transmitted.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Students learn how public-key cryptography works without installing OpenSSL. Developers prototype secure messaging features. Security engineers verify key formats before importing them into production systems. Penetration testers generate test certificates for lab environments.</p>
+  </div>
       </section>
     </main>
     

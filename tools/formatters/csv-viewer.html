@@ -191,36 +191,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The CSV Viewer parses comma-separated values and renders them as a styled HTML table. It handles quoted fields, embedded commas, and newline characters within cells. This makes it far easier to inspect spreadsheet exports, database dumps, and log extracts than reading raw text in a plain editor. The viewer also provides sorting, searching, and column resizing for interactive exploration.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Paste your CSV data into the text area or upload a <code>.csv</code> file. The first row is treated as the header by default, but you can disable this if your data has no headers. Choose your delimiter: comma, semicolon, or tab. If your file uses a custom quote character or escaping rules, adjust those settings before parsing. The viewer supports UTF-8 encoded text.</p>
+    
+    <h3>Output</h3>
+    <p>The output is a responsive HTML table with sortable columns and a real-time search filter. You can click any column header to sort ascending or descending. The search box filters rows across all columns. If the input could not be parsed, an error message explains the likely cause, such as an inconsistent number of columns or malformed quoting.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Large CSV files (over 10,000 rows) may take a few seconds to render.</li>
+      <li>Date and number formatting is displayed as-is; no type conversion occurs.</li>
+      <li>You can export the viewed table back to CSV with your chosen delimiter.</li>
+      <li>Drag column borders to resize widths for better readability.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Data analysts preview exports from Excel or Google Sheets before loading them into Python pandas. QA engineers inspect test data files. Sales teams review customer lists uploaded by vendors. Developers debug CSV generation from their applications by comparing expected versus actual column alignment.</p>
+  </div>
       </section>
     </main>
 

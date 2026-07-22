@@ -189,36 +189,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Real-time Chart tool simulates live data streams with automatic updates. It supports line and bar chart types and offers multiple data sources including sine waves, random values, and incremental trends. You can control the update speed, maximum data points, and chart type while the simulation runs. This is perfect for prototyping dashboards and demonstrating monitoring concepts.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Select a chart type and data source from the control panel. Set the maximum number of points to retain on screen; older points are dropped as new ones arrive. Adjust the speed slider to control the update interval from 100 ms to 2 seconds. Click Start to begin the simulation, Pause to freeze the current view, and Reset to clear all data. No external data connection is required.</p>
+    
+    <h3>Output</h3>
+    <p>The output is a continuously updating chart canvas. A status badge indicates whether the stream is running, paused, or stopped. The point counter shows how many data points are currently displayed. The chart uses smooth animations for line charts and discrete updates for bar charts. You cannot download a real-time image directly, but pausing the stream lets you capture a static screenshot.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Lower the max points if the browser becomes sluggish during fast updates.</li>
+      <li>Sine wave mode is useful for demonstrating periodic monitoring patterns.</li>
+      <li>Random mode simulates noisy sensor data for stress-testing dashboard layouts.</li>
+      <li>The simulation runs entirely client-side and consumes no external bandwidth.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>UI designers prototype real-time monitoring dashboards for IoT platforms. Developers test chart animation performance across devices. Educators demonstrate time-series concepts in statistics courses. Sales engineers create live demos for observability products. QA engineers verify that chart libraries handle continuous data updates correctly.</p>
+  </div>
       </section>
     </main>
     

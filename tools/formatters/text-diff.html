@@ -204,36 +204,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Text Diff tool compares two plain text documents and highlights differences at the line and word level. Unlike the code diff tool, it is optimized for prose, logs, and unstructured text. It can detect moved paragraphs, word-level substitutions, and formatting changes, making it ideal for reviewing contracts, articles, and system logs.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Paste the original text into the left panel and the revised text into the right panel. The tool accepts plain text, markdown, and simple formatted text. Choose the comparison granularity: line-level for broad overviews, or word-level for detailed edits. You can also enable the option to ignore line-ending differences between Windows and Unix formats.</p>
+    
+    <h3>Output</h3>
+    <p>The output displays a side-by-side or inline view of differences. Added words are underlined in green, removed words are struck through in red, and unchanged text appears in normal color. A summary bar shows statistics for additions, deletions, and modifications. You can export the diff as an HTML report or copy the highlighted text for inclusion in emails or tickets.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Word-level diff is more accurate for prose but slower on very large documents.</li>
+      <li>The tool preserves paragraph breaks to maintain readability.</li>
+      <li>Enable ignore-case if you do not want capitalization changes flagged.</li>
+      <li>Diffs are performed locally; sensitive documents are never uploaded.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Editors review revisions of blog posts and documentation. Legal teams compare contract versions. DevOps engineers analyze system logs before and after an incident. Localization managers verify translation updates. Product managers review changelog drafts against release notes from previous versions.</p>
+  </div>
       </section>
     </main>
 

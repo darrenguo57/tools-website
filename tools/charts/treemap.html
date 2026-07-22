@@ -201,36 +201,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Tree Map tool visualizes hierarchical data as a set of nested rectangles. Each rectangle's area is proportional to its value, making it easy to spot large categories at a glance. Tree maps are particularly effective for disk usage analysis, budget breakdowns, and market share comparisons where multiple levels of grouping exist.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Enter data in the table with columns for Name, Value, Parent, and optional Color. The root node typically has no parent. Child nodes reference their parent by name. Values must be positive numbers. Colors can be assigned per node; otherwise a default palette is used. Ensure parent names match exactly, or children will be treated as orphaned and may not render correctly.</p>
+    
+    <h3>Output</h3>
+    <p>The output is a squarified tree map where rectangles are sized by value and packed efficiently to minimize aspect ratio distortion. Each rectangle displays its label and value if space permits. Hover effects are not available because the rendering is static canvas, but the visual proportions communicate magnitude immediately. Download the image as a PNG for reports.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Use values that are on similar scales; extreme outliers dwarf smaller siblings.</li>
+      <li>Choose colors that differentiate siblings without clashing.</li>
+      <li>Label readability decreases as rectangles get smaller; consider filtering minor items.</li>
+      <li>The squarify algorithm prioritizes square-like rectangles over strict ordering.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>System administrators analyze disk space usage by directory. Finance teams break down departmental budgets. E-commerce managers compare product category revenue. Biologists visualize taxonomy classifications by species count. Marketing analysts inspect traffic sources by channel and campaign.</p>
+  </div>
       </section>
     </main>
     

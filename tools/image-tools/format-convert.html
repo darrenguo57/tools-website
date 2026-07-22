@@ -186,36 +186,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+        <div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Image Format Converter transforms images between PNG, JPEG, WebP, and BMP formats. Different formats excel in different contexts: PNG offers lossless quality and transparency, JPEG provides excellent compression for photographs, WebP delivers superior size-to-quality ratios for modern browsers, and BMP is useful for legacy systems. This tool handles single images or batch conversions efficiently in your browser.</p>
+
+    <h3>Input Guide</h3>
+    <p>Upload images by dragging them to the drop zone or clicking the upload button. Select the desired output format from the dropdown menu. For JPEG and WebP outputs, adjust the quality slider to control the trade-off between file size and visual fidelity. When converting from PNG with transparency to JPEG (which lacks transparency), the tool fills the transparent areas with white by default.</p>
+
+    <h3>Output</h3>
+    <p>Converted images are displayed with previews, original and new file sizes, and dimensions. You can download each image individually or all at once. The conversion preserves original dimensions. The tool uses high-quality resampling algorithms to minimize quality loss during format transitions. Batch conversions process files in parallel for faster results.</p>
+
+    <h3>Tips &amp; Notes</h3>
+    <ul>
+      <li>Converting from lossy to lossless formats (JPEG to PNG) does not restore lost quality — it only changes the container.</li>
+      <li>WebP is not supported in all email clients; use JPEG for maximum email compatibility.</li>
+      <li>PNG to JPEG conversion removes transparency — consider keeping a PNG version if transparency is needed.</li>
+      <li>For archival purposes, convert to PNG to preserve maximum quality without generational loss.</li>
+    </ul>
+
+    <h3>Common Use Cases</h3>
+    <p>Web developers create WebP versions of images for modern browsers while keeping JPEG fallbacks. Designers convert client-provided PNG assets to JPEG for web deployment. Content creators convert screenshots to smaller formats before sharing in messaging apps. Print shops prepare images in appropriate formats for different printing processes. Archivists standardize image collections to a single format for long-term preservation.</p>
+  </div>
       </section>
     </main>
     

@@ -187,36 +187,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Dashboard Gauge tool creates circular and semi-circular gauge charts for displaying single metrics against defined ranges. It supports customizable minimum and maximum values, color-coded zones, needle thickness, and value labels. Gauges are a staple of business dashboards because they communicate performance against targets instantly, even to non-technical audiences.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Set the current value using the slider or by typing directly. Define the minimum and maximum bounds for the scale. Choose arc, half-circle, or three-quarter-circle styles. Adjust the bar thickness and main color. The background track and zone colors can be customized to match your dashboard theme. If you need a title or unit label, enter them in the optional text fields.</p>
+    
+    <h3>Output</h3>
+    <p>The output is a canvas-rendered gauge with tick marks, zone shading, a needle indicator, and a centered value readout. The needle color adapts based on which zone the value falls into. The gauge responds immediately to input changes, making it useful for live demos and interactive reports. Export the image as a PNG for embedding in dashboards or slide decks.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Set zone thresholds that align with your business targets.</li>
+      <li>Half-circle gauges fit better in narrow dashboard columns.</li>
+      <li>Always include units so viewers understand what the number represents.</li>
+      <li>Values outside the min-max range are clamped to prevent needle overflow.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Executives track KPIs like revenue attainment and customer satisfaction scores. DevOps teams monitor server CPU and memory utilization. Sales managers review quota completion percentages. Manufacturing supervisors check production line efficiency. Fitness app designers display daily step goals.</p>
+  </div>
       </section>
     </main>
     

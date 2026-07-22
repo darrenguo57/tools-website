@@ -332,36 +332,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Regex Tester is an interactive environment for building, testing, and debugging regular expressions. It provides real-time match highlighting, capture group extraction, and flag toggling. Pre-built templates for common patterns help you get started quickly. Whether you are parsing logs, validating forms, or extracting data from documents, this tool accelerates your regex workflow.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Enter your regular expression in the Pattern field without leading or trailing slashes. Toggle flags such as Global (g), Case Insensitive (i), Multiline (m), and Dotall (s) using the button bar. Paste your test string into the Test String area. The tool evaluates the pattern on every keystroke. Use the template buttons to load common patterns for emails, URLs, numbers, and words as starting points.</p>
+    
+    <h3>Output</h3>
+    <p>The Highlighted Result panel shows your test string with matched segments marked in yellow. Below that, a stats bar reports the total match count. The Match List displays each match with its index position and any captured groups. If the pattern contains a syntax error, an error banner explains what went wrong and where. You can copy highlighted results or individual matches to the clipboard.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Start simple and add complexity incrementally to avoid confusing errors.</li>
+      <li>Use non-capturing groups <code>(?:...)</code> when you do not need to extract a subgroup.</li>
+      <li>Escape special characters like <code>.</code>, <code>*</code>, and <code>+</code> with a backslash when matching literals.</li>
+      <li>Test against edge cases such as empty strings and very long inputs.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Frontend developers validate email and phone inputs before form submission. Backend engineers parse log files for error codes and timestamps. Data analysts extract prices and IDs from unstructured text. DevOps teams filter Kubernetes pod names and container tags. Technical writers verify that documentation examples match intended behavior.</p>
+  </div>
       </section>
 
     <!-- Usage Examples -->

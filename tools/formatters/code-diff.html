@@ -202,36 +202,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Code Diff tool compares two blocks of code and highlights insertions, deletions, and modifications line by line. It uses a diff algorithm optimized for source code, ignoring minor whitespace differences if desired. This is invaluable for reviewing changes before commits, debugging regressions, or understanding how a file evolved between versions.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Enter the original code in the left panel and the modified code in the right panel. You can paste directly, load from files, or swap the panels with a single click. Choose whether the comparison should be case-sensitive and whether whitespace-only changes should be ignored. The tool supports all programming languages because it performs a text-level comparison.</p>
+    
+    <h3>Output</h3>
+    <p>The diff output shows three types of lines: unchanged context, removed lines highlighted in red, and added lines highlighted in green. Modified lines are shown as a pair of removal and addition. You can view the result in a unified layout (all changes in one stream) or a split layout (original and modified side by side). A summary at the top reports the total number of additions and deletions.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Use the ignore-whitespace option to focus on meaningful logic changes.</li>
+      <li>Large files are diffed in chunks to keep the browser responsive.</li>
+      <li>Copy either the original or modified version directly from the diff view.</li>
+      <li>The tool does not execute code; it only performs textual comparison.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Developers review pull request diffs before approving. System administrators compare configuration files after deployments. Security auditors inspect patches for unauthorized changes. Technical support teams identify what changed in a customer's template between two dates. Educators show students before-and-after examples during code reviews.</p>
+  </div>
       </section>
     </main>
 

@@ -260,36 +260,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The AES Encryption tool performs symmetric encryption and decryption using the Advanced Encryption Standard. It supports AES-128, AES-192, and AES-256 in CBC and GCM modes. AES is the global standard for encrypting sensitive data at rest and in transit. This tool lets you encrypt plaintext with a password and later decrypt it using the same password, all within your browser.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Enter your plaintext in the input area and provide a passphrase. Choose the key size and mode. AES-256-GCM is recommended for the strongest security. For CBC mode, a random IV is generated automatically and prepended to the ciphertext. For GCM mode, the nonce and authentication tag are included in the output. When decrypting, paste the complete ciphertext string and enter the exact passphrase used during encryption.</p>
+    
+    <h3>Output</h3>
+    <p>The encryption output is a Base64-encoded string containing the ciphertext plus any required metadata such as IV, nonce, or tag. The decryption output is the recovered plaintext. If the passphrase is incorrect or the ciphertext has been tampered with, the tool displays a decryption error. No raw binary is exposed; everything is handled as safe text.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Use a long, random passphrase for strong security; avoid dictionary words.</li>
+      <li>GCM mode is preferred over CBC because it provides built-in authentication.</li>
+      <li>Never reuse an IV or nonce with the same key.</li>
+      <li>This tool is for demonstration and testing; use established libraries in production.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Developers test encryption integrations before implementing them in backend services. QA engineers generate encrypted test data that matches production formats. Security researchers demonstrate confidentiality concepts. IT professionals encrypt temporary notes or credentials that need to be shared through insecure channels.</p>
+  </div>
       </section>
     </main>
     

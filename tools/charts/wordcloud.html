@@ -219,36 +219,27 @@ terraform:25</textarea>
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Word Cloud generator creates visual tag clouds from text or weighted word lists. Words are sized according to their frequency or assigned weight, and arranged in colorful layouts with optional shape masking. This tool helps you identify dominant themes in documents, survey responses, social media feeds, and code repositories at a single glance.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Enter plain text or a weighted list. For plain text, the tool counts word frequencies automatically, filtering out common stop words and punctuation. For weighted input, use the format <code>word:weight</code> on each line. Adjust the maximum word count, color scheme, and shape from the control panel. Shapes include square, circle, and heart. Weights should be positive numbers; larger values produce bigger text.</p>
+    
+    <h3>Output</h3>
+    <p>The output is a canvas-rendered word cloud where word size reflects importance. Colors are chosen from the selected palette. The layout algorithm attempts to prevent overlapping while filling the available space. You can download the result as a PNG image for reports, blog headers, or social media graphics. The image has a transparent background when downloaded.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Short, distinct words produce cleaner layouts than long phrases.</li>
+      <li>Use the vibrant palette for presentations and pastel for printed materials.</li>
+      <li>Very large word counts increase rendering time and reduce readability.</li>
+      <li>Special characters may be stripped during frequency analysis.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Marketers visualize customer feedback themes. Researchers analyze open-ended survey responses. SEO specialists inspect keyword density from competitor pages. Educators create vocabulary summaries for reading assignments. Journalists highlight trending terms from article collections.</p>
+  </div>
       </section>
     </main>
     

@@ -190,36 +190,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Relation Graph tool visualizes networks of nodes and edges using a force-directed layout. It is ideal for modeling social networks, system dependencies, organizational hierarchies, and knowledge graphs. Nodes are colored automatically, and edges include directional arrows. The layout engine minimizes edge crossings and clusters related nodes together for intuitive exploration.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Build your graph using the node table. Each row defines a node name and a comma-separated list of connected nodes. The tool infers edges from these connections. You can add nodes dynamically and choose between force-directed, circular, and grid layouts. Node names should be unique; duplicate names are treated as the same node. The force-directed layout works best for highly connected graphs.</p>
+    
+    <h3>Output</h3>
+    <p>The output is an interactive canvas graph. Nodes are represented as circles with labels. Edges are lines with arrowheads showing direction. In force-directed mode, you can drag nodes to rearrange the layout manually. The graph updates in real time as you edit the data table. Download the rendered image as a PNG for documentation or presentations.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Limit graphs to under 100 nodes for smooth interaction.</li>
+      <li>Use the circular layout when you want a deterministic, symmetrical shape.</li>
+      <li>Disconnected nodes still appear but may drift to the edges.</li>
+      <li>Node colors cycle through a fixed palette and repeat if there are many nodes.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Software architects map microservice dependencies. Security teams model network topology and trust relationships. HR departments visualize reporting structures. Researchers study citation networks and collaboration graphs. Game designers plot faction alliances and conflict webs.</p>
+  </div>
       </section>
     </main>
     

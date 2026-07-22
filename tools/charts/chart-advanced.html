@@ -186,36 +186,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Advanced Chart tool extends basic charting with radar, polar area, bubble, and mixed-type datasets. It supports multiple Y-axes, logarithmic scales, custom tick formatting, and annotations. This tool is designed for analysts who need more sophisticated visualizations than standard bar or line charts can provide, all while remaining accessible through a simple web interface.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Configure your dataset in the data table. For bubble charts, each point requires an X value, Y value, and radius. For radar charts, each dataset shares the same set of axis labels. You can enable a secondary Y-axis for series with different scales, such as revenue and conversion rate. Advanced options include setting minimum and maximum axis bounds, step sizes, and grid line colors.</p>
+    
+    <h3>Output</h3>
+    <p>The output is a professional-grade canvas chart with interactive tooltips, zooming, and panning where applicable. Mixed charts allow you to overlay bars and lines in a single view. Annotations let you highlight thresholds or milestones. The chart configuration can be exported as JSON for reuse in other Chart.js projects. Images can be saved as high-resolution PNGs.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Bubble charts are excellent for showing three dimensions of data simultaneously.</li>
+      <li>Use logarithmic scales when data spans several orders of magnitude.</li>
+      <li>Secondary axes prevent small-magnitude series from being visually flattened.</li>
+      <li>Too many series on one chart reduces readability; consider faceting instead.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Data scientists explore multivariate datasets with bubble charts. Fitness apps plot radar charts comparing user metrics to targets. Financial analysts overlay trading volume bars with price lines. Biologists display polar area charts for directional data. Game developers balance character statistics using radar visualizations.</p>
+  </div>
       </section>
     </main>
     

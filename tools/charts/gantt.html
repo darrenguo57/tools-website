@@ -198,36 +198,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Gantt Chart tool creates project timelines from task tables. You define tasks, start dates, end dates, progress percentages, and colors. The tool renders a classical Gantt chart with a date header, task labels, progress bars, and a today marker. It is an essential utility for project managers who need quick visual schedules without installing heavyweight project management software.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Add tasks using the data table. Each row requires a task name, start date, end date, and completion percentage. Dates should be in <code>YYYY-MM-DD</code> format. Colors are optional and default to a blue palette if omitted. Use the Add Task button to insert new rows. Tasks are displayed in the order they appear in the table, so arrange them logically by phase or dependency.</p>
+    
+    <h3>Output</h3>
+    <p>The output is a scrollable Gantt chart rendered on a canvas. The header shows months and week markers. Each task row contains a labeled bar whose filled portion indicates progress. A vertical red line marks today's date for quick schedule health checks. The chart can be downloaded as a PNG for status reports and stakeholder presentations.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Keep task names under 30 characters so labels remain readable.</li>
+      <li>Use color coding to distinguish teams, phases, or priority levels.</li>
+      <li>Update progress percentages weekly to keep the chart current.</li>
+      <li>The tool does not enforce dependencies; it is for visualization only.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Project managers plan software release schedules. Event coordinators map vendor deadlines and milestones. Construction supervisors track phase completion. Marketing teams coordinate campaign launch dates. Freelancers create visual proposals that show clients exactly when deliverables will be ready.</p>
+  </div>
       </section>
     </main>
     

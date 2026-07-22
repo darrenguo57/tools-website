@@ -160,36 +160,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+        <div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Markdown/HTML Converter transforms Markdown syntax into clean HTML markup and converts HTML back to Markdown. Markdown is a lightweight markup language used for formatting readme files, documentation, forum posts, and static site content. This tool supports GitHub Flavored Markdown (GFM) extensions including tables, task lists, fenced code blocks, and strikethrough text.</p>
+
+    <h3>Input Guide</h3>
+    <p>For Markdown-to-HTML conversion, write or paste standard Markdown: use <code>#</code> for headings, <code>**text**</code> for bold, <code>*text*</code> for italic, <code>[link](url)</code> for hyperlinks, and <code>```code```</code> for code blocks. For HTML-to-Markdown, paste valid HTML including elements like <code>&lt;p&gt;</code>, <code>&lt;h1&gt;-&lt;h6&gt;</code>, <code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, and <code>&lt;table&gt;</code>.</p>
+
+    <h3>Output</h3>
+    <p>HTML output is semantic, clean, and optionally minified or prettified. It converts Markdown inline elements to their HTML equivalents and handles nested lists, blockquotes, and horizontal rules. Markdown output strips presentational HTML, preserves semantic structure, and converts tables to GFM table syntax when possible.</p>
+
+    <h3>Tips &amp; Notes</h3>
+    <ul>
+      <li>Not all HTML can be perfectly converted to Markdown — complex layouts and inline styles may be simplified.</li>
+      <li>Always preview HTML output before publishing, especially when converting from user-generated Markdown.</li>
+      <li>Use fenced code blocks with language identifiers for syntax highlighting in the generated HTML.</li>
+      <li>Relative URLs in links and images are preserved as-is; verify they resolve correctly in your target environment.</li>
+    </ul>
+
+    <h3>Common Use Cases</h3>
+    <p>Technical writers convert Markdown documentation to HTML for company websites. Bloggers prepare content in Markdown and generate HTML for WordPress or custom CMS platforms. Developers transform GitHub readme files into styled HTML for documentation sites. Email marketers convert Markdown newsletters to HTML for email campaigns. Project managers export formatted meeting notes to HTML for sharing.</p>
+  </div>
       </section>
     </main>
 

@@ -259,36 +259,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The HMAC Generator creates Hash-based Message Authentication Codes using SHA-256, SHA-512, and other hash functions. HMAC combines a secret key with a hash function to produce a signature that verifies both the integrity and authenticity of a message. It is widely used in API authentication, webhook verification, and JWT token signing.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Enter the message you want to sign and provide a secret key. The key can be any ASCII or UTF-8 string. Select the hash algorithm; SHA-256 is the most common choice for APIs. If you are verifying a signature, paste the original message, enter the same key, and compare the generated HMAC with the one you received. Even a single character change in either the message or key will produce a completely different HMAC.</p>
+    
+    <h3>Output</h3>
+    <p>The output is a hexadecimal string representing the HMAC digest. A Base64-encoded variant is also available. The output length matches the chosen hash function: 64 hex characters for SHA-256 and 128 for SHA-512. There is no practical way to reverse an HMAC without brute-forcing the secret key.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>Keep your secret key confidential; anyone with the key can forge valid signatures.</li>
+      <li>Use a cryptographically random key with at least the same length as the hash output.</li>
+      <li>HMAC-SHA256 is preferred over HMAC-MD5 for all new implementations.</li>
+      <li>When comparing HMACs, use a constant-time comparison to prevent timing attacks.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Backend developers verify webhook signatures from payment providers like Stripe or PayPal. API architects implement request signing for stateless authentication. Mobile developers sign local data to detect tampering. DevOps engineers validate integrity of deployment artifacts using shared secrets.</p>
+  </div>
       </section>
     </main>
     

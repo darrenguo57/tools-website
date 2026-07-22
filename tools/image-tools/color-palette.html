@@ -198,36 +198,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+        <div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Color Palette Extractor analyzes uploaded images and identifies the dominant colors using the median cut algorithm. It generates harmonious color schemes suitable for web design, branding, and creative projects. Each extracted color is provided in HEX, RGB, and HSL formats. The tool exports palettes as CSS variables, JSON arrays, or Tailwind configuration code for seamless integration into development workflows.</p>
+
+    <h3>Input Guide</h3>
+    <p>Upload an image by dragging it to the drop zone or selecting from your device. Choose the number of colors to extract (2-16) based on your project's complexity. Higher counts capture subtle tonal variations; lower counts produce bold, minimalist palettes. The algorithm automatically ignores near-duplicate colors to ensure each swatch is visually distinct. Click "Extract Palette" to analyze the image.</p>
+
+    <h3>Output</h3>
+    <p>The extracted palette is displayed as a color bar and individual color cards showing HEX, RGB, and HSL values. Click any color to copy its value to the clipboard. The export section provides your palette in three formats: CSS custom properties (<code>:root</code> variables), JSON (with named fields), and Tailwind config (theme extension object). All formats are production-ready and copy-paste friendly.</p>
+
+    <h3>Tips &amp; Notes</h3>
+    <ul>
+      <li>Images with clear subject/background separation produce the most balanced palettes.</li>
+      <li>High-contrast images yield more vibrant palettes; muted images produce softer, pastel schemes.</li>
+      <li>Consider extracting from multiple images in a photo series to build a cohesive brand palette.</li>
+      <li>The first color in the palette is typically the most dominant — use it for primary branding elements.</li>
+    </ul>
+
+    <h3>Common Use Cases</h3>
+    <p>Web designers build cohesive color schemes from client logo images. Brand strategists develop secondary palettes from product photography. Developers generate CSS variable files for design systems. Social media managers create consistent post templates matching brand imagery. Interior designers extract palettes from room photos for paint selection. Fashion bloggers coordinate outfit colors using extracted schemes.</p>
+  </div>
       </section>
     </main>
     

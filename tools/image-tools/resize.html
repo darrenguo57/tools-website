@@ -214,36 +214,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+        <div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Image Resizer changes the dimensions of images to meet specific size requirements for websites, social media, print, and email. It supports pixel-perfect dimension entry, percentage scaling, and common preset sizes. The tool maintains aspect ratio by default (configurable) and uses high-quality canvas interpolation to preserve sharpness during upscaling and downscaling operations.</p>
+
+    <h3>Input Guide</h3>
+    <p>Upload an image and view its original dimensions. Enter new width and height values, or use the scale slider to resize by percentage. Toggle the lock icon to maintain or break the aspect ratio. Choose from preset dimensions for common use cases like HD video (1920x1080), social media (various), or thumbnail sizes. Select the output format: auto (matches input), PNG, JPEG, or WebP.</p>
+
+    <h3>Output</h3>
+    <p>The resized image is displayed on canvas with its new dimensions and estimated file size. Download the result in your chosen format. For JPEG and WebP, a quality setting of 92% balances size and fidelity. The tool prevents upscaling beyond 10,000 pixels in either dimension. Upscaling small images will result in pixelation — the tool warns when this may occur.</p>
+
+    <h3>Tips &amp; Notes</h3>
+    <ul>
+      <li>Downscaling always loses some detail; keep originals for future needs.</li>
+      <li>For web images, resize to exactly the display size to avoid browser scaling and save bandwidth.</li>
+      <li>Social media platforms have specific recommended dimensions — use the presets to match them exactly.</li>
+      <li>PNG is best for graphics with text or sharp edges; JPEG is preferable for photographs at smaller sizes.</li>
+    </ul>
+
+    <h3>Common Use Cases</h3>
+    <p>Web developers generate responsive image sets at multiple resolutions. Bloggers resize photos to match content width. E-commerce vendors standardize product images to uniform dimensions. Job seekers format profile pictures to platform requirements. Real estate agents resize high-resolution property photos for MLS listings. Graphic designers prepare assets at 1x, 2x, and 3x for multi-density displays.</p>
+  </div>
       </section>
     </main>
     

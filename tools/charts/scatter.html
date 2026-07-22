@@ -219,36 +219,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+<div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Scatter Plot tool plots two-dimensional data points to reveal correlations, clusters, and outliers. It supports optional bubble sizing for a third dimension and can overlay a linear regression trend line. Built on Chart.js, it provides interactive tooltips, zooming, and responsive resizing. This tool is essential for exploratory data analysis and regression diagnostics.</p>
+    
+    <h3>Input Guide</h3>
+    <p>Enter your data in the table with X and Y columns. The optional Size column scales the point radius for bubble charts. The optional Label column adds text to tooltips. You can add rows dynamically or clear the table to start over. Toggle the trend line and grid visibility from the control panel. Data should be numeric; non-numeric entries are ignored during rendering.</p>
+    
+    <h3>Output</h3>
+    <p>The output is an interactive scatter or bubble chart. Points are plotted on Cartesian axes with automatic scaling. The trend line shows the best linear fit and updates as you modify data. Tooltips display exact coordinates and labels on hover. The chart can be downloaded as a high-resolution PNG for inclusion in analytical reports and academic papers.</p>
+    
+    <h3>Tips & Notes</h3>
+    <ul>
+      <li>At least two points are required to calculate a trend line.</li>
+      <li>Outliers can heavily skew the regression; consider removing them if they are errors.</li>
+      <li>Bubble charts work best when size values span a moderate range.</li>
+      <li>Use consistent axis scales when comparing multiple scatter plots.</li>
+    </ul>
+    
+    <h3>Common Use Cases</h3>
+    <p>Data scientists inspect feature correlations during machine learning preprocessing. Economists analyze relationships between income and spending. Biologists plot gene expression levels. Quality engineers identify defect clusters on manufacturing coordinates. Educators teach statistics by letting students manipulate data and see regression changes in real time.</p>
+  </div>
       </section>
     </main>
     

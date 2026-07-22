@@ -174,36 +174,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+        <div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The NanoID Generator produces compact, URL-friendly unique identifiers using a cryptographically secure random number generator. Compared to UUIDs, NanoIDs are shorter (21 characters by default), faster to generate, and more space-efficient in URLs and databases. They use a larger alphabet (64 URL-safe characters) than UUIDs, achieving similar uniqueness probabilities with significantly fewer characters.</p>
+
+    <h3>Input Guide</h3>
+    <p>Set the desired ID length using the slider (1-36 characters). The default 21 characters provides a collision probability similar to UUID v4. Specify the number of IDs to generate (1-100). Optionally provide a custom alphabet to restrict characters — for example, using only lowercase letters and numbers for case-insensitive systems. Leave the alphabet field empty to use the default URL-safe character set.</p>
+
+    <h3>Output</h3>
+    <p>Each NanoID is displayed in a monospace font for easy visual inspection. The tool shows the total count generated and provides one-click copying for individual IDs or the entire batch. Generated IDs contain no ambiguous characters (like 1, l, I, 0, O) by default, making them suitable for verbal transmission and manual entry when needed.</p>
+
+    <h3>Tips &amp; Notes</h3>
+    <ul>
+      <li>At 21 characters with the default alphabet, you would need to generate ~149 billion IDs to reach a 1% collision chance.</li>
+      <li>Custom alphabets must contain at least 2 unique characters; the tool validates this requirement.</li>
+      <li>Short NanoIDs (8-10 characters) are suitable for short links and temporary tokens but have higher collision risk.</li>
+      <li>Always use the Web Crypto API for generating IDs in production; this tool does exactly that.</li>
+    </ul>
+
+    <h3>Common Use Cases</h3>
+    <p>URL shortener services generate compact, non-sequential link identifiers. Frontend developers create DOM element IDs that are guaranteed unique. Game developers generate player session and match IDs. E-commerce platforms create short, shareable order reference numbers. IoT devices with limited bandwidth send smaller identifiers instead of UUIDs. Mobile apps generate local record IDs before cloud synchronization.</p>
+  </div>
       </section>
     </main>
 

@@ -191,36 +191,27 @@
     <!-- Tool Description / How to Use -->
       <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
-        <div class="tool-steps">
-          <div class="tool-step">
-            <div class="tool-step__number">1</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_1_title">Enter Input</h4>
-              <p class="tool-step__desc" data-i18n="step_1">Enter your input in the input area above.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">2</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_2_title">Configure Options</h4>
-              <p class="tool-step__desc" data-i18n="step_2">Configure any options if available.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">3</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_3_title">Process</h4>
-              <p class="tool-step__desc" data-i18n="step_3">Click the convert/process button.</p>
-            </div>
-          </div>
-          <div class="tool-step">
-            <div class="tool-step__number">4</div>
-            <div class="tool-step__content">
-              <h4 class="tool-step__title" data-i18n="step_4_title">Get Result</h4>
-              <p class="tool-step__desc" data-i18n="step_4">View the result in the output area.</p>
-            </div>
-          </div>
-        </div>
+        <div class="tool-guide-content">
+    <h3>About This Tool</h3>
+    <p>The Barcode Generator creates linear (1D) barcodes in multiple formats including CODE128, CODE39, EAN-13, EAN-8, UPC, ITF14, and Pharmacode. Barcodes encode numeric and alphanumeric data into machine-readable patterns of parallel lines. Unlike QR codes, linear barcodes are scanned with laser scanners and are the standard for retail products, inventory management, and supply chain logistics.</p>
+
+    <h3>Input Guide</h3>
+    <p>Enter the data to encode — the valid character set depends on the barcode format. EAN-13 and UPC require numeric-only input of specific lengths (13 and 12 digits respectively). CODE128 supports the full ASCII character set. Set the bar width (1-4) and height (40-300px) based on your scanning distance. Toggle text display below the barcode. Click "Generate" to create the barcode.</p>
+
+    <h3>Output</h3>
+    <p>The barcode is rendered as an SVG and displayed on a white background. You can download it as a PNG image. The tool validates input against the selected format's rules and reports specific errors (e.g., "EAN-13 requires 13 digits"). The SVG output is scalable without quality loss, making it suitable for both small labels and large shipping carton printing.</p>
+
+    <h3>Tips &amp; Notes</h3>
+    <ul>
+      <li>Always test generated barcodes with your actual scanner before mass production — different scanners have varying resolutions.</li>
+      <li>Maintain adequate quiet zones (white margins) on both sides of the barcode for reliable scanning.</li>
+      <li>Low-resolution printers may produce bars that blur together — increase bar width or use higher DPI printers.</li>
+      <li>EAN-13 includes a checksum digit; the tool can calculate it automatically if you provide 12 digits.</li>
+    </ul>
+
+    <h3>Common Use Cases</h3>
+    <p>Small businesses print product labels for inventory tracking. Warehouses generate pallet and location barcodes for WMS systems. pharmacies create Pharmacode labels for medication verification. Publishers generate ISBN barcodes for book retail distribution. Manufacturers label components with serial numbers for traceability. Event organizers print ticket barcodes for fast attendee check-in at gates.</p>
+  </div>
       </section>
     </main>
 
