@@ -28,22 +28,24 @@ const AdSenseGlobal = (() => {
     },
     
     // 手动广告位（可选，作为补充）
+    // 如需使用手动广告位，请在 Google AdSense 后台创建广告单元，
+    // 获取真实 Slot ID 后替换下面的占位符
     manualAds: {
       // 首页顶部横幅
       homepageHeader: {
-        slot: 'SLOT_ID_1',
+        slot: 'SLOT_ID_1', // TODO: 替换为 AdSense 后台获取的真实 Slot ID
         size: '728x90',
         responsive: true
       },
       // 工具页侧边栏
       toolSidebar: {
-        slot: 'SLOT_ID_2', 
+        slot: 'SLOT_ID_2', // TODO: 替换为 AdSense 后台获取的真实 Slot ID
         size: '300x250',
         responsive: true
       },
       // 内容页底部
       contentFooter: {
-        slot: 'SLOT_ID_3',
+        slot: 'SLOT_ID_3', // TODO: 替换为 AdSense 后台获取的真实 Slot ID
         size: '728x90',
         responsive: true
       }

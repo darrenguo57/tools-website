@@ -12,10 +12,10 @@ const PayPal = (() => {
   'use strict';
 
   // PayPal Client ID
-  const PAYPAL_CLIENT_ID = 'AV1ibSI5cMM1DDR7SxiahHlHxkf6JC3XAYExWEyINq9KHVQbwB5wYWQPZ6cEbdWpuV8D1ZGSMwD4irN8';
-  
-  // 测试环境（沙盒）- 完成后改为生产环境
-  const PAYPAL_ENV = 'sandbox'; // 'sandbox' 或 'live'
+  const PAYPAL_CLIENT_ID = 'BAAXKQ-76m9FqTo3AnQ4CMbwlf2bBk-JinwTjPABPTXqhOYrcrmlEtS-J1FabWO6aSFhkZ47Snp9IHas8I';
+
+  // 生产环境
+  const PAYPAL_ENV = 'live'; // 'sandbox' 或 'live'
   
   // 默认金额选项
   const AMOUNTS = [
