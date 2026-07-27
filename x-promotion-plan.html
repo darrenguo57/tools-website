@@ -1,0 +1,2276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UseEasyTool 100-Day X Promotion Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #3B5BFF;
+    --blue-light: #EEF1FF;
+    --blue-dark: #2A44CC;
+    --gray-50: #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-200: #E5E7EB;
+    --gray-300: #D1D5DB;
+    --gray-400: #9CA3AF;
+    --gray-500: #6B7280;
+    --gray-600: #4B5563;
+    --gray-700: #374151;
+    --gray-800: #1F2937;
+    --gray-900: #111827;
+    --white: #FFFFFF;
+    --green: #10B981;
+    --green-light: #ECFDF5;
+    --red: #EF4444;
+    --red-light: #FEF2F2;
+    --yellow: #F59E0B;
+    --yellow-light: #FFFBEB;
+    --purple: #8B5CF6;
+    --purple-light: #F5F3FF;
+    --orange: #F97316;
+    --orange-light: #FFF7ED;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- Cover ---- */
+  .cover {
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1f4e 40%, #2d3a8c 100%);
+    color: var(--white);
+    padding: 80px 20px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(59,91,255,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 20%, rgba(139,92,246,0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .cover-content { max-width: 800px; margin: 0 auto; position: relative; z-index: 1; }
+  .cover-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 50px;
+    padding: 8px 24px;
+    margin-bottom: 32px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  .cover-logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+  .cover h1 {
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+  .cover h1 span { color: var(--blue); }
+  .cover .subtitle {
+    font-size: 20px;
+    font-weight: 400;
+    opacity: 0.8;
+    margin-bottom: 40px;
+    line-height: 1.5;
+  }
+  .cover-meta {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .cover-meta-item {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 16px 28px;
+    text-align: center;
+    min-width: 140px;
+  }
+  .cover-meta-item .num { font-size: 28px; font-weight: 700; display: block; }
+  .cover-meta-item .label { font-size: 13px; opacity: 0.6; margin-top: 4px; display: block; }
+
+  /* ---- Container ---- */
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  /* ---- Section ---- */
+  .section { margin-bottom: 60px; }
+  .section-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .section-subtitle {
+    font-size: 15px;
+    color: var(--gray-500);
+    margin-bottom: 28px;
+  }
+  .section-divider {
+    height: 1px;
+    background: var(--gray-200);
+    margin: 40px 0;
+  }
+
+  /* ---- Persona Card ---- */
+  .persona-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 36px;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .persona-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .persona-avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 22px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .persona-info h3 { font-size: 20px; font-weight: 700; color: var(--gray-900); }
+  .persona-info p { font-size: 14px; color: var(--gray-500); }
+  .persona-tags {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;
+  }
+  .tag {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .tag-blue { background: var(--blue-light); color: var(--blue); }
+  .tag-green { background: var(--green-light); color: var(--green); }
+  .tag-purple { background: var(--purple-light); color: var(--purple); }
+  .tag-orange { background: var(--orange-light); color: var(--orange); }
+  .tag-red { background: var(--red-light); color: var(--red); }
+  .tag-yellow { background: var(--yellow-light); color: var(--yellow); }
+  .persona-details {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--gray-100);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .persona-detail-item {
+    font-size: 13px;
+    color: var(--gray-600);
+  }
+  .persona-detail-item strong { color: var(--gray-800); }
+
+  /* ---- Profile Setup Card ---- */
+  .profile-setup {
+    background: var(--white);
+    border-radius: 20px;
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .profile-banner-preview {
+    height: 120px;
+    background: linear-gradient(135deg, #3B5BFF 0%, #8B5CF6 50%, #EC4899 100%);
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 32px 24px;
+  }
+  .profile-banner-preview::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 40px;
+    background: var(--white);
+    border-radius: 20px 20px 0 0;
+  }
+  .profile-body-preview {
+    padding: 0 36px 32px;
+    margin-top: -20px;
+    position: relative;
+  }
+  .profile-avatar-preview {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 30px; font-weight: 700;
+    border: 4px solid var(--white);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .profile-row { margin-top: 16px; }
+  .profile-row .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gray-400);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .profile-row .value {
+    font-size: 15px;
+    color: var(--gray-800);
+    padding: 10px 14px;
+    background: var(--gray-50);
+    border-radius: 10px;
+    border: 1px solid var(--gray-100);
+    font-family: 'Inter', monospace;
+  }
+  .profile-row .value .hashtag { color: var(--blue); font-weight: 500; }
+  .profile-row .value .link { color: var(--blue); text-decoration: underline; }
+
+  /* ---- Tweet Card ---- */
+  .tweet-card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--gray-200);
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    transition: box-shadow 0.2s;
+  }
+  .tweet-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+  .tweet-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .tweet-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 13px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .tweet-author { font-size: 14px; font-weight: 600; color: var(--gray-900); }
+  .tweet-handle { font-size: 13px; color: var(--gray-400); }
+  .tweet-badge {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 50px;
+  }
+  .badge-a { background: var(--blue-light); color: var(--blue); }
+  .badge-b { background: var(--purple-light); color: var(--purple); }
+  .badge-pin { background: var(--yellow-light); color: var(--yellow); }
+  .tweet-body {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--gray-800);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .tweet-body .hashtag { color: var(--blue); font-weight: 500; }
+  .tweet-body .bold { font-weight: 600; }
+  .tweet-body .data-highlight { 
+    display: inline-block;
+    background: var(--blue-light);
+    color: var(--blue-dark);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .tweet-footer {
+    display: flex;
+    gap: 24px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--gray-100);
+  }
+  .tweet-action {
+    font-size: 12px;
+    color: var(--gray-400);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* ---- Day Group ---- */
+  .day-group { margin-bottom: 48px; }
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .day-number {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    background: var(--blue);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .day-title h2 { font-size: 20px; font-weight: 700; color: var(--gray-900); }
+  .day-title p { font-size: 13px; color: var(--gray-500); }
+
+  /* ---- Template Card ---- */
+  .template-card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .template-header {
+    padding: 16px 24px;
+    background: var(--gray-50);
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray-700);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .template-body {
+    padding: 24px;
+    font-size: 14px;
+    color: var(--gray-600);
+    line-height: 1.8;
+    white-space: pre-wrap;
+    font-family: 'Inter', monospace;
+    background: var(--gray-50);
+    border-left: 3px solid var(--blue);
+    margin: 0;
+  }
+  .template-body .placeholder {
+    color: var(--blue);
+    font-weight: 500;
+    background: rgba(59,91,255,0.08);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  /* ---- Calendar ---- */
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+  }
+  .calendar-header-cell {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-500);
+    padding: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .calendar-cell {
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid var(--gray-200);
+    padding: 14px 12px;
+    min-height: 100px;
+    font-size: 13px;
+  }
+  .calendar-cell .day-label {
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+  .calendar-cell .theme {
+    font-size: 11px;
+    color: var(--gray-500);
+    line-height: 1.4;
+  }
+  .calendar-cell.weekend { background: var(--gray-50); }
+  .calendar-cell.highlight {
+    border-color: var(--blue);
+    background: var(--blue-light);
+  }
+
+  /* ---- Milestone ---- */
+  .milestone-list { display: flex; flex-direction: column; gap: 16px; }
+  .milestone-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--gray-200);
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .milestone-marker {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .milestone-marker.blue { background: var(--blue-light); color: var(--blue); }
+  .milestone-marker.green { background: var(--green-light); color: var(--green); }
+  .milestone-marker.purple { background: var(--purple-light); color: var(--purple); }
+  .milestone-marker.orange { background: var(--orange-light); color: var(--orange); }
+  .milestone-content h4 { font-size: 16px; font-weight: 700; color: var(--gray-900); margin-bottom: 6px; }
+  .milestone-content p { font-size: 14px; color: var(--gray-600); line-height: 1.6; }
+  .milestone-content .milestone-day { font-size: 12px; color: var(--blue); font-weight: 600; }
+
+  /* ---- Tips ---- */
+  .tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .tip-card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--gray-200);
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .tip-card .icon { font-size: 24px; margin-bottom: 12px; display: block; }
+  .tip-card h4 { font-size: 15px; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; }
+  .tip-card p { font-size: 13px; color: var(--gray-600); line-height: 1.6; }
+  .tip-card.full-width { grid-column: 1 / -1; }
+
+  /* ---- Content Ratio ---- */
+  .ratio-bar {
+    display: flex;
+    height: 40px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .ratio-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .ratio-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .ratio-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--gray-600);
+  }
+  .ratio-legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 3px;
+  }
+
+  /* ---- Strategy Table ---- */
+  .strategy-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .strategy-table th {
+    background: var(--gray-50);
+    padding: 14px 18px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--gray-500);
+    text-align: left;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .strategy-table td {
+    padding: 14px 18px;
+    font-size: 14px;
+    color: var(--gray-700);
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .strategy-table tr:last-child td { border-bottom: none; }
+
+  /* ---- Done List ---- */
+  .done-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .done-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--gray-700);
+    padding: 10px 14px;
+    background: var(--white);
+    border-radius: 10px;
+    border: 1px solid var(--gray-100);
+  }
+  .done-check {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--green);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  /* ---- Footer ---- */
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--gray-400);
+    font-size: 13px;
+    border-top: 1px solid var(--gray-200);
+  }
+  .footer a { color: var(--blue); text-decoration: none; }
+
+  /* ---- Nav ---- */
+  .toc {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--gray-200);
+    padding: 24px 28px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .toc h3 { font-size: 16px; font-weight: 700; color: var(--gray-900); margin-bottom: 16px; }
+  .toc-list { list-style: none; counter-reset: toc; }
+  .toc-list li {
+    counter-increment: toc;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 14px;
+    color: var(--gray-600);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .toc-list li:last-child { border-bottom: none; }
+  .toc-list li::before {
+    content: counter(toc, decimal-leading-zero);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--blue);
+    min-width: 24px;
+  }
+
+  @media (max-width: 768px) {
+    .cover h1 { font-size: 32px; }
+    .cover .subtitle { font-size: 16px; }
+    .cover-meta { gap: 16px; }
+    .persona-details { grid-template-columns: 1fr; }
+    .tips-grid { grid-template-columns: 1fr; }
+    .done-grid { grid-template-columns: 1fr; }
+    .calendar-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<div class="cover">
+  <div class="cover-content">
+    <div class="cover-logo">
+      <span class="dot"></span>
+      useeasytool.com
+    </div>
+    <h1>UseEasyTool<br><span>100-Day X</span> Promotion Plan</h1>
+    <p class="subtitle">A Chinese Engineer's Journey to Build a Profitable Tool Site<br>100 &#22825;&#x516C;&#x5F00;&#x5EFA;&#x8BBE;&#xFF0C;&#x4ECE;&#x2460;&#x6536;&#x5165;&#x5230;&#x76C8;&#x5229;</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <span class="num">100</span>
+        <span class="label">&#x5929;&#x6570; Days</span>
+      </div>
+      <div class="cover-meta-item">
+        <span class="num">200+</span>
+        <span class="label">&#x63A8;&#x6587; Tweets</span>
+      </div>
+      <div class="cover-meta-item">
+        <span class="num">60+</span>
+        <span class="label">&#x5DE5;&#x5177; Tools</span>
+      </div>
+      <div class="cover-meta-item">
+        <span class="num">2</span>
+        <span class="label">&#x63A8;&#x6587;/&#x5929; Per Day</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ============ TABLE OF CONTENTS ============ -->
+<div class="section">
+  <div class="toc">
+    <h3>&#x76EE;&#x5F55; Table of Contents</h3>
+    <ol class="toc-list">
+      <li>&#x4EBA;&#x8BBE;&#x80CC;&#x666F; Persona Background</li>
+      <li>X Profile &#x8BBE;&#x7F6E;&#x65B9;&#x6848;</li>
+      <li>&#x63A8;&#x6587;&#x7B56;&#x7565;&#x603B;&#x89C8; Strategy Overview</li>
+      <li>Day 1 &#x5BA3;&#x8A00;&#x63A8;&#x6587;&#xFF08;Pin &#x8FD9;&#x6761;&#xFF09;</li>
+      <li>&#x524D 14 &#x5929;&#x8BE6;&#x7EC6;&#x63A8;&#x6587;&#x8BA1;&#x5212; Day 1-14</li>
+      <li>&#x5DE5;&#x5177;&#x5206;&#x4EAB;&#x63A8;&#x6587;&#x6A21;&#x677F; Tweet Templates</li>
+      <li>&#x6BCF;&#x5468;&#x6570;&#x636E;&#x62A5;&#x544A;&#x6A21;&#x677F; Weekly Report</li>
+      <li>&#x91CC;&#x7A0B;&#x7891;&#x63A8;&#x6587; Milestones</li>
+      <li>&#x5185;&#x5BB9;&#x65E5;&#x5386; Content Calendar</li>
+      <li>&#x6CE8;&#x610F;&#x4E8B;&#x9879;&#x4E0E;&#x6700;&#x4F73;&#x5B9E;&#x8DF5; Tips &amp; Best Practices</li>
+    </ol>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ============ 1. PERSONA ============ -->
+<div class="section" id="persona">
+  <h2 class="section-title">&#x4EBA;&#x8BBE;&#x80CC;&#x666F; Persona Background</h2>
+  <p class="section-subtitle">&#x63A8;&#x5E7F;&#x8BA1;&#x5212;&#x7684;&#x6838;&#x5FC3;&#x4EBA;&#x7269;&#x8BBE;&#x5B9A;&#xFF0C;&#x6240;&#x6709;&#x63A8;&#x6587;&#x5185;&#x5BB9;&#x56F4;&#x7ED5;&#x6B64;&#x4EBA;&#x8BBE;&#x5C55;&#x5F00;</p>
+
+  <div class="persona-card">
+    <div class="persona-header">
+      <div class="persona-avatar">DG</div>
+      <div class="persona-info">
+        <h3>Darren Guo</h3>
+        <p>@darrenguo_dev &middot; Shenzhen, China &middot; Software Engineer</p>
+      </div>
+    </div>
+    <p style="font-size:15px;color:var(--gray-700);line-height:1.8;">
+      &#x4E00;&#x540D;&#x5DE5;&#x4F5C;&#x5728;&#x4E2D;&#x56FD;&#x6DF1;&#x5733;&#x7684;&#x8F6F;&#x4EF6;&#x5DE5;&#x7A0B;&#x5E08;&#x3002;&#x7528; AI &#x8F85;&#x52A9;&#x5F00;&#x53D1;&#x4E86;&#x4E00;&#x4E2A;&#x514D;&#x8D39;&#x5728;&#x7EBF;&#x5DE5;&#x5177;&#x96C6;&#x5408;&#x7F51;&#x7AD9; useeasytool.com&#xFF0C;&#x5305;&#x542B; 60+ &#x4E2A;&#x5F00;&#x53D1;&#x8005;&#x5DE5;&#x5177;&#x3002;&#x7F51;&#x7AD9;&#x6258;&#x7BA1;&#x5728; GitHub Pages + Cloudflare &#x4E0A;&#x3002;&#x76EE;&#x6807;&#x662F;&#x8BA9;&#x8FD9;&#x4E2A;&#x7F51;&#x7AD9;&#x5B9E;&#x73B0;&#x76C8;&#x5229;&#x3002;&#x7EAF;&#x6280;&#x672F;&#x80CC;&#x666F;&#xFF0C;&#x8FD0;&#x8425;&#x548C;&#x8425;&#x9500;&#x662F;&#x5168;&#x65B0;&#x7684;&#x6311;&#x6218;&#x3002;&#x8BDA;&#x5B9E;&#x900F;&#x660E;&#xFF0C;&#x5305;&#x62EC;&#x5931;&#x8D25;&#x548C;&#x9519;&#x8BEF;&#x3002;
+    </p>
+    <div class="persona-tags">
+      <span class="tag tag-blue">&#x5DE5;&#x7A0B;&#x5E08; Solo Dev</span>
+      <span class="tag tag-green">AI &#x8F85;&#x52A9;&#x5F00;&#x53D1;</span>
+      <span class="tag tag-purple">Build In Public</span>
+      <span class="tag tag-orange">&#x6DF1;&#x5733; Shenzhen</span>
+      <span class="tag tag-red">&#x76C8;&#x5229;&#x4E4B;&#x65C5;</span>
+      <span class="tag tag-yellow">&#x592A;&#x5E73;&#x6D0B;&#x65F6;&#x5DEE; Timezone</span>
+    </div>
+    <div class="persona-details">
+      <div class="persona-detail-item">&#x7F51;&#x7AD9;&#xFF1A;<strong>useeasytool.com</strong></div>
+      <div class="persona-detail-item">&#x6708; PV&#xFF1A;<strong>~10,000</strong></div>
+      <div class="persona-detail-item">&#x5DE5;&#x5177;&#x6570;&#x91CF;&#xFF1A;<strong>60+</strong></div>
+      <div class="persona-detail-item">&#x6536;&#x5165;&#xFF1A;<strong>$0.00</strong></div>
+      <div class="persona-detail-item">&#x4E3B;&#x8981;&#x6D41;&#x91CF;&#xFF1A;<strong>US, AU, FR, SG</strong></div>
+      <div class="persona-detail-item">&#x6258;&#x7BA1;&#xFF1A;<strong>GitHub Pages + Cloudflare</strong></div>
+    </div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <h3 style="font-size:17px;font-weight:700;color:var(--gray-900);margin-bottom:16px;">&#x5173;&#x952E;&#x6545;&#x4E8B;&#x5143;&#x7D20; Story Elements</h3>
+    <div class="done-grid">
+      <div class="done-item"><span class="done-check">&#x2713;</span>&#x4E2D;&#x56FD;&#x5DE5;&#x7A0B;&#x5E08;&#xFF0C;&#x6DF1;&#x591C;&#x5199;&#x4EE3;&#x7801;&#xFF08;&#x65F6;&#x5DEE;&#x6897;&#xFF09;</div>
+      <div class="done-item"><span class="done-check">&#x2713;</span>&#x7528; AI &#x8F85;&#x52A9;&#x5F00;&#x53D1;&#xFF08;TRAE IDE&#xFF09;</div>
+      <div class="done-item"><span class="done-check">&#x2713;</span>&#x7EAF;&#x6280;&#x672F;&#x80CC;&#x666F;&#xFF0C;&#x8425;&#x9500;&#x662F;&#x65B0;&#x6311;&#x6218;</div>
+      <div class="done-item"><span class="done-check">&#x2713;</span>&#x8BDA;&#x5B9E;&#x900F;&#x660E;&#xFF0C;&#x5206;&#x4EAB;&#x5931;&#x8D25;&#x548C;&#x9519;&#x8BEF;</div>
+      <div class="done-item"><span class="done-check">&#x2713;</span>&#x771F;&#x5B9E;&#x6D41;&#x91CF;&#xFF1A;&#x6708; PV ~10K</div>
+      <div class="done-item"><span class="done-check">&#x2713;</span>Google AdSense &#x88AB;&#x62D2;&#x7EDD;&#x8FC7;&#x4E00;&#x6B21;</div>
+      <div class="done-item"><span class="done-check">&#x2713;</span>GitHub Actions &#x90E8;&#x7F72;&#x5931;&#x8D25;&#x7ECF;&#x5386;</div>
+      <div class="done-item"><span class="done-check">&#x2713;</span>PayPal &#x6C99;&#x7BB1;&#x73AF;&#x5883;&#x914D;&#x7F6E;&#x9519;&#x8BEF;</div>
+    </div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <h3 style="font-size:17px;font-weight:700;color:var(--gray-900);margin-bottom:16px;">&#x5DF2;&#x5B8C;&#x6210;&#x7684;&#x5DE5;&#x4F5C; Completed Work</h3>
+    <div class="done-grid">
+      <div class="done-item"><span class="done-check">&#x2713;</span>60+ &#x5DE5;&#x5177;&#xFF08;8 &#x5927;&#x7C7B;&#xFF09;</div>
+      <div class="done-item"><span class="done-check">&#x2713;</span>&#x4E2D;&#x82F1;&#x53CC;&#x8BED;&#x56FD;&#x9645;&#x5316;</div>
+      <div class="done-item"><span class="done-check">&#x2713;</span>Cookie &#x540C;&#x610F;&#x6A2A;&#x5E45; (GDPR/CCPA)</div>
+      <div class="done-item"><span class="done-check">&#x2713;</span>&#x9690;&#x79C1;&#x653F;&#x7B56;&#x3001;&#x670D;&#x52A1;&#x6761;&#x6B3E;&#x3001;&#x5173;&#x4E8E;&#x9875;&#x9762;</div>
+      <div class="done-item"><span class="done-check">&#x2713;</span>&#x535A;&#x5BA2;&#x677F;&#x5757;&#xFF08;15+ &#x7BC7;&#x6587;&#x7AE0;&#xFF09;</div>
+      <div class="done-item"><span class="done-check">&#x2713;</span>Google Analytics 4</div>
+      <div class="done-item"><span class="done-check">&#x2713;</span>PayPal &#x5B9A;&#x5236;&#x5DE5;&#x5177;&#x652F;&#x4ED8;</div>
+      <div class="done-item"><span class="done-check">&#x2713;</span>Google Forms &#x9700;&#x6C42;&#x6536;&#x96C6;</div>
+      <div class="done-item"><span class="done-check">&#x2713;</span>SEO &#x4F18;&#x5316;&#xFF08;sitemap, robots.txt, &#x7ED3;&#x6784;&#x5316;&#x6570;&#x636E;&#xFF09;</div>
+      <div class="done-item"><span class="done-check">&#x2713;</span>GEO &#x7B56;&#x7565;&#xFF08;AI &#x722C;&#x866B;&#x53CB;&#x597D;&#xFF09;</div>
+      <div class="done-item"><span class="done-check">&#x2713;</span>Cloudflare &#x5B89;&#x5168;&#x9632;&#x62A4;&#xFF08;WAF&#x3001;&#x7F13;&#x5B58;&#xFF09;</div>
+      <div class="done-item"><span class="done-check">&#x2713;</span>Apple &#x98CE;&#x683C; UI &#x8BBE;&#x8BA1;</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ============ 2. X PROFILE SETUP ============ -->
+<div class="section" id="profile">
+  <h2 class="section-title">X Profile &#x8BBE;&#x7F6E;&#x65B9;&#x6848;</h2>
+  <p class="section-subtitle">&#x4E13;&#x4E1A;&#x3001;&#x771F;&#x5B9E;&#x3001;&#x6709;&#x8BB0;&#x5FC6;&#x70B9;&#x7684;&#x4E2A;&#x4EBA;&#x8D44;&#x6599;&#x914D;&#x7F6E;</p>
+
+  <div class="profile-setup">
+    <div class="profile-banner-preview">
+      <div style="position:relative;z-index:1;color:white;font-size:14px;font-weight:600;opacity:0.9;">
+        Banner &#x5EFA;&#x8BAE;&#xFF1A;&#x6DF1;&#x8272;&#x80CC;&#x666F; + &#x7F51;&#x7AD9;&#x622A;&#x56FE; + &#x6587;&#x5B57; "Building 60+ Free Dev Tools in Public"
+      </div>
+    </div>
+    <div class="profile-body-preview">
+      <div class="profile-avatar-preview">DG</div>
+
+      <div class="profile-row">
+        <div class="label">Name &#x663E;&#x793A;&#x540D;</div>
+        <div class="value">Darren | useeasytool.com <span class="hashtag">#BuildInPublic</span></div>
+      </div>
+
+      <div class="profile-row">
+        <div class="label">Bio &#x4E2A;&#x4EBA;&#x7B80;&#x4ECB;</div>
+        <div class="value">Chinese engineer building 60+ free tools @ useeasytool.com. Using AI to code. Trying to turn $0 revenue into a profitable business in 100 days. Sharing every step. &#x{1F30D;&#x1F4BB;&#x1F4CA;</div>
+      </div>
+
+      <div class="profile-row">
+        <div class="label">Location &#x4F4D;&#x7F6E;</div>
+        <div class="value">Shenzhen, China &#x{1F1E8;&#x1F1F3;</div>
+      </div>
+
+      <div class="profile-row">
+        <div class="label">Link &#x94FE;&#x63A5;</div>
+        <div class="value"><span class="link">https://useeasytool.com</span></div>
+      </div>
+
+      <div class="profile-row">
+        <div class="label">Pinned Tweet &#x7F6E;&#x9876;&#x63A8;&#x6587;</div>
+        <div class="value">Day 1 &#x5BA3;&#x8A00;&#x63A8;&#x6587;&#xFF08;&#x89C1;&#x4E0B;&#x65B9; Day 1 &#x8BE6;&#x60C5;&#xFF09;</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:20px;padding:20px 24px;background:var(--yellow-light);border-radius:12px;border:1px solid #FDE68A;">
+    <strong style="color:var(--yellow);font-size:14px;">&#x914D;&#x7F6E;&#x8BF4;&#x660E;&#xFF1A;</strong>
+    <ul style="margin-top:8px;font-size:13px;color:var(--gray-700);line-height:1.8;padding-left:20px;">
+      <li>Name &#x5305;&#x542B;&#x7F51;&#x7AD9;&#x540D;&#x548C; hashtag&#xFF0C;&#x63D0;&#x9AD8;&#x641C;&#x7D22;&#x53EF;&#x53D1;&#x73B0;&#x6027;</li>
+      <li>Bio &#x7528;&#x7B80;&#x6D01;&#x7684;&#x82F1;&#x6587;&#xFF0C;&#x7A81;&#x51FA;&#x4E09;&#x4E2A;&#x5173;&#x952E;&#x8BCD;&#xFF1A;Chinese engineer&#x3001;free tools&#x3001;100 days</li>
+      <li>Banner &#x5EFA;&#x8BAE;&#x4F7F;&#x7528;&#x7F51;&#x7AD9;&#x622A;&#x56FE; + &#x7B80;&#x6D01;&#x6587;&#x5B57;&#xFF0C;&#x914D;&#x8272;&#x4E0E;&#x7F51;&#x7AD9;&#x98CE;&#x683C;&#x4E00;&#x81F4;</li>
+      <li>&#x7F6E;&#x9876;&#x63A8;&#x6587;&#x5FC5;&#x987B;&#x662F; Day 1 &#x5BA3;&#x8A00;&#xFF0C;&#x8BA9;&#x65B0;&#x8BBF;&#x5BA2;&#x7ACB;&#x5373;&#x4E86;&#x89E3;&#x4F60;&#x7684;&#x6545;&#x4E8B;</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ============ 3. STRATEGY OVERVIEW ============ -->
+<div class="section" id="strategy">
+  <h2 class="section-title">&#x63A8;&#x6587;&#x7B56;&#x7565;&#x603B;&#x89C8; Strategy Overview</h2>
+  <p class="section-subtitle">&#x6BCF;&#x5929; 2 &#x6761;&#x63A8;&#x6587;&#xFF0C;&#x7B56;&#x7565;&#x5316;&#x5185;&#x5BB9;&#x5206;&#x5E03;</p>
+
+  <table class="strategy-table">
+    <thead>
+      <tr>
+        <th>&#x63A8;&#x6587;&#x7C7B;&#x578B;</th>
+        <th>&#x6BD4;&#x4F8B;</th>
+        <th>&#x8BF4;&#x660E;</th>
+        <th>&#x793A;&#x4F8B;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="tag tag-blue" style="font-size:12px;">&#x5DE5;&#x5177;&#x5206;&#x4EAB; Tool Share</span></td>
+        <td><strong>40%</strong></td>
+        <td>&#x6BCF;&#x5929;&#x63A8;&#x6587; B&#xFF0C;&#x4ECB;&#x7ECD;&#x5355;&#x4E2A;&#x5DE5;&#x5177;</td>
+        <td>JSON Formatter, QR Code Generator...</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-green" style="font-size:12px;">&#x9879;&#x76EE;&#x8FDB;&#x5C55; Progress</span></td>
+        <td><strong>25%</strong></td>
+        <td>&#x6570;&#x636E;&#x62A5;&#x544A;&#x3001;&#x65B0;&#x529F;&#x80FD;&#x3001;Bug &#x4FEE;&#x590D;</td>
+        <td>&#x5468;&#x6570;&#x636E;&#x62A5;&#x544A;&#x3001;&#x65B0;&#x5DE5;&#x5177;&#x4E0A;&#x7EBF;</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-purple" style="font-size:12px;">&#x6280;&#x672F;&#x5206;&#x4EAB; Tech</span></td>
+        <td><strong>15%</strong></td>
+        <td>AI &#x5F00;&#x53D1;&#x7ECF;&#x9A8C;&#x3001;&#x6280;&#x672F;&#x5B66;&#x4E60;</td>
+        <td>AI workflow&#x3001;&#x90E8;&#x7F72;&#x6545;&#x969C;</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-orange" style="font-size:12px;">&#x4E2A;&#x4EBA;&#x6545;&#x4E8B; Personal</span></td>
+        <td><strong>10%</strong></td>
+        <td>&#x6587;&#x5316;&#x89C6;&#x89D2;&#x3001;&#x65F6;&#x5DEE;&#x6897;&#x3001;&#x6DF1;&#x591C;&#x7F16;&#x7801;</td>
+        <td>2AM &#x8C03;&#x8BD5;&#x3001;&#x4E2D;&#x6587;&#x89C6;&#x89D2;</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-red" style="font-size:12px;">&#x793E;&#x533A;&#x4E92;&#x52A8; Community</span></td>
+        <td><strong>10%</strong></td>
+        <td>&#x56DE;&#x590D;&#x8BC4;&#x8BBA;&#x3001;&#x6295;&#x7968;&#x3001;AMA</td>
+        <td>"&#x4F60;&#x60F3;&#x8BA9;&#x6211;&#x505A;&#x4EC0;&#x4E48;&#xFF1F;"</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top:24px;">
+    <h3 style="font-size:16px;font-weight:700;color:var(--gray-900);margin-bottom:14px;">&#x5185;&#x5BB9;&#x6BD4;&#x4F8B;&#x53EF;&#x89C6;&#x5316;</h3>
+    <div class="ratio-bar">
+      <div class="ratio-segment" style="width:40%;background:var(--blue);">40% &#x5DE5;&#x5177;</div>
+      <div class="ratio-segment" style="width:25%;background:var(--green);">25% &#x8FDB;&#x5C55;</div>
+      <div class="ratio-segment" style="width:15%;background:var(--purple);">15% &#x6280;&#x672F;</div>
+      <div class="ratio-segment" style="width:10%;background:var(--orange);">10% &#x4E2A;&#x4EBA;</div>
+      <div class="ratio-segment" style="width:10%;background:var(--red);">10% &#x793E;&#x533A;</div>
+    </div>
+    <div class="ratio-legend">
+      <div class="ratio-legend-item"><span class="ratio-legend-dot" style="background:var(--blue);"></span>&#x5DE5;&#x5177;&#x5206;&#x4EAB; 40%</div>
+      <div class="ratio-legend-item"><span class="ratio-legend-dot" style="background:var(--green);"></span>&#x9879;&#x76EE;&#x8FDB;&#x5C55; 25%</div>
+      <div class="ratio-legend-item"><span class="ratio-legend-dot" style="background:var(--purple);"></span>&#x6280;&#x672F;&#x5206;&#x4EAB; 15%</div>
+      <div class="ratio-legend-item"><span class="ratio-legend-dot" style="background:var(--orange);"></span>&#x4E2A;&#x4EBA;&#x6545;&#x4E8B; 10%</div>
+      <div class="ratio-legend-item"><span class="ratio-legend-dot" style="background:var(--red);"></span>&#x793E;&#x533A;&#x4E92;&#x52A8; 10%</div>
+    </div>
+  </div>
+
+  <div style="margin-top:24px;padding:20px 24px;background:var(--blue-light);border-radius:12px;border:1px solid rgba(59,91,255,0.2);">
+    <strong style="color:var(--blue);font-size:14px;">&#x6BCF;&#x65E5;&#x7ED3;&#x6784; Daily Structure&#xFF1A;</strong>
+    <div style="margin-top:12px;display:flex;gap:16px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:200px;">
+        <div style="font-size:13px;font-weight:600;color:var(--blue);margin-bottom:4px;">&#x63A8;&#x6587; A&#xFF08;&#x4E3B;&#x7EBF;&#xFF09;</div>
+        <div style="font-size:13px;color:var(--gray-600);">&#x9879;&#x76EE;&#x8FDB;&#x5C55;&#x3001;&#x6570;&#x636E;&#x62A5;&#x544A;&#x3001;&#x6280;&#x672F;&#x5206;&#x4EAB;&#x3001;&#x4EBA;&#x751F;&#x611F;&#x609F;</div>
+      </div>
+      <div style="flex:1;min-width:200px;">
+        <div style="font-size:13px;font-weight:600;color:var(--purple);margin-bottom:4px;">&#x63A8;&#x6587; B&#xFF08;&#x5DE5;&#x5177;&#x5206;&#x4EAB;&#xFF09;</div>
+        <div style="font-size:13px;color:var(--gray-600);">&#x5355;&#x4E2A;&#x5DE5;&#x5177;&#x4ECB;&#x7ECD;&#x3001;&#x4F7F;&#x7528;&#x573A;&#x666F;&#x3001;&#x5FC3;&#x5F97;&#x4F53;&#x4F1A;</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ============ 4. DAY 1 LAUNCH TWEET ============ -->
+<div class="section" id="day1">
+  <h2 class="section-title">Day 1 &#x5BA3;&#x8A00;&#x63A8;&#x6587; Launch Tweet</h2>
+  <p class="section-subtitle">&#x8FD9;&#x662F;&#x6700;&#x91CD;&#x8981;&#x7684;&#x4E00;&#x6761;&#x63A8;&#x6587;&#xFF0C;&#x5EFA;&#x8BAE; Pin &#x5230;&#x4E2A;&#x4EBA;&#x4E3B;&#x9875;</p>
+
+  <div class="tweet-card" style="border-color:var(--blue);border-width:2px;">
+    <div class="tweet-header">
+      <div class="tweet-avatar">DG</div>
+      <div>
+        <div class="tweet-author">Darren | useeasytool.com</div>
+        <div class="tweet-handle">@darrenguo_dev</div>
+      </div>
+      <span class="tweet-badge badge-pin">&#x{1F4CC; PIN &#x7F6E;&#x9876;</span>
+    </div>
+    <div class="tweet-body">I'm a software engineer from Shenzhen, China. <span class="data-highlight">10,000 km</span> away from Silicon Valley.
+
+<span class="bold">6 months ago</span> I started building a free tool website using AI &mdash; and now it has <span class="bold">60+ tools</span> and <span class="data-highlight">10K monthly visitors</span>. But <span class="bold">$0</span> in revenue.
+
+Today I'm starting a <span class="bold">100-day challenge</span>: turn this side project into a profitable business.
+
+Every day I'll share:
+<span class="bold">- Traffic numbers</span> (real data, no fluff)
+<span class="bold">- Revenue</span> (even when it's $0.00)
+<span class="bold">- What I built, what broke, what I learned</span>
+
+As a Chinese developer trying to crack the global market, the challenges are unique:
+&bull; Language barriers
+&bull; Payment restrictions (PayPal took me 3 attempts)
+&bull; Google AdSense rejected me once
+&bull; I'm literally coding at 2 AM because that's when the US wakes up
+
+<span class="bold">Follow the journey.</span>
+<span class="hashtag">#100DaysToProfit</span> <span class="hashtag">#BuildInPublic</span> <span class="hashtag">#IndieHacker</span> <span class="hashtag">#SoloDev</span></div>
+    <div class="tweet-footer">
+      <div class="tweet-action">&#x{1F4AC; 0</div>
+      <div class="tweet-action">&#x{1F504; 0</div>
+      <div class="tweet-action">&#x2764; 0</div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px;padding:16px 20px;background:var(--green-light);border-radius:12px;border:1px solid #A7F3D0;">
+    <strong style="color:var(--green);font-size:13px;">&#x5BA3;&#x8A00;&#x63A8;&#x6587;&#x8981;&#x70B9;&#xFF1A;</strong>
+    <ul style="margin-top:6px;font-size:12px;color:var(--gray-700);line-height:1.7;padding-left:18px;">
+      <li>&#x7528;&#x7B80;&#x77ED;&#x5F00;&#x5934;&#x5EFA;&#x7ACB;&#x573A;&#x666F;&#xFF1A;&#x4E2D;&#x56FD;&#x5DE5;&#x7A0B;&#x5E08;&#xFF0C;10000 &#x516C;&#x91CC;&#x5916;</li>
+      <li>&#x7528;&#x6570;&#x5B57;&#x8BF4;&#x8BDD;&#xFF1A;60+ tools&#x3001;10K visitors&#x3001;$0 revenue</li>
+      <li>&#x5EFA;&#x7ACB;&#x671F;&#x5F85;&#xFF1A;100 &#x5929;&#x6311;&#x6218;&#xFF0C;&#x6BCF;&#x5929;&#x5206;&#x4EAB;&#x771F;&#x5B9E;&#x6570;&#x636E;</li>
+      <li>&#x7A81;&#x51FA;&#x72EC;&#x7279;&#x6027;&#xFF1A;&#x6587;&#x5316;&#x5DEE;&#x5F02;&#x3001;&#x652F;&#x4ED8;&#x969C;&#x788D;&#x3001;&#x65F6;&#x5DEE;&#x6897;</li>
+      <li>&#x6807;&#x7B7E;&#x7EC4;&#x5408;&#xFF1A;4 &#x4E2A;&#x6838;&#x5FC3; hashtag &#x6DB5;&#x76D6;&#x4E3B;&#x8981;&#x793E;&#x533A;</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ============ 5. DAY 1-14 DETAILED PLAN ============ -->
+<div class="section" id="day1-14">
+  <h2 class="section-title">&#x524D 14 &#x5929;&#x8BE6;&#x7EC6;&#x63A8;&#x6587;&#x8BA1;&#x5212; Day 1-14</h2>
+  <p class="section-subtitle">&#x6BCF;&#x5929; 2 &#x6761;&#x63A8;&#x6587;&#x7684;&#x5B8C;&#x6574;&#x5185;&#x5BB9;&#xFF0C;&#x53EF;&#x76F4;&#x63A5;&#x590D;&#x5236;&#x4F7F;&#x7528;</p>
+
+  <!-- Day 1 -->
+  <div class="day-group">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-title">
+        <h2>Day 1 &mdash; &#x5BA3;&#x8A00;&#x65E5; Launch Day</h2>
+        <p>&#x6B63;&#x5F0F;&#x542F;&#x52A8; 100 &#x5929;&#x6311;&#x6218;&#xFF0C;&#x53D1;&#x5E03;&#x5BA3;&#x8A00;</p>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-a">&#x63A8;&#x6587; A &middot; &#x5BA3;&#x8A00;</span>
+      </div>
+      <div class="tweet-body">I'm a software engineer from Shenzhen, China. <span class="data-highlight">10,000 km</span> away from Silicon Valley.
+
+<span class="bold">6 months ago</span> I started building a free tool website using AI &mdash; and now it has <span class="bold">60+ tools</span> and <span class="data-highlight">10K monthly visitors</span>. But <span class="bold">$0</span> in revenue.
+
+Today I'm starting a <span class="bold">100-day challenge</span>: turn this side project into a profitable business.
+
+Every day I'll share:
+<span class="bold">- Traffic numbers</span> (real data, no fluff)
+<span class="bold">- Revenue</span> (even when it's $0.00)
+<span class="bold">- What I built, what broke, what I learned</span>
+
+As a Chinese developer trying to crack the global market, the challenges are unique:
+&bull; Language barriers
+&bull; Payment restrictions (PayPal took me 3 attempts)
+&bull; Google AdSense rejected me once
+&bull; I'm literally coding at 2 AM because that's when the US wakes up
+
+<span class="bold">Follow the journey.</span>
+<span class="hashtag">#100DaysToProfit</span> <span class="hashtag">#BuildInPublic</span> <span class="hashtag">#IndieHacker</span> <span class="hashtag">#SoloDev</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-b">&#x63A8;&#x6587; B &middot; &#x5DE5;&#x5177;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Today's tool spotlight: Base64 Encoder/Decoder</span>
+
+Need to encode a string to Base64? Or decode a Base64 string back to text? This tool does both instantly.
+
+<span class="bold">Use case:</span> You're working with API authentication headers and need to encode your credentials. Paste it here, one click, done. No Google searches, no terminal commands.
+
+<span class="bold">Try it free:</span> useeasytool.com/tools/base64-encoder-decoder
+<span class="bold">(no signup, no install)</span>
+
+What's your go-to tool for Base64 encoding? Drop it below. &#x{1F447;
+<span class="hashtag">#DevTools</span> <span class="hashtag">#WebDev</span> <span class="hashtag">#FreeTool</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 2 -->
+  <div class="day-group">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-title">
+        <h2>Day 2 &mdash; &#x73B0;&#x72B6;&#x63ED;&#x79D8; Behind the Scenes</h2>
+        <p>&#x5C55;&#x793A;&#x5DF2;&#x6709;&#x7684;&#x5DE5;&#x4F5C;&#x6210;&#x679C;</p>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-a">&#x63A8;&#x6587; A &middot; &#x9879;&#x76EE;&#x5C55;&#x793A;</span>
+      </div>
+      <div class="tweet-body">Let me show you what I've <span class="bold">actually built</span> so far.
+
+<span class="data-highlight">60 tools</span> across <span class="bold">8 categories</span>:
+
+&#x{1F4CA; Converters &mdash; Unit, color, number base, timestamp
+&#x{1F4C4; Formatters &mdash; JSON, XML, SQL, CSS, JavaScript
+&#x{1F510; Encryption &mdash; AES, RSA, Base64, Hash
+&#x{1F4D0; Generators &mdash; UUID, password, Lorem Ipsum, QR Code
+&#x{1F4C8; Charts &mdash; Bar, line, pie, area charts
+&#x{1F4F7; Image Tools &mdash; Compress, resize, convert format
+&#x{1F9EE; Calculators &mdash; Loan, BMI, percentage, age
+&#x{1F9EA; Testers &mdash; Regex, JWT decoder, Cron expression
+
+All free. No signup required. Built by one person with AI assistance.
+
+&#x{1F4F7; [Screenshot of the homepage]
+
+What category of tools would you like to see more of?
+<span class="hashtag">#100DaysToProfit</span> <span class="hashtag">#BuildInPublic</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-b">&#x63A8;&#x6587; B &middot; &#x5DE5;&#x5177;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Today's tool spotlight: JSON Formatter &amp; Validator</span>
+
+You just received an API response and the JSON is a <span class="bold">single line, 5000 characters long</span>. Unreadable.
+
+Paste it into this formatter &mdash; instant syntax highlighting, proper indentation, and it validates the structure too. If there's an error, it tells you <span class="bold">exactly where</span>.
+
+<span class="bold">Use case:</span> Debugging API responses, checking config files, or cleaning up messy JSON from ChatGPT.
+
+<span class="bold">Try it free:</span> useeasytool.com/tools/json-formatter
+<span class="bold">(no signup, no install)</span>
+
+<span class="hashtag">#DevTools</span> <span class="hashtag">#JSON</span> <span class="hashtag">#WebDev</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 3 -->
+  <div class="day-group">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-title">
+        <h2>Day 3 &mdash; &#x5931;&#x8D25;&#x6545;&#x4E8B; Failure Story</h2>
+        <p>&#x771F;&#x5B9E;&#x5206;&#x4EAB; AdSense &#x88AB;&#x62D2;&#x7684;&#x7ECF;&#x5386;</p>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-a">&#x63A8;&#x6587; A &middot; &#x5931;&#x8D25;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body">Google AdSense <span class="bold">rejected</span> my application.
+
+Here's the rejection email and what I'm doing to fix it:
+
+<span class="bold">Reason given:</span> "Insufficient content" and "Valuable inventory: We believe your site does not provide a good user experience."
+
+<span class="bold">What I've fixed so far:</span>
+&#x2705; Added a Cookie consent banner to all 84 pages (GDPR/CCPA compliance)
+&#x2705; Published a proper Privacy Policy page
+&#x2705; Published Terms of Service page
+&#x2705; Added 15+ blog articles with real, useful content
+&#x2705; Improved page structure and navigation
+
+<span class="bold">What I learned:</span> It's not enough to have 60 tools. Google wants to see that your site provides <span class="bold">editorial content</span> too. Tools alone don't pass their "valuable inventory" check.
+
+Re-applying next week. Stay tuned for the result.
+<span class="hashtag">#100DaysToProfit</span> <span class="hashtag">#AdSense</span> <span class="hashtag">#IndieHacker</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-b">&#x63A8;&#x6587; B &middot; &#x5DE5;&#x5177;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Today's tool spotlight: Password Generator</span>
+
+Generate secure, random passwords with custom length, uppercase, lowercase, numbers, and special characters. One click to copy.
+
+<span class="bold">Use case:</span> Setting up a new server, creating a database password, or finally updating that "password123" you've been using since 2018.
+
+You can set length from 8 to 128 characters and choose which character types to include.
+
+<span class="bold">Try it free:</span> useeasytool.com/tools/password-generator
+<span class="bold">(no signup, no install)</span>
+
+<span class="hashtag">#DevTools</span> <span class="hashtag">#Security</span> <span class="hashtag">#FreeTool</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 4 -->
+  <div class="day-group">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-title">
+        <h2>Day 4 &mdash; &#x6280;&#x672F;&#x5206;&#x4EAB; Tech Deep Dive</h2>
+        <p>AI &#x8F85;&#x52A9;&#x5F00;&#x53D1;&#x5DE5;&#x4F5C;&#x6D41;</p>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-a">&#x63A8;&#x6587; A &middot; &#x6280;&#x672F;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">How I use AI to build 60 tools in 6 months.</span>
+
+My workflow:
+<span class="bold">1.</span> Describe the tool I want (plain text, English or Chinese)
+<span class="bold">2.</span> AI generates the frontend HTML/CSS/JS
+<span class="bold">3.</span> I review, adjust, test in browser
+<span class="bold">4.</span> Push to GitHub &rarr; auto-deploy via GitHub Actions &rarr; live on Cloudflare CDN
+
+<span class="bold">The entire cycle for one tool?</span> About <span class="data-highlight">2 hours</span>.
+
+My setup:
+&bull; TRAE IDE (AI-powered coding environment)
+&bull; GitHub Pages for hosting
+&bull; Cloudflare for CDN + security
+&bull; Google Analytics for tracking
+
+<span class="bold">The secret:</span> I'm not writing every line of code. I'm <span class="bold">reviewing and curating</span> what AI generates. The 80/20 rule in action.
+
+Tools I tried: TRAE IDE, Cursor, GitHub Copilot, ChatGPT. TRAE IDE won for my workflow.
+
+Anyone else building with AI? What's your setup?
+<span class="hashtag">#100DaysToProfit</span> <span class="hashtag">#AIDev</span> <span class="hashtag">#BuildInPublic</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-b">&#x63A8;&#x6587; B &middot; &#x5DE5;&#x5177;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Today's tool spotlight: QR Code Generator</span>
+
+Generate QR codes for URLs, text, WiFi credentials, or contact info (vCard). Customize colors, size, and error correction level. Download as PNG or SVG.
+
+<span class="bold">Use case:</span> You're organizing a meetup and need QR codes for each attendee's registration link. Or you want to put your portfolio URL on a business card.
+
+<span class="bold">Try it free:</span> useeasytool.com/tools/qr-code-generator
+<span class="bold">(no signup, no install)</span>
+
+<span class="hashtag">#DevTools</span> <span class="hashtag">#QRCodes</span> <span class="hashtag">#FreeTool</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 5 -->
+  <div class="day-group">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-title">
+        <h2>Day 5 &mdash; &#x6570;&#x636E;&#x65E5; Data Drop</h2>
+        <p>&#x771F;&#x5B9E;&#x6570;&#x636E;&#x62AB;&#x9732;&#xFF0C;&#x5EFA;&#x7ACB;&#x4FE1;&#x4EFB;</p>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-a">&#x63A8;&#x6587; A &middot; &#x6570;&#x636E;&#x62A5;&#x544A;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Day 5 data drop. &#x{1F4CA;</span>
+
+Where my <span class="data-highlight">10K monthly visitors</span> come from:
+&#x{1F1FA;&#x1F1F8; US: 51%
+&#x{1F1E6;&#x1F1FA; AU: 37%
+&#x{1F1EB;&#x1F1F7; FR: 34%
+&#x{1F1F8;&#x1F1EC; SG: 21%
+&#x{1F1E9;&#x1F1EA; DE: 18%
+&#x{1F1EF;&#x1F1F5; JP: 15%
+
+<span class="bold">Zero visitors from China.</span>
+
+My target audience is <span class="bold">literally on the other side of the planet</span>. When I wake up, the US is going to sleep. When I'm most productive (10 PM - 2 AM), my users are just starting their day.
+
+<span class="bold">Revenue:</span> <span class="data-highlight">$0.00</span>
+
+<span class="bold">Top 3 tools by traffic:</span>
+1. JSON Formatter (28%)
+2. Base64 Encoder (19%)
+3. UUID Generator (12%)
+
+Data doesn't lie. Now I need to figure out how to monetize it.
+<span class="hashtag">#100DaysToProfit</span> <span class="hashtag">#IndieHacker</span> <span class="hashtag">#BuildInPublic</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-b">&#x63A8;&#x6587; B &middot; &#x5DE5;&#x5177;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Today's tool spotlight: Hash Generator (MD5, SHA-256, SHA-512)</span>
+
+Generate cryptographic hashes from any text input. Supports MD5, SHA-1, SHA-256, and SHA-512. Instant computation, copy with one click.
+
+<span class="bold">Use case:</span> You need to verify a file's integrity, check if a password hash matches, or generate a checksum for your deployment script. Paste the text, select the algorithm, done.
+
+<span class="bold">Try it free:</span> useeasytool.com/tools/hash-generator
+<span class="bold">(no signup, no install)</span>
+
+<span class="hashtag">#DevTools</span> <span class="hashtag">#Security</span> <span class="hashtag">#FreeTool</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 6 -->
+  <div class="day-group">
+    <div class="day-header">
+      <div class="day-number">6</div>
+      <div class="day-title">
+        <h2>Day 6 &mdash; &#x6587;&#x5316;&#x5DEE;&#x5F02; Cultural Differences</h2>
+        <p>&#x5206;&#x4EAB;&#x4E2D;&#x56FD;&#x5F00;&#x53D1;&#x8005;&#x7684;&#x72EC;&#x7279;&#x6311;&#x6218;</p>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-a">&#x63A8;&#x6587; A &middot; &#x4E2A;&#x4EBA;&#x6545;&#x4E8B;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Things nobody tells you about being a Chinese developer targeting the US market:</span>
+
+<span class="bold">1. Payment is a nightmare.</span>
+PayPal sandbox vs live environment confused me for a <span class="bold">week</span>. The documentation is all in English, the error messages are vague, and I couldn't find anyone in my local dev community who had done this before.
+
+<span class="bold">2. Time zones mean I'm debugging at 2 AM.</span>
+When an issue affects US users, I find out at midnight my time. Fix it, deploy, test &mdash; it's 3 AM.
+
+<span class="bold">3. SEO in English as a second language is humbling.</span>
+I know the technical terms in Chinese. Translating them to natural-sounding English? That's a whole different skill.
+
+<span class="bold">4. The imposter syndrome is real.</span>
+Reading tweets from Silicon Valley devs with their VC funding and team of 10... while I'm here alone in my apartment in Shenzhen at 2 AM.
+
+<span class="bold">But maybe that last one is universal.</span> &#x{1F605;
+
+<span class="hashtag">#100DaysToProfit</span> <span class="hashtag">#SoloDev</span> <span class="hashtag">#IndieHacker</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-b">&#x63A8;&#x6587; B &middot; &#x5DE5;&#x5177;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Today's tool spotlight: Timestamp Converter</span>
+
+Convert between Unix timestamps and human-readable dates. Supports seconds and milliseconds. Shows results for multiple time zones simultaneously.
+
+<span class="bold">Use case:</span> You're reading a server log file and see "1720000000". What date is that? Paste it here. It also works in reverse &mdash; enter a date and get the timestamp.
+
+<span class="bold">Try it free:</span> useeasytool.com/tools/timestamp-converter
+<span class="bold">(no signup, no install)</span>
+
+<span class="hashtag">#DevTools</span> <span class="hashtag">#Backend</span> <span class="hashtag">#FreeTool</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 7 -->
+  <div class="day-group">
+    <div class="day-header">
+      <div class="day-number">7</div>
+      <div class="day-title">
+        <h2>Day 7 &mdash; &#x5468;&#x603B;&#x7ED3; Week 1 Summary</h2>
+        <p>&#x7B2C;&#x4E00;&#x5468;&#x56DE;&#x987E;&#xFF0C;&#x771F;&#x5B9E;&#x6570;&#x636E;</p>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-a">&#x63A8;&#x6587; A &middot; &#x5468;&#x603B;&#x7ED3;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Week 1 of <span class="hashtag">#100DaysToProfit</span> wrapped. &#x{1F3C1;</span>
+
+<span class="bold">What happened:</span>
+&bull; Fixed <span class="data-highlight">12</span> chart tool bugs (IIFE syntax errors everywhere)
+&bull; Added Cookie consent banner to all <span class="data-highlight">84</span> pages
+&bull; Wrote <span class="data-highlight">2</span> new blog articles
+&bull; Applied for AdSense again
+&bull; Got <span class="data-highlight">3</span> new followers (hello! &#x{1F44B;)
+
+<span class="bold">&#x{1F4CA; Week 1 Stats:</span>
+&bull; Total pageviews: ~2,500
+&bull; Daily average: ~357 PV
+&bull; Bounce rate: 62%
+&bull; Top tool: JSON Formatter (29%)
+&bull; New followers: 3
+&bull; <span class="bold">Revenue: $0.00</span>
+
+<span class="bold">What I learned this week:</span>
+&bull; People love tool tweets with real use cases
+&bull; The "build in public" angle gets engagement
+&bull; Being honest about $0 revenue builds trust
+
+<span class="bold">Next week's goals:</span>
+&bull; Publish 5 more blog articles
+&bull; Add structured data (Schema.org) to all tool pages
+&bull; Wait for AdSense review result (anxiety level: high)
+
+<span class="bold">The foundation is stronger. Let's keep going.</span>
+<span class="hashtag">#100DaysToProfit</span> <span class="hashtag">#BuildInPublic</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-b">&#x63A8;&#x6587; B &middot; &#x5DE5;&#x5177;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Today's tool spotlight: AES Encryption Tool</span>
+
+Encrypt and decrypt text using AES-256 encryption. Set your own password and choose from CBC or GCM mode. All processing happens in your browser &mdash; nothing is sent to any server.
+
+<span class="bold">Use case:</span> You need to share sensitive data (API keys, credentials) with a teammate. Encrypt it, send the encrypted text, share the password through a separate channel. Simple, secure.
+
+<span class="bold">Try it free:</span> useeasytool.com/tools/aes-encryption
+<span class="bold">(no signup, no install)</span>
+
+<span class="hashtag">#DevTools</span> <span class="hashtag">#Encryption</span> <span class="hashtag">#FreeTool</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 8 -->
+  <div class="day-group">
+    <div class="day-header">
+      <div class="day-number">8</div>
+      <div class="day-title">
+        <h2>Day 8 &mdash; &#x535A;&#x5BA2;&#x7ECF;&#x9A8C; Blog Strategy</h2>
+        <p>&#x535A;&#x5BA2;&#x6587;&#x7AE0;&#x5199;&#x4F5C;&#x4E0E; SEO &#x7ECF;&#x9A8C;</p>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-a">&#x63A8;&#x6587; A &middot; &#x535A;&#x5BA2;&#x7ECF;&#x9A8C;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">How I write blog posts as a non-native English speaker.</span>
+
+My blog has <span class="data-highlight">15+ articles</span> now. Here's my process:
+
+<span class="bold">1. Pick a topic based on what users search.</span>
+I check Google Search Console to see what queries lead people to my site. If there's demand without a good page, I write it.
+
+<span class="bold">2. Write the draft in English directly.</span>
+Used to write in Chinese then translate. But the result was unnatural. Now I write in English and use AI to polish.
+
+<span class="bold">3. AI-assisted editing.</span>
+I paste my draft into the AI editor and ask: "Make this more natural for a native English speaker. Keep the technical accuracy." Works 90% of the time.
+
+<span class="bold">4. Add real examples and screenshots.</span>
+Every article includes step-by-step screenshots. No fluff, no filler.
+
+<span class="bold">Most popular article so far:</span> "How to Format JSON in 5 Different Ways" &mdash; gets 30% of blog traffic.
+
+What's your content strategy for your side project?
+<span class="hashtag">#100DaysToProfit</span> <span class="hashtag">#SEO</span> <span class="hashtag">#BuildInPublic</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-b">&#x63A8;&#x6587; B &middot; &#x5DE5;&#x5177;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Today's tool spotlight: UUID Generator</span>
+
+Generate UUID/GUID v4 with one click. Create single or multiple UUIDs at once (up to 100). Copy all to clipboard instantly.
+
+<span class="bold">Use case:</span> You're building a database schema and need unique IDs for your records. Or you're setting up a new microservice and need request IDs. Click, copy, paste. Done.
+
+<span class="bold">Try it free:</span> useeasytool.com/tools/uuid-generator
+<span class="bold">(no signup, no install)</span>
+
+<span class="hashtag">#DevTools</span> <span class="hashtag">#Backend</span> <span class="hashtag">#FreeTool</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 9 -->
+  <div class="day-group">
+    <div class="day-header">
+      <div class="day-number">9</div>
+      <div class="day-title">
+        <h2>Day 9 &mdash; &#x90E8;&#x7F72;&#x6545;&#x969C; Deployment Fail</h2>
+        <p>GitHub Actions &#x90E8;&#x7F72;&#x5931;&#x8D25;&#x7684;&#x771F;&#x5B9E;&#x6545;&#x4E8B;</p>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-a">&#x63A8;&#x6587; A &middot; &#x6545;&#x969C;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">My site was down for 6 hours yesterday. Here's what happened. &#x{1F4A5;</span>
+
+<span class="bold">The error:</span> GitHub Actions deployment failed with "Missing environment" error.
+
+<span class="bold">The backstory:</span> I was adding a new tool page. Pushed to GitHub. Expected auto-deploy. Nothing happened. Checked GitHub Actions &mdash; red X. Checked the live site &mdash; <span class="bold">404</span> on the new page.
+
+<span class="bold">Root cause:</span> GitHub changed their environment variable structure. My workflow was referencing `GITHUB_TOKEN` in a way that no longer worked with their updated permission model.
+
+<span class="bold">The fix:</span>
+&bull; Updated workflow YAML to use the new `permissions` block
+&bull; Re-added the deployment environment in GitHub Settings
+&bull; Tested with a dummy push first
+
+<span class="bold">Time lost:</span> <span class="data-highlight">6 hours</span> of debugging + 1 hour of fixes.
+
+<span class="bold">Lesson:</span> When your CI/CD pipeline breaks, check the platform's changelog first. The problem might not be your code.
+
+<span class="bold">Status:</span> Everything is live again. &#x{1F3C4;
+
+<span class="hashtag">#100DaysToProfit</span> <span class="hashtag">#DevOps</span> <span class="hashtag">#BuildInPublic</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-b">&#x63A8;&#x6587; B &middot; &#x5DE5;&#x5177;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Today's tool spotlight: Color Converter</span>
+
+Convert between HEX, RGB, HSL, and CMYK color formats. Includes a visual color picker and shows complementary colors.
+
+<span class="bold">Use case:</span> A designer sends you "#3B5BFF" and you need it in RGB for your CSS. Or you're working on a dark mode palette and need to find the right shade. Pick a color, see all formats instantly.
+
+<span class="bold">Try it free:</span> useeasytool.com/tools/color-converter
+<span class="bold">(no signup, no install)</span>
+
+<span class="hashtag">#DevTools</span> <span class="hashtag">#Design</span> <span class="hashtag">#FreeTool</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 10 -->
+  <div class="day-group">
+    <div class="day-header">
+      <div class="day-number">10</div>
+      <div class="day-title">
+        <h2>Day 10 &mdash; &#x5B89;&#x5168;&#x65E5;&#x5FD7; Security Logs</h2>
+        <p>Cloudflare WAF &#x653B;&#x51FB;&#x5206;&#x6790;</p>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-a">&#x63A8;&#x6587; A &middot; &#x5B89;&#x5168;&#x5206;&#x6790;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Day 10: I analyzed my Cloudflare security logs. Here's what I found. &#x{1F6E1;&#xFE0F;</span>
+
+My site gets scanned by bots <span class="data-highlight">every single day</span>. The most common paths they try:
+
+<span class="bold">Top 5 most scanned paths:</span>
+1. /wp-login.php (WordPress login &mdash; my site isn't even WordPress)
+2. /xmlrpc.php (WordPress API)
+3. /admin/config.php (generic admin panel)
+4. /phpmyadmin (database admin)
+5. /.env (environment variables file)
+
+<span class="bold">What Cloudflare blocks:</span>
+&bull; <span class="data-highlight">2,847</span> requests blocked this week
+&bull; <span class="data-highlight">94%</span> were from known bot IPs
+&bull; <span class="data-highlight">3</span> were actual SQL injection attempts
+
+<span class="bold">My security setup:</span>
+&bull; Cloudflare WAF with managed rulesets
+&bull; Bot fight mode enabled
+&bull; Rate limiting: 100 requests/minute
+&bull; Hotlink protection for images
+
+<span class="bold">Lesson:</span> Even small sites get attacked. Security isn't optional.
+
+<span class="hashtag">#100DaysToProfit</span> <span class="hashtag">#Security</span> <span class="hashtag">#Cloudflare</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-b">&#x63A8;&#x6587; B &middot; &#x5DE5;&#x5177;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Today's tool spotlight: Lorem Ipsum Generator</span>
+
+Generate placeholder text in multiple styles: standard Latin lorem ipsum, modern English, Chinese placeholder text (yes, really!), or custom patterns. Choose paragraph, sentence, or word count.
+
+<span class="bold">Use case:</span> You're designing a new UI and need realistic-looking text blocks to test your layout. Instead of typing "asdf asdf asdf", generate proper placeholder text that matches the length you need.
+
+<span class="bold">Try it free:</span> useeasytool.com/tools/lorem-ipsum-generator
+<span class="bold">(no signup, no install)</span>
+
+<span class="hashtag">#DevTools</span> <span class="hashtag">#Design</span> <span class="hashtag">#FreeTool</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 11 -->
+  <div class="day-group">
+    <div class="day-header">
+      <div class="day-number">11</div>
+      <div class="day-title">
+        <h2>Day 11 &mdash; SEO &#x4F18;&#x5316; SEO Optimization</h2>
+        <p>&#x7ED3;&#x6784;&#x5316;&#x6570;&#x636E;&#x3001;Title &#x4F18;&#x5316;&#x5B9E;&#x8DF5;</p>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-a">&#x63A8;&#x6587; A &middot; &#x6280;&#x672F;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Day 11: The SEO changes that actually moved the needle.</span>
+
+I spent this week optimizing SEO. Here's what I did and the results:
+
+<span class="bold">1. Added Schema.org structured data to all 60+ tool pages</span>
+Each page now has proper "SoftwareApplication" schema with name, description, operating system, and offers (free).
+
+<span class="bold">2. Rewrote all page titles</span>
+Before: "Base64 Encoder Decoder - UseEasyTool"
+After: "Free Base64 Encoder &amp; Decoder Online | No Signup Required"
+&#x2192; CTR from search increased by <span class="data-highlight">23%</span>
+
+<span class="bold">3. Added breadcrumb navigation</span>
+Helps Google understand site structure and shows better in search results.
+
+<span class="bold">4. Created a proper sitemap with priority levels</span>
+Tool pages: priority 0.8, Blog: priority 0.6, Other: priority 0.4
+
+<span class="bold">5. GEO strategy: Allow AI crawlers</span>
+Added specific rules for ChatGPT, Claude, and Perplexity crawlers to access my blog content.
+
+<span class="bold">Early results (1 week):</span>
+&bull; Google impressions: +18%
+&bull; Blog traffic: +31%
+&bull; Average position for target keywords: improved by 2.3 positions
+
+SEO is a slow game. But every bit helps.
+<span class="hashtag">#100DaysToProfit</span> <span class="hashtag">#SEO</span> <span class="hashtag">#IndieHacker</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-b">&#x63A8;&#x6587; B &middot; &#x5DE5;&#x5177;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Today's tool spotlight: Number Base Converter</span>
+
+Convert numbers between Binary, Octal, Decimal, and Hexadecimal. Also supports Base32 and Base64. Shows the conversion result for all bases simultaneously.
+
+<span class="bold">Use case:</span> You're working with CSS colors and need to convert #FF5500 to RGB. Or you're debugging a binary protocol and need to decode hex values. Enter once, see all conversions.
+
+<span class="bold">Try it free:</span> useeasytool.com/tools/number-base-converter
+<span class="bold">(no signup, no install)</span>
+
+<span class="hashtag">#DevTools</span> <span class="hashtag">#WebDev</span> <span class="hashtag">#FreeTool</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 12 -->
+  <div class="day-group">
+    <div class="day-header">
+      <div class="day-number">12</div>
+      <div class="day-title">
+        <h2>Day 12 &mdash; &#x7B49;&#x5F85;&#x7126;&#x8651; The Waiting Game</h2>
+        <p>AdSense &#x5BA1;&#x6838;&#x7B49;&#x5F85;&#x7684;&#x771F;&#x5B9E;&#x611F;&#x53D7;</p>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-a">&#x63A8;&#x6587; A &middot; &#x4E2A;&#x4EBA;&#x611F;&#x609F;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Day 12: The hardest part of building in public isn't building. It's waiting. &#x{23F3;</span>
+
+Applied for Google AdSense again on Day 7. The confirmation says "review takes 1-2 weeks."
+
+It's been <span class="data-highlight">5 days</span>. Feels like 5 months.
+
+<span class="bold">What I do while waiting:</span>
+&bull; Write more blog content (published 3 new articles this week)
+&bull; Improve existing tools (added dark mode toggle)
+&bull; Work on new tools (2 in progress)
+&bull; Engage with the indie hacker community on X
+&bull; Analyze analytics data obsessively
+
+<span class="bold">The anxiety is real.</span> Every morning I check my email before anything else. Nothing yet.
+
+<span class="bold">But here's the thing I keep telling myself:</span> The site exists. The traffic is real. The tools work. Even if AdSense rejects me again, I'll find another way. Maybe sponsorship. Maybe premium tools. Maybe donations.
+
+<span class="bold">One door closes, I'll build another one.</span> &#x{1F313;
+
+<span class="hashtag">#100DaysToProfit</span> <span class="hashtag">#AdSense</span> <span class="hashtag">#BuildInPublic</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-b">&#x63A8;&#x6587; B &middot; &#x5DE5;&#x5177;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Today's tool spotlight: JWT Decoder</span>
+
+Decode and inspect JSON Web Tokens. See the header, payload, and signature. Verify the expiration time and check if the token is valid or expired.
+
+<span class="bold">Use case:</span> You're debugging an authentication issue and need to see what's inside the JWT token your backend is sending. Paste the token, see everything: user ID, roles, expiration, and issuer.
+
+<span class="bold">Try it free:</span> useeasytool.com/tools/jwt-decoder
+<span class="bold">(no signup, no install)</span>
+
+<span class="hashtag">#DevTools</span> <span class="hashtag">#Authentication</span> <span class="hashtag">#FreeTool</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 13 -->
+  <div class="day-group">
+    <div class="day-header">
+      <div class="day-number">13</div>
+      <div class="day-title">
+        <h2>Day 13 &mdash; Analytics &#x5B89;&#x88C5; Analytics Setup</h2>
+        <p>Google Analytics 4 &#x96C6;&#x6210;&#x8FC7;&#x7A0B;</p>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-a">&#x63A8;&#x6587; A &middot; &#x6280;&#x672F;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Day 13: Adding Google Analytics 4 to a static site &mdash; the non-trivial parts.</span>
+
+Adding the gtag.js snippet? Easy. 5 minutes.
+
+<span class="bold">The parts that took me 2 days:</span>
+
+<span class="bold">1. Consent mode setup</span>
+Since I have a Cookie consent banner, I needed to implement GA4's consent mode v2. This means analytics only fires when the user accepts cookies. Got this wrong twice &mdash; events were firing before consent.
+
+<span class="bold">2. Custom events for tool usage</span>
+I track which tools are actually used, not just which pages are visited. Each tool has a "tool_used" event with the tool name and category.
+
+<span class="bold">3. Filtered out my own traffic</span>
+Added a custom dimension to filter visits from my own IP and the bots that scan my site daily.
+
+<span class="bold">4. Conversion tracking</span>
+Set up a "custom tool request" conversion that fires when someone submits my Google Form for feature requests.
+
+<span class="bold">My analytics dashboard now shows:</span>
+&bull; Which tools get actual usage (vs. just page loads)
+&bull; Conversion rate on custom requests
+&bull; User engagement per tool category
+
+<span class="hashtag">#100DaysToProfit</span> <span class="hashtag">#Analytics</span> <span class="hashtag">#BuildInPublic</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-b">&#x63A8;&#x6587; B &middot; &#x5DE5;&#x5177;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Today's tool spotlight: Regex Tester</span>
+
+Test regular expressions in real-time with live matching highlights. Supports JavaScript regex syntax. Shows match groups, match count, and the matched text highlighted in your input.
+
+<span class="bold">Use case:</span> You need to validate email addresses in your form. You found a regex pattern online but aren't sure if it works. Paste the regex and some test inputs. Instantly see which strings match and which don't.
+
+<span class="bold">Try it free:</span> useeasytool.com/tools/regex-tester
+<span class="bold">(no signup, no install)</span>
+
+<span class="hashtag">#DevTools</span> <span class="hashtag">#Regex</span> <span class="hashtag">#FreeTool</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day 14 -->
+  <div class="day-group">
+    <div class="day-header">
+      <div class="day-number">14</div>
+      <div class="day-title">
+        <h2>Day 14 &mdash; Week 2 &#x603B;&#x7ED3; Week 2 Summary</h2>
+        <p>&#x7B2C;&#x4E8C;&#x5468;&#x56DE;&#x987E;&#xFF0C;&#x4E0E; Week 1 &#x5BF9;&#x6BD4;</p>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-a">&#x63A8;&#x6587; A &middot; &#x5468;&#x603B;&#x7ED3;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Week 2 of <span class="hashtag">#100DaysToProfit</span> wrapped. &#x{1F4CA;</span>
+
+<span class="bold">&#x{1F4C8; Week 2 vs Week 1:</span>
+&bull; Pageviews: ~2,800 (vs 2,500 in W1, <span class="data-highlight">+12%</span>)
+&bull; Daily average: ~400 PV (vs 357 in W1)
+&bull; New followers: <span class="data-highlight">8</span> (vs 3 in W1, <span class="data-highlight">+167%</span>)
+&bull; Blog articles published: 5 (new)
+&bull; Tools improved: 3
+&bull; <span class="bold">Revenue: still $0.00</span>
+
+<span class="bold">&#x{1F4DD; What happened in Week 2:</span>
+&bull; Wrote 5 blog articles (SEO-optimized)
+&bull; Fixed GitHub Actions deployment issue
+&bull; Added GA4 with consent mode v2
+&bull; Implemented structured data on all pages
+&bull; Analyzed Cloudflare security logs
+&bull; Still waiting on AdSense review
+
+<span class="bold">&#x{1F3AF; Week 3 Goals:</span>
+&bull; Continue building new tools (target: +3)
+&bull; Explore affiliate partnerships
+&bull; Set up a newsletter signup
+&bull; Start A/B testing tool page layouts
+
+<span class="bold">Two weeks in, the pattern is clear:</span> slow, steady growth. Not viral, not explosive. But <span class="bold">real</span>.
+
+<span class="hashtag">#100DaysToProfit</span> <span class="hashtag">#BuildInPublic</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">DG</div>
+        <div><div class="tweet-author">Darren | useeasytool.com</div><div class="tweet-handle">@darrenguo_dev</div></div>
+        <span class="tweet-badge badge-b">&#x63A8;&#x6587; B &middot; &#x5DE5;&#x5177;&#x5206;&#x4EAB;</span>
+      </div>
+      <div class="tweet-body"><span class="bold">Today's tool spotlight: Cron Expression Generator</span>
+
+Generate and explain cron expressions visually. Enter a human-readable description like "every Monday at 9 AM" and get the cron expression. Or enter a cron expression and get a plain English explanation.
+
+<span class="bold">Use case:</span> You need to set up a scheduled task on your server but can't remember if "0 9 * * 1" means Monday or Sunday. Paste it here and find out. Also supports complex schedules like "every 15 minutes on weekdays."
+
+<span class="bold">Try it free:</span> useeasytool.com/tools/cron-expression-generator
+<span class="bold">(no signup, no install)</span>
+
+<span class="hashtag">#DevTools</span> <span class="hashtag">#DevOps</span> <span class="hashtag">#FreeTool</span></div>
+      <div class="tweet-footer">
+        <div class="tweet-action">&#x{1F4AC; Reply</div>
+        <div class="tweet-action">&#x{1F504; Repost</div>
+        <div class="tweet-action">&#x2764; Like</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ============ 6. TWEET TEMPLATES ============ -->
+<div class="section" id="templates">
+  <h2 class="section-title">&#x63A8;&#x6587;&#x6A21;&#x677F; Tweet Templates</h2>
+  <p class="section-subtitle">Day 15-100 &#x7684;&#x901A;&#x7528;&#x6A21;&#x677F;&#xFF0C;&#x66FF;&#x6362; <span style="color:var(--blue);font-weight:600;">[&#x84DD;&#x8272;&#x6587;&#x5B57;]</span> &#x5373;&#x53EF;&#x4F7F;&#x7528;</p>
+
+  <div class="template-card">
+    <div class="template-header">&#x{1F527; &#x5DE5;&#x5177;&#x5206;&#x4EAB;&#x63A8;&#x6587;&#x6A21;&#x677F; Tool Share Template</div>
+    <div class="template-body">Today's tool spotlight: <span class="placeholder">[Tool Name]</span>
+
+<span class="placeholder">[One sentence describing the core function]</span>
+
+Use case: <span class="placeholder">[Specific scenario, e.g., "You just received an API response and need to format the JSON to read it. Paste it here, one click, done."]</span>
+
+Try it free: useeasytool.com/tools/<span class="placeholder">[tool-slug]</span> (no signup, no install)
+
+What's your go-to tool for <span class="placeholder">[related task]</span>? Drop it below. &#x{1F447;
+<span class="placeholder">[#DevTools #WebDev #FreeTool]</span></div>
+  </div>
+
+  <div class="template-card">
+    <div class="template-header">&#x{1F4CA; &#x8FDB;&#x5C55;&#x63A8;&#x6587;&#x6A21;&#x677F; Progress Update Template</div>
+    <div class="template-body">Day <span class="placeholder">[X]</span> of <span class="hashtag">#100DaysToProfit</span>
+
+<span class="placeholder">[Today's progress/event - what happened, what you built, what broke]</span>
+
+<span class="placeholder">[One specific lesson or thing you learned]</span>
+
+&#x{1F4CA; Traffic today: <span class="placeholder">[PV number]</span> | Revenue: $<span class="placeholder">[X.XX]</span>
+
+Thanks for following along. What should I build next? Reply with your idea.</div>
+  </div>
+
+  <div class="template-card">
+    <div class="template-header">&#x{1F3AF; &#x5931;&#x8D25;&#x5206;&#x4EAB;&#x6A21;&#x677F; Failure Story Template</div>
+    <div class="template-body">Something went wrong today. Here's the honest truth:
+
+<span class="placeholder">[What happened - the failure, error, or setback]</span>
+
+&#x{1F4A5; The error: <span class="placeholder">[Specific error message or description]</span>
+
+<span class="placeholder">[Root cause analysis - why it happened]</span>
+
+<span class="placeholder">[How I fixed it - the steps taken]</span>
+
+&#x{1F4AF; Lesson learned: <span class="placeholder">[What I'll do differently next time]</span>
+
+<span class="placeholder">[Current status - is it fixed? still working on it?]</span>
+
+<span class="hashtag">#100DaysToProfit</span> <span class="hashtag">#BuildInPublic</span></div>
+  </div>
+
+  <div class="template-card">
+    <div class="template-header">&#x{1F680; &#x65B0;&#x5DE5;&#x5177;&#x4E0A;&#x7EBF;&#x6A21;&#x677F; New Tool Launch Template</div>
+    <div class="template-body">&#x{1F680; New tool just went live: <span class="placeholder">[Tool Name]</span>
+
+<span class="placeholder">[What the tool does in 1-2 sentences]</span>
+
+Why I built it: <span class="placeholder">[The personal reason or user request that triggered this]</span>
+
+&#x{1F3B5; Fun fact: <span class="placeholder">[Something interesting about the development process or the tool itself]</span>
+
+Try it: useeasytool.com/tools/<span class="placeholder">[tool-slug]</span>
+
+This is tool #<span class="placeholder">[N]</span> of 60+. <span class="placeholder">[What's next?]</span>
+<span class="hashtag">#100DaysToProfit</span> <span class="hashtag">#BuildInPublic</span></div>
+  </div>
+
+  <div class="template-card">
+    <div class="template-header">&#x{1F4AC; &#x793E;&#x533A;&#x4E92;&#x52A8;&#x6A21;&#x677F; Community Engagement Template</div>
+    <div class="template-body"><span class="placeholder">[Question or topic - e.g., "What's the ONE developer tool you can't live without?"]</span>
+
+I'll go first: <span class="placeholder">[Your answer and brief reason]</span>
+
+Drop yours below &#x{1F447; I'll read every single reply and maybe build the most requested feature.
+
+(<span class="placeholder">[Optional context about what you're building]</span>)
+
+<span class="hashtag">#DevTools</span> <span class="hashtag">#WebDev</span></div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ============ 7. WEEKLY REPORT TEMPLATE ============ -->
+<div class="section" id="weekly-report">
+  <h2 class="section-title">&#x6BCF;&#x5468;&#x6570;&#x636E;&#x62A5;&#x544A;&#x6A21;&#x677F; Weekly Report Template</h2>
+  <p class="section-subtitle">&#x6BCF;&#x5468;&#x65E5;&#xFF08;&#x5EFA;&#x8BAE;&#x5468;&#x65E5;&#xFF09;&#x53D1;&#x5E03;&#xFF0C;&#x56DE;&#x987E;&#x672C;&#x5468;&#x6570;&#x636E;</p>
+
+  <div class="template-card">
+    <div class="template-header">&#x{1F4C5; &#x5468;&#x62A5;&#x544A;&#x6A21;&#x677F; Weekly Summary Template</div>
+    <div class="template-body"><span class="bold">Week <span class="placeholder">[N]</span> of <span class="hashtag">#100DaysToProfit</span> wrapped. &#x{1F3C1;</span>
+
+<span class="bold">&#x{1F4C8; Week <span class="placeholder">[N]</span> vs Week <span class="placeholder">[N-1]</span>:</span>
+&bull; Pageviews: ~<span class="placeholder">[N]</span> (vs <span class="placeholder">[N]</span> in W<span class="placeholder">[N-1]</span>, <span class="data-highlight">[+X% / -X%]</span>)
+&bull; Daily average: ~<span class="placeholder">[N]</span> PV
+&bull; New followers: <span class="placeholder">[N]</span>
+&bull; <span class="bold">Revenue: $<span class="placeholder">[X.XX]</span></span>
+
+<span class="bold">&#x{1F4DD; What happened this week:</span>
+&bull; <span class="placeholder">[Achievement 1 - e.g., "Published 3 new blog articles"]</span>
+&bull; <span class="placeholder">[Achievement 2 - e.g., "Added 2 new tools"]</span>
+&bull; <span class="placeholder">[Achievement 3 - e.g., "Fixed X bugs"]</span>
+&bull; <span class="placeholder">[Setback if any - e.g., "AdSense still under review"]</span>
+
+<span class="bold">&#x{1F3AF; Next week's goals:</span>
+&bull; <span class="placeholder">[Goal 1]</span>
+&bull; <span class="placeholder">[Goal 2]</span>
+&bull; <span class="placeholder">[Goal 3]</span>
+
+<span class="bold">&#x{1F4AC; Key insight this week:</span>
+<span class="placeholder">[One thing you learned that others might find valuable]</span>
+
+<span class="hashtag">#100DaysToProfit</span> <span class="hashtag">#BuildInPublic</span></div>
+  </div>
+
+  <div style="margin-top:16px;padding:16px 20px;background:var(--blue-light);border-radius:12px;border:1px solid rgba(59,91,255,0.2);">
+    <strong style="color:var(--blue);font-size:14px;">&#x5468;&#x62A5;&#x544A;&#x53D1;&#x5E03;&#x65F6;&#x95F4;&#x5EFA;&#x8BAE;&#xFF1A;</strong>
+    <ul style="margin-top:8px;font-size:13px;color:var(--gray-700);line-height:1.8;padding-left:18px;">
+      <li>&#x5468;&#x65E5; UTC 20:00 &#x53D1;&#x5E03;&#xFF08;&#x5373;&#x5317;&#x4EAC;&#x65F6;&#x95F4;&#x51CC;&#x6668; 4:00&#xFF0C;&#x7F8E;&#x4E1C;&#x65F6;&#x95F4;&#x4E0B;&#x5348; 4:00&#xFF09;</li>
+      <li>&#x914D;&#x56FE;&#x5EFA;&#x8BAE;&#xFF1A;GA4 &#x622A;&#x56FE;&#x6216;&#x6570;&#x636E;&#x5BF9;&#x6BD4;&#x56FE;</li>
+      <li>&#x6BCF;&#x5468;&#x4E00;&#x5B9A;&#x8981;&#x6709;&#x6570;&#x636E;&#x5BF9;&#x6BD4;&#xFF0C;&#x5C55;&#x793A;&#x589E;&#x957F;&#x6216;&#x4E0B;&#x964D;</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ============ 8. MILESTONES ============ -->
+<div class="section" id="milestones">
+  <h2 class="section-title">&#x91CC;&#x7A0B;&#x7891;&#x63A8;&#x6587; Milestone Tweets</h2>
+  <p class="section-subtitle">&#x5173;&#x952E;&#x8282;&#x70B9;&#x7684;&#x5E86;&#x795D;&#x63A8;&#x6587;&#xFF0C;&#x5728;&#x5B9E;&#x9645;&#x8FBE;&#x6210;&#x65F6;&#x53D1;&#x5E03;</p>
+
+  <div class="milestone-list">
+
+    <div class="milestone-item">
+      <div class="milestone-marker blue">&#x{1F1E8;&#x1F1F3;</div>
+      <div class="milestone-content">
+        <div class="milestone-day">Day 1 &mdash; &#x542F;&#x52A8;</div>
+        <h4>&#x5BA3;&#x8A00;&#x63A8;&#x6587; The Launch</h4>
+        <p>&#x6B63;&#x5F0F;&#x53D1;&#x5E03;&#x5BA3;&#x8A00;&#xFF0C;&#x5F00;&#x59CB; 100 &#x5929;&#x6311;&#x6218;&#x3002;Pin &#x5230;&#x4E2A;&#x4EBA;&#x4E3B;&#x9875;&#x3002;</p>
+      </div>
+    </div>
+
+    <div class="milestone-item">
+      <div class="milestone-marker green">&#x{1F4B0;</div>
+      <div class="milestone-content">
+        <div class="milestone-day">&#x5F85;&#x5B9A; &mdash; &#x7B2C;&#x4E00;&#x7B14;&#x6536;&#x5165;</div>
+        <h4>First Dollar Earned &#x7B2C;&#x4E00;&#x7F8E;&#x5143;</h4>
+        <p>"&#x521A;&#x6536;&#x5230;&#x4E86;&#x7B2C;&#x4E00;&#x7B14;&#x6536;&#x5165;&#xFF01;$X.XX&#x3002;&#x867D;&#x7136;&#x5F88;&#x5C0F;&#xFF0C;&#x4F46;&#x8FD9;&#x8BC1;&#x660E;&#x4E86;&#x6A21;&#x578B;&#x662F;&#x884C;&#x5F97;&#x901A;&#x7684;&#x3002;&#x613F;&#x610F;&#x4E3A;&#x4E00;&#x4E2A;&#x5DE5;&#x5177;&#x4ED8;&#x8D39;&#x7684;&#x7B2C;&#x4E00;&#x4E2A;&#x7528;&#x6237;&#xFF0C;&#x4F60;&#x662F;&#x6211;&#x7684;&#x82F1;&#x96C4;&#x3002; #100DaysToProfit"</p>
+      </div>
+    </div>
+
+    <div class="milestone-item">
+      <div class="milestone-marker blue">&#x{1F4C8;</div>
+      <div class="milestone-content">
+        <div class="milestone-day">Day 30 &mdash; &#x4E00;&#x4E2A;&#x6708;</div>
+        <h4>One Month Milestone &#x4E00;&#x4E2A;&#x6708;&#x91CC;&#x7A0B;&#x7891;</h4>
+        <p>&#x56DE;&#x987E;&#x7B2C;&#x4E00;&#x4E2A;&#x6708;&#x7684;&#x6240;&#x6709;&#x6570;&#x636E;&#x3001;&#x6210;&#x957F;&#x548C;&#x6559;&#x8BAD;&#x3002;&#x5305;&#x542B;&#x8BE6;&#x7EC6;&#x7684;&#x6570;&#x636E;&#x5BF9;&#x6BD4;&#x56FE;&#x3002;</p>
+      </div>
+    </div>
+
+    <div class="milestone-item">
+      <div class="milestone-marker orange">&#x{1F4AF;</div>
+      <div class="milestone-content">
+        <div class="milestone-day">&#x5F85;&#x5B9A; &mdash; 100 &#x5173;&#x6CE8;</div>
+        <h4>100 Followers &#x7B2C;100 &#x4E2A;&#x5173;&#x6CE8;&#x8005;</h4>
+        <p>"100 &#x4E2A;&#x4EBA;&#x613F;&#x610F;&#x770B;&#x6211;&#x6BCF;&#x5929;&#x5206;&#x4EAB;&#x6211;&#x7684;&#x6545;&#x4E8B;&#x3002;&#x4F5C;&#x4E3A;&#x4E00;&#x4E2A;&#x4E2D;&#x6587;&#x662F;&#x6BCD;&#x8BED;&#x7684;&#x5F00;&#x53D1;&#x8005;&#xFF0C;&#x8FD9;&#x610F;&#x5473;&#x7740;&#x6211;&#x7684;&#x5185;&#x5BB9;&#x6709;&#x4EF7;&#x503C;&#x3002;&#x611F;&#x8C22;&#x6BCF;&#x4E00;&#x4E2A;&#x4F60;&#x3002; #100DaysToProfit"</p>
+      </div>
+    </div>
+
+    <div class="milestone-item">
+      <div class="milestone-marker purple">&#x{1F3C6;</div>
+      <div class="milestone-content">
+        <div class="milestone-day">&#x5F85;&#x5B9A; &mdash; AdSense &#x901A;&#x8FC7;</div>
+        <h4>AdSense Approved &#x5E7F;&#x544A;&#x5BA1;&#x6838;&#x901A;&#x8FC7;</h4>
+        <p>"&#x7B2C;&#x4E8C;&#x6B21;&#x7533;&#x8BF7;&#x7EC8;&#x4E8E;&#x901A;&#x8FC7;&#x4E86;&#xFF01;Google AdSense &#x6279;&#x51C6;&#x4E86;&#x6211;&#x7684;&#x7F51;&#x7AD9;&#x3002;&#x88AB;&#x62D2;&#x4E00;&#x6B21;&#xFF0C;&#x4FEE;&#x6539;&#x4E24;&#x5468;&#xFF0C;&#x7B2C;&#x4E8C;&#x6B21;&#x7533;&#x8BF7;&#x6210;&#x529F;&#x3002;&#x575A;&#x6301;&#x4E0D;&#x653E;&#x5F03;&#x3002; #100DaysToProfit"</p>
+      </div>
+    </div>
+
+    <div class="milestone-item">
+      <div class="milestone-marker green">&#x{1F4B0;</div>
+      <div class="milestone-content">
+        <div class="milestone-day">Day 100 &mdash; &#x7EC8;&#x70B9;</div>
+        <h4>Day 100 Final Report &#x7EC8;&#x6781;&#x62A5;&#x544A;</h4>
+        <p>&#x5B8C;&#x6574;&#x7684;100 &#x5929;&#x603B;&#x7ED3;&#xFF1A;&#x4ECE; $0 &#x5230;&#x5B9E;&#x9645;&#x6536;&#x5165;&#xFF0C;&#x6240;&#x6709;&#x6570;&#x636E;&#x3001;&#x6559;&#x8BAD;&#x548C;&#x4E0B;&#x4E00;&#x6B65;&#x8BA1;&#x5212;&#x3002;</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ============ 9. CONTENT CALENDAR ============ -->
+<div class="section" id="calendar">
+  <h2 class="section-title">&#x5185;&#x5BB9;&#x65E5;&#x5386; Content Calendar</h2>
+  <p class="section-subtitle">&#x5468;&#x4E00;&#x5230;&#x5468;&#x65E5;&#x7684;&#x4E3B;&#x9898;&#x5B89;&#x6392;&#xFF0C;&#x5F62;&#x6210;&#x53EF;&#x9884;&#x6D4B;&#x7684;&#x5185;&#x5BB9;&#x8282;&#x594F;</p>
+
+  <div class="calendar-grid">
+    <div class="calendar-header-cell">Monday</div>
+    <div class="calendar-header-cell">Tuesday</div>
+    <div class="calendar-header-cell">Wednesday</div>
+    <div class="calendar-header-cell">Thursday</div>
+    <div class="calendar-header-cell">Friday</div>
+    <div class="calendar-header-cell">Saturday</div>
+    <div class="calendar-header-cell">Sunday</div>
+
+    <div class="calendar-cell">
+      <div class="day-label">&#x5468;&#x4E00; Mon</div>
+      <div class="theme"><span class="tag tag-green" style="font-size:10px;padding:2px 8px;">&#x6570;&#x636E; Data</span><br>&#x63A8;&#x6587; A: &#x4E0A;&#x5468;&#x6570;&#x636E;&#x56DE;&#x987E;&#xFF08;&#x5982;&#x5468;&#x65E5;&#x6CA1;&#x53D1;&#xFF09;<br>&#x63A8;&#x6587; B: &#x5DE5;&#x5177;&#x5206;&#x4EAB;</div>
+    </div>
+
+    <div class="calendar-cell">
+      <div class="day-label">&#x5468;&#x4E8C; Tue</div>
+      <div class="theme"><span class="tag tag-blue" style="font-size:10px;padding:2px 8px;">&#x6280;&#x672F; Tech</span><br>&#x63A8;&#x6587; A: &#x6280;&#x672F;&#x5B66;&#x4E60;&#x6216; AI &#x5F00;&#x53D1;&#x7ECF;&#x9A8C;<br>&#x63A8;&#x6587; B: &#x5DE5;&#x5177;&#x5206;&#x4EAB;</div>
+    </div>
+
+    <div class="calendar-cell">
+      <div class="day-label">&#x5468;&#x4E09; Wed</div>
+      <div class="theme"><span class="tag tag-orange" style="font-size:10px;padding:2px 8px;">&#x8FDB;&#x5C55; Progress</span><br>&#x63A8;&#x6587; A: &#x9879;&#x76EE;&#x8FDB;&#x5C55;&#x3001;&#x65B0;&#x529F;&#x80FD;&#x3001;Bug<br>&#x63A8;&#x6587; B: &#x5DE5;&#x5177;&#x5206;&#x4EAB;</div>
+    </div>
+
+    <div class="calendar-cell">
+      <div class="day-label">&#x5468;&#x56DB; Thu</div>
+      <div class="theme"><span class="tag tag-purple" style="font-size:10px;padding:2px 8px;">&#x6545;&#x4E8B; Story</span><br>&#x63A8;&#x6587; A: &#x4E2A;&#x4EBA;&#x6545;&#x4E8B;&#x6216; &#x5931;&#x8D25;&#x5206;&#x4EAB;<br>&#x63A8;&#x6587; B: &#x5DE5;&#x5177;&#x5206;&#x4EAB;</div>
+    </div>
+
+    <div class="calendar-cell">
+      <div class="day-label">&#x5468;&#x4E94; Fri</div>
+      <div class="theme"><span class="tag tag-red" style="font-size:10px;padding:2px 8px;">&#x793E;&#x533A; Community</span><br>&#x63A8;&#x6587; A: &#x793E;&#x533A;&#x4E92;&#x52A8;&#x3001;&#x6295;&#x7968;<br>&#x63A8;&#x6587; B: &#x5DE5;&#x5177;&#x5206;&#x4EAB;</div>
+    </div>
+
+    <div class="calendar-cell weekend">
+      <div class="day-label">&#x5468;&#x516D; Sat</div>
+      <div class="theme"><span class="tag tag-yellow" style="font-size:10px;padding:2px 8px;">&#x8F7B;&#x677E; Light</span><br>&#x63A8;&#x6587; A: &#x5468;&#x672B;&#x53CD;&#x601D;&#x6216; &#x8F7B;&#x677E;&#x5185;&#x5BB9;<br>&#x63A8;&#x6587; B: &#x5DE5;&#x5177;&#x5206;&#x4EAB;</div>
+    </div>
+
+    <div class="calendar-cell weekend highlight">
+      <div class="day-label">&#x5468;&#x65E5; Sun</div>
+      <div class="theme"><span class="tag tag-blue" style="font-size:10px;padding:2px 8px;">&#x603B;&#x7ED3; Summary</span><br>&#x63A8;&#x6587; A: &#x5468;&#x6570;&#x636E;&#x62A5;&#x544A;<br>&#x63A8;&#x6587; B: &#x5DE5;&#x5177;&#x5206;&#x4EAB;</div>
+    </div>
+  </div>
+
+  <div style="margin-top:20px;padding:16px 20px;background:var(--gray-50);border-radius:12px;border:1px solid var(--gray-200);">
+    <strong style="font-size:14px;color:var(--gray-700);">&#x53D1;&#x5E03;&#x65F6;&#x95F4;&#x5EFA;&#x8BAE;&#xFF1A;</strong>
+    <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px;color:var(--gray-600);">
+      <div>&#x63A8;&#x6587; A&#xFF1A;&#x7F8E;&#x4E1C;&#x65F6;&#x95F4; 9:00-11:00 AM&#xFF08;&#x5317;&#x4EAC;&#x65F6;&#x95F4; 21:00-23:00&#xFF09;</div>
+      <div>&#x63A8;&#x6587; B&#xFF1A;&#x7F8E;&#x4E1C;&#x65F6;&#x95F4; 1:00-3:00 PM&#xFF08;&#x5317;&#x4EAC;&#x65F6;&#x95F4; 1:00-3:00 AM&#xFF09;</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ============ 10. TIPS & BEST PRACTICES ============ -->
+<div class="section" id="tips">
+  <h2 class="section-title">&#x6CE8;&#x610F;&#x4E8B;&#x9879;&#x4E0E;&#x6700;&#x4F73;&#x5B9E;&#x8DF5; Tips &amp; Best Practices</h2>
+  <p class="section-subtitle">100 &#x5929;&#x63A8;&#x5E7F;&#x8BA1;&#x5212;&#x7684;&#x6210;&#x529F;&#x5173;&#x952E;</p>
+
+  <div class="tips-grid">
+
+    <div class="tip-card">
+      <span class="icon">&#x{1F4CB;</span>
+      <h4>&#x4FDD;&#x6301;&#x4E00;&#x81F4;&#x6027; Stay Consistent</h4>
+      <p>&#x6BCF;&#x5929;&#x51C6;&#x65F6;&#x53D1;&#x5E03; 2 &#x6761;&#x63A8;&#x6587;&#xFF0C;&#x4E0D;&#x8981;&#x65AD;&#x66F4;&#x3002;&#x5982;&#x679C;&#x5F53;&#x5929;&#x5B9E;&#x5728;&#x6CA1;&#x65F6;&#x95F4;&#xFF0C;&#x53EF;&#x4EE5;&#x63D0;&#x524D;&#x5199;&#x597D;&#x5B58;&#x5728;&#x8349;&#x7A3F;&#x7BB1;&#x91CC;&#x3002;</p>
+    </div>
+
+    <div class="tip-card">
+      <span class="icon">&#x{1F4CA;</span>
+      <h4>&#x6570;&#x636E;&#x8981;&#x771F;&#x5B9E; Real Data Only</h4>
+      <p>&#x5206;&#x4EAB;&#x771F;&#x5B9E;&#x7684;&#x6570;&#x5B57;&#xFF0C;&#x5305;&#x62EC; $0 &#x6536;&#x5165;&#x3002;&#x8BDA;&#x5B9E;&#x662F; Build In Public &#x7684;&#x6838;&#x5FC3;&#xFF0C;&#x4E5F;&#x662F;&#x5438;&#x5F15;&#x771F;&#x5B9E;&#x7C89;&#x4E1D;&#x7684;&#x5173;&#x952E;&#x3002;</p>
+    </div>
+
+    <div class="tip-card">
+      <span class="icon">&#x{1F4A1;</span>
+      <h4>&#x6BCF;&#x6761;&#x63A8;&#x6587;&#x90FD;&#x8981;&#x6709;&#x4EF7;&#x503C; Provide Value</h4>
+      <p>&#x5DE5;&#x5177;&#x5206;&#x4EAB;&#x8981;&#x914D;&#x5177;&#x4F53;&#x573A;&#x666F;&#xFF0C;&#x4E0D;&#x662F;&#x5355;&#x7EAF;&#x6253;&#x5E7F;&#x544A;&#x3002;&#x8BA9;&#x8BFB;&#x8005;&#x89C9;&#x5F97;&#x201C;&#x8FD9;&#x4E2A;&#x5DE5;&#x5177;&#x5BF9;&#x6211;&#x6709;&#x7528;&#x201D;&#x3002;</p>
+    </div>
+
+    <div class="tip-card">
+      <span class="icon">&#x{1F504;</span>
+      <h4>&#x65CB;&#x5F8B;&#x56FA;&#x5B9A;&#xFF0C;&#x4F46;&#x4E0D;&#x523B;&#x677F; Consistent Format, Flexible Content</h4>
+      <p>&#x63A8;&#x6587; A &#x548C; B &#x7684;&#x5F62;&#x5F0F;&#x56FA;&#x5B9A;&#xFF0C;&#x4F46;&#x5185;&#x5BB9;&#x8981;&#x6839;&#x636E;&#x5B9E;&#x9645;&#x60C5;&#x51B5;&#x8C03;&#x6574;&#x3002;&#x4E0D;&#x8981;&#x53D1;&#x5E03;&#x4E0E;&#x73B0;&#x5B9E;&#x4E0D;&#x7B26;&#x7684;&#x201C;&#x7F16;&#x9020;&#x201D;&#x5185;&#x5BB9;&#x3002;</p>
+    </div>
+
+    <div class="tip-card">
+      <span class="icon">&#x{1F4AC;</span>
+      <h4>&#x79EF;&#x6781;&#x4E92;&#x52A8; Engage Back</h4>
+      <p>&#x56DE;&#x590D;&#x6BCF;&#x4E00;&#x6761;&#x8BC4;&#x8BBA;&#xFF0C;&#x5C24;&#x5176;&#x662F;&#x524D; 100 &#x5929;&#x3002;&#x4E3B;&#x52A8;&#x8BC4;&#x8BBA;&#x540C;&#x7C7B;&#x5185;&#x5BB9;&#x521B;&#x4F5C;&#x8005;&#x7684;&#x63A8;&#x6587;&#xFF0C;&#x5EFA;&#x7ACB;&#x5173;&#x7CFB;&#x3002;</p>
+    </div>
+
+    <div class="tip-card">
+      <span class="icon">&#x{1F3A8;</span>
+      <h4>&#x5173;&#x6CE8;&#x8D28;&#x91CF;&#xFF0C;&#x800C;&#x975E;&#x6570;&#x91CF; Quality Over Quantity</h4>
+      <p>2 &#x6761;&#x7CBE;&#x5FC3;&#x5199;&#x7684;&#x63A8;&#x6587; &gt; 10 &#x6761;&#x7C97;&#x7CD9;&#x7684;&#x3002;&#x6BCF;&#x6761;&#x63A8;&#x6587;&#x90FD;&#x8981;&#x53CD;&#x590D;&#x6253;&#x78E8;&#xFF0C;&#x786E;&#x4FDD;&#x6CA1;&#x6709;&#x9519;&#x522B;&#x5B57;&#x548C;&#x8BED;&#x6CD5;&#x95EE;&#x9898;&#x3002;</p>
+    </div>
+
+    <div class="tip-card">
+      <span class="icon">&#x{1F4C8;</span>
+      <h4>&#x5584;&#x7528;&#x7EBF;&#x7A0B; Use Threads</h4>
+      <p>&#x590D;&#x6742;&#x7684;&#x6280;&#x672F;&#x5206;&#x4EAB;&#x6216;&#x6559;&#x7A0B;&#x7C7B;&#x5185;&#x5BB9;&#x53EF;&#x4EE5;&#x7528; Thread &#x5F62;&#x5F0F;&#xFF0C;&#x66F4;&#x5BB9;&#x6613;&#x88AB;&#x8F6C;&#x53D1;&#x548C;&#x6536;&#x85CF;&#x3002;</p>
+    </div>
+
+    <div class="tip-card">
+      <span class="icon">&#x{1F3AF;</span>
+      <h4>&#x5173;&#x6CE8; &#x6307;&#x6807;&#xFF0C;&#x4E0D;&#x662F;&#x7C89;&#x4E1D;&#x6570; Track Metrics</h4>
+      <p>&#x5173;&#x6CE8;&#x63A8;&#x6587;&#x5BFC;&#x6D41;&#x5230;&#x7F51;&#x7AD9;&#x7684;&#x8F6C;&#x5316;&#x7387;&#xFF0C;&#x800C;&#x4E0D;&#x662F;&#x7C89;&#x4E1D;&#x6570;&#x3002;100 &#x4E2A;&#x771F;&#x5B9E;&#x7528;&#x6237; &gt; 10000 &#x4E2A;&#x65E0;&#x5173;&#x6CE8;&#x7684;&#x7C89;&#x4E1D;&#x3002;</p>
+    </div>
+
+    <div class="tip-card full-width">
+      <span class="icon">&#x{26A0;&#xFE0F;</span>
+      <h4>&#x907F;&#x514D;&#x7684;&#x5730;&#x96F7; Things to Avoid</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:10px;">
+        <div style="font-size:13px;color:var(--gray-600);">
+          &#x274C; &#x4E0D;&#x8981;&#x4E70;&#x7C89;&#x4E1D;&#xFF0C;&#x514D;&#x8D39;&#x5BFC;&#x81F4;&#x53F7;&#x88AB;&#x9650;&#x5236;<br>
+          &#x274C; &#x4E0D;&#x8981;&#x8FC7;&#x591A; hashtag&#xFF08;&#x6BCF;&#x6761;&#x4E0D;&#x8D85;&#x8FC7; 4 &#x4E2A;&#xFF09;<br>
+          &#x274C; &#x4E0D;&#x8981;&#x53EA;&#x8BF4;&#x597D;&#x7684;&#xFF0C;&#x5206;&#x4EAB;&#x5931;&#x8D25;&#x66F4;&#x6709;&#x5438;&#x5F15;&#x529B;
+        </div>
+        <div style="font-size:13px;color:var(--gray-600);">
+          &#x274C; &#x4E0D;&#x8981;&#x5728;&#x63A8;&#x6587;&#x4E2D;&#x4F7F;&#x7528; "free" &#x8FC7;&#x591A;&#xFF0C;&#x663E;&#x5F97;&#x4F4E;&#x4EF7&#x503C;<br>
+          &#x274C; &#x4E0D;&#x8981;&#x590D;&#x5236;&#x7C98;&#x8D34;&#x522B;&#x4EBA;&#x7684;&#x63A8;&#x6587;&#x683C;&#x5F0F;<br>
+          &#x274C; &#x4E0D;&#x8981;&#x5728;&#x4E00;&#x6761;&#x63A8;&#x6587;&#x4E2D;&#x63D0;&#x5230;&#x592A;&#x591A;&#x5DE5;&#x5177;
+        </div>
+        <div style="font-size:13px;color:var(--gray-600);">
+          &#x274C; &#x4E0D;&#x8981;&#x5FFD;&#x89C6;&#x8BC4;&#x8BBA;&#x533A;&#xFF0C;&#x793E;&#x533A;&#x4E92;&#x52A8;&#x5F88;&#x91CD;&#x8981;<br>
+          &#x274C; &#x4E0D;&#x8981;&#x5728;&#x6CA1;&#x6709;&#x65B0;&#x5185;&#x5BB9;&#x65F6;&#x786C;&#x53D1;<br>
+          &#x274C; &#x4E0D;&#x8981;&#x53EA;&#x94FE;&#x63A5;&#x5230;&#x7F51;&#x7AD9;&#x9996;&#x9875;&#xFF0C;&#x94FE;&#x63A5;&#x5230;&#x5177;&#x4F53;&#x5DE5;&#x5177;&#x9875;
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-card full-width">
+      <span class="icon">&#x{1F4C5;</span>
+      <h4>&#x53D1;&#x5E03;&#x65F6;&#x95F4;&#x7B56;&#x7565; Posting Time Strategy</h4>
+      <div style="margin-top:10px;font-size:13px;color:var(--gray-600);line-height:1.8;">
+        &#x4F60;&#x7684;&#x76EE;&#x6807;&#x53D7;&#x4F17;&#x4E3B;&#x8981;&#x5728;&#x7F8E;&#x56FD;&#xFF0C;&#x6240;&#x4EE5;&#x9700;&#x8981;&#x6309;&#x7167;&#x7F8E;&#x56FD;&#x4E1C;&#x90E8;&#x65F6;&#x95F4;&#x53D1;&#x5E03;&#xFF1A;
+      </div>
+      <table class="strategy-table" style="margin-top:12px;">
+        <thead>
+          <tr>
+            <th>&#x63A8;&#x6587;</th>
+            <th>&#x7F8E;&#x4E1C;&#x65F6;&#x95F4; EST</th>
+            <th>&#x5317;&#x4EAC;&#x65F6;&#x95F4; CST</th>
+            <th>&#x8BF4;&#x660E;</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>&#x63A8;&#x6587; A</strong></td>
+            <td>9:00 - 10:00 AM</td>
+            <td>21:00 - 22:00</td>
+            <td>&#x5DE5;&#x4F5C;&#x65E5;&#x4E0A;&#x73ED;&#x65F6;&#x95F4;&#x5F00;&#x59CB;</td>
+          </tr>
+          <tr>
+            <td><strong>&#x63A8;&#x6587; B</strong></td>
+            <td>1:00 - 2:00 PM</td>
+            <td>1:00 - 2:00 AM (+1)</td>
+            <td>&#x5348&#x4F11;&#x65F6;&#x95F4;&#xFF0C;&#x4F60;&#x9700;&#x8981;&#x665A;&#x4E0A;&#x7F16;&#x7801;&#x540E;&#x53D1;&#x5E03;</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ============ CLOSING ============ -->
+<div class="section" style="text-align:center;padding:40px 20px;">
+  <h2 style="font-size:32px;font-weight:800;color:var(--gray-900);margin-bottom:12px;">&#x51C6;&#x5907;&#x5C31;&#x7EEA;&#xFF0C;&#x5F00;&#x59CB;&#x884C;&#x52A8;</h2>
+  <p style="font-size:16px;color:var(--gray-500);margin-bottom:24px;">100 &#x5929;&#xFF0C;200+ &#x6761;&#x63A8;&#x6587;&#xFF0C;&#x4E00;&#x4E2A;&#x4E2D;&#x56FD;&#x5DE5;&#x7A0B;&#x5E08;&#x7684;&#x76C8;&#x5229;&#x4E4B;&#x65C5;</p>
+  <div style="display:inline-block;padding:14px 32px;background:var(--blue);color:white;border-radius:12px;font-size:15px;font-weight:600;">useeasytool.com &middot; #100DaysToProfit</div>
+  <p style="margin-top:24px;font-size:13px;color:var(--gray-400);">Built by Darren Guo in Shenzhen, China</p>
+</div>
+
+</div><!-- /container -->
+
+<div class="footer">
+  <p>UseEasyTool 100-Day X Promotion Plan &middot; Created <span style="color:var(--gray-500);">2025</span> &middot; <a href="https://useeasytool.com">useeasytool.com</a></p>
+</div>
+
+</body>
+</html>
