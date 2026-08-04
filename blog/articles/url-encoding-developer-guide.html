@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Encoding and Decoding: What Every Developer Needs to Know - UseEasyTool Blog</title>
+  <meta name="description" content="Master URL encoding and decoding. Learn percent encoding rules, common pitfalls, and use our free online URL encoder/decoder tool.">
+  <meta name="keywords" content="url encode online, url decoder tool, percent encoding, url encoding guide, free url encoder decoder">
+  <meta name="author" content="UseEasyTool Team">
+  <meta name="robots" content="index, follow">
+
+  <!-- Bilingual Metadata -->
+  <meta name="titleZh" content="URL 编码解码：每个开发者都需要知道的">
+  <meta name="excerptZh" content="掌握 URL 编码与解码，了解百分比编码规则、常见陷阱，并使用我们的免费在线 URL 编解码工具">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="URL Encoding and Decoding: What Every Developer Needs to Know - UseEasyTool Blog">
+  <meta property="og:description" content="Master URL encoding and decoding. Learn percent encoding rules, common pitfalls, and use our free online URL encoder/decoder tool.">
+  <meta property="og:url" content="https://useeasytool.com/blog/articles/url-encoding-developer-guide.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta property="article:published_time" content="2026-07-28">
+  <meta property="article:tag" content="url-encoding">
+  <meta property="article:tag" content="converter">
+  <meta property="article:tag" content="developer-tools">
+  <meta property="article:tag" content="security">
+  <meta property="article:tag" content="tutorial">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="URL Encoding and Decoding: What Every Developer Needs to Know - UseEasyTool Blog">
+  <meta name="twitter:description" content="Master URL encoding and decoding. Learn percent encoding rules, common pitfalls, and use our free online URL encoder/decoder tool.">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "URL Encoding and Decoding: What Every Developer Needs to Know",
+    "description": "Master URL encoding and decoding. Learn percent encoding rules, common pitfalls, and use our free online URL encoder/decoder tool.",
+    "image": "https://useeasytool.com/assets/images/blog/url-encoding-developer-guide.jpg",
+    "datePublished": "2026-07-28",
+    "dateModified": "2026-07-28",
+    "author": {
+      "@type": "Organization",
+      "name": "UseEasyTool Team"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "UseEasyTool",
+      "url": "https://useeasytool.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://useeasytool.com/assets/images/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://useeasytool.com/blog/articles/url-encoding-developer-guide.html"
+    },
+    "keywords": ["url-encoding", "converter", "developer-tools", "security", "tutorial"]
+  }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="../assets/css/blog.css">
+</head>
+<body>
+
+  <!-- ========== Navigation ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo">
+        <i data-lucide="UseEasyTool"></i>
+        <span>UseEasyTool</span>
+      </a>
+
+      <div class="navbar-search">
+        <i data-lucide="search"></i>
+        <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+      </div>
+
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language">
+          <span class="lang-label">EN</span>
+        </button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="theme-icon-light"></i>
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+        </button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== Main Layout ========== -->
+  <div class="main-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3 data-i18n="sidebar_categories">Categories</h3>
+      </div>
+      <ul class="sidebar-list">
+        <li>
+          <a href="../index.html" class="sidebar-item" data-category="all">
+            <i data-lucide="layout-grid"></i>
+            <span data-i18n="cat_all">All Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=converters" class="sidebar-item" data-category="converters">
+            <i data-lucide="repeat"></i>
+            <span data-i18n="cat_converters">Converters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=calculators" class="sidebar-item" data-category="calculators">
+            <i data-lucide="calculator"></i>
+            <span data-i18n="cat_calculators">Calculators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=image-tools" class="sidebar-item" data-category="image-tools">
+            <i data-lucide="image"></i>
+            <span data-i18n="cat_image_tools">Image Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=generators" class="sidebar-item" data-category="generators">
+            <i data-lucide="sparkles"></i>
+            <span data-i18n="cat_generators">Generators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=formatters" class="sidebar-item" data-category="formatters">
+            <i data-lucide="braces"></i>
+            <span data-i18n="cat_formatters">Formatters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=crypto" class="sidebar-item" data-category="crypto">
+            <i data-lucide="shield"></i>
+            <span data-i18n="cat_crypto">Encryption</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=charts" class="sidebar-item" data-category="charts">
+            <i data-lucide="bar-chart-3"></i>
+            <span data-i18n="cat_charts">Charts</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=testing" class="sidebar-item" data-category="testing">
+            <i data-lucide="flask-conical"></i>
+            <span data-i18n="cat_testing">Testing</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="article-detail">
+
+        <!-- Article Hero -->
+        <header class="article-hero">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="../index.html">Home</a>
+            <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+            <a href="index.html">Blog</a>
+            <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+            <span class="breadcrumb-current">URL Encoding and Decoding: What Every Developer Needs to Know</span>
+          </nav>
+
+          <div class="article-hero__tags">
+            <span class="blog-tag">url-encoding</span>
+            <span class="blog-tag">converter</span>
+            <span class="blog-tag">developer-tools</span>
+            <span class="blog-tag">security</span>
+            <span class="blog-tag">tutorial</span>
+          </div>
+
+          <h1 class="article-hero__title">URL Encoding and Decoding: What Every Developer Needs to Know</h1>
+
+          <div class="article-hero__meta">
+            <div class="article-hero__author">
+              <div class="article-hero__author-avatar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <div class="article-hero__author-info">
+                <span class="article-hero__author-name">UseEasyTool Team</span>
+                <span class="article-hero__author-role">Developer Tools</span>
+              </div>
+            </div>
+            <div class="article-hero__stats">
+              <span class="article-hero__stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                July 28, 2026
+              </span>
+              <span class="article-hero__stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                8 min read
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Article Cover -->
+        <div class="article-cover">
+          <div class="article-card__image-placeholder" style="height:360px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+        </div>
+
+        <!-- ============================================================
+             ARTICLE CONTENT START
+             ============================================================ -->
+                <!-- Google AdSense - In-Article Ad -->
+        <div class="ad-zone ad-zone--in-article" style="margin: 24px 0; text-align: center;">
+          <ins class="adsbygoogle"
+               style="display:block; text-align:center;"
+               data-ad-layout="in-article"
+               data-ad-format="fluid"
+               data-ad-client="ca-pub-5246764554303000"
+               data-ad-slot="2018245511"></ins>
+          <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        </div>
+        <article class="article-content">
+
+          <h2>What Is URL Encoding?</h2>
+
+          <p>Type <code>"hello world"</code> into a browser address bar and watch what happens. The space vanishes. What you actually see in the URL bar is <code>hello%20world</code>. That <code>%20</code> is URL encoding in action.</p>
+
+          <p>URL encoding (also called percent encoding) converts characters into a format that can be transmitted over the internet. The rules come from <strong>RFC 3986</strong>, which defines the valid characters for URIs.</p>
+
+          <p>The idea is simple: take any character outside the safe set and replace it with a percent sign (<code>%</code>) followed by two hex digits representing the character's byte value.</p>
+
+          <pre><code>hello world  -->  hello%20world
+a+b=c       -->  a%2Bb%3Dc
+cafe        -->  caf%C3%A9 (UTF-8 encoded)</code></pre>
+
+          <p>The "safe" characters that do not need encoding are uppercase and lowercase ASCII letters (<code>A-Z</code>, <code>a-z</code>), digits (<code>0-9</code>), and a handful of special characters: hyphen (<code>-</code>), period (<code>.</code>), underscore (<code>_</code>), and tilde (<code>~</code>).</p>
+
+          <p>Everything else? Encoded. Spaces, ampersands, question marks, hash symbols, non-ASCII characters like Chinese or emoji -- they all get converted to their percent-encoded form.</p>
+
+          <h2>Why URL Encoding Exists</h2>
+
+          <p>URLs have a job to do: they tell the browser where to go and what to send. The structure <code>scheme://host/path?query#fragment</code> relies on specific characters as delimiters. The <code>?</code> marks the start of query parameters. The <code>&amp;</code> separates key-value pairs. The <code>#</code> introduces a fragment.</p>
+
+          <p>If your actual data contains these delimiter characters, the parser has no way to tell whether <code>&amp;</code> is part of your data or a separator. Encoding removes the ambiguity.</p>
+
+          <p>Consider a Google search for the phrase <code>"URL encoding guide"</code>. The browser constructs something like:</p>
+
+          <pre><code>https://www.google.com/search?q=URL%20encoding%20guide
+                         ^^^^^^^^^^^^^^^^^^^^^^^^
+                         query parameter "q" with the value "URL encoding guide"</code></pre>
+
+          <p>The space between each word becomes <code>%20</code>. Without this encoding, the browser might interpret the raw spaces as malformed URL syntax.</p>
+
+          <p>API calls are where this really bites. Send a request with a user's name that contains special characters, and you will get 400 Bad Request errors or corrupted data if you skip encoding.</p>
+
+          <pre><code>// Real-world API call with encoding needed
+GET /api/users?name=Jos%C3%A9%20Garc%C3%ADa&city=New%20York
+
+// Without encoding, this breaks:
+GET /api/users?name=José García&city=New York
+//                      ^^^^
+// The server sees "city" parameter missing, and "García" as a separate param</code></pre>
+
+          <h2>Reserved vs Unsafe Characters</h2>
+
+          <p>Not all characters that get encoded are equal. RFC 3986 draws a line between <strong>reserved</strong> and <strong>unsafe</strong> characters.</p>
+
+          <p>Reserved characters have structural meaning in URLs. They only need encoding when used as data rather than delimiters. Unsafe characters have no structural role and should always be encoded when they appear in data.</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Character</th>
+                <th>Encoded Form</th>
+                <th>Category</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>!</td><td>%21</td><td>Reserved</td></tr>
+              <tr><td>#</td><td>%23</td><td>Reserved</td></tr>
+              <tr><td>$</td><td>%24</td><td>Reserved</td></tr>
+              <tr><td>&amp;</td><td>%26</td><td>Reserved</td></tr>
+              <tr><td>'</td><td>%27</td><td>Reserved</td></tr>
+              <tr><td>(</td><td>%28</td><td>Reserved</td></tr>
+              <tr><td>)</td><td>%29</td><td>Reserved</td></tr>
+              <tr><td>*</td><td>%2A</td><td>Reserved</td></tr>
+              <tr><td>+</td><td>%2B</td><td>Reserved</td></tr>
+              <tr><td>,</td><td>%2C</td><td>Reserved</td></tr>
+              <tr><td>/</td><td>%2F</td><td>Reserved</td></tr>
+              <tr><td>:</td><td>%3A</td><td>Reserved</td></tr>
+              <tr><td>;</td><td>%3B</td><td>Reserved</td></tr>
+              <tr><td>=</td><td>%3D</td><td>Reserved</td></tr>
+              <tr><td>?</td><td>%3F</td><td>Reserved</td></tr>
+              <tr><td>@</td><td>%40</td><td>Reserved</td></tr>
+              <tr><td>[</td><td>%5B</td><td>Reserved</td></tr>
+              <tr><td>]</td><td>%5D</td><td>Reserved</td></tr>
+            </tbody>
+          </table>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Character</th>
+                <th>Encoded Form</th>
+                <th>Category</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>space</td><td>%20</td><td>Unsafe</td></tr>
+              <tr><td>"</td><td>%22</td><td>Unsafe</td></tr>
+              <tr><td>&lt;</td><td>%3C</td><td>Unsafe</td></tr>
+              <tr><td>&gt;</td><td>%3E</td><td>Unsafe</td></tr>
+              <tr><td>{</td><td>%7B</td><td>Unsafe</td></tr>
+              <tr><td>}</td><td>%7D</td><td>Unsafe</td></tr>
+              <tr><td>|</td><td>%7C</td><td>Unsafe</td></tr>
+              <tr><td>\</td><td>%5C</td><td>Unsafe</td></tr>
+              <tr><td>^</td><td>%5E</td><td>Unsafe</td></tr>
+              <tr><td>~</td><td>%7E</td><td>Unsafe</td></tr>
+              <tr><td>`</td><td>%60</td><td>Unsafe</td></tr>
+              <tr><td>%</td><td>%25</td><td>Unsafe</td></tr>
+            </tbody>
+          </table>
+
+          <p>Notice that last entry. The percent sign itself is <code>%25</code>. This is the source of the double-encoding trap -- encoding something that is already encoded will turn <code>%20</code> into <code>%2520</code>. The server then sees the literal string <code>%20</code> instead of a space. This bug is surprisingly common and maddening to debug.</p>
+
+          <h2>Common Encoding Mistakes</h2>
+
+          <p>I have seen these mistakes in production code, in shipped apps, in well-funded startups. Here are the ones that cause the most damage.</p>
+
+          <h3>Mistake 1: Encoding the entire URL</h3>
+
+          <p>This is the classic blunder. You take a full URL and run it through your encoder, which mangles the <code>://</code>, the slashes, and everything else.</p>
+
+          <pre><code>// WRONG - encodes the entire URL
+const encoded = encodeURIComponent("https://example.com/api?q=test");
+// Result: https%3A%2F%2Fexample.com%2Fapi%3Fq%3Dtest
+// This URL is now broken. The browser cannot parse it.
+
+// RIGHT - encode only the parameter values
+const param = encodeURIComponent("test value");
+const url = `https://example.com/api?q=${param}`;
+// Result: https://example.com/api?q=test%20value</code></pre>
+
+          <p>The rule: encode the values, not the structure.</p>
+
+          <h3>Mistake 2: Double encoding</h3>
+
+          <p>This happens when data gets encoded twice before it reaches the server. Some frameworks encode query params automatically. If you also encode manually, the server receives <code>%2520</code> instead of <code>%20</code>.</p>
+
+          <pre><code>// WRONG - double encoding
+let value = "hello world";
+value = encodeURIComponent(value);  // "hello%20world"
+value = encodeURIComponent(value);  // "hello%2520world" -- broken!
+
+// RIGHT - encode once
+let value = "hello world";
+let encoded = encodeURIComponent(value);  // "hello%20world"</code></pre>
+
+          <p>If you see <code>%25</code> in your server logs, check for double encoding. Our <a href="../tools/converters/url.html">free URL encoding tool</a> lets you check what the encoded output should look like for any input string.</p>
+
+          <h3>Mistake 3: Forgetting to encode Unicode characters</h3>
+
+          <p>Some encoding functions only handle ASCII by default. Non-ASCII characters like Chinese, Arabic, or emoji get dropped or mangled if you do not specify UTF-8 encoding.</p>
+
+          <pre><code>// WRONG - encoding that drops Unicode
+// Some legacy functions only encode ASCII
+const broken = escape("cafe"); // "cafe" -- loses the accent entirely
+
+// RIGHT - proper UTF-8 encoding
+const correct = encodeURIComponent("caf\u00E9");
+// "caf%C3%A9" -- properly encodes the UTF-8 bytes</code></pre>
+
+          <h3>Mistake 4: Confusing URL encoding with Base64</h3>
+
+          <p>These solve different problems. URL encoding makes data safe for URLs. Base64 converts binary data into ASCII text. They are not interchangeable. Using Base64 in a URL parameter without URL encoding the Base64 result will break because Base64 uses <code>+</code>, <code>/</code>, and <code>=</code> -- all characters with special meaning in URLs. If you need to embed Base64 in a URL, use a <a href="../tools/converters/base64.html">Base64 encoder</a> with the URL-safe variant (replacing <code>+</code> with <code>-</code> and <code>/</code> with <code>_</code>).</p>
+
+          <h2>URL Encoding in JavaScript</h2>
+
+          <p>JavaScript has two functions that trip people up constantly: <code>encodeURIComponent()</code> and <code>encodeURI()</code>.</p>
+
+          <p>The difference matters. <code>encodeURIComponent()</code> encodes <em>everything</em> that could be unsafe, including reserved characters like <code>/</code>, <code>?</code>, and <code>&amp;</code>. Use it for individual query parameter values.</p>
+
+          <p><code>encodeURI()</code> leaves the URL structure intact -- it skips <code>://</code>, <code>/</code>, <code>?</code>, <code>#</code>, and a few others. Use it when you have a complete URL and want to clean up any unsafe characters in the path or fragment.</p>
+
+          <pre><code>// encodeURIComponent - for parameter values
+const query = encodeURIComponent("hello world & foo=bar");
+// "hello%20world%20%26%20foo%3Dbar"
+
+const url = `https://api.example.com/search?q=${query}`;
+// https://api.example.com/search?q=hello%20world%20%26%20foo%3Dbar
+
+// encodeURI - for a full URL that might have unsafe chars in the path
+const fullUrl = encodeURI("https://example.com/path with spaces/page");
+// https://example.com/path%20with%20spaces/page
+
+// Decoding
+const decoded = decodeURIComponent("hello%20world");
+// "hello world"</code></pre>
+
+          <p>When building API requests with JSON bodies, the JSON string itself often needs to be encoded if you are passing it as a query parameter (which you should avoid, but sometimes it happens):</p>
+
+          <pre><code>const payload = JSON.stringify({ name: "Jos\u00E9 Garc\u00EDa", city: "S\u00E3o Paulo" });
+const encoded = encodeURIComponent(payload);
+const url = `https://api.example.com/data?payload=${encoded}`;
+
+// Better approach: send JSON in the request body, not the URL
+fetch("https://api.example.com/data", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: payload  // No encoding needed in the body
+});</code></pre>
+
+          <p>If you need to pretty-print or validate JSON before encoding, use our <a href="../tools/formatters/json-formatter.html">JSON formatter</a>.</p>
+
+          <h2>URL Encoding in Python</h2>
+
+          <p>Python gives you <code>urllib.parse.quote()</code> for encoding and <code>urllib.parse.unquote()</code> for decoding. The <code>safe</code> parameter controls which characters are skipped during encoding.</p>
+
+          <pre><code>from urllib.parse import quote, unquote
+
+# Basic encoding
+encoded = quote("hello world")
+print(encoded)  # hello%20world
+
+# The 'safe' parameter lets you exclude characters from encoding
+encoded_slash = quote("/api/users/1", safe="/")
+print(encoded_slash)  # /api/users/1 -- slash preserved
+
+# Space encoding: %20 vs +
+encoded_plus = quote("hello world", safe="")
+print(encoded_plus)  # hello%20world
+
+# quote_plus() uses + for spaces (application/x-www-form-urlencoded)
+from urllib.parse import quote_plus
+print(quote_plus("hello world"))  # hello+world</code></pre>
+
+          <p>The difference between <code>quote()</code> and <code>quote_plus()</code> matters. <code>quote()</code> turns spaces into <code>%20</code>. <code>quote_plus()</code> turns spaces into <code>+</code>. Use <code>quote_plus()</code> when encoding form data (the <code>application/x-www-form-urlencoded</code> content type). Use <code>quote()</code> for path segments and query strings.</p>
+
+          <p>The <code>requests</code> library handles encoding for you in most cases:</p>
+
+          <pre><code>import requests
+
+# requests encodes query params automatically
+resp = requests.get("https://api.example.com/search", params={"q": "hello world"})
+# The actual URL sent: https://api.example.com/search?q=hello+world
+print(resp.request.url)
+
+# For form data, requests encodes that too
+resp = requests.post("https://api.example.com/submit", data={"name": "Jos\u00E9 Garc\u00EDa"})
+# Content-Type: application/x-www-form-urlencoded
+# Body: name=Jos%C3%A9+Garc%C3%ADa</code></pre>
+
+          <p>This auto-encoding is convenient but also where double-encoding bugs creep in. If your framework also encodes, you get double-encoded params. Check what your HTTP library is doing before adding your own encoding layer.</p>
+
+          <h2>URL Encoding in Other Languages</h2>
+
+          <p>Here is a quick reference for encoding in a few other popular languages.</p>
+
+          <h3>Go</h3>
+          <pre><code>import "net/url"
+encoded := url.QueryEscape("hello world")  // hello+world
+decoded, _ := url.QueryUnescape("hello+world")  // hello world</code></pre>
+
+          <h3>PHP</h3>
+          <pre><code>$encoded = urlencode("hello world");      // hello+world (spaces become +)
+$encoded = rawurlencode("hello world");    // hello%20world (spaces become %20)
+$decoded = rawurldecode("hello%20world");  // hello world</code></pre>
+
+          <p>In PHP, <code>urlencode()</code> uses <code>+</code> for spaces (for form data), while <code>rawurlencode()</code> uses <code>%20</code> (for raw URL components). Use <code>rawurlencode()</code> for most URL construction tasks.</p>
+
+          <h3>Java</h3>
+          <pre><code>import java.net.URLEncoder;
+import java.net.URLDecoder;
+String encoded = URLEncoder.encode("hello world", "UTF-8");  // hello+world
+String decoded = URLDecoder.decode("hello+world", "UTF-8");  // hello world</code></pre>
+
+          <p>Java's <code>URLEncoder.encode()</code> uses <code>+</code> for spaces by default. If you need <code>%20</code>, replace the <code>+</code> signs after encoding: <code>encoded.replace("+", "%20")</code>.</p>
+
+          <h2>URL Encoding and Security</h2>
+
+          <p>URL encoding is not just a formatting concern. It has direct security implications. Poorly handled encoding opens the door to URL injection, parameter tampering, and cross-site scripting (XSS).</p>
+
+          <h3>URL injection via unencoded input</h3>
+
+          <p>Imagine a web application that takes a redirect URL as a parameter but does not validate or encode it properly:</p>
+
+          <pre><code>// VULNERABLE - user controls the entire redirect target
+app.get("/login", (req, res) => {
+  const returnUrl = req.query.return;
+  res.redirect(returnUrl);  // An attacker can set this to any URL
+});
+
+// An attacker crafts:
+// /login?return=https://evil.com/phishing
+// The user gets redirected to a phishing site after login</code></pre>
+
+          <p>The fix involves validating the redirect target against an allowlist and properly encoding any user input that ends up in URLs:</p>
+
+          <pre><code>// FIXED - validate against an allowlist
+const ALLOWED_DOMAINS = ["mysite.com", "app.mysite.com"];
+
+app.get("/login", (req, res) => {
+  const returnUrl = req.query.return;
+  const parsed = new URL(returnUrl, "https://mysite.com");
+
+  if (ALLOWED_DOMAINS.includes(parsed.hostname)) {
+    res.redirect(parsed.pathname + parsed.search);
+  } else {
+    res.redirect("/dashboard");  // Fallback to a safe default
+  }
+});</code></pre>
+
+          <h3>XSS via improperly decoded URLs</h3>
+
+          <p>Some applications decode URL-encoded input before rendering it in HTML without sanitizing. An attacker can encode malicious payloads to bypass naive filters:</p>
+
+          <pre><code>// An attacker sends:
+// /search?q=%3Cscript%3Ealert(1)%3C/script%3E
+// Decoded: &lt;script&gt;alert(1)&lt;/script&gt;
+
+// If the server decodes this and renders it in the page without escaping,
+// the script executes -- XSS.</code></pre>
+
+          <p>Always escape output for the correct context. URL encoding is for transport, HTML escaping is for rendering. They serve different purposes.</p>
+
+          <h3>Parameter tampering</h3>
+
+          <p>Encoded URLs can be tampered with just as easily as plain ones. If your API relies on URL parameters for authorization decisions, sign them. Use a <a href="../tools/crypto/url-signature.html">URL signature generator</a> to create signed URLs that prevent parameter tampering. A signed URL includes a hash of the parameters, so any modification invalidates the link.</p>
+
+          <p>For critical operations, combine URL signing with a <a href="../tools/crypto/hash.html">hash generator</a> to create tamper-evident request identifiers. This gives you an audit trail and makes it possible to detect modified requests.</p>
+
+          <h2>Quick Conversion Without Code</h2>
+
+          <p>Sometimes you do not need a function call. You need to figure out what a URL in your logs actually says, or verify what your app is sending before filing a bug report.</p>
+
+          <p>Copy a garbled URL from your server logs, paste it into our <a href="../tools/converters/url.html">online URL encoder/decoder</a>, and see the decoded result instantly. No code, no terminal, no <code>python -c "import urllib.parse; print(...)".</code></p>
+
+          <p>Common scenarios where an online tool saves time:</p>
+
+          <ul>
+            <li>Debugging encoded URLs pulled from browser DevTools Network tab</li>
+            <li>Checking that your API client is sending correctly encoded parameters</li>
+            <li>Decoding webhook callback URLs from third-party services</li>
+            <li>Verifying email tracking links and marketing campaign URLs</li>
+            <li>Encoding test data to paste into API testing tools</li>
+          </ul>
+
+          <p>The <a href="../tools/converters/url.html">URL encoder tool</a> handles both encoding and decoding, supports UTF-8 input, and works entirely in your browser -- nothing gets sent to any server.</p>
+
+          <blockquote>
+            <p>Quick tip: if you are debugging a URL in Chrome DevTools, the Network tab shows decoded query parameters by default. Right-click any request and select "Copy as URL" to get the encoded version, or look at the "Query String Parameters" section for the decoded values.</p>
+          </blockquote>
+
+          <!-- ============================================================
+               ARTICLE CONTENT END
+               ============================================================ -->
+
+                <!-- Google AdSense - Multi Ad -->
+        <div class="ad-zone ad-zone--multi" style="margin: 24px 0; text-align: center;">
+          <amp-ad width="100vw" height="320"
+               type="adsense"
+               data-ad-client="ca-pub-5246764554303000"
+               data-ad-slot="3469113897"
+               data-auto-format="mcrspv"
+               data-full-width="">
+            <div overflow=""></div>
+          </amp-ad>
+        </div>
+</article>
+
+        <!-- Article Footer -->
+        <footer class="article-footer">
+          <div class="article-footer__share">
+            <span class="article-footer__share-label">Share this article:</span>
+            <div class="article-footer__share-buttons">
+              <button class="article-footer__share-btn" aria-label="Share on X" onclick="window.open('https://x.com/intent/tweet?url=' + encodeURIComponent(window.location.href) + '&text=' + encodeURIComponent(document.title), '_blank')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+              </button>
+              <button class="article-footer__share-btn" aria-label="Share on LinkedIn" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(window.location.href), '_blank')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              </button>
+              <button class="article-footer__share-btn" aria-label="Copy link" onclick="navigator.clipboard.writeText(window.location.href)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+            </div>
+          </div>
+        </footer>
+
+        <!-- Related Articles -->
+        <section class="article-related">
+          <h2 class="article-related__title">Related Articles</h2>
+          <div class="article-related__grid">
+            <a href="base64-vs-url-encoding.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">Base64 vs URL Encoding: When to Use Which?</h3>
+                <p class="article-card__excerpt">Understand the key differences between Base64 and percent encoding, and learn which one fits your use case.</p>
+              </div>
+            </a>
+            <a href="regex-beginner-tutorial.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">Regular Expressions for Beginners</h3>
+                <p class="article-card__excerpt">A practical introduction to regex patterns, from basic matching to advanced techniques for text processing.</p>
+              </div>
+            </a>
+            <a href="index.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">View All Articles</h3>
+                <p class="article-card__excerpt">Browse our complete collection of developer tutorials, guides, and tips.</p>
+              </div>
+            </a>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links">
+        <a href="#" data-i18n="footer_about">About</a>
+        <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="#" data-i18n="footer_terms">Terms of Service</a>
+        <a href="#" data-i18n="footer_contact">Contact</a>
+      </div>
+      <div class="footer-social">
+        <a href="https://x.com/darrenguo57" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="X">
+          <i data-lucide="twitter"></i>
+        </a>
+        <a href="https://github.com/darrenguo57/tools-website" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="GitHub">
+          <i data-lucide="github"></i>
+        </a>
+      </div>
+      <p class="footer-copyright">&copy; 2026 UseEasyTool. <span data-i18n="footer_rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/utils.js"></script>
+</body>
+</html>

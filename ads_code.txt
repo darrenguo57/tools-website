@@ -1,0 +1,49 @@
+展示广告
+第 1 步：复制下面的脚本并将其粘贴在您网站的 <head></head> 标记之间
+将此代码放置在您的 AMP 网站 HTML 的 head 标记之间，放置一次即可。此脚本会加载相关的 amp-ad 库。
+
+<script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
+第 2 步：复制下面的 AMP 广告代码并将其粘贴在您网页的 <body></body> 标记之间
+请将此代码放置到要展示广告的位置。对于每个网页上的每一个广告单元，都要执行此操作。
+
+<amp-ad width="100vw" height="320"
+     type="adsense"
+     data-ad-client="ca-pub-5246764554303000"
+     data-ad-slot="4644408855"
+     data-auto-format="rspv"
+     data-full-width="">
+  <div overflow=""></div>
+</amp-ad>
+
+
+
+文章内嵌广告
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5246764554303000"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-5246764554303000"
+     data-ad-slot="2018245511"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+多重广告
+第 1 步：复制下面的脚本并将其粘贴在您网站的 <head></head> 标记之间
+将此代码放置在您的 AMP 网站 HTML 的 head 标记之间，放置一次即可。此脚本会加载相关的 amp-ad 库。
+
+<script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
+第 2 步：复制下面的 AMP 广告代码并将其粘贴在您网页的 <body></body> 标记之间
+请将此代码放置到要展示广告的位置。对于每个网页上的每一个广告单元，都要执行此操作。
+
+<amp-ad width="100vw" height="320"
+     type="adsense"
+     data-ad-client="ca-pub-5246764554303000"
+     data-ad-slot="3469113897"
+     data-auto-format="mcrspv"
+     data-full-width="">
+  <div overflow=""></div>
+</amp-ad>

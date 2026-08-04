@@ -1,76 +1,56 @@
 /**
  * ad-slots.js - 广告位配置
  * 
- * 在此文件中定义所有广告位
- * slot-id 需要在 Google AdSense 后台获取
+ * Google AdSense 广告位配置文件
+ * Publisher ID: ca-pub-5246764554303000
  */
 
 const AD_SLOTS = {
-  // 首页广告位
-  homepage: {
-    header: {
-      slot_id: '0000000000', // 替换为实际 ID
-      name: '首页顶部',
-      size: '728x90' // Desktop
-    },
-    banner: {
-      slot_id: '0000000001',
-      name: '首页横幅',
-      size: '728x90'
-    },
-    content: {
-      slot_id: '0000000002',
-      name: '首页内容间',
-      size: '300x250'
-    },
-    sidebar: {
-      slot_id: '0000000003',
-      name: '首页侧边栏',
-      size: '300x250'
-    },
-    footer: {
-      slot_id: '0000000004',
-      name: '首页底部',
-      size: '728x90'
-    }
-  },
-  
-  // 工具页面广告位
-  tool: {
-    top: {
-      slot_id: '0000000005',
-      name: '工具页顶部',
-      size: '728x90'
-    },
-    sidebar: {
-      slot_id: '0000000006',
-      name: '工具页侧边栏',
-      size: '300x250'
-    },
-    bottom: {
-      slot_id: '0000000007',
-      name: '工具页底部',
-      size: '728x90'
-    }
+  // 展示广告 (AMP Display Ad) - 用于首页、博客列表页、工具页
+  display: {
+    slot_id: '4644408855',
+    name: '展示广告',
+    type: 'amp-ad',
+    format: 'rspv',
+    size: '100vw x 320 (responsive)'
   },
 
-  // 文章页面广告位
-  article: {
-    header: {
-      slot_id: '0000000008',
-      name: '文章页顶部',
-      size: '728x90'
-    },
-    inContent: {
-      slot_id: '0000000009',
-      name: '文章内容中',
-      size: '300x250'
-    },
-    footer: {
-      slot_id: '0000000010',
-      name: '文章页底部',
-      size: '728x90'
-    }
+  // 文章内嵌广告 (In-Article Ad) - 用于博客文章内容中
+  inArticle: {
+    slot_id: '2018245511',
+    name: '文章内嵌广告',
+    type: 'adsbygoogle',
+    format: 'fluid (in-article)',
+    size: 'responsive'
+  },
+
+  // 多重广告 (AMP Multi Ad) - 用于页面底部
+  multi: {
+    slot_id: '3469113897',
+    name: '多重广告',
+    type: 'amp-ad',
+    format: 'mcrspv',
+    size: '100vw x 320 (responsive)'
+  }
+};
+
+// 广告位放置位置说明
+const AD_PLACEMENTS = {
+  homepage: {
+    display: 'Hero 区域下方,工具卡片网格上方',
+    multi: '工具卡片网格下方,页脚上方'
+  },
+  blogIndex: {
+    display: '博客 Hero 下方,标签筛选上方',
+    multi: '文章列表下方,页脚上方'
+  },
+  blogArticle: {
+    inArticle: '文章封面下方,文章内容开头前',
+    multi: '文章内容结束后,文章页脚前'
+  },
+  toolPage: {
+    display: '工具工作区下方,工具说明区域前',
+    multi: '使用示例下方,页脚上方'
   }
 };
 

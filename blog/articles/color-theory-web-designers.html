@@ -69,6 +69,10 @@
   <link rel="stylesheet" href="../../assets/css/blog.css">
   <!-- AMP Auto Ads -->
   <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+  <!-- AMP Ad (Multi-ad) -->
+  <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
+  <!-- Google AdSense (In-article ad) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5246764554303000" crossorigin="anonymous"></script>
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WFG5TSM6M"></script>
   <script src="../../assets/js/ga4.js"></script>
@@ -224,6 +228,18 @@
         </div>
 
         <!-- Article Content -->
+                <!-- Google AdSense - In-Article Ad -->
+        <div class="ad-zone ad-zone--in-article" style="margin: 24px 0; text-align: center;">
+          <ins class="adsbygoogle"
+               style="display:block; text-align:center;"
+               data-ad-layout="in-article"
+               data-ad-format="fluid"
+               data-ad-client="ca-pub-5246764554303000"
+               data-ad-slot="2018245511"></ins>
+          <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        </div>
         <article class="article-content">
 
           <h2>Why Color Theory Matters in Web Design</h2>
@@ -374,7 +390,18 @@ color: hsl(217, 91%, 60%);</code></pre>
           <h2>Conclusion</h2>
           <p>Color theory bridges the gap between artistic intuition and systematic design. By understanding the color wheel, applying proven harmony schemes, building maintainable color systems with CSS variables, and validating every combination against accessibility standards, you can create interfaces that are both beautiful and inclusive. The best color palettes are not the loudest — they are the ones that communicate clearly, guide attention effectively, and work for every user. Explore our <a href="../../tools/testers/color-picker.html">color picker tool</a> to experiment with HSL values and harmony schemes, or use the <a href="../../tools/testers/css-gradient.html">CSS gradient generator</a> to create smooth transitions between your chosen colors.</p>
 
-        </article>
+                <!-- Google AdSense - Multi Ad -->
+        <div class="ad-zone ad-zone--multi" style="margin: 24px 0; text-align: center;">
+          <amp-ad width="100vw" height="320"
+               type="adsense"
+               data-ad-client="ca-pub-5246764554303000"
+               data-ad-slot="3469113897"
+               data-auto-format="mcrspv"
+               data-full-width="">
+            <div overflow=""></div>
+          </amp-ad>
+        </div>
+</article>
 
         <!-- Article Footer -->
         <footer class="article-footer">

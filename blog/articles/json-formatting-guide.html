@@ -69,6 +69,10 @@
   <link rel="stylesheet" href="../../assets/css/blog.css">
   <!-- AMP Auto Ads -->
   <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+  <!-- AMP Ad (Multi-ad) -->
+  <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
+  <!-- Google AdSense (In-article ad) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5246764554303000" crossorigin="anonymous"></script>
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WFG5TSM6M"></script>
   <script src="../../assets/js/ga4.js"></script>
@@ -224,6 +228,18 @@
         </div>
 
         <!-- Article Content -->
+                <!-- Google AdSense - In-Article Ad -->
+        <div class="ad-zone ad-zone--in-article" style="margin: 24px 0; text-align: center;">
+          <ins class="adsbygoogle"
+               style="display:block; text-align:center;"
+               data-ad-layout="in-article"
+               data-ad-format="fluid"
+               data-ad-client="ca-pub-5246764554303000"
+               data-ad-slot="2018245511"></ins>
+          <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        </div>
         <article class="article-content">
 
           <h2>What is JSON and Why Formatting Matters</h2>
@@ -290,7 +306,18 @@
           <h2>Conclusion</h2>
           <p>Mastering JSON formatting is a fundamental skill for any developer working with web APIs, configuration files, or data interchange. By following consistent formatting rules, validating your data, and using the right tools, you can work with JSON more efficiently and avoid common pitfalls. Try our <a href="../../tools/formatters/json-formatter.html">free JSON Formatter</a> to beautify and validate your JSON data instantly.</p>
 
-        </article>
+                <!-- Google AdSense - Multi Ad -->
+        <div class="ad-zone ad-zone--multi" style="margin: 24px 0; text-align: center;">
+          <amp-ad width="100vw" height="320"
+               type="adsense"
+               data-ad-client="ca-pub-5246764554303000"
+               data-ad-slot="3469113897"
+               data-auto-format="mcrspv"
+               data-full-width="">
+            <div overflow=""></div>
+          </amp-ad>
+        </div>
+</article>
 
         <!-- Article Footer -->
         <footer class="article-footer">

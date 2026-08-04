@@ -51,6 +51,8 @@
   <link rel="stylesheet" href="../assets/css/blog.css">
   <!-- AMP Auto Ads -->
   <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+  <!-- AMP Ad (Display & Multi-ad) -->
+  <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WFG5TSM6M"></script>
   <script src="../assets/js/ga4.js"></script>
@@ -172,6 +174,18 @@
         </div>
       </section>
 
+      <!-- Google AdSense - Display Ad -->
+      <div class="ad-zone ad-zone--display" style="margin: 24px 0; text-align: center;">
+        <amp-ad width="100vw" height="320"
+             type="adsense"
+             data-ad-client="ca-pub-5246764554303000"
+             data-ad-slot="4644408855"
+             data-auto-format="rspv"
+             data-full-width="">
+          <div overflow=""></div>
+        </amp-ad>
+      </div>
+
       <!-- Tags Filter -->
       <div class="blog-tags" id="blogTags">
         <!-- Tags will be rendered by JS -->
@@ -232,6 +246,18 @@
             </div>
           </div>
         </aside>
+      </div>
+
+      <!-- Google AdSense - Multi Ad -->
+      <div class="ad-zone ad-zone--multi" style="margin: 24px 0; text-align: center;">
+        <amp-ad width="100vw" height="320"
+             type="adsense"
+             data-ad-client="ca-pub-5246764554303000"
+             data-ad-slot="3469113897"
+             data-auto-format="mcrspv"
+             data-full-width="">
+          <div overflow=""></div>
+        </amp-ad>
       </div>
 
     </main>
@@ -497,6 +523,58 @@
         image: '../assets/images/blog/best-online-json-formatter.jpg',
         file: 'articles/best-online-json-formatter.html',
         date: '2026-07-22'
+      },
+      {
+        id: 'unix-timestamp-developer-guide',
+        title: 'Working with Unix Timestamps: A Practical Developer Guide',
+        titleZh: 'Unix 时间戳实用开发者指南',
+        excerpt: 'Learn how to work with Unix timestamps in JavaScript, Python, and other languages. Covers the Y2K38 bug, millisecond vs second timestamps, and conversion tips.',
+        excerptZh: '学习如何在 JavaScript、Python 等语言中处理 Unix 时间戳，涵盖 Y2K38 问题、毫秒与秒时间戳的区别及转换技巧',
+        readTime: 8,
+        tags: ['timestamp', 'converter', 'developer-tools', 'tutorial'],
+        featured: false,
+        image: '../assets/images/blog/unix-timestamp-developer-guide.jpg',
+        file: 'articles/unix-timestamp-developer-guide.html',
+        date: '2026-07-28'
+      },
+      {
+        id: 'url-encoding-developer-guide',
+        title: 'URL Encoding and Decoding: What Every Developer Needs to Know',
+        titleZh: 'URL 编码解码：每个开发者都需要知道的',
+        excerpt: 'Master URL encoding and decoding. Learn percent encoding rules, common pitfalls, reserved vs unsafe characters, and security considerations.',
+        excerptZh: '掌握 URL 编码与解码，了解百分比编码规则、常见陷阱、保留字符与不安全字符的区别，以及安全注意事项',
+        readTime: 8,
+        tags: ['url-encoding', 'converter', 'developer-tools', 'security', 'tutorial'],
+        featured: false,
+        image: '../assets/images/blog/url-encoding-developer-guide.jpg',
+        file: 'articles/url-encoding-developer-guide.html',
+        date: '2026-07-28'
+      },
+      {
+        id: 'markdown-to-html-guide',
+        title: 'Markdown to HTML Converter Online: A Practical Guide for Developers',
+        titleZh: 'Markdown 转 HTML 在线转换指南',
+        excerpt: 'Learn how to convert Markdown to HTML with our free online tool. Step-by-step guide with code examples, edge cases, and tips for clean HTML output.',
+        excerptZh: '学习如何使用免费在线工具将 Markdown 转换为 HTML，包含代码示例和实用技巧',
+        readTime: 7,
+        tags: ['markdown', 'html', 'converter', 'developer-tools'],
+        featured: false,
+        image: '../assets/images/blog/markdown-to-html-guide.jpg',
+        file: 'articles/markdown-to-html-guide.html',
+        date: '2026-08-04'
+      },
+      {
+        id: 'color-palette-web-design-guide',
+        title: 'How to Build Color Palettes for Web Projects: A Developer\'s Guide',
+        titleZh: '网页设计配色指南：如何构建专业的调色板',
+        excerpt: 'Learn how to build professional color palettes for web projects. Covers color theory basics, palette types, accessibility, CSS variables, oklch(), and dark mode strategies.',
+        excerptZh: '学习如何为网页项目创建专业的配色方案，包含可访问性建议和 CSS 实现技巧',
+        readTime: 7,
+        tags: ['color', 'css', 'design', 'accessibility'],
+        featured: false,
+        image: '../assets/images/blog/color-palette-web-design-guide.jpg',
+        file: 'articles/color-palette-web-design-guide.html',
+        date: '2026-08-04'
       }
     ];
 

@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working with Unix Timestamps: A Practical Developer Guide - UseEasyTool Blog</title>
+  <meta name="description" content="Learn how to work with Unix timestamps in JavaScript, Python, and other languages. Free online timestamp converter tool included.">
+  <meta name="keywords" content="unix timestamp converter online, unix timestamp tool, convert unix timestamp to date, epoch time converter, free timestamp tool">
+  <meta name="author" content="UseEasyTool Team">
+  <meta name="robots" content="index, follow">
+
+  <!-- Bilingual Metadata -->
+  <meta name="titleZh" content="Unix 时间戳实用开发者指南">
+  <meta name="excerptZh" content="学习如何在 JavaScript、Python 等语言中处理 Unix 时间戳，附免费在线时间戳转换工具">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Working with Unix Timestamps: A Practical Developer Guide - UseEasyTool Blog">
+  <meta property="og:description" content="Learn how to work with Unix timestamps in JavaScript, Python, and other languages. Free online timestamp converter tool included.">
+  <meta property="og:url" content="https://useeasytool.com/blog/articles/unix-timestamp-developer-guide.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta property="article:published_time" content="2026-07-28">
+  <meta property="article:tag" content="timestamp">
+  <meta property="article:tag" content="converter">
+  <meta property="article:tag" content="developer-tools">
+  <meta property="article:tag" content="tutorial">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Working with Unix Timestamps: A Practical Developer Guide - UseEasyTool Blog">
+  <meta name="twitter:description" content="Learn how to work with Unix timestamps in JavaScript, Python, and other languages. Free online timestamp converter tool included.">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Working with Unix Timestamps: A Practical Developer Guide",
+    "description": "Learn how to work with Unix timestamps in JavaScript, Python, and other languages. Free online timestamp converter tool included.",
+    "image": "https://useeasytool.com/assets/images/blog/unix-timestamp-developer-guide.jpg",
+    "datePublished": "2026-07-28",
+    "dateModified": "2026-07-28",
+    "author": {
+      "@type": "Organization",
+      "name": "UseEasyTool Team",
+      "jobTitle": "Developer Tools"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "UseEasyTool",
+      "url": "https://useeasytool.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://useeasytool.com/assets/images/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://useeasytool.com/blog/articles/unix-timestamp-developer-guide.html"
+    },
+    "keywords": ["unix timestamp converter online", "unix timestamp tool", "convert unix timestamp to date", "epoch time converter", "free timestamp tool"]
+  }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="../assets/css/blog.css">
+</head>
+<body>
+
+  <!-- ========== Navigation ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo">
+        <i data-lucide="UseEasyTool"></i>
+        <span>UseEasyTool</span>
+      </a>
+
+      <div class="navbar-search">
+        <i data-lucide="search"></i>
+        <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+      </div>
+
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language">
+          <span class="lang-label">EN</span>
+        </button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="theme-icon-light"></i>
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+        </button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== Main Layout ========== -->
+  <div class="main-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3 data-i18n="sidebar_categories">Categories</h3>
+      </div>
+      <ul class="sidebar-list">
+        <li>
+          <a href="../index.html" class="sidebar-item" data-category="all">
+            <i data-lucide="layout-grid"></i>
+            <span data-i18n="cat_all">All Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=converters" class="sidebar-item" data-category="converters">
+            <i data-lucide="repeat"></i>
+            <span data-i18n="cat_converters">Converters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=calculators" class="sidebar-item" data-category="calculators">
+            <i data-lucide="calculator"></i>
+            <span data-i18n="cat_calculators">Calculators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=image-tools" class="sidebar-item" data-category="image-tools">
+            <i data-lucide="image"></i>
+            <span data-i18n="cat_image_tools">Image Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=generators" class="sidebar-item" data-category="generators">
+            <i data-lucide="sparkles"></i>
+            <span data-i18n="cat_generators">Generators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=formatters" class="sidebar-item" data-category="formatters">
+            <i data-lucide="braces"></i>
+            <span data-i18n="cat_formatters">Formatters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=crypto" class="sidebar-item" data-category="crypto">
+            <i data-lucide="shield"></i>
+            <span data-i18n="cat_crypto">Encryption</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=charts" class="sidebar-item" data-category="charts">
+            <i data-lucide="bar-chart-3"></i>
+            <span data-i18n="cat_charts">Charts</span>
+          </a>
+        </li>
+        <li>
+          <a href="../index.html?category=testing" class="sidebar-item" data-category="testing">
+            <i data-lucide="flask-conical"></i>
+            <span data-i18n="cat_testing">Testing</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="article-detail">
+
+        <!-- Article Hero -->
+        <header class="article-hero">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="../index.html">Home</a>
+            <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+            <a href="index.html">Blog</a>
+            <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+            <span class="breadcrumb-current">Working with Unix Timestamps: A Practical Developer Guide</span>
+          </nav>
+
+          <div class="article-hero__tags">
+            <span class="blog-tag">timestamp</span>
+            <span class="blog-tag">converter</span>
+            <span class="blog-tag">developer-tools</span>
+            <span class="blog-tag">tutorial</span>
+          </div>
+
+          <h1 class="article-hero__title">Working with Unix Timestamps: A Practical Developer Guide</h1>
+
+          <div class="article-hero__meta">
+            <div class="article-hero__author">
+              <div class="article-hero__author-avatar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <div class="article-hero__author-info">
+                <span class="article-hero__author-name">UseEasyTool Team</span>
+                <span class="article-hero__author-role">Developer Tools</span>
+              </div>
+            </div>
+            <div class="article-hero__stats">
+              <span class="article-hero__stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                July 28, 2026
+              </span>
+              <span class="article-hero__stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                8 min read
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Article Cover -->
+        <div class="article-cover">
+          <div class="article-card__image-placeholder" style="height:360px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+        </div>
+
+        <!-- ============================================================
+             ARTICLE CONTENT START
+             ============================================================ -->
+                <!-- Google AdSense - In-Article Ad -->
+        <div class="ad-zone ad-zone--in-article" style="margin: 24px 0; text-align: center;">
+          <ins class="adsbygoogle"
+               style="display:block; text-align:center;"
+               data-ad-layout="in-article"
+               data-ad-format="fluid"
+               data-ad-client="ca-pub-5246764554303000"
+               data-ad-slot="2018245511"></ins>
+          <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        </div>
+        <article class="article-content">
+
+          <h2>What Is a Unix Timestamp, Exactly?</h2>
+
+          <p>A Unix timestamp (also called epoch time) is the number of seconds elapsed since <strong>January 1, 1970, 00:00:00 UTC</strong>. That date is known as the Unix epoch. The value <code>0</code> means midnight on that exact date. A value like <code>1753689600</code> represents a specific moment in time &mdash; no ambiguity about timezones, no date format confusion, just a single integer.</p>
+
+          <p>This simplicity is what makes it so useful. Every major language and database supports it. You can pass it over an API, store it in a database column, or log it to a file without worrying about parsing.</p>
+
+          <h2>Why Timestamps Matter</h2>
+
+          <p>Unix timestamps show up everywhere in backend systems. Here are the common places you will encounter them:</p>
+
+          <ul>
+            <li><strong>Database indexes.</strong> Storing creation/update times as integers is fast to index and compare. No string parsing overhead.</li>
+            <li><strong>API design.</strong> REST APIs frequently use timestamps in JSON responses. They are unambiguous across locales and timezones.</li>
+            <li><strong>Caching headers.</strong> HTTP <code>Cache-Control</code> and <code>ETag</code> values often derive from timestamp comparisons.</li>
+            <li><strong>Logging.</strong> Structured logs use epoch seconds so entries sort chronologically by default.</li>
+          </ul>
+
+          <p>Here is a typical REST API response using timestamps. If you are debugging something like this, a <a href="../tools/formatters/json-formatter.html">JSON formatter</a> can help you read the output cleanly:</p>
+
+          <pre><code>{
+  "id": 94827,
+  "username": "jdoe",
+  "created_at": 1753689600,
+  "last_login": 1753776000,
+  "subscription_expires": 1785225600
+}</code></pre>
+
+          <p>See how clean that is? Each field is just an integer. Compare it to trying to parse <code>"2025-07-28T14:00:00Z"</code> across a dozen different date formats and you will appreciate why timestamps are the default in so many backend systems.</p>
+
+          <h2>The 32-bit Problem: January 19, 2038</h2>
+
+          <p>This one matters. A signed 32-bit integer can hold values up to <code>2,147,483,647</code>. When you plug that into a Unix timestamp, you get:</p>
+
+          <pre><code>// The exact second the 32-bit timestamp overflows
+// 2,147,483,647 = January 19, 2038 at 03:14:07 UTC
+
+#include &lt;stdio.h&gt;
+#include &lt;time.h&gt;
+
+int main() {
+    time_t t = 2147483647;  // Max signed 32-bit
+    printf("%s", ctime(&t));
+    // Output: Tue Jan 19 03:14:07 2038
+
+    t = 2147483648;  // One second later - overflow!
+    printf("%s", ctime(&t));
+    // Output: Fri Dec 13 20:45:52 1901 (wrapped negative)
+    return 0;
+}</code></pre>
+
+          <p>On a 32-bit system, that counter rolls over to a negative number and suddenly your "2040" date becomes "1901". Any system still running 32-bit time_t by 2038 is going to have a bad day. Most modern Linux and macOS systems have already moved to 64-bit <code>time_t</code>, but embedded devices, older legacy servers, and some Windows API calls still use 32-bit values.</p>
+
+          <p>If you are building anything with a long shelf life &mdash; financial systems, IoT firmware, certificate expiry logic &mdash; make sure your stack uses 64-bit timestamps.</p>
+
+          <h2>Working with Timestamps in JavaScript</h2>
+
+          <p>JavaScript is a bit weird with timestamps. The <code>Date</code> object internally stores time as milliseconds since the epoch, not seconds. This catches people off guard when they switch between JS and other languages.</p>
+
+          <h3>Get current timestamp</h3>
+          <pre><code>// Current time in milliseconds (what JS uses internally)
+const nowMs = Date.now();
+console.log(nowMs); // e.g. 1753689600000
+
+// Current time in seconds (what most APIs expect)
+const nowSec = Math.floor(Date.now() / 1000);
+console.log(nowSec); // e.g. 1753689600</code></pre>
+
+          <h3>Convert timestamp to readable date</h3>
+          <pre><code>const timestamp = 1753689600;
+
+// Convert seconds to Date object (multiply by 1000!)
+const date = new Date(timestamp * 1000);
+
+console.log(date.toISOString());
+// "2025-07-28T14:00:00.000Z"
+
+console.log(date.toLocaleDateString('en-US', {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+}));
+// "Monday, July 28, 2025"</code></pre>
+
+          <h3>Convert date back to timestamp</h3>
+          <pre><code>const date = new Date('2025-07-28T14:00:00Z');
+
+// Get seconds (divide by 1000)
+const ts = Math.floor(date.getTime() / 1000);
+console.log(ts); // 1753689600</code></pre>
+
+          <h3>Timezone pitfall</h3>
+          <pre><code>const ts = 1753689600;
+const date = new Date(ts * 1000);
+
+// These use LOCAL timezone - results differ per machine
+console.log(date.toString());
+// In UTC-5: "Mon Jul 28 2025 09:00:00 GMT-0500"
+
+// Always use getUTC* methods for consistent results
+console.log(date.getUTCFullYear());  // 2025
+console.log(date.getUTCMonth());     // 6 (zero-indexed: July)
+console.log(date.getUTCDate());      // 28
+console.log(date.getUTCHours());     // 14</code></pre>
+
+          <p>The biggest gotcha: <code>new Date(timestamp)</code> where <code>timestamp</code> is in seconds. JS will interpret it as milliseconds, giving you a date in January 1970. Always multiply seconds by 1000 before passing to <code>new Date()</code>.</p>
+
+          <h2>Working with Timestamps in Python</h2>
+
+          <p>Python is more straightforward than JS here. The standard library uses seconds by default, which aligns with the Unix convention.</p>
+
+          <h3>Get current timestamp</h3>
+          <pre><code>import time
+
+now = time.time()
+print(now)  # 1753689600.123456 (float with microsecond precision)
+
+# Integer seconds
+print(int(now))  # 1753689600</code></pre>
+
+          <h3>Convert timestamp to readable date</h3>
+          <pre><code>import time
+from datetime import datetime
+
+ts = 1753689600
+
+# Using datetime (recommended)
+dt_utc = datetime.fromtimestamp(ts, tz=timezone.utc)
+print(dt_utc)
+# 2025-07-28 14:00:00+00:00
+
+# Using time module (simpler, UTC)
+print(time.gmtime(ts))
+# time.struct_time(tm_year=2025, tm_mon=7, tm_mday=28, ...)
+
+# WARNING: without tz argument, fromtimestamp uses LOCAL timezone
+dt_local = datetime.fromtimestamp(ts)
+print(dt_local)  # Depends on your machine's timezone</code></pre>
+
+          <h3>Convert date to timestamp</h3>
+          <pre><code>from datetime import datetime, timezone
+
+dt = datetime(2025, 7, 28, 14, 0, 0, tzinfo=timezone.utc)
+ts = dt.timestamp()
+print(int(ts))  # 1753689600
+
+# From a string
+dt = datetime.fromisoformat("2025-07-28T14:00:00+00:00")
+print(int(dt.timestamp()))  # 1753689600</code></pre>
+
+          <p>One thing that bites people: <code>datetime.fromtimestamp()</code> without a <code>tz</code> argument uses the system local timezone. If you want UTC, pass <code>tz=timezone.utc</code> explicitly. If you are writing server code, always be explicit about timezones &mdash; your local dev machine and the production server may not share one.</p>
+
+          <h2>Working with Timestamps in Other Languages</h2>
+
+          <p>The basics are the same everywhere. Here is a quick reference for a few more languages you might run into:</p>
+
+          <h3>Go</h3>
+          <pre><code>now := time.Now().Unix()                    // seconds
+nowMs := time.Now().UnixMilli()            // milliseconds
+
+// Convert back
+t := time.Unix(1753689600, 0)
+fmt.Println(t.UTC())  // 2025-07-28 14:00:00 +0000 UTC</code></pre>
+
+          <h3>PHP</h3>
+          <pre><code>$now = time();                              // seconds
+$date = date('Y-m-d H:i:s', 1753689600);   // "2025-07-28 14:00:00" (UTC)
+$ts  = strtotime('2025-07-28 14:00:00');    // 1753689600</code></pre>
+
+          <h3>MySQL</h3>
+          <pre><code>SELECT UNIX_TIMESTAMP();                    -- current timestamp (seconds)
+SELECT UNIX_TIMESTAMP('2025-07-28 14:00:00');  -- 1753689600
+SELECT FROM_UNIXTIME(1753689600);          -- '2025-07-28 14:00:00'</code></pre>
+
+          <p>Each of these languages defaults to seconds, except JavaScript. That mismatch is the source of more bugs than you would think.</p>
+
+          <h2>Millisecond vs Second Timestamps</h2>
+
+          <p>This is probably the most common source of timestamp bugs. Some systems use seconds (10 digits), others use milliseconds (13 digits). Mix them up and your dates will be off by a factor of 1000.</p>
+
+          <p>Quick way to tell which one you have:</p>
+
+          <pre><code>function detectTimestampPrecision(ts) {
+  if (ts > 1e12) return 'milliseconds';
+  return 'seconds';
+}
+
+// 1753689600      -> 10 digits -> seconds
+// 1753689600000   -> 13 digits -> milliseconds</code></pre>
+
+          <p>Convert between them:</p>
+
+          <pre><code>// Seconds to milliseconds
+const ms = seconds * 1000;
+
+// Milliseconds to seconds
+const sec = Math.floor(milliseconds / 1000);</code></pre>
+
+          <p>In Python:</p>
+
+          <pre><code># Seconds to milliseconds
+ms = seconds * 1000
+
+# Milliseconds to seconds
+sec = ms // 1000</code></pre>
+
+          <p>Some APIs return millisecond timestamps (Java, most JavaScript frameworks), while others return seconds (Python, Go, C). If you are integrating two systems, check the docs or inspect a sample value. A timestamp starting with <code>1</code> and having 13 digits is almost certainly milliseconds. If you need to work with different bases or representations, a <a href="../tools/converters/number-base.html">number base converter</a> can be handy for inspecting the raw values.</p>
+
+          <blockquote>
+            <p>Pro tip: If a date in your app shows as "January 20, 1970", you almost certainly forgot to multiply seconds by 1000 in JavaScript, or you are dividing milliseconds by 1000 twice. I have done this more times than I care to admit.</p>
+          </blockquote>
+
+          <h2>Using an Online Timestamp Converter</h2>
+
+          <p>Sometimes you just need a quick conversion without writing code. Maybe you are debugging an API response, checking a database record, or investigating a log file. Opening a code editor or REPL every time is slow.</p>
+
+          <p>That is where an <a href="../tools/converters/timestamp.html">online timestamp converter</a> comes in. Paste a value, get a human-readable date instantly. No setup, no dependencies.</p>
+
+          <p>Common scenarios where I reach for a <a href="../tools/converters/timestamp.html">free Unix timestamp tool</a> instead of code:</p>
+
+          <ul>
+            <li><strong>Debugging API responses.</strong> You get a JSON payload from a third-party API and need to verify what <code>created_at: 1753689600</code> actually means. Paste it into the converter and you know immediately.</li>
+            <li><strong>Checking database records.</strong> Running a query like <code>SELECT * FROM users WHERE created_at > 1750000000</code> and want to confirm what date that threshold represents.</li>
+            <li><strong>Verifying test data.</strong> When writing unit tests that involve time windows, you need to know the exact date a given timestamp corresponds to.</li>
+            <li><strong>Cross-referencing logs.</strong> Log files often use different date formats. Converting a timestamp to a readable date helps you correlate events across systems.</li>
+          </ul>
+
+          <p>The <a href="../tools/converters/timestamp.html">timestamp converter tool</a> on UseEasyTool handles both seconds and milliseconds automatically, so you do not have to think about precision. It also shows the current timestamp live, which is useful when you need a reference value right now. Next time you are staring at a raw timestamp in a log file, give the <a href="../tools/converters/timestamp.html">online timestamp converter</a> a try &mdash; it is faster than opening a terminal.</p>
+
+          <h2>Quick Reference Cheat Sheet</h2>
+
+          <p>Here is a table of the most common timestamp operations across JavaScript and Python, since those are the two languages where most of the confusion lives:</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>JavaScript</th>
+                <th>Python</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Current timestamp (seconds)</td>
+                <td><code>Math.floor(Date.now() / 1000)</code></td>
+                <td><code>int(time.time())</code></td>
+              </tr>
+              <tr>
+                <td>Current timestamp (ms)</td>
+                <td><code>Date.now()</code></td>
+                <td><code>int(time.time() * 1000)</code></td>
+              </tr>
+              <tr>
+                <td>Timestamp to date (UTC)</td>
+                <td><code>new Date(ts * 1000).toISOString()</code></td>
+                <td><code>datetime.fromtimestamp(ts, tz=timezone.utc)</code></td>
+              </tr>
+              <tr>
+                <td>Date to timestamp</td>
+                <td><code>Math.floor(new Date(d).getTime() / 1000)</code></td>
+                <td><code>int(datetime.fromisoformat(d).timestamp())</code></td>
+              </tr>
+              <tr>
+                <td>Format timestamp as string</td>
+                <td><code>new Date(ts*1000).toLocaleDateString()</code></td>
+                <td><code>datetime.fromtimestamp(ts, tz=timezone.utc).strftime('%Y-%m-%d')</code></td>
+              </tr>
+              <tr>
+                <td>Seconds to milliseconds</td>
+                <td><code>ts * 1000</code></td>
+                <td><code>ts * 1000</code></td>
+              </tr>
+              <tr>
+                <td>Milliseconds to seconds</td>
+                <td><code>Math.floor(ts / 1000)</code></td>
+                <td><code>ts // 1000</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Bookmark this page or print the table. When you are switching between a Node.js frontend and a Python backend (which is half the teams I have worked on), this table saves you from the "is this seconds or milliseconds?" confusion at least twice a week.</p>
+
+          <p>If you also work with encoded data formats alongside timestamps, our <a href="../tools/converters/base64.html">Base64 encoder</a> and other converter tools are worth a look for quick, code-free transformations.</p>
+
+          <!-- ============================================================
+               ARTICLE CONTENT END
+               ============================================================ -->
+
+                <!-- Google AdSense - Multi Ad -->
+        <div class="ad-zone ad-zone--multi" style="margin: 24px 0; text-align: center;">
+          <amp-ad width="100vw" height="320"
+               type="adsense"
+               data-ad-client="ca-pub-5246764554303000"
+               data-ad-slot="3469113897"
+               data-auto-format="mcrspv"
+               data-full-width="">
+            <div overflow=""></div>
+          </amp-ad>
+        </div>
+</article>
+
+        <!-- Article Footer -->
+        <footer class="article-footer">
+          <div class="article-footer__share">
+            <span class="article-footer__share-label">Share this article:</span>
+            <div class="article-footer__share-buttons">
+              <button class="article-footer__share-btn" aria-label="Share on X" onclick="window.open('https://x.com/intent/tweet?url=' + encodeURIComponent(window.location.href) + '&text=' + encodeURIComponent(document.title), '_blank')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+              </button>
+              <button class="article-footer__share-btn" aria-label="Share on LinkedIn" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(window.location.href), '_blank')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              </button>
+              <button class="article-footer__share-btn" aria-label="Copy link" onclick="navigator.clipboard.writeText(window.location.href)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+            </div>
+          </div>
+        </footer>
+
+        <!-- Related Articles -->
+        <section class="article-related">
+          <h2 class="article-related__title">Related Articles</h2>
+          <div class="article-related__grid">
+            <a href="unit-conversion-cheat-sheet.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">Unit Conversion Cheat Sheet</h3>
+                <p class="article-card__excerpt">Quick reference for common unit conversions developers use daily.</p>
+              </div>
+            </a>
+            <a href="base64-encode-decode-guide.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">How to Encode and Decode Base64 Online</h3>
+                <p class="article-card__excerpt">Learn Base64 encoding and decoding with practical examples and a free tool.</p>
+              </div>
+            </a>
+            <a href="index.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">View All Articles</h3>
+                <p class="article-card__excerpt">Browse our complete collection of developer tutorials, guides, and tips.</p>
+              </div>
+            </a>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links">
+        <a href="#" data-i18n="footer_about">About</a>
+        <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="#" data-i18n="footer_terms">Terms of Service</a>
+        <a href="#" data-i18n="footer_contact">Contact</a>
+      </div>
+      <div class="footer-social">
+        <a href="https://x.com/darrenguo57" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="X">
+          <i data-lucide="twitter"></i>
+        </a>
+        <a href="https://github.com/darrenguo57/tools-website" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="GitHub">
+          <i data-lucide="github"></i>
+        </a>
+      </div>
+      <p class="footer-copyright">&copy; 2024 UseEasyTool. <span data-i18n="footer_rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/utils.js"></script>
+</body>
+</html>

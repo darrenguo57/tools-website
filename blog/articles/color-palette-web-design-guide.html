@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Build Color Palettes for Web Projects: A Developer's Guide - UseEasyTool Blog</title>
+  <meta name="description" content="Learn how to build professional color palettes for web projects. Covers color theory basics, palette types, accessibility, CSS variables, oklch(), and dark mode strategies.">
+  <meta name="keywords" content="color palette generator online, free color palette tool, web design color tool, css color palette, color accessibility, WCAG contrast, dark mode colors, CSS variables, oklch">
+  <meta name="author" content="UseEasyTool Team">
+  <meta name="robots" content="index, follow">
+  <meta name="title-zh" content="网页设计配色指南：如何构建专业的调色板">
+  <meta name="description-zh" content="学习如何为网页项目创建专业的配色方案，包含可访问性建议和 CSS 实现技巧">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="How to Build Color Palettes for Web Projects: A Developer's Guide">
+  <meta property="og:description" content="Learn how to build professional color palettes for web projects. Covers color theory basics, palette types, accessibility, CSS variables, oklch(), and dark mode strategies.">
+  <meta property="og:url" content="https://useeasytool.com/blog/articles/color-palette-web-design-guide.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta property="article:published_time" content="2026-08-04">
+  <meta property="article:tag" content="color">
+  <meta property="article:tag" content="css">
+  <meta property="article:tag" content="design">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="How to Build Color Palettes for Web Projects: A Developer's Guide">
+  <meta name="twitter:description" content="Learn how to build professional color palettes for web projects. Covers color theory basics, palette types, accessibility, CSS variables, oklch(), and dark mode strategies.">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "How to Build Color Palettes for Web Projects: A Developer's Guide",
+    "description": "Learn how to build professional color palettes for web projects. Covers color theory basics, palette types, accessibility, CSS variables, oklch(), and dark mode strategies.",
+    "image": "https://useeasytool.com/assets/images/blog/color-palette-web-design-guide.jpg",
+    "datePublished": "2026-08-04",
+    "dateModified": "2026-08-04",
+    "author": {
+      "@type": "Organization",
+      "name": "UseEasyTool Team"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "UseEasyTool",
+      "url": "https://useeasytool.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://useeasytool.com/assets/images/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://useeasytool.com/blog/articles/color-palette-web-design-guide.html"
+    },
+    "keywords": ["color palette generator online", "free color palette tool", "web design color tool", "css color palette", "color accessibility", "WCAG contrast", "dark mode colors", "CSS variables", "oklch"]
+  }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="../../assets/css/blog.css">
+  <!-- AMP Auto Ads -->
+  <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+  <!-- AMP Ad (Multi-ad) -->
+  <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
+  <!-- Google AdSense (In-article ad) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5246764554303000" crossorigin="anonymous"></script>
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WFG5TSM6M"></script>
+  <script src="../../assets/js/ga4.js"></script>
+</head>
+<body>
+  <!-- AMP Auto Ads -->
+  <amp-auto-ads type="adsense" data-ad-client="ca-pub-5246764554303000"></amp-auto-ads>
+
+  <!-- ========== Navigation ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo">
+        <i data-lucide="UseEasyTool"></i>
+        <span>UseEasyTool</span>
+      </a>
+
+      <div class="navbar-search">
+        <i data-lucide="search"></i>
+        <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+      </div>
+
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language">
+          <span class="lang-label">EN</span>
+        </button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="theme-icon-light"></i>
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+        </button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== Main Layout ========== -->
+  <div class="main-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3 data-i18n="sidebar_categories">Categories</h3>
+      </div>
+      <ul class="sidebar-list">
+        <li>
+          <a href="../../index.html" class="sidebar-item" data-category="all">
+            <i data-lucide="layout-grid"></i>
+            <span data-i18n="cat_all">All Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=converters" class="sidebar-item" data-category="converters">
+            <i data-lucide="repeat"></i>
+            <span data-i18n="cat_converters">Converters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=calculators" class="sidebar-item" data-category="calculators">
+            <i data-lucide="calculator"></i>
+            <span data-i18n="cat_calculators">Calculators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=image-tools" class="sidebar-item" data-category="image-tools">
+            <i data-lucide="image"></i>
+            <span data-i18n="cat_image_tools">Image Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=generators" class="sidebar-item" data-category="generators">
+            <i data-lucide="sparkles"></i>
+            <span data-i18n="cat_generators">Generators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=formatters" class="sidebar-item" data-category="formatters">
+            <i data-lucide="braces"></i>
+            <span data-i18n="cat_formatters">Formatters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=crypto" class="sidebar-item" data-category="crypto">
+            <i data-lucide="shield"></i>
+            <span data-i18n="cat_crypto">Encryption</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=charts" class="sidebar-item" data-category="charts">
+            <i data-lucide="bar-chart-3"></i>
+            <span data-i18n="cat_charts">Charts</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=testing" class="sidebar-item" data-category="testing">
+            <i data-lucide="flask-conical"></i>
+            <span data-i18n="cat_testing">Testing</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="article-detail">
+
+        <!-- Article Hero -->
+        <header class="article-hero">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="../../index.html">Home</a>
+            <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+            <a href="../index.html">Blog</a>
+            <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+            <span class="breadcrumb-current">Building Color Palettes for Web Projects</span>
+          </nav>
+
+          <div class="article-hero__tags">
+            <span class="blog-tag">color</span>
+            <span class="blog-tag">css</span>
+            <span class="blog-tag">design</span>
+          </div>
+
+          <h1 class="article-hero__title">How to Build Color Palettes for Web Projects: A Developer's Guide</h1>
+
+          <div class="article-hero__meta">
+            <div class="article-hero__author">
+              <div class="article-hero__author-avatar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <div class="article-hero__author-info">
+                <span class="article-hero__author-name">UseEasyTool Team</span>
+                <span class="article-hero__author-role">Web Design</span>
+              </div>
+            </div>
+            <div class="article-hero__stats">
+              <span class="article-hero__stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                August 4, 2026
+              </span>
+              <span class="article-hero__stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                7 min read
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Article Cover -->
+        <div class="article-cover">
+          <div class="article-card__image-placeholder" style="height:360px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+        </div>
+
+        <!-- Google AdSense - In-Article Ad -->
+        <div class="ad-zone ad-zone--in-article" style="margin: 24px 0; text-align: center;">
+          <ins class="adsbygoogle"
+               style="display:block; text-align:center;"
+               data-ad-layout="in-article"
+               data-ad-format="fluid"
+               data-ad-client="ca-pub-5246764554303000"
+               data-ad-slot="2018245511"></ins>
+          <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        </div>
+
+        <!-- Article Content -->
+        <article class="article-content" data-title-zh="网页设计配色指南：如何构建专业的调色板" data-excerpt-zh="学习如何为网页项目创建专业的配色方案，包含可访问性建议和 CSS 实现技巧">
+
+          <h2>Why Color Matters More Than Most Developers Think</h2>
+          <p>Color is the first thing users notice. Before they read your headline or click your button, their brain has already processed the dominant hues on the screen. Studies back this up: people form an opinion about a website within 50 milliseconds, and color drives a huge chunk of that impression.</p>
+          <p>The business impact is real. A/B tests consistently show that changing a call-to-action button color can swing conversion rates by 10-30%. I once worked on a signup flow where switching the primary action from red to green increased completions by 18%. The copy did not change. The layout did not change. Just the color.</p>
+          <p>Accessibility is the other side of the coin. Roughly 1 in 12 men have some form of color vision deficiency. If your interface relies on red/green alone to show success or failure, you are actively excluding people. Color is not just decoration. It is a functional tool that affects revenue, usability, and legal compliance.</p>
+
+          <h2>The Basics: Hue, Saturation, and Lightness</h2>
+          <p>Hex codes like <code>#3B82F6</code> are great for copying values, but terrible for reasoning about color. A better model is HSL — Hue, Saturation, Lightness. It maps to how humans actually think about color.</p>
+          <ul>
+            <li><strong>Hue</strong> (0-360): the base color. Red is 0, green is 120, blue is 240.</li>
+            <li><strong>Saturation</strong> (0-100%): how vivid the color is. 0% is gray, 100% is pure color.</li>
+            <li><strong>Lightness</strong> (0-100%): how bright the color is. 0% is black, 50% is the pure hue, 100% is white.</li>
+          </ul>
+          <p>This mental model makes palette building trivial. Want a darker shade of your brand blue? Drop the lightness. Want a muted background tint? Drop the saturation and raise the lightness. HSL turns color into a system you can reason about.</p>
+          <pre><code>/* Same color, three HSL variations */
+--color-primary: hsl(220, 90%, 56%);      /* vivid blue */
+--color-primary-dark: hsl(220, 90%, 40%);  /* darker shade */
+--color-primary-light: hsl(220, 80%, 92%); /* soft tint */</code></pre>
+
+          <h2>Types of Color Palettes</h2>
+          <p>There are five palette structures that cover 95% of web projects. Each one creates a different mood and suits a different use case.</p>
+
+          <h3>Monochromatic</h3>
+          <p>One hue, multiple lightness and saturation values. The result is clean, calm, and cohesive. I use monochromatic palettes for dashboards, admin panels, and any interface where content — not chrome — should dominate. A typical monochromatic blue scale might look like this:</p>
+          <pre><code>--blue-50:  #EFF6FF;
+--blue-100: #DBEAFE;
+--blue-300: #93C5FD;
+--blue-500: #3B82F6;
+--blue-700: #1D4ED8;
+--blue-900: #1E3A8A;</code></pre>
+
+          <h3>Analogous</h3>
+          <p>Colors that sit next to each other on the wheel, usually within a 30-60 degree range. These palettes feel natural because they show up in sunsets, forests, and oceans. They work well for lifestyle brands and editorial sites.</p>
+
+          <h3>Complementary</h3>
+          <p>Colors from opposite sides of the wheel, 180 degrees apart. Blue and orange is the classic example. Complementary palettes create high contrast and visual energy. They are perfect for call-to-action buttons against a neutral background. Just do not use both colors at full strength everywhere — that creates eye strain.</p>
+
+          <h3>Triadic</h3>
+          <p>Three colors spaced evenly around the wheel (120 degrees apart). Red, yellow, and blue are the simplest triadic scheme. These palettes are vibrant and playful. They suit educational products, creative tools, and brands targeting younger audiences. Pick one color to dominate and use the other two as accents.</p>
+
+          <h3>Split-Complementary</h3>
+          <p>A base color plus the two colors adjacent to its complement. This gives you strong visual contrast without the tension of a pure complementary pair. It is my go-to for marketing sites: enough energy to feel exciting, but balanced enough to read comfortably.</p>
+
+          <h2>Using a Free Online Color Palette Generator</h2>
+          <p>You can build palettes by hand, but a <strong>free color palette tool</strong> speeds up the process dramatically. A good <strong>color palette generator online</strong> lets you lock in a base color, tweak harmony rules, and export everything in hex, RGB, or HSL.</p>
+          <p>Here is my typical workflow:</p>
+          <ol>
+            <li>Start with one brand color — usually the logo hex code.</li>
+            <li>Pick a harmony rule. For SaaS, I usually go monochromatic or split-complementary. For creative portfolios, analogous works better.</li>
+            <li>Generate tints and shades. A proper palette needs 5-7 steps per hue, not just one hex value.</li>
+            <li>Test contrast immediately. If your lightest tint fails against white, or your darkest shade fails against black, adjust the saturation curve.</li>
+            <li>Copy the CSS variables and paste them into your project.</li>
+          </ol>
+          <p>Our <a href="../../tools/image-tools/color-palette.html">free color palette tool</a> handles steps 2 through 5 in one place. You can also try the <a href="../../tools/testers/color-picker.html">color picker</a> to inspect and fine-tune individual values.</p>
+
+          <h2>Building Accessible Palettes</h2>
+          <p>WCAG 2.1 sets the standard. For normal text, you need a contrast ratio of at least <strong>4.5:1</strong> against the background. For large text (18px bold or 24px regular), the minimum is 3:1. If you want AAA compliance, aim for 7:1.</p>
+          <p>Here is a practical example. Medium gray text on white is a classic mistake:</p>
+          <pre><code>/* 3.98:1 contrast — fails WCAG AA */
+color: #9CA3AF;
+background: #FFFFFF;
+
+/* 7.23:1 contrast — passes WCAG AAA */
+color: #374151;
+background: #FFFFFF;</code></pre>
+          <p>I check contrast ratios while I build the palette, not after the site is coded. Fixing contrast at the end means redesigning components. Fixing it at the palette stage means tweaking a few HSL values. The <a href="../../tools/testers/color-picker.html">color picker tool</a> shows contrast ratios in real time, which saves a lot of back-and-forth.</p>
+          <p>One more rule: never use color as the only signal. Error states need an icon or text label, not just red. Success states need confirmation, not just green. This helps colorblind users, screen reader users, and anyone viewing your site on a low-quality display.</p>
+
+          <h2>CSS Implementation: Variables, oklch(), and Modern Syntax</h2>
+          <p>Once you have a palette, you need a robust way to use it in code. CSS custom properties are the foundation. I organize them in two layers: raw color scales and semantic tokens.</p>
+          <pre><code>/* Layer 1: Raw color scale */
+:root {
+  --gray-50:  #F9FAFB;
+  --gray-100: #F3F4F6;
+  --gray-200: #E5E7EB;
+  --gray-400: #9CA3AF;
+  --gray-600: #4B5563;
+  --gray-900: #111827;
+
+  --blue-50:  #EFF6FF;
+  --blue-500: #3B82F6;
+  --blue-700: #1D4ED8;
+
+  --amber-400: #FBBF24;
+  --amber-500: #F59E0B;
+}
+
+/* Layer 2: Semantic tokens */
+:root {
+  --color-bg:         var(--gray-50);
+  --color-surface:    var(--white);
+  --color-text:       var(--gray-900);
+  --color-text-muted: var(--gray-600);
+  --color-border:     var(--gray-200);
+  --color-primary:    var(--blue-500);
+  --color-primary-hover: var(--blue-700);
+  --color-accent:     var(--amber-500);
+}</code></pre>
+          <p>This separation means you can swap the entire theme by changing semantic tokens. Dark mode becomes a simple override:</p>
+          <pre><code>[data-theme="dark"] {
+  --color-bg:         var(--gray-900);
+  --color-surface:    var(--gray-800);
+  --color-text:       var(--gray-50);
+  --color-text-muted: var(--gray-400);
+  --color-border:     var(--gray-700);
+}</code></pre>
+          <p>For cutting-edge projects, consider <code>oklch()</code>. Unlike HSL, oklch is perceptually uniform. A 20% lightness increase in oklch looks like the same visual step regardless of hue. In HSL, the same numeric step can look wildly different between blue and yellow. Browser support for oklch() is now over 93%, so it is safe for most projects.</p>
+          <pre><code>/* oklch: perceptually uniform color */
+--color-primary: oklch(60% 0.2 250);
+--color-primary-light: oklch(80% 0.1 250);
+--color-primary-dark: oklch(40% 0.25 250);</code></pre>
+
+          <h2>Real Examples: Three Projects, Three Palettes</h2>
+          <p>Theory is useful, but concrete examples seal the deal. Here are three palettes I have used on real projects.</p>
+
+          <h3>SaaS Dashboard</h3>
+          <p>Dashboards need focus. You want users looking at data, not at the UI. I use a near-monochromatic slate scale with a single blue accent for primary actions and an amber accent for warnings.</p>
+          <pre><code>/* SaaS dashboard palette */
+--bg: #F8FAFC;
+--surface: #FFFFFF;
+--text: #0F172A;
+--text-muted: #64748B;
+--border: #E2E8F0;
+--primary: #2563EB;
+--primary-hover: #1D4ED8;
+--warning: #D97706;
+--success: #059669;</code></pre>
+
+          <h3>Personal Blog</h3>
+          <p>Blogs are about reading. High contrast is non-negotiable. I prefer warm neutrals over cool grays because they feel less clinical. A warm gray text on an off-white background is easier on the eyes during long reading sessions.</p>
+          <pre><code>/* Blog palette */
+--bg: #FDFCF8;
+--surface: #FFFFFF;
+--text: #292524;
+--text-muted: #78716C;
+--border: #E7E5E4;
+--primary: #B45309;
+--primary-hover: #92400E;</code></pre>
+
+          <h3>Marketing Landing Page</h3>
+          <p>Landing pages need energy. A split-complementary scheme with a bold primary and a contrasting CTA color creates visual hierarchy. Just keep the background neutral so the colors have room to breathe.</p>
+          <pre><code>/* Landing page palette */
+--bg: #FFFFFF;
+--surface: #F3F4F6;
+--text: #111827;
+--text-muted: #6B7280;
+--border: #E5E7EB;
+--primary: #7C3AED;
+--primary-hover: #6D28D9;
+--cta: #F59E0B;
+--cta-hover: #D97706;</code></pre>
+
+          <h2>Common Mistakes Developers Make With Color</h2>
+          <p>I have made all of these mistakes. I still see them in production code regularly.</p>
+          <ul>
+            <li><strong>Too many colors.</strong> You do not need twelve different hues. Most professional sites get by with one primary, one accent, and a gray scale. Extra colors should earn their place.</li>
+            <li><strong>Ignoring dark mode.</strong> Users expect it now. If you design for light mode only, you are shipping half a product. Plan your dark palette from day one.</li>
+            <li><strong>No system for grays.</strong> Random gray values like <code>#ECECEC</code>, <code>#F5F5F5</code>, and <code>#EEEEEE</code> scattered across a codebase are a maintenance nightmare. Build a stepped gray scale and stick to it.</li>
+            <li><strong>Pure black text.</strong> <code>#000000</code> on <code>#FFFFFF</code> creates maximum contrast, but it also creates maximum eye strain. A soft black like <code>#111827</code> or <code>#1A1A1A</code> reads better.</li>
+          </ul>
+
+          <h2>Dark Mode Palettes: What Changes and What Stays</h2>
+          <p>Dark mode is not just an inversion. If you flip every light value to dark, you get a harsh, high-contrast mess that feels like staring into a flashlight.</p>
+          <p>Here is what actually changes:</p>
+          <ul>
+            <li><strong>Backgrounds</strong> shift from white/off-white to deep grays like <code>#0F172A</code> or <code>#18181B</code>. Avoid pure black; it kills depth perception.</li>
+            <li><strong>Text</strong> shifts from near-black to off-white like <code>#F8FAFC</code>. Pure white on dark gray vibrates visually.</li>
+            <li><strong>Borders</strong> become lighter than the surface, not darker. On a dark background, a lighter border creates separation.</li>
+          </ul>
+          <p>Here is what stays roughly the same:</p>
+          <ul>
+            <li><strong>Brand hues.</strong> Your primary blue is still your primary blue. You might bump the lightness slightly so it pops against dark gray.</li>
+            <li><strong>Semantic meaning.</strong> Success is still green, error is still red, warning is still amber. Do not swap these just for dark mode.</li>
+          </ul>
+          <p>If you use <code>oklch()</code>, dark mode gets easier. Because oklch lightness maps to human perception, a 60% lightness value looks similarly bright against both light and dark backgrounds. You can keep the same hue and chroma, tweak the lightness, and get a natural dark variant.</p>
+          <p>For gradient transitions in dark mode, the <a href="../../tools/testers/css-gradient.html">CSS gradient generator</a> can help you preview how two colors blend at different lightness levels. And if you are optimizing hero images or thumbnails for your new dark-themed site, our <a href="../../tools/image-tools/compress.html">image compression tool</a> keeps file sizes small without quality loss.</p>
+
+          <h2>Putting It All Together</h2>
+          <p>Building a color palette is part art and part engineering. Start with a single hue. Expand it into a monochromatic scale. Add one accent color if you need contrast. Test every text/background pair for WCAG compliance. Encode it all in CSS variables with a clear split between raw colors and semantic tokens. Plan your dark mode at the same time as your light mode.</p>
+          <p>A good <strong>web design color tool</strong> makes this process faster, but the decisions are still yours. Pick colors that support your content, guide your users, and work for everyone. That is the difference between a palette that looks good in Figma and one that actually performs on the web.</p>
+
+                <!-- Google AdSense - Multi Ad -->
+        <div class="ad-zone ad-zone--multi" style="margin: 24px 0; text-align: center;">
+          <amp-ad width="100vw" height="320"
+               type="adsense"
+               data-ad-client="ca-pub-5246764554303000"
+               data-ad-slot="3469113897"
+               data-auto-format="mcrspv"
+               data-full-width="">
+            <div overflow=""></div>
+          </amp-ad>
+        </div>
+</article>
+
+        <!-- Article Footer -->
+        <footer class="article-footer">
+          <div class="article-footer__share">
+            <span class="article-footer__share-label">Share this article:</span>
+            <div class="article-footer__share-buttons">
+              <button class="article-footer__share-btn" aria-label="Share on X" onclick="window.open('https://x.com/intent/tweet?url=' + encodeURIComponent(window.location.href) + '&text=' + encodeURIComponent(document.title), '_blank')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+              </button>
+              <button class="article-footer__share-btn" aria-label="Share on LinkedIn" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(window.location.href), '_blank')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              </button>
+              <button class="article-footer__share-btn" aria-label="Copy link" onclick="navigator.clipboard.writeText(window.location.href)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+            </div>
+          </div>
+        </footer>
+
+        <!-- Related Articles -->
+        <section class="article-related">
+          <h2 class="article-related__title">Related Articles</h2>
+          <div class="article-related__grid">
+            <a href="color-theory-web-designers.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">Color Theory for Web Designers</h3>
+                <p class="article-card__excerpt">Master color wheel principles, harmony schemes, and CSS variables to build beautiful, inclusive interfaces.</p>
+              </div>
+            </a>
+            <a href="image-compression-tips.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">Image Compression Tips</h3>
+                <p class="article-card__excerpt">Reduce file sizes without losing quality — learn about formats, lossy vs lossless, and automation.</p>
+              </div>
+            </a>
+            <a href="../index.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">View All Articles</h3>
+                <p class="article-card__excerpt">Browse our complete collection of developer tutorials, guides, and tips.</p>
+              </div>
+            </a>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links">
+        <a href="../../about.html" data-i18n="footer_about">About</a>
+        <a href="../../privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="../../terms.html" data-i18n="footer_terms">Terms of Service</a>
+        <a href="../../contact.html" data-i18n="footer_contact">Contact</a>
+      </div>
+      <div class="footer-social">
+        <a href="https://x.com/darrenguo57" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="X">
+          <i data-lucide="twitter"></i>
+        </a>
+        <a href="https://github.com/darrenguo57/tools-website" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="GitHub">
+          <i data-lucide="github"></i>
+        </a>
+      </div>
+      <p class="footer-copyright">&copy; 2026 UseEasyTool. <span data-i18n="footer_rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Scripts -->
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="../../assets/js/cookie-consent.js"></script>
+</body>
+</html>

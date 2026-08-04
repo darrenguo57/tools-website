@@ -69,6 +69,10 @@
   <link rel="stylesheet" href="../../assets/css/blog.css">
   <!-- AMP Auto Ads -->
   <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+  <!-- AMP Ad (Multi-ad) -->
+  <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
+  <!-- Google AdSense (In-article ad) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5246764554303000" crossorigin="anonymous"></script>
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WFG5TSM6M"></script>
   <script src="../../assets/js/ga4.js"></script>
@@ -224,6 +228,18 @@
         </div>
 
         <!-- Article Content -->
+                <!-- Google AdSense - In-Article Ad -->
+        <div class="ad-zone ad-zone--in-article" style="margin: 24px 0; text-align: center;">
+          <ins class="adsbygoogle"
+               style="display:block; text-align:center;"
+               data-ad-layout="in-article"
+               data-ad-format="fluid"
+               data-ad-client="ca-pub-5246764554303000"
+               data-ad-slot="2018245511"></ins>
+          <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        </div>
         <article class="article-content">
 
           <h2>Good Charts Tell Stories. Bad Charts Tell Lies.</h2>
@@ -550,7 +566,18 @@ new Chart(ctx, {
           <p>Data visualization is a craft where small design decisions compound into dramatically different reader experiences. The principles are few but non-negotiable: <strong>pick the right chart for the relationship</strong>, <strong>use color to encode meaning</strong> (not decoration), <strong>make every chart self-sufficient</strong> with clear titles and labels, <strong>add interactivity as a supplement</strong> (not a crutch), and <strong>design for everyone</strong> by following accessibility fundamentals from the start.</p>
           <p>Ready to put these principles into practice? Create charts instantly with our <a href="../../tools/charts/chart-basic.html">basic chart builder</a> for standard visualizations, or use the <a href="../../tools/charts/chart-advanced.html">advanced chart tool</a> when you need custom configurations, annotations, and interactive features — no setup required.</p>
 
-        </article>
+                <!-- Google AdSense - Multi Ad -->
+        <div class="ad-zone ad-zone--multi" style="margin: 24px 0; text-align: center;">
+          <amp-ad width="100vw" height="320"
+               type="adsense"
+               data-ad-client="ca-pub-5246764554303000"
+               data-ad-slot="3469113897"
+               data-auto-format="mcrspv"
+               data-full-width="">
+            <div overflow=""></div>
+          </amp-ad>
+        </div>
+</article>
 
         <!-- Article Footer -->
         <footer class="article-footer">

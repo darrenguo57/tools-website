@@ -78,6 +78,8 @@
   </script>
   <!-- AMP Auto Ads -->
   <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+  <!-- AMP Ad (Display & Multi-ad) -->
+  <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WFG5TSM6M"></script>
   <script src="../../assets/js/ga4.js"></script>
@@ -215,7 +217,18 @@
         </div>
     
     <!-- Tool Description / How to Use -->
-      <section class="tool-info">
+          <!-- Google AdSense - Display Ad -->
+    <div class="ad-zone ad-zone--display" style="margin: 24px 0; text-align: center;">
+      <amp-ad width="100vw" height="320"
+           type="adsense"
+           data-ad-client="ca-pub-5246764554303000"
+           data-ad-slot="4644408855"
+           data-auto-format="rspv"
+           data-full-width="">
+        <div overflow=""></div>
+      </amp-ad>
+    </div>
+    <section class="tool-info">
         <h2 class="tool-info__title" data-i18n="how_to_use">How to Use</h2>
         <div class="tool-guide-content">
     <h3>About This Tool</h3>
@@ -239,6 +252,17 @@
     <p>Web developers generate responsive image sets at multiple resolutions. Bloggers resize photos to match content width. E-commerce vendors standardize product images to uniform dimensions. Job seekers format profile pictures to platform requirements. Real estate agents resize high-resolution property photos for MLS listings. Graphic designers prepare assets at 1x, 2x, and 3x for multi-density displays.</p>
   </div>
       </section>
+        <!-- Google AdSense - Multi Ad -->
+    <div class="ad-zone ad-zone--multi" style="margin: 24px 0; text-align: center;">
+      <amp-ad width="100vw" height="320"
+           type="adsense"
+           data-ad-client="ca-pub-5246764554303000"
+           data-ad-slot="3469113897"
+           data-auto-format="mcrspv"
+           data-full-width="">
+        <div overflow=""></div>
+      </amp-ad>
+    </div>
     </main>
     
     <!-- Footer -->
