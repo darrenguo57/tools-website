@@ -51,3 +51,20 @@ ui-debug.log
 
 # Trae 内部文件（不提交到远程仓库）
 .trae/
+
+# 运营推广内部文档（不上传公开）
+ads_code.txt
+x-promotion-plan.html
+
+# 测试文档（不上传公开）
+docs/test-report/
+docs/test-cases.md
+docs/test-plan.md
+docs/test-report.md
+playwright-helper.js
+playwright-test-1.60.0.tgz
+playwright.config.js
+
+# Firebase 配置（已在 GitHub Actions secrets 中管理）
+.firebaserc
+firebase.json

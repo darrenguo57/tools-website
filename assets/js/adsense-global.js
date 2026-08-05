@@ -9,7 +9,7 @@ const AdSenseGlobal = (() => {
   'use strict';
 
   // Google AdSense 发布商 ID
-  const PUBLISHER_ID = 'pub-5246764554303000';
+  const PUBLISHER_ID = 'ca-pub-5246764554303000';
   
   // 广告配置
   const CONFIG = {
@@ -69,7 +69,7 @@ const AdSenseGlobal = (() => {
     // 创建 AdSense 脚本
     const script = document.createElement('script');
     script.async = true;
-    script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${PUBLISHER_ID}`;
+    script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${PUBLISHER_ID.replace('ca-pub-', '')}`;
     script.crossOrigin = 'anonymous';
     script.setAttribute('data-ad-client', PUBLISHER_ID);
     script.setAttribute('data-auto-ads', 'true');

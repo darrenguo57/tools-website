@@ -74,8 +74,7 @@
   <!-- AMP Auto Ads -->
   <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
   <!-- AMP Ad (Multi-ad) -->
-  <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
-  <!-- Google AdSense (In-article ad) -->
+    <!-- Google AdSense (In-article ad) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5246764554303000" crossorigin="anonymous"></script>
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WFG5TSM6M"></script>
@@ -471,14 +470,15 @@ pandoc input.md -o output.html --from=gfm</code></pre>
 
                 <!-- Google AdSense - Multi Ad -->
         <div class="ad-zone ad-zone--multi" style="margin: 24px 0; text-align: center;">
-          <amp-ad width="100vw" height="320"
-               type="adsense"
+          <ins class="adsbygoogle"
+               style="display:block; text-align:center;"
+               data-ad-format="auto"
+               data-full-width-responsive="true"
                data-ad-client="ca-pub-5246764554303000"
-               data-ad-slot="3469113897"
-               data-auto-format="mcrspv"
-               data-full-width="">
-            <div overflow=""></div>
-          </amp-ad>
+               data-ad-slot="3469113897"></ins>
+            <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
         </div>
 </article>
 
