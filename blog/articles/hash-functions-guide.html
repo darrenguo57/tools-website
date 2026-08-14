@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Understanding Hash Functions: A Developer's Guide to MD5, SHA-256, and Beyond - UseEasyTool Blog</title>
+  <meta name="description" content="A practical guide to hash functions for developers. Learn how MD5, SHA-1, SHA-256, and SHA-512 work, when to use each, collision risks, and how to generate hashes online for free.">
+  <meta name="keywords" content="hash generator online, free hash tool, sha-256 generator online, md5 hash generator, hash function, sha-512, checksum tool">
+  <meta name="author" content="UseEasyTool Team">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://useeasytool.com/blog/articles/hash-functions-guide.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Understanding Hash Functions: A Developer's Guide to MD5, SHA-256, and Beyond">
+  <meta property="og:description" content="A practical guide to hash functions for developers. Learn how MD5, SHA-1, SHA-256, and SHA-512 work, when to use each, collision risks, and how to generate hashes online for free.">
+  <meta property="og:url" content="https://useeasytool.com/blog/articles/hash-functions-guide.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta property="article:published_time" content="2026-08-11">
+  <meta property="article:tag" content="hash">
+  <meta property="article:tag" content="encryption">
+  <meta property="article:tag" content="security">
+  <meta property="article:tag" content="developer-tools">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Understanding Hash Functions: A Developer's Guide to MD5, SHA-256, and Beyond">
+  <meta name="twitter:description" content="A practical guide to hash functions for developers. Learn how MD5, SHA-1, SHA-256, and SHA-512 work, when to use each, collision risks, and how to generate hashes online for free.">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Understanding Hash Functions: A Developer's Guide to MD5, SHA-256, and Beyond",
+    "description": "A practical guide to hash functions for developers. Learn how MD5, SHA-1, SHA-256, and SHA-512 work, when to use each, collision risks, and how to generate hashes online for free.",
+    "image": "https://useeasytool.com/assets/images/blog/hash-functions-guide.jpg",
+    "datePublished": "2026-08-11",
+    "dateModified": "2026-08-11",
+    "author": {
+      "@type": "Organization",
+      "name": "UseEasyTool Team"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "UseEasyTool",
+      "url": "https://useeasytool.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://useeasytool.com/assets/images/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://useeasytool.com/blog/articles/hash-functions-guide.html"
+    },
+    "keywords": ["hash generator online", "free hash tool", "sha-256 generator", "md5 hash", "hash function", "checksum"]
+  }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="../../assets/css/blog.css">
+  <!-- AMP Auto Ads -->
+  <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5246764554303000" crossorigin="anonymous"></script>
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WFG5TSM6M"></script>
+  <script src="../../assets/js/ga4.js"></script>
+</head>
+<body>
+  <!-- AMP Auto Ads -->
+  <amp-auto-ads type="adsense" data-ad-client="ca-pub-5246764554303000"></amp-auto-ads>
+
+
+  <!-- ========== Navigation ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../../index.html" class="navbar-logo">
+        <i data-lucide="UseEasyTool"></i>
+        <span>UseEasyTool</span>
+      </a>
+
+      <div class="navbar-search">
+        <i data-lucide="search"></i>
+        <input type="text" class="search-input" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search tools...">
+      </div>
+
+      <div class="navbar-actions">
+        <button class="btn-icon" id="langToggle" aria-label="Toggle Language">
+          <span class="lang-label">EN</span>
+        </button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="theme-icon-light"></i>
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+        </button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== Main Layout ========== -->
+  <div class="main-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3 data-i18n="sidebar_categories">Categories</h3>
+      </div>
+      <ul class="sidebar-list">
+        <li>
+          <a href="../../index.html" class="sidebar-item" data-category="all">
+            <i data-lucide="layout-grid"></i>
+            <span data-i18n="cat_all">All Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=converters" class="sidebar-item" data-category="converters">
+            <i data-lucide="repeat"></i>
+            <span data-i18n="cat_converters">Converters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=calculators" class="sidebar-item" data-category="calculators">
+            <i data-lucide="calculator"></i>
+            <span data-i18n="cat_calculators">Calculators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=image-tools" class="sidebar-item" data-category="image-tools">
+            <i data-lucide="image"></i>
+            <span data-i18n="cat_image_tools">Image Tools</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=generators" class="sidebar-item" data-category="generators">
+            <i data-lucide="sparkles"></i>
+            <span data-i18n="cat_generators">Generators</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=formatters" class="sidebar-item" data-category="formatters">
+            <i data-lucide="braces"></i>
+            <span data-i18n="cat_formatters">Formatters</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=crypto" class="sidebar-item" data-category="crypto">
+            <i data-lucide="shield"></i>
+            <span data-i18n="cat_crypto">Encryption</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=charts" class="sidebar-item" data-category="charts">
+            <i data-lucide="bar-chart-3"></i>
+            <span data-i18n="cat_charts">Charts</span>
+          </a>
+        </li>
+        <li>
+          <a href="../../index.html?category=testing" class="sidebar-item" data-category="testing">
+            <i data-lucide="flask-conical"></i>
+            <span data-i18n="cat_testing">Testing</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="article-detail">
+
+        <!-- Article Hero -->
+        <header class="article-hero">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="../../index.html">Home</a>
+            <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+            <a href="../index.html">Blog</a>
+            <i data-lucide="chevron-right" class="breadcrumb-separator"></i>
+            <span class="breadcrumb-current">Hash Functions Guide</span>
+          </nav>
+
+          <div class="article-hero__tags">
+            <span class="blog-tag">hash</span>
+            <span class="blog-tag">encryption</span>
+            <span class="blog-tag">security</span>
+            <span class="blog-tag">developer-tools</span>
+          </div>
+
+          <h1 class="article-hero__title">Understanding Hash Functions: A Developer's Guide to MD5, SHA-256, and Beyond</h1>
+
+          <div class="article-hero__meta">
+            <div class="article-hero__author">
+              <div class="article-hero__author-avatar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <div class="article-hero__author-info">
+                <span class="article-hero__author-name">UseEasyTool Team</span>
+                <span class="article-hero__author-role">Developer Tools</span>
+              </div>
+            </div>
+            <div class="article-hero__stats">
+              <span class="article-hero__stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                August 11, 2026
+              </span>
+              <span class="article-hero__stat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                9 min read
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Article Cover -->
+        <div class="article-cover">
+          <div class="article-card__image-placeholder" style="height:360px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+        </div>
+
+        <!-- Article Content -->
+        <!-- Google AdSense - In-Article Ad -->
+        <div class="ad-zone ad-zone--in-article" style="margin: 24px 0; text-align: center;">
+          <ins class="adsbygoogle"
+               style="display:block; text-align:center;"
+               data-ad-layout="in-article"
+               data-ad-format="fluid"
+               data-ad-client="ca-pub-5246764554303000"
+               data-ad-slot="2018245511"></ins>
+          <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        </div>
+        <article class="article-content">
+
+          <p>Hash functions are one of those things every developer uses but few truly understand. You hash passwords, verify file integrity, generate cache keys, and sign API requests, all relying on functions you probably could not explain in detail. That is usually fine, until you pick the wrong hash for a security-sensitive task and things break.</p>
+          <p>This guide covers what hash functions are, how the common algorithms differ, and which one to reach for in each situation. No cryptography PhD required.</p>
+
+          <h2>What Is a Hash Function?</h2>
+          <p>A hash function takes an input of any size and produces a fixed-size output called a <strong>hash</strong> or <strong>digest</strong>. The same input always produces the same output. Different inputs should produce different outputs. The output looks random but is fully deterministic.</p>
+          <pre><code>SHA-256("hello") = 2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824
+SHA-256("Hello") = 185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969</code></pre>
+          <p>Notice that changing a single character from lowercase <code>h</code> to uppercase <code>H</code> completely changes the hash. This is called the <strong>avalanche effect</strong>, and it is a core property of cryptographic hash functions. A small change in the input cascades through the algorithm and produces a totally different output.</p>
+          <p>A good cryptographic hash function has four properties:</p>
+          <ul>
+            <li><strong>Deterministic:</strong> The same input always produces the same hash.</li>
+            <li><strong>Fast to compute:</strong> Given an input, the hash is computed quickly.</li>
+            <li><strong>One-way (preimage resistant):</strong> Given a hash, you cannot feasibly reverse it to find the original input.</li>
+            <li><strong>Collision resistant:</strong> It is computationally infeasible to find two different inputs that produce the same hash.</li>
+          </ul>
+
+          <h2>Common Hash Algorithms Compared</h2>
+          <p>There are dozens of hash algorithms, but in practice you will encounter four families. Here is how they compare.</p>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Algorithm</th>
+                  <th>Output Size</th>
+                  <th>Security Status</th>
+                  <th>Speed</th>
+                  <th>Best Use Case</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>MD5</strong></td>
+                  <td>128 bits (32 hex chars)</td>
+                  <td>Broken</td>
+                  <td>Very fast</td>
+                  <td>Checksums, non-security tasks</td>
+                </tr>
+                <tr>
+                  <td><strong>SHA-1</strong></td>
+                  <td>160 bits (40 hex chars)</td>
+                  <td>Broken</td>
+                  <td>Fast</td>
+                  <td>Legacy systems only</td>
+                </tr>
+                <tr>
+                  <td><strong>SHA-256</strong></td>
+                  <td>256 bits (64 hex chars)</td>
+                  <td>Secure</td>
+                  <td>Moderate</td>
+                  <td>General-purpose, passwords, signatures</td>
+                </tr>
+                <tr>
+                  <td><strong>SHA-512</strong></td>
+                  <td>512 bits (128 hex chars)</td>
+                  <td>Secure</td>
+                  <td>Moderate</td>
+                  <td>High-security applications</td>
+                </tr>
+                <tr>
+                  <td><strong>SHA-3</strong></td>
+                  <td>224-512 bits</td>
+                  <td>Secure</td>
+                  <td>Moderate</td>
+                  <td>Future-proofing, alt to SHA-2</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>MD5: Fast but Broken</h3>
+          <p>MD5 was designed in 1991 by Ronald Rivest. It produces a 128-bit hash and was widely used for checksums and digital signatures. In 2004, researchers demonstrated practical collision attacks, meaning they could find two different inputs that produce the same MD5 hash. By 2008, attacks improved to the point where collisions could be generated in seconds on a standard laptop.</p>
+          <p>MD5 is still fine for non-security tasks like file integrity checks in non-adversarial contexts or cache key generation. But never use it for passwords, digital signatures, or anything where an attacker could exploit a collision.</p>
+          <pre><code>MD5("hello") = 5d41402abc4b2a76b9719d911017c592</code></pre>
+
+          <h3>SHA-1: Also Broken</h3>
+          <p>SHA-1 was the successor to MD5, producing a 160-bit hash. It was the default for Git commit IDs, TLS certificates, and many other systems for years. In 2017, Google and CWI Amsterdam published the <a href="https://shattered.io/" target="_blank" rel="noopener noreferrer">SHAttered attack</a>, which produced a practical SHA-1 collision.</p>
+          <p>Git has since migrated to SHA-256 for new repositories. Most browsers and CAs have dropped SHA-1 certificate support. If you encounter SHA-1 in a codebase, plan to migrate.</p>
+          <pre><code>SHA-1("hello") = aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d</code></pre>
+
+          <h3>SHA-256: The Current Standard</h3>
+          <p>SHA-256 is part of the SHA-2 family, designed by the NSA and published in 2001. It produces a 256-bit hash and has no known practical attacks. It is the default hash for TLS, Bitcoin, SSH keys, and most modern security systems. If you are not sure which hash to use, use SHA-256.</p>
+          <pre><code>SHA-256("hello") = 2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824</code></pre>
+
+          <h3>SHA-512: More Bits, Same Family</h3>
+          <p>SHA-512 is the 512-bit variant of SHA-2. On 64-bit systems, it is actually faster than SHA-256 because the internal operations use 64-bit words. The longer output provides extra security margin, though 256 bits is already more than sufficient for any realistic threat model.</p>
+          <pre><code>SHA-512("hello") = 9b71d224bd62f3785d96d46ad3ea3d73319bfbc2890caadae2dff72519673ca72323c3d99ba5c11d7c7acc6e14b8c5da0c4663475c2e5c3adef46f73bcdec043</code></pre>
+
+          <h2>Practical Use Cases for Hash Functions</h2>
+          <p>Hash functions show up everywhere in software development. Here are the most common scenarios and the right algorithm for each.</p>
+
+          <h3>Password Storage</h3>
+          <p>Never store passwords in plaintext. Never store them with a plain hash like <code>SHA-256(password)</code> either. Plain hashes are vulnerable to <strong>rainbow table attacks</strong> and <strong>brute-force attacks</strong> using GPU-accelerated tools that compute billions of hashes per second.</p>
+          <p>Use a purpose-built password hashing function instead. These are deliberately slow and incorporate a salt to defeat rainbow tables:</p>
+          <ul>
+            <li><strong>Bcrypt:</strong> The most widely used password hash. Tunable cost factor. Battle-tested.</li>
+            <li><strong>Argon2:</strong> Winner of the 2015 Password Hashing Competition. Resistant to GPU and ASIC attacks. Recommended for new projects.</li>
+            <li><strong>scrypt:</strong> Memory-hard alternative. Used by some crypto wallets and authentication systems.</li>
+          </ul>
+          <pre><code>// Node.js: hashing a password with bcrypt
+const bcrypt = require('bcrypt');
+const saltRounds = 12;
+
+const hash = await bcrypt.hash('mypassword', saltRounds);
+// =&gt; $2b$12$N9qo8uLOickgx2ZMRZoMye...
+
+// Verifying later
+const match = await bcrypt.compare('mypassword', hash);
+// =&gt; true</code></pre>
+          <p>If you are stuck with SHA-256 for password hashing (some legacy systems require it), at minimum use <strong>HMAC</strong> with a server-side secret key and a per-user salt. Our <a href="../../tools/crypto/hmac.html">HMAC generator</a> can help you test HMAC outputs. But really, just use bcrypt or Argon2.</p>
+
+          <h3>File Integrity and Checksums</h3>
+          <p>Hashing is the standard way to verify that a file has not been tampered with or corrupted during transfer. Download a file, compute its hash, and compare against the published checksum. If they match, the file is intact.</p>
+          <pre><code># Verify a downloaded file on Linux/macOS
+sha256sum ubuntu-26.04.iso
+# Output: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ubuntu-26.04.iso
+
+# Compare against the official checksum
+echo "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ubuntu-26.04.iso" | sha256sum -c
+# Output: ubuntu-26.04.iso: OK</code></pre>
+          <p>For file integrity, MD5 is still commonly used because it is fast and the threat model does not usually involve adversarial collision attacks. But SHA-256 is the better default and is what most modern software distributions publish.</p>
+
+          <h3>Data Deduplication</h3>
+          <p>If you store files or content and want to detect duplicates, hashing is the answer. Compute a hash of each file's content and use it as a deduplication key. Two files with the same hash are almost certainly identical.</p>
+          <pre><code>// JavaScript: deduplicate an array of strings by content hash
+async function sha256(text) {
+  const data = new TextEncoder().encode(text);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hashBuffer))
+    .map(b =&gt; b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+const files = ['file A content', 'file B content', 'file A content'];
+const seen = new Map();
+
+for (const content of files) {
+  const hash = await sha256(content);
+  if (!seen.has(hash)) {
+    seen.set(hash, content);
+  }
+}
+
+console.log(seen.size); // 2 (one duplicate removed)</code></pre>
+
+          <h3>Cache Keys</h3>
+          <p>When you need a stable, compact key for caching, hashing the input data gives you a consistent identifier. This is common in CDNs, memoization, and database query caches.</p>
+          <pre><code>// Memoization cache keyed by argument hash
+const cache = new Map();
+
+function memoize(fn) {
+  return async function(...args) {
+    const key = await sha256(JSON.stringify(args));
+    if (cache.has(key)) return cache.get(key);
+
+    const result = await fn(...args);
+    cache.set(key, result);
+    return result;
+  };
+}</code></pre>
+          <p>For cache keys, MD5 or even a non-cryptographic hash like <code>xxHash</code> works fine. Security is not the concern here, speed is.</p>
+
+          <h3>Digital Signatures and HMAC</h3>
+          <p>When you need to verify that a message came from a specific sender and was not modified in transit, you use either a digital signature (asymmetric) or HMAC (symmetric). Both rely on hash functions internally.</p>
+          <p>HMAC combines a hash function with a secret key. The recipient, who also knows the key, can recompute the HMAC and verify authenticity. HMAC-SHA256 is the standard choice for API authentication, webhook signing, and JWT signatures.</p>
+          <pre><code>// Node.js: HMAC-SHA256 for API request signing
+const crypto = require('crypto');
+
+const secret = 'your-api-secret';
+const payload = JSON.stringify({ action: 'transfer', amount: 100 });
+
+const signature = crypto
+  .createHmac('sha256', secret)
+  .update(payload)
+  .digest('hex');
+
+// =&gt; "c7d9b0e3f2a1..."
+
+// Send payload + signature to server
+// Server recomputes HMAC and compares</code></pre>
+          <p>You can test HMAC generation with our <a href="../../tools/crypto/hmac.html">free HMAC generator</a> to make sure your signatures match between client and server.</p>
+
+          <h2>Generating Hashes in Different Languages</h2>
+          <p>Every modern language has hash functions built in or available through a standard library. Here are quick examples for the three most common languages.</p>
+
+          <h3>JavaScript (Browser and Node.js)</h3>
+          <pre><code>// Browser: using Web Crypto API
+async function sha256(message) {
+  const data = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b =&gt; b.toString(16).padStart(2, '0')).join('');
+}
+
+await sha256('hello');
+// =&gt; "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+
+// Node.js: using the crypto module
+const crypto = require('crypto');
+
+crypto.createHash('sha256').update('hello').digest('hex');
+// =&gt; "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+
+crypto.createHash('md5').update('hello').digest('hex');
+// =&gt; "5d41402abc4b2a76b9719d911017c592"</code></pre>
+
+          <h3>Python</h3>
+          <pre><code>import hashlib
+
+# SHA-256
+hashlib.sha256(b'hello').hexdigest()
+# =&gt; '2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824'
+
+# MD5
+hashlib.md5(b'hello').hexdigest()
+# =&gt; '5d41402abc4b2a76b9719d911017c592'
+
+# SHA-512
+hashlib.sha512(b'hello').hexdigest()
+# =&gt; '9b71d224bd62f3785d96d46ad3ea3d73319bfbc2890caadae2dff72519673ca7...'</code></pre>
+
+          <h3>Go</h3>
+          <pre><code>package main
+
+import (
+	"crypto/sha256"
+	"fmt"
+)
+
+func main() {
+	h := sha256.Sum256([]byte("hello"))
+	fmt.Printf("%x\n", h)
+	// =&gt; 2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824
+}</code></pre>
+
+          <h2>Using a Free Online Hash Generator</h2>
+          <p>Sometimes you just need to hash a string quickly without writing code. Maybe you are debugging an API signature, verifying a checksum, or checking what a specific input hashes to. Our <a href="../../tools/crypto/hash.html">free online hash generator</a> supports MD5, SHA-1, SHA-256, SHA-512, and SHA-3, all in one place.</p>
+          <p>The tool runs entirely in your browser. Your input never leaves your device, which matters when you are hashing sensitive data like API keys or internal identifiers. You can hash the same input with multiple algorithms simultaneously and compare outputs side by side.</p>
+          <p>For more advanced use cases, we also have a <a href="../../tools/crypto/hmac.html">free HMAC generator</a> for keyed hashing and an <a href="../../tools/crypto/aes.html">AES encryption tool</a> for when you need two-way encryption rather than one-way hashing.</p>
+
+          <h2>Hashing vs Encryption: Know the Difference</h2>
+          <p>This trips up junior developers all the time. <strong>Hashing is one-way. Encryption is two-way.</strong></p>
+          <p>A hash function cannot be reversed. You hash a password to store it, and to verify a login you hash the submitted password and compare the hashes. You never decrypt the stored hash back to the original password.</p>
+          <p>Encryption, on the other hand, is reversible. You encrypt data with a key, and someone with the right key can decrypt it back to the original. Use encryption when you need to recover the original data. Use hashing when you do not.</p>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Property</th>
+                  <th>Hashing</th>
+                  <th>Encryption</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Direction</td>
+                  <td>One-way</td>
+                  <td>Two-way (encrypt + decrypt)</td>
+                </tr>
+                <tr>
+                  <td>Key required</td>
+                  <td>No (HMAC uses a key)</td>
+                  <td>Yes</td>
+                </tr>
+                <tr>
+                  <td>Output size</td>
+                  <td>Fixed</td>
+                  <td>Variable (similar to input)</td>
+                </tr>
+                <tr>
+                  <td>Use case</td>
+                  <td>Passwords, checksums, signatures</td>
+                  <td>Confidential data, communications</td>
+                </tr>
+                <tr>
+                  <td>Example</td>
+                  <td>SHA-256, bcrypt</td>
+                  <td>AES, RSA</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2>Security Best Practices</h2>
+          <p>Here is a quick checklist for using hash functions safely in production:</p>
+          <ul>
+            <li><strong>Use SHA-256 as your default.</strong> It is secure, widely supported, and fast enough for most use cases.</li>
+            <li><strong>Never hash passwords with plain SHA-256.</strong> Use bcrypt, Argon2, or scrypt instead. These are designed to be slow, which defeats brute-force attacks.</li>
+            <li><strong>Do not use MD5 or SHA-1 for security.</strong> They are broken. Stick to legacy or non-security use cases only.</li>
+            <li><strong>Always salt passwords.</strong> A salt is a random value added to the password before hashing. It ensures that two users with the same password get different hashes. Bcrypt and Argon2 handle salting automatically.</li>
+            <li><strong>Use HMAC for message authentication.</strong> A plain hash does not prove authenticity because anyone can compute it. HMAC requires a secret key, so only someone with the key can produce a valid signature.</li>
+            <li><strong>Use constant-time comparison</strong> when comparing hashes for authentication. A standard string comparison can leak information through timing attacks. Most crypto libraries provide a constant-time compare function.</li>
+          </ul>
+          <pre><code>// Node.js: constant-time comparison
+const crypto = require('crypto');
+
+// BAD - vulnerable to timing attacks
+if (receivedHash === expectedHash) { ... }
+
+// GOOD - constant-time comparison
+if (crypto.timingSafeEqual(
+  Buffer.from(receivedHash, 'hex'),
+  Buffer.from(expectedHash, 'hex')
+)) { ... }</code></pre>
+
+          <h2>Wrapping Up</h2>
+          <p>Hash functions are a foundational tool in software development. You do not need to understand the math behind the SHA-2 compression function to use them correctly, but you do need to know which algorithm to pick and when hashing is the right tool versus encryption.</p>
+          <p>The short version: use SHA-256 for general-purpose hashing and checksums, use bcrypt or Argon2 for passwords, use HMAC for message authentication, and avoid MD5 and SHA-1 for anything security-related. When you need to quickly hash a string without writing code, use our <a href="../../tools/crypto/hash.html">free online hash generator</a>. For keyed hashing, try the <a href="../../tools/crypto/hmac.html">HMAC tool</a>. And if you need reversible encryption rather than one-way hashing, our <a href="../../tools/crypto/aes.html">AES encryption tool</a> has you covered.</p>
+          <p>Get those basics right, and you will avoid the most common hashing mistakes that lead to security vulnerabilities.</p>
+
+        <!-- Google AdSense - Multi Ad -->
+        <div class="ad-zone ad-zone--multi" style="margin: 24px 0; text-align: center;">
+          <ins class="adsbygoogle"
+               style="display:block; text-align:center;"
+               data-ad-format="auto"
+               data-full-width-responsive="true"
+               data-ad-client="ca-pub-5246764554303000"
+               data-ad-slot="3469113897"></ins>
+            <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+</article>
+
+        <!-- Article Footer -->
+        <footer class="article-footer">
+          <div class="article-footer__share">
+            <span class="article-footer__share-label">Share this article:</span>
+            <div class="article-footer__share-buttons">
+              <button class="article-footer__share-btn" aria-label="Share on X" onclick="window.open('https://x.com/intent/tweet?url=' + encodeURIComponent(window.location.href) + '&text=' + encodeURIComponent(document.title), '_blank')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+              </button>
+              <button class="article-footer__share-btn" aria-label="Share on LinkedIn" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(window.location.href), '_blank')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              </button>
+              <button class="article-footer__share-btn" aria-label="Copy link" onclick="navigator.clipboard.writeText(window.location.href)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+            </div>
+          </div>
+        </footer>
+
+        <!-- Related Articles -->
+        <section class="article-related">
+          <h2 class="article-related__title">Related Articles</h2>
+          <div class="article-related__grid">
+            <a href="../../tools/crypto/hash.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">Hash Generator Tool</h3>
+                <p class="article-card__excerpt">Generate MD5, SHA-1, SHA-256, SHA-512, and SHA-3 hashes online for free. Runs entirely in your browser.</p>
+              </div>
+            </a>
+            <a href="aes-encryption-guide.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">Understanding AES Encryption</h3>
+                <p class="article-card__excerpt">Deep dive into AES encryption: how the algorithm works, key sizes, modes of operation, and practical applications.</p>
+              </div>
+            </a>
+            <a href="../index.html" class="article-card">
+              <div class="article-card__image">
+                <div class="article-card__image-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              </div>
+              <div class="article-card__body">
+                <h3 class="article-card__title">View All Articles</h3>
+                <p class="article-card__excerpt">Browse our complete collection of developer tutorials, guides, and tips.</p>
+              </div>
+            </a>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links">
+        <a href="../../about.html" data-i18n="footer_about">About</a>
+        <a href="../../privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
+        <a href="../../terms.html" data-i18n="footer_terms">Terms of Service</a>
+        <a href="../../contact.html" data-i18n="footer_contact">Contact</a>
+      </div>
+      <div class="footer-social">
+        <a href="https://x.com/darrenguo57" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="X">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="https://github.com/darrenguo57/tools-website" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="GitHub">
+          <i data-lucide="github"></i>
+        </a>
+      </div>
+      <p class="footer-copyright">&copy; 2026 UseEasyTool. <span data-i18n="footer_rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Scripts -->
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/utils.js"></script>
+<script src="../../assets/js/cookie-consent.js"></script>
+</body>
+</html>
