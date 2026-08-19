@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regex Testing: A Practical Approach | UseEasyTool Learn</title>
+  <meta name="description" content="Master regular expressions with this practical guide. Learn syntax, common patterns, testing strategies, and regex best practices for developers.">
+  <meta name="keywords" content="regular expressions, regex testing, regex patterns, email regex, catastrophic backtracking, regex groups, lookahead lookbehind">
+  <meta name="author" content="UseEasyTool Team">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://useeasytool.com/learn/utilities-4-regex.html">
+  <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/dark.css">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Regex Testing: A Practical Approach">
+  <meta property="og:description" content="Master regular expressions with this practical guide. Learn syntax, common patterns, testing strategies, and regex best practices.">
+  <meta property="og:url" content="https://useeasytool.com/learn/utilities-4-regex.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Regex Testing: A Practical Approach">
+  <meta name="twitter:description" content="Master regular expressions with syntax, common patterns, testing strategies, and best practices.">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Regex Testing: A Practical Approach",
+    "description": "Master regular expressions with this practical guide. Learn syntax, common patterns, testing strategies, and regex best practices for developers.",
+    "datePublished": "2024-06-09",
+    "dateModified": "2024-06-09",
+    "author": {
+      "@type": "Organization",
+      "name": "UseEasyTool Team",
+      "url": "https://useeasytool.com/authors/useeasytool-team.html"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "UseEasyTool",
+      "url": "https://useeasytool.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://useeasytool.com/assets/images/favicon.svg"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://useeasytool.com/learn/utilities-4-regex.html"
+    },
+    "keywords": ["regular expressions", "regex", "regex testing", "patterns", "backtracking"]
+  }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5246764554303000" crossorigin="anonymous"></script>
+  <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WFG5TSM6M"></script>
+  <script src="../assets/js/ga4.js"></script>
+</head>
+<body>
+  <amp-auto-ads type="adsense" data-ad-client="ca-pub-5246764554303000"></amp-auto-ads>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <a href="../blog/index.html" class="navbar-link">Blog</a>
+        <a href="index.html" class="navbar-link" style="font-weight:600;">Learn</a>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="breadcrumb"><div class="container"><a href="../index.html">Home</a> / <a href="index.html">Learn</a> / <a href="index.html">Developer Utilities &amp; Testing</a> / <span>Regex Testing</span></div></div>
+
+  <main style="max-width:800px;margin:0 auto;padding:24px 16px;">
+    <h1>Regex Testing: A Practical Approach</h1>
+    <p style="font-size:1.1rem;color:var(--color-text-secondary,#6e6e73);line-height:1.7;">Regular expressions are a concise language for matching patterns in text. They power form validation, log parsing, search-and-replace, and data extraction. Their density makes them powerful but also error-prone: a single misplaced quantifier can match the wrong text or stall the engine entirely. This guide covers the fundamentals, common patterns, advanced features, and the testing strategies that keep regex reliable.</p>
+
+    <div class="ad-zone" style="margin:24px 0;text-align:center;">
+      <ins class="adsbygoogle" style="display:block;" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5246764554303000" data-ad-slot="4644408855"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <h2>Regex Fundamentals</h2>
+    <p>A regular expression is a pattern string that the regex engine matches against input text. The pattern combines literals (characters that match themselves) with metacharacters (characters with special meaning). The core metacharacters are quantifiers (how many times to match), anchors (position in the string), character classes (sets of characters), and groups (sub-patterns).</p>
+    <table>
+      <thead><tr><th>Construct</th><th>Meaning</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td><code>.</code></td><td>Any character (except newline)</td><td><code>a.c</code> matches "abc", "a1c"</td></tr>
+        <tr><td><code>*</code></td><td>Zero or more</td><td><code>ab*</code> matches "a", "ab", "abbb"</td></tr>
+        <tr><td><code>+</code></td><td>One or more</td><td><code>ab+</code> matches "ab", "abbb" (not "a")</td></tr>
+        <tr><td><code>?</code></td><td>Zero or one (optional)</td><td><code>colou?r</code> matches "color", "colour"</td></tr>
+        <tr><td><code>{n,m}</code></td><td>Between n and m</td><td><code>a{2,4}</code> matches "aa", "aaa", "aaaa"</td></tr>
+        <tr><td><code>^</code></td><td>Start of string</td><td><code>^Hello</code> matches only at start</td></tr>
+        <tr><td><code>$</code></td><td>End of string</td><td><code>world$</code> matches only at end</td></tr>
+        <tr><td><code>[abc]</code></td><td>Character class</td><td><code>[aeiou]</code> matches any vowel</td></tr>
+        <tr><td><code>[^abc]</code></td><td>Negated class</td><td><code>[^0-9]</code> matches non-digits</td></tr>
+        <tr><td><code>|</code></td><td>Alternation (OR)</td><td><code>cat|dog</code> matches either</td></tr>
+        <tr><td><code>\d \w \s</code></td><td>Digit, word char, whitespace</td><td><code>\d+</code> matches "123"</td></tr>
+        <tr><td><code>\D \W \S</code></td><td>Negated shortcuts</td><td><code>\D</code> matches non-digits</td></tr>
+      </tbody>
+    </table>
+    <pre><code>// Basic regex matching in JavaScript
+const text = 'Order #12345 was placed on 2024-06-15';
+
+// Extract the order number
+const orderMatch = text.match(/Order #(\d+)/);
+console.log(orderMatch[1]);  // "12345"
+
+// Extract the date (YYYY-MM-DD format)
+const dateMatch = text.match(/(\d{4})-(\d{2})-(\d{2})/);
+console.log(dateMatch[1], dateMatch[2], dateMatch[3]);  // "2024" "06" "15"
+
+// Test if a string matches a pattern
+const isValidPhone = /^\d{3}-\d{3}-\d{4}$/.test('555-123-4567');  // true
+
+// Replace all matches
+const masked = 'user@example.com'.replace(/([a-z]).+([a-z])@/, '$1***$2@');
+console.log(masked);  // "u***r@example.com"</code></pre>
+    <p>Quantifier behavior is the source of most regex bugs. By default, quantifiers are <strong>greedy</strong>: they match as many characters as possible, then backtrack if the rest of the pattern fails. Adding a question mark makes them <strong>lazy</strong> (or non-greedy), matching as few characters as possible. For example, <code>&lt;.*&gt;</code> applied to <code>&lt;a&gt;text&lt;/a&gt;</code> matches the entire string (greedy), while <code>&lt;.*?&gt;</code> matches just <code>&lt;a&gt;</code> (lazy). Choosing the wrong behavior leads to over-matching or under-matching, and the difference is invisible until you test with edge-case inputs.</p>
+    <p>Anchors are equally important and frequently omitted. Without <code>^</code> and <code>$</code>, the pattern <code>\d{3}-\d{4}</code> matches "phone" within "my phone is 555-1234 ext 9", which may be unintended. Adding anchors makes the pattern match only when the entire string is a phone number. Always decide whether you want a substring match or a full-string match, and use anchors accordingly.</p>
+
+    <h2>Common Regex Patterns</h2>
+    <p>Certain patterns appear in nearly every application. Rather than writing them from scratch each time, learn the standard patterns and understand why they work. The email pattern is the most-requested and most-misunderstood: a perfect email regex does not exist because the email specification (RFC 5322) is extraordinarily complex. The practical approach is a reasonable pattern that catches common formats, with server-side validation as the source of truth.</p>
+    <pre><code>// Common validation patterns
+
+// Email — practical pattern (not RFC-perfect, catches common cases)
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+console.log(emailRegex.test('user@example.com'));       // true
+console.log(emailRegex.test('invalid-email'));          // false
+
+// URL — matches http(s) URLs with optional path
+const urlRegex = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/;
+
+// Phone (US format) — flexible with separators
+const phoneRegex = /^$$?(\d{3})$$?[-.\s]?(\d{3})[-.\s]?(\d{4})$/;
+console.log(phoneRegex.test('(555) 123-4567'));  // true
+console.log(phoneRegex.test('5551234567'));      // true
+
+// IPv4 address — four octets 0-255
+const ipv4Regex = /^(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)$/;
+console.log(ipv4Regex.test('192.168.1.1'));  // true
+console.log(ipv4Regex.test('256.1.1.1'));    // false (256 > 255)
+
+// Date (ISO 8601: YYYY-MM-DD)
+const dateRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+console.log(dateRegex.test('2024-06-15'));  // true
+console.log(dateRegex.test('2024-13-01'));  // false (month 13)
+
+// Strong password: 8+ chars, uppercase, lowercase, digit, symbol
+const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+
+// Hex color code
+const hexColorRegex = /^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/;</code></pre>
+    <p>The IPv4 pattern deserves explanation. Each octet must be 0-255, so the pattern <code>(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)</code> covers four ranges: 250-255, 200-249, 100-199, and 0-99. This is more precise than <code>\d{1,3}</code> which would match 999. Always test edge cases: the boundaries of each range are where patterns fail.</p>
+
+    <h2>Regex Groups and Backreferences</h2>
+    <p>Groups let you extract sub-matches and apply quantifiers to sub-patterns. A <strong>capture group</strong> is created with parentheses <code>(pattern)</code>; the matched text is saved for later retrieval. In JavaScript, capture groups appear in the match result array, and you can reference them in replacement strings with <code>$1</code>, <code>$2</code>, etc.</p>
+    <p><strong>Non-capturing groups</strong> use <code>(?:pattern)</code> to apply grouping without saving the match, which is faster when you do not need the captured value. <strong>Named groups</strong>, available in modern JavaScript, let you reference captures by name with <code>(?&lt;name&gt;pattern)</code> and <code>$&lt;name&gt;</code> in replacements. <strong>Backreferences</strong> let a pattern refer to a previously captured group, useful for matching repeated content like HTML tags.</p>
+    <pre><code>// Capture groups and backreferences
+
+// Named groups for extracting date components
+const dateStr = '2024-06-15';
+const dateRegex = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
+const match = dateStr.match(dateRegex);
+console.log(match.groups.year);   // "2024"
+console.log(match.groups.month);  // "06"
+console.log(match.groups.day);    // "15"
+
+// Non-capturing group for performance when you don't need the capture
+const urlPattern = /https?:\/\/(?:www\.)?example\.com\/.*/;
+
+// Backreference — match repeated word
+const repeatedWord = /\b(\w+)\s+\1\b/gi;
+console.log('the the cat sat sat'.replace(repeatedWord, '$1'));
+// Output: "the cat sat"
+
+// Backreference — matching HTML/XML tags
+const tagPattern = /<(\w+)[^>]*>.*?<\/\1>/g;
+const html = '<div>content</div> <span>more</span> <div>mismatch</p>';
+console.log(html.match(tagPattern));  // ['<div>content</div>', '<span>more</span>']
+// The \1 backreference ensures the closing tag matches the opening tag name
+
+// Named backreference in replacement
+const swapNames = 'Doe, Jane'.replace(/(?<last>\w+), (?<first>\w+)/, '$<first> $<last>');
+console.log(swapNames);  // "Jane Doe"</code></pre>
+
+    <h2>Lookahead and Lookbehind</h2>
+    <p>Lookahead and lookbehind are zero-width assertions that check whether a pattern is (or is not) followed by or preceded by another pattern, without consuming characters. This lets you add context constraints without including the context in the match. <strong>Positive lookahead</strong> <code>(?=pattern)</code> asserts that what follows matches. <strong>Negative lookahead</strong> <code>(?!pattern)</code> asserts that what follows does not match. <strong>Positive lookbehind</strong> <code>(?&lt;=pattern)</code> and <strong>negative lookbehind</strong> <code>(?&lt;!pattern)</code> work the same way for preceding text.</p>
+    <pre><code>// Lookahead and lookbehind examples
+
+// Positive lookahead: password must contain a digit
+const hasDigit = /(?=.*\d).{8,}/;
+console.log(hasDigit.test('password1'));  // true
+console.log(hasDigit.test('password'));   // false
+
+// Negative lookahead: match "q" not followed by "u"
+const qNotU = /\bq(?!u)\w+/gi;
+console.log('Iraq quality queen'.match(qNotU));  // ['Iraq']
+
+// Positive lookbehind: price preceded by $ symbol
+const price = /(?<=\$)\d+(\.\d{2})?/g;
+console.log('Items: $12.50, $3, €5.00'.match(price));  // ['12.50', '3']
+
+// Negative lookbehind: "cat" not preceded by "tom"
+const catNotTom = /(?<!tom)cat/gi;
+console.log('cat tomcat bobcat'.match(catNotTom));  // ['cat', 'cat']
+// Note: "tomcat" is excluded because "tom" precedes "cat"
+
+// Password validation with multiple lookaheads
+const strongPw = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{12,}$/;
+// Each lookahead scans from the start, then .{12,} consumes the full string</code></pre>
+    <p>Lookbehind has a limitation: in most engines, the pattern inside a lookbehind must be fixed-length (you cannot use variable-length quantifiers like <code>.*</code>). JavaScript added variable-length lookbehind in ES2018, but support varies across environments. Check compatibility before relying on it. Lookahead has no such restriction and is universally supported.</p>
+
+    <h2>Regex Performance and Security</h2>
+    <p>Regex can be a security vulnerability. <strong>Catastrophic backtracking</strong> occurs when a pattern with nested or overlapping quantifiers fails to match, causing the engine to explore an exponential number of backtracking paths. A malicious input can hang the regex engine for minutes or hours, creating a denial-of-service vulnerability called <strong>ReDoS</strong> (Regular Expression Denial of Service).</p>
+    <p>The classic vulnerable pattern is <code>(a+)+</code> against input <code>aaaaaaaaaaaaaaaaaaaab</code>. The engine tries every combination of groupings before concluding no match exists. With 20 a's, that is over a million paths. With 30, it is over a billion. The fix is to make the pattern unambiguous: use atomic groups or possessive quantifiers where available, or restructure to avoid nested quantifiers on the same character.</p>
+    <pre><code>// Catastrophic backtracking and fixes
+
+// VULNERABLE: nested quantifiers on same character class
+const evilPattern = /^(a+)+$/;
+// Input "aaaaaaaaaaaaaaaaaaaaaaaa!" causes exponential backtracking
+
+// SAFE: atomic group (if supported) or restructure
+// JavaScript lacks atomic groups natively, so restructure:
+const safePattern = /^a+$/;  // Simple, no nesting needed
+
+// VULNERABLE: overlapping alternation
+const evilEmail = /^([a-zA-Z0-9._%+-]+)*@example\.com$/;
+// The * on the group creates exponential paths
+
+// SAFE: remove the unnecessary outer group
+const safeEmail = /^[a-zA-Z0-9._%+-]+@example\.com$/;
+
+// Testing for ReDoS vulnerability
+function testRegexPerformance(regex, input, timeoutMs = 1000) {
+  const start = performance.now();
+  regex.test(input);
+  const elapsed = performance.now() - start;
+
+  if (elapsed > timeoutMs) {
+    console.warn(`ReDoS risk: regex took ${elapsed.toFixed(0)}ms`);
+    return false;
+  }
+  return true;
+}
+
+// Set a timeout guard for untrusted regex
+function safeRegexTest(regex, input, timeout = 5000) {
+  // In Node.js, use vm module or worker thread with timeout
+  // In browser, use a watchdog with setTimeout
+  let completed = false;
+  const watchdog = setTimeout(() => {
+    if (!completed) throw new Error('Regex timeout — possible ReDoS');
+  }, timeout);
+
+  const result = regex.test(input);
+  completed = true;
+  clearTimeout(watchdog);
+  return result;
+}</code></pre>
+    <p>General optimization tips: use specific character classes (<code>[0-9]</code>) over broad ones (<code>.</code>) where possible, anchor patterns with <code>^</code> and <code>$</code> to avoid scanning the whole string unnecessarily, use non-capturing groups when you do not need the capture, and compile regex literals once rather than creating them in loops. For repeated use, store the regex in a variable or use the <code>RegExp</code> constructor with the global flag.</p>
+    <p>Testing regex thoroughly requires more than checking that valid inputs match. Equally important is verifying that invalid inputs do not match. A pattern that accepts "user@example.com" but also accepts "user@" or "@example.com" is not enforcing the intended format. Build a test suite with three categories: valid inputs that should match, invalid inputs that should not match, and edge cases at the boundaries (empty string, maximum length, special characters). The boundary cases are where most regex bugs hide. For example, a phone regex that allows an optional country code should be tested with and without the code, with various separator formats, and with deliberately malformed inputs to confirm rejection.</p>
+
+    <h2>Regex in Different Languages</h2>
+    <p>Regex syntax is mostly portable, but each engine has extensions and quirks. JavaScript uses the PCRE-like syntax but lacks possessive quantifiers and atomic groups. Python's <code>re</code> module is similar, with the <code>regex</code> library adding advanced features. Java supports lookahead and lookbehind but requires fixed-length lookbehind. PCRE (used by PHP, Apache, and many tools) is the most feature-complete, supporting atomic groups and possessive quantifiers.</p>
+    <pre><code>// Python regex (re module)
+// import re
+// email = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+// match = re.match(email, 'user@example.com')
+// if match:
+//     print("Valid:", match.group())
+
+// Java regex
+// Pattern emailPattern = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+// Matcher matcher = emailPattern.matcher("user@example.com");
+// boolean valid = matcher.matches();
+
+// JavaScript differences:
+// - No possessive quantifiers (a++ ) — use atomic groups via library
+// - Variable-length lookbehind supported (ES2018+, modern browsers)
+// - Named groups use (?<name>...) syntax (same as PCRE)
+// - Unicode property escapes: \p{L} for letters (requires /u flag)
+
+const unicodePattern = /^\p{L}+$/u;  // Matches one or more Unicode letters
+console.log(unicodePattern.test('Hello'));    // true
+console.log(unicodePattern.test('你好'));     // true (Chinese characters)</code></pre>
+    <p>When writing portable regex, stick to the common subset: basic quantifiers, character classes, capture groups, lookahead, and alternation. Test in each target language, because the same pattern can behave differently at the edges, particularly with Unicode, newline handling, and backreference numbering.</p>
+    <p>The Unicode flag deserves attention because it changes how character classes behave. Without the <code>/u</code> flag in JavaScript, <code>\w</code> matches only ASCII letters, digits, and underscore, so non-ASCII letters like accented characters or CJK characters are excluded. With the flag, <code>\w</code> expands to Unicode word characters. The same applies to <code>.</code>: without the <code>/s</code> (dotAll) flag, it does not match newlines, which can break patterns that need to match across line boundaries. Always specify the flags you need explicitly, and document why each flag is present, because the default behavior varies across engines and versions in ways that silently change matching results.</p>
+    <p>For production code, avoid embedding complex regex directly in application logic. Instead, define named constants with comments explaining each component. A pattern like <code>/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/</code> is opaque on first reading, but wrapped as <code>const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // local-part@domain.tld</code> it becomes self-documenting. This practice makes maintenance easier and helps the next developer understand the intent without reverse-engineering the syntax from scratch.</p>
+
+    <div class="ad-zone" style="margin:24px 0;text-align:center;">
+      <ins class="adsbygoogle" style="display:block;" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5246764554303000" data-ad-slot="3469113897"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div class="tool-cta" style="margin:24px 0;padding:20px;border:1px solid var(--color-border,#d2d2d7);border-radius:12px;text-align:center;background:var(--color-bg-secondary,#f5f5f7);">
+      <h3 style="margin-bottom:8px;">Try This Tool</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);margin-bottom:12px;">Test your regex patterns live with real-time matching, capture group display, and common pattern templates.</p>
+      <a href="../tools/testers/regex.html" style="display:inline-block;padding:10px 24px;background:#0071e3;color:#fff;border-radius:8px;text-decoration:none;font-weight:500;">Open Tool &rarr;</a>
+    </div>
+
+    <h2>Frequently Asked Questions</h2>
+    <div style="margin:16px 0;">
+      <h3 style="margin-bottom:6px;">What does .*? mean?</h3>
+      <p style="margin-bottom:16px;color:var(--color-text-secondary,#6e6e73);">It is a lazy (non-greedy) match of any character. The dot matches any character, the asterisk means zero or more, and the question mark makes it lazy, meaning it matches the fewest characters possible. Without the question mark, .* is greedy and matches as many characters as possible.</p>
+      <h3 style="margin-bottom:6px;">How do I match an email?</h3>
+      <p style="margin-bottom:16px;color:var(--color-text-secondary,#6e6e73);">Use the pattern <code>^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$</code> for common validation. A perfect email regex does not exist because the email specification is extremely complex; use regex for client-side feedback and server-side validation for accuracy.</p>
+      <h3 style="margin-bottom:6px;">What is catastrophic backtracking?</h3>
+      <p style="margin-bottom:16px;color:var(--color-text-secondary,#6e6e73);">Catastrophic backtracking occurs when a regex with nested or overlapping quantifiers fails to match, causing the engine to try an exponential number of backtracking paths. A relatively short input can hang the engine for minutes, creating a denial-of-service vulnerability (ReDoS).</p>
+      <h3 style="margin-bottom:6px;">What's the difference between greedy and lazy?</h3>
+      <p style="margin-bottom:16px;color:var(--color-text-secondary,#6e6e73);">Greedy quantifiers match as many characters as possible, then backtrack. Lazy quantifiers (with a trailing ?) match as few characters as possible. Use greedy when you want the longest match and lazy when you want the shortest match, such as matching the first closing HTML tag.</p>
+      <h3 style="margin-bottom:6px;">Can regex parse HTML?</h3>
+      <p style="margin-bottom:16px;color:var(--color-text-secondary,#6e6e73);">Not reliably. HTML is a nested structure, and regex is not designed for recursive matching. You can match simple tags with regex, but nested tags, attributes, and malformed HTML break the pattern. Use a proper HTML parser instead; regex is suitable only for simple extraction tasks.</p>
+    </div>
+
+    <div style="margin-top:24px;padding:16px 0;border-top:1px solid var(--color-border,#d2d2d7);font-size:14px;color:var(--color-text-tertiary,#6e6e73);">
+      Written by <a href="../authors/useeasytool-team.html" style="color:var(--color-primary,#0071e3);">UseEasyTool Team</a> &mdash; Developer Tools Experts
+    </div>
+
+    <h2 style="font-size:1.4rem;margin-top:24px;">Related Articles</h2>
+    <ul style="list-style:none;padding:0;line-height:2;">
+      <li><a href="utilities-1-passwords.html" style="color:var(--color-primary,#0071e3);">Password Generation and Security Best Practices</a></li>
+      <li><a href="utilities-2-identifiers.html" style="color:var(--color-primary,#0071e3);">UUID vs NanoID: Unique Identifier Generation</a></li>
+      <li><a href="utilities-3-qr-barcode.html" style="color:var(--color-primary,#0071e3);">QR Codes and Barcodes: Generation and Use Cases</a></li>
+      <li><a href="utilities-5-performance.html" style="color:var(--color-primary,#0071e3);">Web Performance Testing: Measuring and Optimizing</a></li>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-bottom">
+        <div class="footer-brand"><a href="../index.html" class="logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a></div>
+        <div class="footer-links-group">
+          <div class="footer-col"><h5>Tools</h5><a href="../index.html#cat_converters">Converters</a><a href="../index.html#cat_calculators">Calculators</a><a href="../index.html#cat_generators">Generators</a><a href="../index.html#cat_formatters">Formatters</a></div>
+          <div class="footer-col"><h5>Resources</h5><a href="../guides/converters-guide.html">Guides</a><a href="../blog/index.html">Blog</a><a href="index.html">Learning Center</a><a href="../faq.html">FAQ</a></div>
+          <div class="footer-col"><h5>Company</h5><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../authors/useeasytool-team.html">Our Team</a></div>
+          <div class="footer-col"><h5>Legal</h5><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms of Service</a><a href="../disclaimer.html">Disclaimer</a></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="../assets/js/main.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

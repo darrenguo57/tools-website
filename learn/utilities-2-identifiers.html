@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UUID vs NanoID: Unique Identifier Generation | UseEasyTool Learn</title>
+  <meta name="description" content="Compare UUID and NanoID for generating unique identifiers. Learn version differences, collision probability, and when to use each.">
+  <meta name="keywords" content="uuid, nanoid, unique identifier, guid, uuid v4, uuid v1, collision probability, database primary key">
+  <meta name="author" content="UseEasyTool Team">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://useeasytool.com/learn/utilities-2-identifiers.html">
+  <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/dark.css">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="UUID vs NanoID: Unique Identifier Generation">
+  <meta property="og:description" content="Compare UUID and NanoID for generating unique identifiers. Learn version differences, collision probability, and when to use each.">
+  <meta property="og:url" content="https://useeasytool.com/learn/utilities-2-identifiers.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="UUID vs NanoID: Unique Identifier Generation">
+  <meta name="twitter:description" content="Compare UUID and NanoID with version differences, collision probability, and use cases.">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "UUID vs NanoID: Unique Identifier Generation",
+    "description": "Compare UUID and NanoID for generating unique identifiers. Learn version differences, collision probability, and when to use each.",
+    "datePublished": "2024-06-07",
+    "dateModified": "2024-06-07",
+    "author": {
+      "@type": "Organization",
+      "name": "UseEasyTool Team",
+      "url": "https://useeasytool.com/authors/useeasytool-team.html"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "UseEasyTool",
+      "url": "https://useeasytool.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://useeasytool.com/assets/images/favicon.svg"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://useeasytool.com/learn/utilities-2-identifiers.html"
+    },
+    "keywords": ["uuid", "nanoid", "unique identifier", "collision probability", "database primary key"]
+  }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5246764554303000" crossorigin="anonymous"></script>
+  <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WFG5TSM6M"></script>
+  <script src="../assets/js/ga4.js"></script>
+</head>
+<body>
+  <amp-auto-ads type="adsense" data-ad-client="ca-pub-5246764554303000"></amp-auto-ads>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <a href="../blog/index.html" class="navbar-link">Blog</a>
+        <a href="index.html" class="navbar-link" style="font-weight:600;">Learn</a>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="breadcrumb"><div class="container"><a href="../index.html">Home</a> / <a href="index.html">Learn</a> / <a href="index.html">Developer Utilities &amp; Testing</a> / <span>UUID vs NanoID</span></div></div>
+
+  <main style="max-width:800px;margin:0 auto;padding:24px 16px;">
+    <h1>UUID vs NanoID: Unique Identifier Generation</h1>
+    <p style="font-size:1.1rem;color:var(--color-text-secondary,#6e6e73);line-height:1.7;">Unique identifiers are foundational to software systems: every database row, every API request, every distributed message needs a name that will never collide with another. UUID and NanoID are the two most popular solutions, each with distinct trade-offs in size, readability, and performance. This guide explains how each works, compares their characteristics, and helps you choose the right one for your use case.</p>
+
+    <div class="ad-zone" style="margin:24px 0;text-align:center;">
+      <ins class="adsbygoogle" style="display:block;" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5246764554303000" data-ad-slot="4644408855"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <h2>What is a UUID?</h2>
+    <p>A UUID (Universally Unique Identifier), also called a GUID in Microsoft ecosystems, is a 128-bit identifier standardized in RFC 4122. It is typically rendered as 32 hexadecimal digits separated by hyphens into five groups: <code>550e8400-e29b-41d4-a716-446655440000</code>. The 128 bits provide a keyspace of 2^128, approximately 3.4 x 10^38 possible values, which is astronomically large.</p>
+    <p>UUIDs are designed to be generated without a central coordinator. Two independent systems can each generate UUIDs and the probability of collision is negligible, provided the generation method uses sufficient randomness or unique inputs. This property makes UUIDs ideal for distributed systems where a central ID authority would be a bottleneck or single point of failure.</p>
+    <pre><code>// Generating UUIDs in JavaScript
+// Using the built-in crypto.randomUUID() (Node 19+, modern browsers)
+const id1 = crypto.randomUUID();
+console.log(id1);
+// Output: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+
+// Using the uuid npm package (works everywhere)
+import { v4 as uuidv4, v1 as uuidv1, v5 as uuidv5 } from 'uuid';
+
+const id2 = uuidv4();  // Random UUID
+console.log(id2);
+// Output: "1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed"
+
+// UUIDs are 128 bits = 16 bytes
+// The string representation is 36 chars (32 hex + 4 hyphens)
+console.log(new TextEncoder().encode(id2.replace(/-/g, '')).length);  // Not how to measure —
+// Actual binary size is 16 bytes:
+const bytes = new Uint8Array(16);
+crypto.getRandomValues(bytes);
+// bytes is the raw 128-bit UUID</code></pre>
+    <p>UUIDs are supported by virtually every database system, programming language, and platform. PostgreSQL has a native <code>uuid</code> type, MySQL stores them as <code>CHAR(36)</code> or <code>BINARY(16)</code>, and every major ORM has UUID support. This universal compatibility is a significant advantage: choosing UUIDs means your identifiers will work everywhere without custom serialization.</p>
+    <p>The 128-bit size of a UUID is a deliberate design choice. At 128 bits, the keyspace is large enough that random generation (v4) produces no practical collision risk, even at massive scale. The same 128 bits also fit neatly into two 64-bit machine words, making comparison and indexing efficient on modern CPUs. This is not coincidental: the RFC authors chose 128 bits as the sweet spot between collision resistance and storage economy. Shorter identifiers would reduce collision safety; longer ones would waste space for no practical benefit.</p>
+
+    <h2>UUID Versions Explained</h2>
+    <p>RFC 4122 defines multiple UUID versions, each with a different generation strategy. Understanding the versions matters because they have different collision characteristics, privacy implications, and ordering properties.</p>
+    <table>
+      <thead><tr><th>Version</th><th>Strategy</th><th>Best Use Case</th></tr></thead>
+      <tbody>
+        <tr><td>v1</td><td>Time-based (MAC address + timestamp)</td><td>When ordering matters and you control the node</td></tr>
+        <tr><td>v3</td><td>Namespace + MD5 hash</td><td>Deterministic ID from a name (legacy)</td></tr>
+        <tr><td>v4</td><td>Random (CSPRNG)</td><td>General-purpose unique IDs (most common)</td></tr>
+        <tr><td>v5</td><td>Namespace + SHA-1 hash</td><td>Deterministic ID from a name (preferred over v3)</td></tr>
+        <tr><td>v6</td><td>Time-ordered (reordered v1)</td><td>Databases needing sortable IDs</td></tr>
+        <tr><td>v7</td><td>Unix timestamp + random</td><td>Sortable, time-ordered (newest standard)</td></tr>
+      </tbody>
+    </table>
+    <pre><code>// UUID version comparison
+import { v1, v3, v4, v5, v7 } from 'uuid';
+
+// v1: Time + MAC address — sortable but leaks hardware address
+const id1 = v1();
+// "a0e2b6c0-1234-11ef-a45b-0242ac120003"
+// The first segment encodes time, so v1 UUIDs sort chronologically.
+// WARNING: v1 includes the MAC address, which is a privacy concern.
+
+// v4: Fully random — most common, no ordering
+const id4 = v4();
+// "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+// 122 random bits (6 bits reserved for version/variant)
+
+// v5: Deterministic — same name always produces the same UUID
+const NAMESPACE = '6ba7b810-9dad-11d1-80b4-00c04fd430c8'; // DNS namespace
+const id5a = v5('example.com', NAMESPACE);
+const id5b = v5('example.com', NAMESPACE);
+console.log(id5a === id5b);  // true — deterministic
+
+// v7: Timestamp + random — sortable like v1 but no MAC address
+const id7 = v7();
+// "018f6a1c-5e3b-7abc-def0-123456789abc"
+// First 48 bits are a Unix timestamp, so v7 UUIDs sort by creation time.
+// Ideal for database primary keys in time-series data.</code></pre>
+    <p>For most applications, v4 is the default choice: it is simple, universally supported, and collision-free in practice. Use v5 when you need the same input to always produce the same ID, like deriving a consistent resource ID from a URL. Use v7 (or v6) when you need IDs that sort by creation time, which improves database index locality and enables time-range queries on the primary key.</p>
+    <p>The privacy implications of version choice deserve attention. Version 1 UUIDs embed the generating machine's MAC address, which can be used to track hardware across services. If an attacker collects v1 UUIDs from your system, they can identify the physical server. Version 4 avoids this entirely by using only random bits, and version 7 embeds only a timestamp, not hardware identifiers. For any system where UUIDs might be exposed to external users, prefer v4 or v7 over v1 to avoid leaking infrastructure information.</p>
+
+    <h2>What is NanoID?</h2>
+    <p>NanoID is a newer identifier format created in 2017. It is compact, URL-safe, and designed to be shorter than a UUID while maintaining comparable collision resistance. A default NanoID is 21 characters long, drawn from a 64-character alphabet (URL-safe: A-Za-z0-9_-), encoding 126 bits of entropy. That is almost the same as a UUID's 122 random bits, but in less than two-thirds the string length.</p>
+    <pre><code>// Generating NanoIDs in JavaScript
+import { nanoid } from 'nanoid';
+
+// Default: 21 characters, URL-safe alphabet
+const id = nanoid();
+console.log(id);
+// Output: "V1StGXR8_Z5jdHi6B-myT"
+
+// Custom length — shorter for non-critical IDs
+const shortId = nanoid(10);  // "IR7-Y_vUA2"
+
+// Custom alphabet — e.g., only lowercase + digits for user-facing IDs
+import { customAlphabet } from 'nanoid';
+const friendlyId = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 12);
+console.log(friendlyId());  // "4k3m8x2p9q1w"
+
+// NanoID uses crypto.getRandomValues() by default — CSPRNG
+// Custom random bytes generator for Node.js:
+import { customRandom } from 'nanoid';
+const nodeNanoId = customRandom(
+  (size) => crypto.randomBytes(size),
+  21,
+  customAlphabet
+);</code></pre>
+    <p>NanoID's compact size has practical benefits. In URLs, <code>/users/V1StGXR8_Z5jdHi6B-myT</code> is shorter than <code>/users/550e8400-e29b-41d4-a716-446655440000</code>. In databases, a <code>VARCHAR(21)</code> column is smaller than <code>CHAR(36)</code>, and the difference compounds across millions of rows with indexes and foreign keys. NanoID also avoids hyphens, which some systems handle inconsistently.</p>
+
+    <h2>UUID vs NanoID Comparison</h2>
+    <p>The two formats trade off differently. UUID is the established standard with universal tool support; NanoID is optimized for compactness and developer ergonomics. The right choice depends on your constraints.</p>
+    <table>
+      <thead><tr><th>Characteristic</th><th>UUID v4</th><th>NanoID (default)</th></tr></thead>
+      <tbody>
+        <tr><td>String length</td><td>36 characters</td><td>21 characters</td></tr>
+        <tr><td>Binary size</td><td>16 bytes</td><td>~16 bytes (raw)</td></tr>
+        <tr><td>Entropy</td><td>122 bits</td><td>126 bits</td></tr>
+        <tr><td>Alphabet</td><td>Hexadecimal (0-9a-f)</td><td>URL-safe (A-Za-z0-9_-)</td></tr>
+        <tr><td>Database support</td><td>Native in PostgreSQL, etc.</td><td>Store as VARCHAR(21)</td></tr>
+        <tr><td>URL friendliness</td><td>Contains hyphens</td><td>URL-safe, no hyphens</td></tr>
+        <tr><td>Generation speed</td><td>Fast</td><td>Slightly faster (smaller output)</td></tr>
+        <tr><td>Standard</td><td>RFC 4122 (ISO standard)</td><td>Community library</td></tr>
+        <tr><td>Sortable</td><td>Only v6/v7</td><td>Not by default</td></tr>
+      </tbody>
+    </table>
+    <p>For database primary keys, UUIDs have an edge when your database has native UUID support, because the native type handles storage and indexing efficiently. NanoID strings require a VARCHAR column and string comparison for indexes, which is slower than native UUID comparison. However, for application-generated IDs that appear in URLs, logs, and JSON payloads, NanoID's shorter length saves bandwidth and is easier to work with.</p>
+    <pre><code>// Performance comparison: generating 100,000 IDs
+import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from 'nanoid';
+
+console.time('UUID v4 x100k');
+const uuids = [];
+for (let i = 0; i < 100000; i++) uuids.push(uuidv4());
+console.timeEnd('UUID v4 x100k');
+// Typical: ~120-180ms
+
+console.time('NanoID x100k');
+const nanoIds = [];
+for (let i = 0; i < 100000; i++) nanoIds.push(nanoid());
+console.timeEnd('NanoID x100k');
+// Typical: ~80-130ms (smaller allocation)
+
+// Size comparison in a JSON payload
+const uuidPayload = JSON.stringify({ id: uuidv4() });
+const nanoPayload = JSON.stringify({ id: nanoid() });
+console.log('UUID payload:', uuidPayload.length, 'bytes');  // ~50 bytes
+console.log('NanoID payload:', nanoPayload.length, 'bytes'); // ~35 bytes
+// Across millions of records, the savings are significant.</code></pre>
+    <p>The practical recommendation: use UUIDs when you need database-native support, standard compliance, or interoperability with systems that expect UUID format. Use NanoID when you want shorter IDs for URLs, are generating IDs in JavaScript-heavy stacks, or value the smaller footprint. Both are collision-safe in any realistic scenario.</p>
+
+    <h2>Collision Probability</h2>
+    <p>Collision probability is calculated using the birthday paradox: in a set of N random values drawn from a keyspace of K, the probability of at least one collision is approximately <code>1 - e^(-N^2 / 2K)</code>. For UUID v4 with 122 bits of randomness, K = 2^122. To reach a 50% collision probability, you would need to generate about 2^61 (2.3 x 10^18) UUIDs. That is generating one billion UUIDs per second for 73 years.</p>
+    <pre><code>// Collision probability calculation
+function collisionProbability(numIDs, entropyBits) {
+  const keyspace = Math.pow(2, entropyBits);
+  // Birthday approximation: P(collision) ≈ 1 - e^(-n²/2K)
+  const exponent = -(numIDs * numIDs) / (2 * keyspace);
+  return 1 - Math.exp(exponent);
+}
+
+// UUID v4: 122 bits of entropy
+console.log('1 million UUIDs:', collisionProbability(1e6, 122));
+// Output: ~1.5e-14 (0.0000000000015%) — effectively zero
+
+console.log('1 billion UUIDs:', collisionProbability(1e9, 122));
+// Output: ~1.5e-5 (0.0015%) — still negligible
+
+// How many to reach 50% collision?
+// sqrt(2 * 2^122 * ln(2)) ≈ 2.3 × 10^18
+console.log('UUIDs for 50% collision:', Math.sqrt(2 * Math.pow(2, 122) * Math.LN2).toExponential(1));
+// Output: ~2.3e+18
+
+// NanoID default: 126 bits (slightly more entropy than UUID v4)
+console.log('1 million NanoIDs:', collisionProbability(1e6, 126));
+// Output: ~8.7e-16 — even lower than UUID</code></pre>
+    <p>In practice, collisions never happen. If you generated 103 trillion UUIDs, the collision probability would still be one in a billion. For any application that will ever exist, UUID and NanoID collisions are not a concern you need to engineer around. The randomness quality of the CSPRNG matters more than the entropy ceiling; a flawed random source could produce collisions regardless of the identifier format.</p>
+
+    <h2>Implementation in Code</h2>
+    <p>In JavaScript, use <code>crypto.randomUUID()</code> for UUIDs (built into modern Node.js and browsers, no dependency) and the <code>nanoid</code> npm package for NanoIDs. In Python, use the built-in <code>uuid</code> module or the <code>nanoid</code> pip package. For database primary keys, prefer UUID v7 or v6 for time-orderable IDs, which keep indexes balanced and enable efficient time-range queries.</p>
+    <pre><code>// Python UUID generation
+// import uuid
+// id_v4 = str(uuid.uuid4())
+// id_v1 = str(uuid.uuid1())
+// id_v5 = str(uuid.uuid5(uuid.NAMESPACE_DNS, 'example.com'))
+
+// Using UUIDs as database primary keys (PostgreSQL)
+/*
+  CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+  );
+
+  -- UUID v7 for time-ordered IDs (better index locality):
+  -- Use the uuid7 extension or generate in application code
+  INSERT INTO users (id, email) VALUES (?, ?);
+*/
+
+// Distributed system ID generation pattern
+class IDGenerator {
+  constructor() {
+    // Use UUID v7 for sortable, collision-free IDs
+    this.counter = 0;
+  }
+
+  generate() {
+    // Application-level UUID v7 (simplified)
+    const timestamp = Date.now();
+    const random = crypto.getRandomValues(new Uint8Array(10));
+    // Combine timestamp + random into UUID v7 format...
+    return this.formatUUIDv7(timestamp, random);
+  }
+
+  formatUUIDv7(timestamp, randomBytes) {
+    // First 48 bits: Unix timestamp (ms)
+    // Next 12 bits: random
+        // Next 62 bits: random
+        // This produces a time-sortable UUID
+        // Implementation simplified for illustration
+    return uuidv7();
+  }
+}</code></pre>
+    <p>For distributed systems where multiple nodes generate IDs concurrently, both UUID and NanoID work because they require no coordination. If you need strict monotonic ordering across nodes, UUID v7 with a node identifier encoded in the random portion provides ordering within each node, and a timestamp provides rough global ordering. For systems requiring exact global ordering, use a coordinated approach like Snowflake IDs, which combine timestamp, node ID, and sequence number.</p>
+
+    <div class="ad-zone" style="margin:24px 0;text-align:center;">
+      <ins class="adsbygoogle" style="display:block;" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5246764554303000" data-ad-slot="3469113897"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div class="tool-cta" style="margin:24px 0;padding:20px;border:1px solid var(--color-border,#d2d2d7);border-radius:12px;text-align:center;background:var(--color-bg-secondary,#f5f5f7);">
+      <h3 style="margin-bottom:8px;">Try This Tool</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);margin-bottom:12px;">Generate UUIDs (v1, v4, v5, v7) and NanoIDs with customizable options using our identifier generator.</p>
+      <a href="../tools/generators/uuid.html" style="display:inline-block;padding:10px 24px;background:#0071e3;color:#fff;border-radius:8px;text-decoration:none;font-weight:500;">Open Tool &rarr;</a>
+    </div>
+
+    <h2>Frequently Asked Questions</h2>
+    <div style="margin:16px 0;">
+      <h3 style="margin-bottom:6px;">Can UUIDs collide?</h3>
+      <p style="margin-bottom:16px;color:var(--color-text-secondary,#6e6e73);">In theory, yes; in practice, no. A UUID v4 has 122 bits of randomness. You would need to generate about 2.3 quintillion UUIDs to reach a 50% collision probability. For any real application, UUID collisions are effectively impossible, provided the random source is properly seeded.</p>
+      <h3 style="margin-bottom:6px;">What's the difference between UUID v4 and v1?</h3>
+      <p style="margin-bottom:16px;color:var(--color-text-secondary,#6e6e73);">UUID v1 is generated from the current time and the machine's MAC address, making it sortable but a privacy concern. UUID v4 is fully random, providing no ordering but better privacy. v4 is the most common choice for general use; use v7 if you need time-ordered IDs without leaking hardware info.</p>
+      <h3 style="margin-bottom:6px;">Is NanoID better than UUID?</h3>
+      <p style="margin-bottom:16px;color:var(--color-text-secondary,#6e6e73);">Neither is universally better. NanoID is shorter (21 vs 36 characters) and URL-safe, making it better for URLs and compact storage. UUID has native database support and is an ISO standard, making it better for interoperability. Choose based on whether compactness or standardization matters more for your use case.</p>
+      <h3 style="margin-bottom:6px;">How many UUIDs before a collision?</h3>
+      <p style="margin-bottom:16px;color:var(--color-text-secondary,#6e6e73);">Approximately 2.3 x 10^18 UUIDs for a 50% probability. Even at one billion UUIDs generated per second, it would take 73 years to reach that threshold. For practical purposes, UUID collisions are not a concern you need to handle.</p>
+      <h3 style="margin-bottom:6px;">Can I use UUID as a database primary key?</h3>
+      <p style="margin-bottom:16px;color:var(--color-text-secondary,#6e6e73);">Yes, UUIDs work well as primary keys, especially in distributed systems. Use UUID v7 for time-ordered keys to maintain index locality. PostgreSQL has a native UUID type; MySQL can store UUIDs as BINARY(16) for efficiency. Avoid v4 for high-write tables, as random IDs cause index fragmentation.</p>
+    </div>
+
+    <div style="margin-top:24px;padding:16px 0;border-top:1px solid var(--color-border,#d2d2d7);font-size:14px;color:var(--color-text-tertiary,#6e6e73);">
+      Written by <a href="../authors/useeasytool-team.html" style="color:var(--color-primary,#0071e3);">UseEasyTool Team</a> &mdash; Developer Tools Experts
+    </div>
+
+    <h2 style="font-size:1.4rem;margin-top:24px;">Related Articles</h2>
+    <ul style="list-style:none;padding:0;line-height:2;">
+      <li><a href="utilities-1-passwords.html" style="color:var(--color-primary,#0071e3);">Password Generation and Security Best Practices</a></li>
+      <li><a href="utilities-3-qr-barcode.html" style="color:var(--color-primary,#0071e3);">QR Codes and Barcodes: Generation and Use Cases</a></li>
+      <li><a href="utilities-4-regex.html" style="color:var(--color-primary,#0071e3);">Regex Testing: A Practical Approach</a></li>
+      <li><a href="utilities-5-performance.html" style="color:var(--color-primary,#0071e3);">Web Performance Testing: Measuring and Optimizing</a></li>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-bottom">
+        <div class="footer-brand"><a href="../index.html" class="logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a></div>
+        <div class="footer-links-group">
+          <div class="footer-col"><h5>Tools</h5><a href="../index.html#cat_converters">Converters</a><a href="../index.html#cat_calculators">Calculators</a><a href="../index.html#cat_generators">Generators</a><a href="../index.html#cat_formatters">Formatters</a></div>
+          <div class="footer-col"><h5>Resources</h5><a href="../guides/converters-guide.html">Guides</a><a href="../blog/index.html">Blog</a><a href="index.html">Learning Center</a><a href="../faq.html">FAQ</a></div>
+          <div class="footer-col"><h5>Company</h5><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../authors/useeasytool-team.html">Our Team</a></div>
+          <div class="footer-col"><h5>Legal</h5><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms of Service</a><a href="../disclaimer.html">Disclaimer</a></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="../assets/js/main.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

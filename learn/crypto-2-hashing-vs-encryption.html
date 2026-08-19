@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hashing vs Encryption: What's the Difference? | UseEasyTool</title>
+  <meta name="description" content="Understand the critical difference between hashing and encryption. Learn when to use each, common algorithms, and security best practices.">
+  <meta name="keywords" content="hashing vs encryption, hash functions, SHA-256, bcrypt, Argon2, password hashing, one-way function">
+  <link rel="canonical" href="https://useeasytool.com/learn/crypto-2-hashing-vs-encryption.html">
+  <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/dark.css">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Hashing vs Encryption: What's the Difference?">
+  <meta property="og:description" content="Understand the critical difference between hashing and encryption. Learn when to use each, common algorithms, and security best practices.">
+  <meta property="og:url" content="https://useeasytool.com/learn/crypto-2-hashing-vs-encryption.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Hashing vs Encryption: What's the Difference?">
+  <meta name="twitter:description" content="Understand the critical difference between hashing and encryption.">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Hashing vs Encryption: What's the Difference?",
+    "description": "Understand the critical difference between hashing and encryption. Learn when to use each, common algorithms, and security best practices.",
+    "datePublished": "2024-06-15",
+    "dateModified": "2024-06-15",
+    "author": { "@type": "Organization", "name": "UseEasyTool Team" },
+    "publisher": { "@type": "Organization", "name": "UseEasyTool", "url": "https://useeasytool.com/" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://useeasytool.com/learn/crypto-2-hashing-vs-encryption.html" },
+    "keywords": ["hashing", "encryption", "SHA-256", "bcrypt", "password hashing"]
+  }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5246764554303000" crossorigin="anonymous"></script>
+  <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WFG5TSM6M"></script>
+  <script src="../assets/js/ga4.js"></script>
+</head>
+<body>
+  <amp-auto-ads type="adsense" data-ad-client="ca-pub-5246764554303000"></amp-auto-ads>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <a href="../blog/index.html" class="navbar-link">Blog</a>
+        <a href="index.html" class="navbar-link" style="font-weight:600;">Learn</a>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="breadcrumb"><div class="container"><a href="../index.html">Home</a> / <a href="index.html">Learn</a> / <a href="index.html">Cryptography</a> / <span>Hashing vs Encryption</span></div></div>
+
+  <main style="max-width:800px;margin:0 auto;padding:24px 16px;">
+    <h1 style="font-size:2rem;font-weight:700;margin-bottom:0.5rem;">Hashing vs Encryption: What's the Difference?</h1>
+    <p style="font-size:1.1rem;color:var(--color-text-secondary,#6e6e73);margin-bottom:2rem;line-height:1.7;">Hashing and encryption are both cryptographic operations, but they serve fundamentally different purposes. Encryption is reversible: you can decrypt data back to its original form using a key. Hashing is irreversible: once data is hashed, it cannot be unhashed. This distinction determines when to use each. Using hashing where encryption is needed (or vice versa) creates security vulnerabilities. This guide explains both concepts, compares them directly, and covers the algorithms you should use for each scenario.</p>
+
+    <div class="ad-zone" style="margin:24px 0;text-align:center;">
+      <ins class="adsbygoogle" style="display:block;" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5246764554303000" data-ad-slot="4644408855"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Hashing Explained</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">A hash function takes input of arbitrary size and produces a fixed-size output called a hash, digest, or fingerprint. The output size is determined by the algorithm, not the input size. SHA-256 always produces 256 bits (32 bytes, 64 hex characters) regardless of whether you hash a single character or a terabyte of data.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Three properties define a cryptographic hash function. First, determinism: the same input always produces the same output. Second, the avalanche effect: a tiny change in input produces a dramatically different output. Changing one bit of the input changes roughly half the bits in the output. Third, one-wayness: given a hash output, it should be computationally infeasible to find the input that produced it.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">A good hash function is also collision-resistant, meaning it is infeasible to find two different inputs that produce the same hash. For SHA-256, finding a collision would require approximately 2^128 operations (by the birthday paradox), which is beyond any feasible computing power. This is why hash functions are used for integrity verification: if the hash of a file matches the expected hash, you can be confident the file was not modified.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Encryption Explained</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Encryption transforms plaintext into ciphertext using a cryptographic key. Unlike hashing, encryption is a two-way operation: with the correct key, you can decrypt the ciphertext back to the original plaintext. The security of encryption depends on the secrecy of the key, not the secrecy of the algorithm (Kerckhoffs's principle).</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Encryption comes in two flavors. Symmetric encryption uses the same key for encryption and decryption. AES is the standard symmetric algorithm. It is fast and suitable for encrypting large amounts of data. Asymmetric encryption (public-key cryptography) uses a pair of keys: a public key for encryption and a private key for decryption. RSA is the standard asymmetric algorithm. It is slower and has size limitations, so it is typically used to exchange symmetric keys rather than to encrypt bulk data directly.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">The key insight is that encryption is reversible by design. This makes it suitable for data that needs to be read later: encrypted database columns, encrypted files, encrypted network traffic. The ciphertext is meaningless without the key, but with the key, the original data is fully recoverable.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Key Differences: Hashing vs Encryption</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">The fundamental difference is reversibility. Hashing is a one-way operation; you cannot recover the original input from a hash. Encryption is two-way; with the key, you can recover the original plaintext from the ciphertext. This single difference determines the use cases for each.</p>
+    <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:1rem;">
+      <thead>
+        <tr style="background:var(--color-bg-secondary,#f5f5f7);">
+          <th style="padding:8px 12px;text-align:left;border-bottom:2px solid #d2d2d7;">Aspect</th>
+          <th style="padding:8px 12px;text-align:left;border-bottom:2px solid #d2d2d7;">Hashing</th>
+          <th style="padding:8px 12px;text-align:left;border-bottom:2px solid #d2d2d7;">Encryption</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Direction</td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">One-way</td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Two-way</td></tr>
+        <tr><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Reversible?</td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">No</td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Yes (with key)</td></tr>
+        <tr><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Uses a key?</td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">No (standard)</td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Yes</td></tr>
+        <tr><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Output size</td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Fixed</td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Similar to input</td></tr>
+        <tr><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Primary purpose</td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Integrity, verification</td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Confidentiality</td></tr>
+        <tr><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Example use</td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Passwords, file checksums</td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Data at rest, communications</td></tr>
+      </tbody>
+    </table>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Another difference is output size. Hash functions always produce the same fixed-size output regardless of input size. Encryption output is roughly the same size as the input (plus padding and IV overhead). This makes hashing suitable for creating compact fingerprints of data, while encryption preserves the data's shape.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Common Hashing Algorithms</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">MD5 produces a 128-bit hash and was widely used for checksums. It is now considered cryptographically broken because researchers found efficient methods to generate collisions (two different inputs with the same hash). MD5 should never be used for security purposes, though it is still used for non-security applications like quick file checksums.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">SHA-1 produces a 160-bit hash and was the standard for digital signatures. Like MD5, it has been broken: in 2017, researchers demonstrated a practical collision attack. Major browsers stopped accepting SHA-1 SSL certificates in 2017. SHA-1 should not be used for new applications.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">SHA-256 (part of the SHA-2 family) produces a 256-bit hash and is currently the recommended general-purpose hash function. It is used in TLS certificates, blockchain systems, and digital signatures. SHA-384 and SHA-512 are larger variants in the same family. SHA-256 is suitable for integrity verification, HMAC computation, and digital signatures.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">For password hashing, general-purpose hash functions like SHA-256 are the wrong choice because they are designed to be fast. Fast hashing means an attacker with a GPU can try billions of password guesses per second. Password hashing requires slow, memory-hard algorithms. bcrypt is the established choice: it uses a configurable work factor and a salt. Argon2, the winner of the 2015 Password Hashing Competition, is the modern recommendation: it is both CPU-hard and memory-hard, making it resistant to GPU and ASIC attacks.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">When to Use Hashing vs Encryption</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">The decision tree is straightforward. If you need to read the data back later, use encryption. If you never need to recover the original, use hashing. This maps to specific use cases clearly.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Passwords must be hashed, never encrypted. When you store a user's password, you should never be able to recover it. To verify a login, hash the entered password and compare it to the stored hash. If they match, the password is correct. If someone steals your database, they get hashes, not passwords. With a slow hash function like Argon2, cracking even a single password hash requires enormous computational effort.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Data at rest, like encrypted database columns or encrypted files, must be encrypted because the application needs to read the data later. Communications between systems must be encrypted because the recipient needs to recover the original message. Integrity checks use hashing: you hash a file and publish the hash; anyone who downloads the file can verify it by computing the same hash and comparing.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Digital signatures combine both: the sender hashes the message (for compactness), then encrypts the hash with their private key (for authenticity). The recipient decrypts the signature to recover the hash, computes their own hash of the message, and compares the two. This proves the message was not tampered with and came from the holder of the private key.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Another pattern is password-based encryption, where a user's password derives the encryption key. The password is hashed (with a salt and key derivation function like PBKDF2 or Argon2) to produce a symmetric key, and that key encrypts the data. This pattern is used in password managers, encrypted file containers, and encrypted backup systems. The hashing makes the key derivation slow (resisting brute force), and the encryption provides confidentiality. When the user enters their password, the same derivation produces the same key, enabling decryption.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Password Hashing Best Practices</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Password hashing requires more than just applying SHA-256. Three additional elements are needed: salt, a slow hash function, and proper parameter selection.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">A salt is a random value unique to each password, stored alongside the hash. It prevents rainbow table attacks, where an attacker precomputes hashes for common passwords. With a salt, the attacker must recompute hashes for each password individually, because the same password with different salts produces different hashes. The salt does not need to be secret; it just needs to be unique.</p>
+    <pre style="background:var(--color-bg-secondary,#f5f5f7);padding:16px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.6;"><code>// Python: hashing a password with bcrypt
+import bcrypt
+
+# Hash a password (salt is auto-generated)
+hashed = bcrypt.hashpw(b"mySecretPassword", bcrypt.gensalt(rounds=12))
+# b'$2b$12$...'
+
+# Verify a password
+if bcrypt.checkpw(b"mySecretPassword", hashed):
+    print("Password correct")
+else:
+    print("Password incorrect")</code></pre>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">A pepper is a secret value added to every password before hashing, stored separately from the database (e.g., in an environment variable). If the database is stolen but the pepper is not, the hashes remain uncrackable. The pepper adds defense in depth: an attacker needs both the database and the application server's secrets to attempt cracking.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Never use MD5, SHA-1, or SHA-256 for password hashing. These algorithms are too fast. Use bcrypt with a work factor of 12 or higher, or Argon2id with memory and time parameters tuned for your server. The goal is to make each hash computation take 100-500 milliseconds, which is imperceptible to a legitimate user but devastating to an attacker trying billions of guesses.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Combining Hashing and Encryption in Practice</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Real-world systems use hashing and encryption together, each serving its specific purpose. Consider a system that stores user data: passwords are hashed (never encrypted), sensitive personal information like credit card numbers is encrypted (needs to be recovered), and API request integrity is verified with HMAC (keyed hashing).</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">A common pattern in database design is to hash a field to create a searchable index while storing the actual value encrypted. For example, to search for a user by email address without storing the email in plaintext, you store a hash of the email (for searching) alongside the encrypted email (for retrieval). When a user logs in, you hash the provided email and search the index. If a match is found, you decrypt the stored value and verify. This pattern, called blind indexing, protects data at rest while still supporting lookups.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">File integrity checking combines hashing with storage. When a file is uploaded to a storage system, its hash is computed and stored separately from the file. When the file is downloaded, the hash is recomputed and compared. If the hashes match, the file is intact. If they differ, the file was corrupted or tampered with. Content-addressable storage systems like IPFS and Git use hashing as the identifier for content itself: the hash of a file is its address, and any change to the file produces a different hash.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Digital signatures are perhaps the most elegant combination. The signer hashes the message for compactness, then encrypts the hash with their private key. The verifier decrypts with the public key and compares hashes. Hashing reduces the signing operation to a fixed-size input regardless of message length, and encryption provides authenticity and non-repudiation. This is the foundation of TLS certificates, code signing, and blockchain transactions.</p>
+
+    <div class="ad-zone" style="margin:24px 0;text-align:center;">
+      <ins class="adsbygoogle" style="display:block;" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5246764554303000" data-ad-slot="3469113897"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div class="tool-cta" style="margin:24px 0;padding:20px;border:1px solid var(--color-border,#d2d2d7);border-radius:12px;text-align:center;background:var(--color-bg-secondary,#f5f5f7);">
+      <h3 style="margin-bottom:8px;">Try This Tool</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);margin-bottom:12px;">Generate hash values using MD5, SHA-1, SHA-256, SHA-384, and SHA-512. Compare outputs and verify integrity.</p>
+      <a href="../tools/crypto/hash.html" style="display:inline-block;padding:10px 24px;background:#0071e3;color:#fff;border-radius:8px;text-decoration:none;font-weight:500;">Open Tool &rarr;</a>
+    </div>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Frequently Asked Questions</h2>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">Can you reverse a hash?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">No, a hash cannot be reversed mathematically. You can only try to find an input that produces the same hash (a preimage attack), which is computationally infeasible for secure hash functions like SHA-256. Attackers use brute force or rainbow tables against weak or unsalted hashes, not the hash algorithm itself.</p>
+    </div>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">Is hashing the same as encryption?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">No. Hashing is one-way and irreversible; encryption is two-way and reversible with the key. Hashing is used for integrity and verification; encryption is used for confidentiality. They serve different purposes and are not interchangeable.</p>
+    </div>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">Why do we salt passwords?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">A salt is a unique random value added to each password before hashing. It prevents rainbow table attacks (precomputed hash lookups) and ensures that two users with the same password have different stored hashes. The salt does not need to be secret, only unique per password.</p>
+    </div>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">What is bcrypt?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">bcrypt is a password hashing function designed to be slow and adaptive. It uses a configurable work factor (cost) that increases the computation needed to produce a hash, making brute-force attacks more expensive over time as hardware improves. bcrypt also includes built-in salt generation.</p>
+    </div>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">Can I use SHA-256 for passwords?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">Not directly. SHA-256 is too fast for password hashing; an attacker with a GPU can try billions of guesses per second. Use bcrypt, Argon2, or PBKDF2 instead, which are designed to be slow and memory-hard. SHA-256 is fine for integrity checks and HMAC, but not for passwords.</p>
+    </div>
+
+    <div class="tool-author" style="margin-top:20px;padding:12px 0;border-top:1px solid var(--color-border,#d2d2d7);font-size:13px;color:var(--color-text-tertiary,#6e6e73);">
+      Written by <a href="../authors/useeasytool-team.html" style="color:var(--color-primary,#0071e3);">UseEasyTool Team</a> &mdash; Developer Tools Experts
+    </div>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Related Articles</h2>
+    <ul style="list-style:none;padding:0;line-height:2;">
+      <li><a href="crypto-1-aes.html" style="color:var(--color-primary,#0071e3);">AES Encryption: How It Works and When to Use It</a></li>
+      <li><a href="crypto-3-rsa.html" style="color:var(--color-primary,#0071e3);">RSA Encryption: A Practical Developer Guide</a></li>
+      <li><a href="crypto-4-hmac.html" style="color:var(--color-primary,#0071e3);">HMAC: Message Authentication Explained</a></li>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-bottom">
+        <div class="footer-brand"><a href="../index.html" class="logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a></div>
+        <div class="footer-links-group">
+          <div class="footer-col"><h5>Tools</h5><a href="../index.html#cat_converters">Converters</a><a href="../index.html#cat_calculators">Calculators</a><a href="../index.html#cat_generators">Generators</a><a href="../index.html#cat_formatters">Formatters</a></div>
+          <div class="footer-col"><h5>Resources</h5><a href="../guides/converters-guide.html">Guides</a><a href="../blog/index.html">Blog</a><a href="index.html">Learning Center</a><a href="../faq.html">FAQ</a></div>
+          <div class="footer-col"><h5>Company</h5><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../authors/useeasytool-team.html">Our Team</a></div>
+          <div class="footer-col"><h5>Legal</h5><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms of Service</a><a href="../disclaimer.html">Disclaimer</a></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="../assets/js/main.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

@@ -249,6 +249,13 @@
           <p>The primary purpose of Base64 encoding is to represent binary data in environments that only support text. This includes email protocols (SMTP), data URLs in HTML and CSS, JSON payloads in REST APIs, and configuration files that cannot handle raw binary content. Base64 increases the size of the encoded data by approximately 33%, which is a trade-off for the ability to safely transmit binary data through text-based channels.</p>
           <p>It is critical to remember that Base64 is <strong>not encryption</strong>. It provides zero cryptographic security. Anyone who encounters Base64-encoded data can easily decode it. Its sole purpose is to ensure data integrity during transmission across systems that may not handle binary data correctly.</p>
 
+<div class="tool-cta" style="margin:24px 0;padding:20px;border:1px solid var(--color-border,#d2d2d7);border-radius:12px;text-align:center;background:var(--color-bg-secondary,#f5f5f7);">
+  <h3 style="font-size:1.2rem;font-weight:600;margin-bottom:0.5rem;">Try This Tool</h3>
+  <p style="color:var(--color-text-secondary,#6e6e73);margin-bottom:1rem;">Put what you just read into practice — open the tool now.</p>
+  <a href="../../tools/converters/base64.html" class="btn btn-primary" style="display:inline-block;padding:10px 24px;background:var(--color-primary,#0071e3);color:white;border-radius:8px;text-decoration:none;font-weight:500;margin-right:8px;">Open Base64 Tool →</a>
+  <a href="../../tools/converters/url.html" class="btn btn-primary" style="display:inline-block;padding:10px 24px;background:var(--color-primary,#0071e3);color:white;border-radius:8px;text-decoration:none;font-weight:500;">Open URL Tool →</a>
+</div>
+
           <h2>What is URL Encoding?</h2>
           <p>URL encoding, also known as percent encoding, is a mechanism for encoding special characters in URLs so they can be safely transmitted over the internet. Defined in RFC 3986, URL encoding replaces unsafe ASCII characters with a percent sign (%) followed by two hexadecimal digits that represent the character's byte value.</p>
           <p>For example, a space character becomes <code>%20</code>, an ampersand becomes <code>%26</code>, and a question mark becomes <code>%3F</code>. The characters that are considered safe and do not need encoding in a URL are the unreserved characters: A-Z, a-z, 0-9, hyphen (-), underscore (_), period (.), and tilde (~). All other characters must be percent-encoded to ensure the URL is properly parsed by web servers and browsers.</p>

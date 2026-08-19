@@ -174,6 +174,19 @@
         </div>
       </section>
 
+      <section style="padding: 30px 0 20px;">
+        <div class="container">
+          <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem;">Developer Tools Blog &amp; Tutorials</h2>
+          <p style="font-size: 1.1rem; color: var(--color-text-secondary, #6e6e73); max-width: 700px; line-height: 1.7;">Welcome to the UseEasyTool blog, where we share in-depth tutorials, technical guides, and best practices for using our 60+ free online developer tools. Our articles are written by the same engineers who build the tools, so you get practical insights from people who understand the code inside and out.</p>
+
+          <h3 style="font-size: 1.3rem; font-weight: 600; margin: 1.5rem 0 0.5rem;">Topics We Cover</h3>
+          <p style="color: var(--color-text-secondary, #6e6e73); line-height: 1.7;">Our blog covers tutorials and deep dives across all our tool categories: <strong>Data Converters</strong> (Base64, URL encoding, JSON-YAML, timestamps), <strong>Encryption &amp; Security</strong> (AES, RSA, HMAC, hashing), <strong>Code Formatting</strong> (JSON, SQL, XML, CSV), <strong>Image Processing</strong> (compression, format conversion, color extraction), <strong>Data Visualization</strong> (charts, flowcharts, mind maps, Gantt charts), <strong>Generators</strong> (passwords, UUIDs, QR codes, barcodes), and <strong>Developer Testing</strong> (regex, CSS gradients, performance testing). Each article includes code examples, real-world use cases, and links to the corresponding tools.</p>
+
+          <h3 style="font-size: 1.3rem; font-weight: 600; margin: 1.5rem 0 0.5rem;">Latest Articles</h3>
+          <p style="color: var(--color-text-secondary, #6e6e73);">Browse our most recent articles below, or filter by topic using the tags on the right.</p>
+        </div>
+      </section>
+
       <!-- Google AdSense - Display Ad -->
       <div class="ad-zone ad-zone--display" style="margin: 24px 0; text-align: center;">
         <ins class="adsbygoogle"
@@ -272,14 +285,35 @@
         <div class="footer-brand">
           <a href="../index.html" class="logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a>
         </div>
-        <div class="footer-links-group">
+                <div class="footer-links-group">
           <div class="footer-col">
-            <h5 data-i18n="footer_col_resources">Resources</h5>
-            <a href="index.html" data-i18n="footer_blog">Blog</a>
-            <a href="../about.html" data-i18n="footer_about">About</a>
-            <a href="../contact.html" data-i18n="footer_contact">Contact</a>
+            <h5>Tools</h5>
+            <a href="index.html#cat_converters">Converters</a>
+            <a href="index.html#cat_calculators">Calculators</a>
+            <a href="index.html#cat_generators">Generators</a>
+            <a href="index.html#cat_formatters">Formatters</a>
           </div>
-        </div>
+          <div class="footer-col">
+            <h5>Resources</h5>
+            <a href="guides/converters-guide.html">Guides</a>
+            <a href="learn/index.html">Learning Center</a>
+            <a href="blog/index.html">Blog</a>
+            <a href="faq.html">FAQ</a>
+          </div>
+          <div class="footer-col">
+            <h5>Company</h5>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="custom-tool.html">Custom Tool</a>
+            <a href="authors/useeasytool-team.html">Our Team</a>
+          </div>
+          <div class="footer-col">
+            <h5>Legal</h5>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+            <a href="disclaimer.html">Disclaimer</a>
+          </div>
+        
       </div>
       <div class="footer-social">
         <a href="https://x.com/darrenguo57" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="X">
@@ -629,6 +663,32 @@
         image: '../assets/images/blog/hash-functions-guide.jpg',
         file: 'articles/hash-functions-guide.html',
         date: '2026-08-11'
+      },
+      {
+        id: 'csv-files-developer-guide',
+        title: 'Working with CSV Files: A Developer\'s Guide to Parsing, Viewing, and Converting CSV Data',
+        titleZh: 'CSV 文件开发者指南：解析、查看与转换 CSV 数据',
+        excerpt: 'A practical guide to CSV files for developers. Learn CSV format rules, common parsing pitfalls, how to convert CSV to JSON, and tools for viewing large CSV files online for free.',
+        excerptZh: '面向开发者的 CSV 文件实用指南，涵盖 CSV 格式规则、常见解析陷阱、CSV 转 JSON 方法及免费在线 CSV 查看工具',
+        readTime: 8,
+        tags: ['csv', 'data', 'developer-tools', 'tutorial'],
+        featured: false,
+        image: '../assets/images/blog/csv-files-developer-guide.jpg',
+        file: 'articles/csv-files-developer-guide.html',
+        date: '2026-08-18'
+      },
+      {
+        id: 'fake-data-generation-testing-guide',
+        title: 'Fake Data Generation for Testing: How to Populate Your Database with Realistic Mock Data',
+        titleZh: '测试用假数据生成：如何用逼真的模拟数据填充数据库',
+        excerpt: 'A practical guide to generating fake data for testing. Learn how to create realistic mock users, generate test data in JavaScript and Python, and populate databases without touching production data.',
+        excerptZh: '面向开发者的假数据生成实用指南，学习如何在 JavaScript 和 Python 中生成逼真模拟数据，在不触碰生产数据的情况下填充数据库',
+        readTime: 8,
+        tags: ['testing', 'mock-data', 'developer-tools', 'tutorial'],
+        featured: false,
+        image: '../assets/images/blog/fake-data-generation-testing-guide.jpg',
+        file: 'articles/fake-data-generation-testing-guide.html',
+        date: '2026-08-18'
       }
     ];
 

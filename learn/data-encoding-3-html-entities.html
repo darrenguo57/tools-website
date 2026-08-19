@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Entities: When and How to Use Them | UseEasyTool</title>
+  <meta name="description" content="Complete guide to HTML entities for web developers. Learn character references, XSS prevention, and when entities are necessary.">
+  <meta name="keywords" content="HTML entities, character references, XSS prevention, &amp;lt; &amp;gt; &amp;amp;, named entities, numeric entities, output encoding">
+  <link rel="canonical" href="https://useeasytool.com/learn/data-encoding-3-html-entities.html">
+  <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/dark.css">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="HTML Entities: When and How to Use Them">
+  <meta property="og:description" content="Complete guide to HTML entities for web developers. Learn character references, XSS prevention, and when entities are necessary.">
+  <meta property="og:url" content="https://useeasytool.com/learn/data-encoding-3-html-entities.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HTML Entities: When and How to Use Them">
+  <meta name="twitter:description" content="Complete guide to HTML entities for web developers.">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "HTML Entities: When and How to Use Them",
+    "description": "Complete guide to HTML entities for web developers. Learn character references, XSS prevention, and when entities are necessary.",
+    "datePublished": "2024-06-15",
+    "dateModified": "2024-06-15",
+    "author": { "@type": "Organization", "name": "UseEasyTool Team" },
+    "publisher": { "@type": "Organization", "name": "UseEasyTool", "url": "https://useeasytool.com/" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://useeasytool.com/learn/data-encoding-3-html-entities.html" },
+    "keywords": ["HTML entities", "character references", "XSS prevention", "output encoding"]
+  }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5246764554303000" crossorigin="anonymous"></script>
+  <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WFG5TSM6M"></script>
+  <script src="../assets/js/ga4.js"></script>
+</head>
+<body>
+  <amp-auto-ads type="adsense" data-ad-client="ca-pub-5246764554303000"></amp-auto-ads>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <a href="../blog/index.html" class="navbar-link">Blog</a>
+        <a href="index.html" class="navbar-link" style="font-weight:600;">Learn</a>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="breadcrumb"><div class="container"><a href="../index.html">Home</a> / <a href="index.html">Learn</a> / <a href="index.html">Data Encoding</a> / <span>HTML Entities</span></div></div>
+
+  <main style="max-width:800px;margin:0 auto;padding:24px 16px;">
+    <h1 style="font-size:2rem;font-weight:700;margin-bottom:0.5rem;">HTML Entities: When and How to Use Them</h1>
+    <p style="font-size:1.1rem;color:var(--color-text-secondary,#6e6e73);margin-bottom:2rem;line-height:1.7;">HTML entities let you display characters that would otherwise be interpreted as HTML markup, or characters that cannot be typed on a standard keyboard. They are also your first line of defense against cross-site scripting (XSS) attacks. This guide covers the three types of entities, when each is necessary, how entities prevent XSS, and how modern frameworks have changed the landscape.</p>
+
+    <div class="ad-zone" style="margin:24px 0;text-align:center;">
+      <ins class="adsbygoogle" style="display:block;" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5246764554303000" data-ad-slot="4644408855"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">What Are HTML Entities?</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">HTML entities are sequences of characters that represent a single character in an HTML document. They always begin with an ampersand (<code>&amp;</code>) and end with a semicolon (<code>;</code>). There are three types: named entities, decimal numeric entities, and hexadecimal numeric entities.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Named entities use a human-readable name. For example, <code>&amp;lt;</code> represents the less-than sign, <code>&amp;gt;</code> represents the greater-than sign, and <code>&amp;amp;</code> represents the ampersand itself. The HTML specification defines a fixed set of named entities, many of which correspond to characters that would otherwise conflict with HTML syntax.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Numeric entities use the character's Unicode code point. Decimal entities look like <code>&amp;#38;</code> for the ampersand (decimal 38). Hexadecimal entities look like <code>&amp;#x26;</code> (hexadecimal 26). Numeric entities can represent any Unicode character, including those without named entity equivalents. This makes them useful for characters from other writing systems, mathematical symbols, and emoji.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Why HTML Entities Matter</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">HTML has reserved characters that serve as syntax delimiters. The less-than sign (<code>&lt;</code>) starts a tag, the greater-than sign (<code>&gt;</code>) ends a tag, the ampersand (<code>&amp;</code>) starts an entity reference, and the quotation mark (<code>&quot;</code>) delimits attribute values. If you need to display these characters literally in your content, you must use their entity forms.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Consider displaying a code example that contains HTML. If you write <code>&lt;div&gt;</code> directly in your HTML document, the browser interprets it as a real div element rather than displaying the text. By using <code>&amp;lt;div&amp;gt;</code>, the browser renders the literal text <code>&lt;div&gt;</code> on the page. This is why every syntax highlighter or code display tool must escape HTML content.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Beyond reserved characters, entities are used for characters that are difficult to type or that may not render correctly in all contexts. The non-breaking space (<code>&amp;nbsp;</code>) prevents line breaks between words, the copyright sign (<code>&amp;copy;</code>) and the trademark sign (<code>&amp;trade;</code>) provide commonly needed symbols, and entities like <code>&amp;mdash;</code> and <code>&amp;hellip;</code> provide typographic characters not available on standard keyboards.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Common HTML Entities Reference</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Here is a reference table of the most commonly used HTML entities. The first five are critical for security and correct rendering; the rest are for typography and symbols.</p>
+    <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:1rem;">
+      <thead>
+        <tr style="background:var(--color-bg-secondary,#f5f5f7);">
+          <th style="padding:8px 12px;text-align:left;border-bottom:2px solid #d2d2d7;">Character</th>
+          <th style="padding:8px 12px;text-align:left;border-bottom:2px solid #d2d2d7;">Named Entity</th>
+          <th style="padding:8px 12px;text-align:left;border-bottom:2px solid #d2d2d7;">Decimal</th>
+          <th style="padding:8px 12px;text-align:left;border-bottom:2px solid #d2d2d7;">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&amp;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&amp;amp;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&amp;#38;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Ampersand (entity starter)</td></tr>
+        <tr><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&lt;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&amp;lt;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&amp;#60;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Less-than (tag start)</td></tr>
+        <tr><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&gt;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&amp;gt;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&amp;#62;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Greater-than (tag end)</td></tr>
+        <tr><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>"</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&amp;quot;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&amp;#34;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Double quote</td></tr>
+        <tr><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>'</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&amp;#39;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&amp;#39;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Single quote (apostrophe)</td></tr>
+        <tr><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">space</td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&amp;nbsp;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&amp;#160;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Non-breaking space</td></tr>
+        <tr><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&amp;copy;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&amp;#169;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Copyright sign</td></tr>
+        <tr><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&amp;mdash;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;"><code>&amp;#8212;</code></td><td style="padding:6px 12px;border-bottom:1px solid #d2d2d7;">Em dash</td></tr>
+      </tbody>
+    </table>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Note that the single quote (apostrophe) does not have a named entity in HTML4, though <code>&amp;apos;</code> is available in HTML5 and XML. For maximum compatibility, use the numeric form <code>&amp;#39;</code>.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">XSS Prevention with HTML Entities</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Cross-site scripting (XSS) occurs when user-supplied data is placed into an HTML document without proper escaping. An attacker can inject <code>&lt;script&gt;</code> tags, event handlers, or other HTML that executes in the victim's browser. The primary defense against XSS is output encoding: converting dangerous characters to their entity equivalents before writing them to the page.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">When you escape user input for insertion into HTML text content, you must encode at least three characters: <code>&lt;</code>, <code>&gt;</code>, and <code>&amp;</code>. When inserting into an HTML attribute value, you must also encode the quote character used as the attribute delimiter (either <code>"</code> or <code>'</code>). Here is a JavaScript function that performs HTML escaping:</p>
+    <pre style="background:var(--color-bg-secondary,#f5f5f7);padding:16px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.6;"><code>function escapeHtml(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+// Safe to insert into HTML:
+const userInput = '&lt;script&gt;alert("xss")&lt;/script&gt;';
+element.innerHTML = escapeHtml(userInput);</code></pre>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">The ampersand must be escaped first, before the other replacements. If you escape the less-than sign first, the <code>&amp;</code> in the resulting <code>&amp;lt;</code> would be re-escaped to <code>&amp;amp;lt;</code>, creating a double-encoding bug. Modern frameworks like React, Vue, and Angular automatically escape content by default. In React, content inside JSX curly braces is auto-escaped; using <code>dangerouslySetInnerHTML</code> bypasses this protection and should be avoided unless you have a specific reason and properly sanitize the input.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">HTML Entities in Different Contexts</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">The set of characters that need escaping depends on where in the HTML document the data is placed. In HTML text content (between tags), you need to escape <code>&lt;</code>, <code>&gt;</code>, and <code>&amp;</code>. In attribute values, you additionally need to escape the quote character delimiting the attribute.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Inside JavaScript strings embedded in HTML, the escaping rules change. You need to escape the string delimiter, and you must prevent the string from being terminated early by user input containing the same quote. In CSS context, different characters need escaping. This is why context-aware escaping is critical: applying text-content escaping to data going into a JavaScript context leaves the data vulnerable.</p>
+    <pre style="background:var(--color-bg-secondary,#f5f5f7);padding:16px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.6;"><code>&lt;!-- Text content: escape &lt; &gt; &amp; --&gt;
+&lt;p&gt;User wrote: &amp;lt;hello&amp;gt;&lt;/p&gt;
+
+&lt;!-- Attribute: also escape quotes --&gt;
+&lt;input value="User typed: &amp;quot;test&amp;quot;"&gt;
+
+&lt;!-- JavaScript string: different escaping --&gt;
+&lt;script&gt;
+  var msg = "User said: \\"hello\\"";
+&lt;/script&gt;</code></pre>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">URLs inside attributes require additional URL encoding on top of HTML entity encoding. The <code>href</code> attribute of an anchor tag, for example, needs URL encoding for the URL components and HTML entity encoding for the quote characters.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Event handler attributes like <code>onclick</code> present a particularly dangerous context. The attribute value is both an HTML attribute (needing HTML entity encoding) and JavaScript code (needing JavaScript string escaping). Simply HTML-escaping the value is not sufficient if the data is used as a string literal in the JavaScript code, because JavaScript has its own escaping rules. The safest approach is to avoid inline event handlers entirely and use <code>addEventListener</code> with data stored in <code>data-</code> attributes, which keeps user data out of executable contexts.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">CSS context (inside <code>style</code> attributes or <code>&lt;style&gt;</code> blocks) has yet another set of escaping requirements. Characters like parentheses, semicolons, and curly braces have special meaning in CSS and must be escaped if they appear in user-controlled values. The CSS <code>\</code> escape sequence allows any character to be represented by its hex code. In practice, the safest approach is to avoid injecting user data into CSS entirely, and instead use CSS custom properties (variables) set via JavaScript's <code>style.setProperty()</code> method, which handles escaping automatically.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Modern Alternatives and Best Practices</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">With UTF-8 now the universal standard for web documents, most special characters can be typed or pasted directly into HTML without entities. You no longer need <code>&amp;eacute;</code> for the letter e-acute; you can simply type it directly. The characters that still require entities are the reserved HTML characters (<code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>, <code>"</code>) and a few structural ones like the non-breaking space.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Modern DOM APIs provide safer alternatives to manual escaping. The <code>textContent</code> property sets the text content of an element and automatically handles all escaping. Unlike <code>innerHTML</code>, it never interprets the input as HTML, making it inherently safe against XSS:</p>
+    <pre style="background:var(--color-bg-secondary,#f5f5f7);padding:16px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.6;"><code>// Safe: textContent never interprets input as HTML
+element.textContent = userInput;
+
+// Unsafe: innerHTML interprets input as HTML
+element.innerHTML = userInput; // XSS vulnerability!</code></pre>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">When you need to set HTML (not just text), use a sanitization library like DOMPurify to strip dangerous tags and attributes. Frameworks like React, Angular, and Vue escape text by default and provide explicit, opt-in mechanisms for rendering raw HTML, which makes the safe path the default and the dangerous path visible in code review.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Server-Side Template Escaping</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Server-side templating engines handle HTML escaping differently, and understanding your template engine's default behavior is critical for preventing XSS. Jinja2 (used by Django and Flask) auto-escapes variables by default, converting <code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>, and quotes to their entity forms. To output raw HTML, you must explicitly use the <code>safe</code> filter: <code>{{ user_input|safe }}</code>. This opt-out approach makes the dangerous path visible and intentional.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">In EJS (Node.js), <code>&lt;%= %&gt;</code> tags escape output automatically, while <code>&lt;%- %&gt;</code> outputs unescaped HTML. Handlebars uses triple-braces <code>{{{ }}}</code> for raw output, and Go's <code>html/template</code> package performs context-aware escaping automatically, choosing the appropriate escaping strategy based on whether the value is placed in HTML text, an attribute, a URL, or JavaScript. This context-aware approach is the most robust because it accounts for the different escaping rules in different HTML contexts without requiring the developer to remember which function to call.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Character Encoding and Document Types</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">The relationship between HTML entities and character encoding (charset) is a source of confusion. The character encoding declared in your HTML document's <code>charset</code> meta tag or HTTP <code>Content-Type</code> header determines how bytes are interpreted as characters. UTF-8 is the universal standard, capable of representing all Unicode characters directly.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">When your document is declared as UTF-8 (<code>&lt;meta charset="UTF-8"&gt;</code>), the browser can display any Unicode character directly in the source without entities. The letter e-acute can be typed as the literal character in the source file, and the browser will render it correctly. This is why modern development rarely uses named entities for anything other than the reserved HTML characters.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">However, entities remain necessary even with UTF-8 for characters that would conflict with HTML syntax. If you need to display the text <code>&lt;script&gt;</code> on your page, you must use <code>&amp;lt;script&amp;gt;</code> regardless of the character encoding. The browser's HTML parser always interprets <code>&lt;</code> as the start of a tag before it considers character encoding. This is why output encoding for XSS prevention is independent of the document's character encoding.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Another consideration is the HTML version. HTML5 added several named entities that were not available in HTML4. The <code>&amp;apos;</code> entity for the apostrophe is available in HTML5 and XML but not in HTML4 strict. For maximum compatibility across all parsers, use the numeric form <code>&amp;#39;</code> for the single quote. This works in all HTML versions, all XML parsers, and all browsers.</p>
+
+    <div class="ad-zone" style="margin:24px 0;text-align:center;">
+      <ins class="adsbygoogle" style="display:block;" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5246764554303000" data-ad-slot="3469113897"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div class="tool-cta" style="margin:24px 0;padding:20px;border:1px solid var(--color-border,#d2d2d7);border-radius:12px;text-align:center;background:var(--color-bg-secondary,#f5f5f7);">
+      <h3 style="margin-bottom:8px;">Try This Tool</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);margin-bottom:12px;">Convert between plain text and HTML entities instantly. Useful for debugging and security testing.</p>
+      <a href="../tools/converters/html-entity.html" style="display:inline-block;padding:10px 24px;background:#0071e3;color:#fff;border-radius:8px;text-decoration:none;font-weight:500;">Open Tool &rarr;</a>
+    </div>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Frequently Asked Questions</h2>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">Do I need entities if I use UTF-8?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">For most special characters like accented letters or emoji, no. UTF-8 lets you type them directly. You still need entities for HTML reserved characters (<code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>) because they have structural meaning in HTML syntax. Without entities, the browser would interpret them as markup.</p>
+    </div>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">What's the difference between &amp;nbsp; and a regular space?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">A regular space allows line breaks, so the browser may wrap text at that point. The <code>&amp;nbsp;</code> entity is a non-breaking space that prevents line breaks between adjacent words. It is also a "hard" space that the browser will not collapse with adjacent whitespace, unlike regular spaces which may collapse.</p>
+    </div>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">How do entities prevent XSS?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">By converting <code>&lt;</code> to <code>&amp;lt;</code> and <code>&gt;</code> to <code>&amp;gt;</code>, any HTML tags in user input are rendered as visible text instead of being parsed as real elements. A script tag becomes harmless text that displays on the page rather than executing.</p>
+    </div>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">Should I encode all special characters?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">No. Encoding everything works but produces unreadable source code. Encode only the characters that are reserved in your context: <code>&lt;</code>, <code>&gt;</code>, and <code>&amp;</code> for text content, plus quotes for attribute values. Modern frameworks handle this automatically.</p>
+    </div>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">What's the difference between named and numeric entities?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">Named entities like <code>&amp;lt;</code> use a readable name from a fixed set defined by the HTML specification. Numeric entities like <code>&amp;#60;</code> use the Unicode code point directly. Numeric entities can represent any Unicode character, while named entities cover only a predefined subset. Both produce the same character when rendered.</p>
+    </div>
+
+    <div class="tool-author" style="margin-top:20px;padding:12px 0;border-top:1px solid var(--color-border,#d2d2d7);font-size:13px;color:var(--color-text-tertiary,#6e6e73);">
+      Written by <a href="../authors/useeasytool-team.html" style="color:var(--color-primary,#0071e3);">UseEasyTool Team</a> &mdash; Developer Tools Experts
+    </div>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Related Articles</h2>
+    <ul style="list-style:none;padding:0;line-height:2;">
+      <li><a href="data-encoding-1-base64.html" style="color:var(--color-primary,#0071e3);">Understanding Base64: From Binary to Text</a></li>
+      <li><a href="data-encoding-2-url.html" style="color:var(--color-primary,#0071e3);">URL Encoding: A Developer's Complete Guide</a></li>
+      <li><a href="data-encoding-4-json-yaml.html" style="color:var(--color-primary,#0071e3);">JSON to YAML: Data Format Migration Guide</a></li>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-bottom">
+        <div class="footer-brand"><a href="../index.html" class="logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a></div>
+        <div class="footer-links-group">
+          <div class="footer-col"><h5>Tools</h5><a href="../index.html#cat_converters">Converters</a><a href="../index.html#cat_calculators">Calculators</a><a href="../index.html#cat_generators">Generators</a><a href="../index.html#cat_formatters">Formatters</a></div>
+          <div class="footer-col"><h5>Resources</h5><a href="../guides/converters-guide.html">Guides</a><a href="../blog/index.html">Blog</a><a href="index.html">Learning Center</a><a href="../faq.html">FAQ</a></div>
+          <div class="footer-col"><h5>Company</h5><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../authors/useeasytool-team.html">Our Team</a></div>
+          <div class="footer-col"><h5>Legal</h5><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms of Service</a><a href="../disclaimer.html">Disclaimer</a></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="../assets/js/main.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

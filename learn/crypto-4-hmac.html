@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HMAC: Message Authentication Explained | UseEasyTool</title>
+  <meta name="description" content="Complete guide to HMAC (Hash-based Message Authentication Code). Learn how it works, API authentication, webhook verification, and implementation.">
+  <meta name="keywords" content="HMAC, message authentication, API authentication, webhook verification, HMAC-SHA256, keyed hashing">
+  <link rel="canonical" href="https://useeasytool.com/learn/crypto-4-hmac.html">
+  <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/dark.css">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="HMAC: Message Authentication Explained">
+  <meta property="og:description" content="Complete guide to HMAC (Hash-based Message Authentication Code). Learn how it works, API authentication, webhook verification, and implementation.">
+  <meta property="og:url" content="https://useeasytool.com/learn/crypto-4-hmac.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HMAC: Message Authentication Explained">
+  <meta name="twitter:description" content="Complete guide to HMAC (Hash-based Message Authentication Code).">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "HMAC: Message Authentication Explained",
+    "description": "Complete guide to HMAC (Hash-based Message Authentication Code). Learn how it works, API authentication, webhook verification, and implementation.",
+    "datePublished": "2024-06-15",
+    "dateModified": "2024-06-15",
+    "author": { "@type": "Organization", "name": "UseEasyTool Team" },
+    "publisher": { "@type": "Organization", "name": "UseEasyTool", "url": "https://useeasytool.com/" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://useeasytool.com/learn/crypto-4-hmac.html" },
+    "keywords": ["HMAC", "message authentication", "API authentication", "webhook", "HMAC-SHA256"]
+  }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5246764554303000" crossorigin="anonymous"></script>
+  <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WFG5TSM6M"></script>
+  <script src="../assets/js/ga4.js"></script>
+</head>
+<body>
+  <amp-auto-ads type="adsense" data-ad-client="ca-pub-5246764554303000"></amp-auto-ads>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <a href="../blog/index.html" class="navbar-link">Blog</a>
+        <a href="index.html" class="navbar-link" style="font-weight:600;">Learn</a>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="breadcrumb"><div class="container"><a href="../index.html">Home</a> / <a href="index.html">Learn</a> / <a href="index.html">Cryptography</a> / <span>HMAC</span></div></div>
+
+  <main style="max-width:800px;margin:0 auto;padding:24px 16px;">
+    <h1 style="font-size:2rem;font-weight:700;margin-bottom:0.5rem;">HMAC: Message Authentication Explained</h1>
+    <p style="font-size:1.1rem;color:var(--color-text-secondary,#6e6e73);margin-bottom:2rem;line-height:1.7;">HMAC (Hash-based Message Authentication Code) is the cryptographic technique that verifies both the integrity and authenticity of a message. When you receive a webhook from Stripe, verify an AWS API request, or validate a GitHub webhook payload, HMAC is the mechanism working behind the scenes. This guide explains what HMAC is, how it differs from plain hashing, how it is used in API authentication, and how to implement it correctly with constant-time comparison to prevent timing attacks.</p>
+
+    <div class="ad-zone" style="margin:24px 0;text-align:center;">
+      <ins class="adsbygoogle" style="display:block;" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5246764554303000" data-ad-slot="4644408855"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">What is HMAC?</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">HMAC is a type of message authentication code (MAC) that uses a cryptographic hash function combined with a secret key. A MAC verifies two things: that the message was not modified in transit (integrity) and that it was sent by someone who knows the secret key (authenticity). HMAC is defined in RFC 2104 and is the standard construction for creating MACs from hash functions.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Plain hashing provides integrity but not authenticity. If you send a message with its hash, an attacker can modify both the message and the hash, and the recipient would not detect the tampering. HMAC solves this by incorporating a secret key into the hash computation. Without the key, an attacker cannot produce a valid HMAC for a modified message.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">HMAC can be built from any secure hash function. HMAC-SHA256 (using SHA-256 as the underlying hash) is the most common choice. HMAC-SHA1 is still used in some legacy systems but is being phased out. HMAC-MD5 should never be used because MD5 is cryptographically broken. The security of HMAC depends on the underlying hash function, the key size, and the key's secrecy.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">How HMAC Works</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">HMAC uses a construction that involves two rounds of hashing with the key and message. The key is first padded or hashed to the block size of the hash function (64 bytes for SHA-256). Two derived keys are created: the inner key (XORed with a specific byte pattern) and the outer key (XORed with a different byte pattern).</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">The HMAC computation is: HMAC(K, m) = H((K_outer XOR H(K_inner XOR m))). The inner hash processes the message combined with the inner key, and the outer hash wraps the result with the outer key. This double-hashing construction prevents length extension attacks, a vulnerability that affects plain hash functions like SHA-256 when used directly with a key.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">The length extension attack works because hash functions like SHA-256 process data in blocks and expose their internal state after each block. An attacker who knows H(key || message) can compute H(key || message || extension) without knowing the key, by using the known hash output as the starting state. HMAC's nested construction breaks this because the outer hash processes the output of the inner hash, not the raw key concatenated with the message. This is why HMAC is used instead of simply hashing key + message.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">HMAC for API Authentication</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">HMAC-based authentication is the standard for securing API requests where the client and server share a secret key. The client signs the request (method, URL, headers, body) with HMAC and includes the signature in a header. The server recomputes the HMAC using the same key and compares it to the provided signature. If they match, the request is authentic and unmodified.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">AWS Signature Version 4 uses HMAC-SHA256 extensively. The signing process creates a canonical request, hashes it, creates a string to sign, derives a signing key from the secret access key through multiple HMAC rounds (incorporating date, region, and service), and signs the string to sign. The resulting signature is sent with the request. GitHub webhooks sign the JSON payload with HMAC-SHA256 using a shared secret and include the signature in the <code>X-Hub-Signature-256</code> header.</p>
+    <pre style="background:var(--color-bg-secondary,#f5f5f7);padding:16px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.6;"><code>// Verifying a GitHub webhook signature
+const crypto = require("crypto");
+
+function verifyWebhook(payload, signature, secret) {
+  const expected = crypto
+    .createHmac("sha256", secret)
+    .update(payload, "utf8")
+    .digest("hex");
+
+  // Use timingSafeEqual to prevent timing attacks
+  const sigBuffer = Buffer.from(signature);
+  const expectedBuffer = Buffer.from(expected);
+
+  // Both buffers must be the same length
+  if (sigBuffer.length !== expectedBuffer.length) {
+    return false;
+  }
+
+  return crypto.timingSafeEqual(sigBuffer, expectedBuffer);
+}
+
+// Usage
+const isValid = verifyWebhook(
+  req.rawBody,
+  req.headers["x-hub-signature-256"],
+  process.env.WEBHOOK_SECRET
+);</code></pre>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">To prevent replay attacks, the signature should include a timestamp and a nonce (a unique value for each request). The server checks that the timestamp is within an acceptable window (e.g., 5 minutes) and that the nonce has not been seen before. Without these, an attacker who captures a valid request could resend it indefinitely.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">HMAC vs JWT vs OAuth</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">HMAC, JWT (JSON Web Tokens), and OAuth are three approaches to API authentication that serve different needs. HMAC is the simplest: a shared secret is used to sign each request. It provides authentication and integrity per-request but does not carry identity information or claim data.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">JWT combines a token format with signing (HMAC-SHA256 for HS256 tokens, or RSA/ECDSA for RS256/ES256 tokens). A JWT contains a payload with claims (user ID, roles, expiration) that is Base64-encoded and signed. The server can verify the token without a database lookup if using asymmetric signing, because the public key can verify the signature. JWTs are stateless, meaning the server does not need to store session data.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">OAuth 2.0 is a framework for delegated authorization. It defines how a user can grant a third-party application access to their data on another service, without sharing their password. OAuth uses access tokens (often JWTs) that are issued by an authorization server. HMAC is used within OAuth for client authentication in certain flows. The choice between them depends on the use case: HMAC for server-to-server APIs with shared secrets, JWT for stateless authentication with claims, OAuth for third-party delegated access.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Implementing HMAC</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">In the browser, the Web Crypto API provides HMAC through <code>crypto.subtle</code>. The API is asynchronous and returns promises. You first import the key, then sign the data:</p>
+    <pre style="background:var(--color-bg-secondary,#f5f5f7);padding:16px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.6;"><code>// Browser: Sign data with HMAC-SHA256
+const encoder = new TextEncoder();
+const key = await crypto.subtle.importKey(
+  "raw",
+  encoder.encode("my-secret-key"),
+  { name: "HMAC", hash: "SHA-256" },
+  false,
+  ["sign", "verify"]
+);
+
+const message = encoder.encode("message to sign");
+const signature = await crypto.subtle.sign("HMAC", key, message);
+
+// Convert to hex for transmission
+const hex = Array.from(new Uint8Array(signature))
+  .map(b => b.toString(16).padStart(2, "0"))
+  .join("");</code></pre>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">In Python, the <code>hmac</code> module in the standard library provides a straightforward interface. The <code>compare_digest()</code> function performs constant-time comparison to prevent timing attacks, which is essential for security:</p>
+    <pre style="background:var(--color-bg-secondary,#f5f5f7);padding:16px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.6;"><code>import hmac, hashlib
+
+# Compute HMAC-SHA256
+secret = b"my-secret-key"
+message = b"message to sign"
+signature = hmac.new(secret, message, hashlib.sha256).hexdigest()
+
+# Verify (constant-time comparison)
+expected = hmac.new(secret, message, hashlib.sha256).hexdigest()
+is_valid = hmac.compare_digest(signature, expected)
+print(is_valid)  # True</code></pre>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Security Best Practices</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Always use constant-time comparison when verifying HMAC signatures. A naive string comparison returns as soon as it finds a mismatch, leaking information about how many bytes match. An attacker can use this timing information to recover the correct signature byte by byte. Use <code>crypto.timingSafeEqual()</code> in Node.js, <code>hmac.compare_digest()</code> in Python, or <code>MessageDigest.isEqual()</code> in Java.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Rotate keys periodically. If a key is compromised, all messages signed with it can be forged. Use a key management system (KMS) to store keys and rotate them on a schedule (e.g., every 90 days). Design your system to support multiple active keys during rotation, so old signatures remain valid until they expire.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Use HMAC-SHA256 or HMAC-SHA512 as the algorithm. Avoid HMAC-MD5 and HMAC-SHA1 for new systems. The key should be at least 32 bytes (256 bits) for HMAC-SHA256 to ensure adequate security margin. Generate keys using a cryptographically secure random number generator, never a human-chosen password or a predictable value.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Include a timestamp and a nonce in the signed data to prevent replay attacks. The timestamp lets the server reject requests older than an acceptable window (typically 5 minutes). The nonce is a unique value stored in a cache with a TTL matching the timestamp window. When a request arrives, the server checks if the nonce has been seen before. If it has, the request is a replay and is rejected. This combination ensures that even if an attacker captures a valid request, they cannot resend it after the window expires or reuse the same nonce for a different request. The overhead of nonce tracking is minimal with modern caching systems like Redis, which can store and expire nonces automatically.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">HMAC in Real-World Systems</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">HMAC appears in the infrastructure of the internet. The TLS protocol uses HMAC for record authentication in older versions (TLS 1.0-1.2) and a construction based on it in TLS 1.3. The IPsec protocol suite uses HMAC for authenticating IP packets. The DKIM email signing standard uses HMAC to verify that an email was sent from the claimed domain.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">In API development, HMAC-based authentication is the backbone of many cloud provider APIs. AWS Signature Version 4 derives signing keys through multiple HMAC rounds, incorporating date, region, and service name into the key derivation. This scoping means a signing key leaked from one region or service cannot be used in another, limiting the blast radius of a compromise. Google Cloud and Azure use similar HMAC-based signing for their API authentication.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Webhook delivery is another critical use case. When a payment processor like Stripe sends a webhook to your server, the payload is signed with HMAC using your webhook signing secret. Your server must verify the signature before processing the payload, because without verification, an attacker could forge webhook deliveries and trigger false events (such as confirming a payment that never occurred). The signature header typically includes a timestamp, and the server rejects webhooks older than a few minutes to prevent replay attacks.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Message authentication is also used in inter-service communication. Microservices that communicate over an internal network can sign their requests with HMAC using a shared service-to-service key. This is lighter weight than full TLS mutual authentication and provides request integrity verification. However, it does not provide confidentiality, so it should be combined with TLS when the network is not fully trusted.</p>
+
+    <div class="ad-zone" style="margin:24px 0;text-align:center;">
+      <ins class="adsbygoogle" style="display:block;" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5246764554303000" data-ad-slot="3469113897"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div class="tool-cta" style="margin:24px 0;padding:20px;border:1px solid var(--color-border,#d2d2d7);border-radius:12px;text-align:center;background:var(--color-bg-secondary,#f5f5f7);">
+      <h3 style="margin-bottom:8px;">Try This Tool</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);margin-bottom:12px;">Calculate HMAC signatures using various hash algorithms. Test API authentication and webhook verification.</p>
+      <a href="../tools/crypto/hmac.html" style="display:inline-block;padding:10px 24px;background:#0071e3;color:#fff;border-radius:8px;text-decoration:none;font-weight:500;">Open Tool &rarr;</a>
+    </div>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Frequently Asked Questions</h2>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">What's the difference between HMAC and hashing?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">Hashing uses no key and provides integrity verification only. HMAC incorporates a secret key, providing both integrity and authenticity. With plain hashing, an attacker can modify a message and recompute the hash. With HMAC, the attacker needs the secret key to produce a valid signature, so modifications are detected.</p>
+    </div>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">How is HMAC used in APIs?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">The client signs the request (method, URL, headers, body) with HMAC using a shared secret and sends the signature in a header. The server recomputes the HMAC and compares it. If they match, the request is authentic. A timestamp and nonce are usually included to prevent replay attacks.</p>
+    </div>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">What algorithm should I use with HMAC?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">Use HMAC-SHA256 or HMAC-SHA512. Avoid HMAC-MD5 and HMAC-SHA1, as the underlying hash functions have known weaknesses. HMAC-SHA256 is the most common choice and is used by AWS, GitHub, and many other platforms for API authentication and webhook signing.</p>
+    </div>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">Can HMAC be reversed?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">No. HMAC is based on hash functions, which are one-way. You cannot recover the message or the key from an HMAC output. You can only verify that a given message and key produce the expected HMAC. This is why HMAC can be transmitted alongside the message without revealing the key.</p>
+    </div>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">How do I verify an HMAC signature?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">Recompute the HMAC using the same secret key and the received message, then compare the result to the provided signature. The comparison must use a constant-time function (like <code>crypto.timingSafeEqual()</code> or <code>hmac.compare_digest()</code>) to prevent timing attacks that could leak information about the expected signature.</p>
+    </div>
+
+    <div class="tool-author" style="margin-top:20px;padding:12px 0;border-top:1px solid var(--color-border,#d2d2d7);font-size:13px;color:var(--color-text-tertiary,#6e6e73);">
+      Written by <a href="../authors/useeasytool-team.html" style="color:var(--color-primary,#0071e3);">UseEasyTool Team</a> &mdash; Developer Tools Experts
+    </div>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Related Articles</h2>
+    <ul style="list-style:none;padding:0;line-height:2;">
+      <li><a href="crypto-1-aes.html" style="color:var(--color-primary,#0071e3);">AES Encryption: How It Works and When to Use It</a></li>
+      <li><a href="crypto-2-hashing-vs-encryption.html" style="color:var(--color-primary,#0071e3);">Hashing vs Encryption: What's the Difference?</a></li>
+      <li><a href="crypto-5-url-signatures.html" style="color:var(--color-primary,#0071e3);">URL Signatures: Preventing Tampering</a></li>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-bottom">
+        <div class="footer-brand"><a href="../index.html" class="logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a></div>
+        <div class="footer-links-group">
+          <div class="footer-col"><h5>Tools</h5><a href="../index.html#cat_converters">Converters</a><a href="../index.html#cat_calculators">Calculators</a><a href="../index.html#cat_generators">Generators</a><a href="../index.html#cat_formatters">Formatters</a></div>
+          <div class="footer-col"><h5>Resources</h5><a href="../guides/converters-guide.html">Guides</a><a href="../blog/index.html">Blog</a><a href="index.html">Learning Center</a><a href="../faq.html">FAQ</a></div>
+          <div class="footer-col"><h5>Company</h5><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../authors/useeasytool-team.html">Our Team</a></div>
+          <div class="footer-col"><h5>Legal</h5><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms of Service</a><a href="../disclaimer.html">Disclaimer</a></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="../assets/js/main.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

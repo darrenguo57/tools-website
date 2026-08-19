@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code Comparison: Diff Tools Explained | UseEasyTool</title>
+  <meta name="description" content="Understand how diff tools work, different diff algorithms, and how to use them effectively for code review and debugging.">
+  <meta name="keywords" content="diff tools, code comparison, unified diff, diff algorithm, lcs, myers diff, git diff, code review, semantic diff">
+  <meta name="author" content="UseEasyTool Team">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://useeasytool.com/learn/formatting-4-diff.html">
+  <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/dark.css">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Code Comparison: Diff Tools Explained | UseEasyTool">
+  <meta property="og:description" content="Understand how diff tools work, different diff algorithms, and how to use them effectively for code review and debugging.">
+  <meta property="og:url" content="https://useeasytool.com/learn/formatting-4-diff.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta property="article:published_time" content="2024-06-07">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Code Comparison: Diff Tools Explained | UseEasyTool">
+  <meta name="twitter:description" content="Understand how diff tools work, different diff algorithms, and how to use them effectively for code review and debugging.">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Code Comparison: Diff Tools Explained",
+    "description": "Understand how diff tools work, different diff algorithms, and how to use them effectively for code review and debugging.",
+    "datePublished": "2024-06-07",
+    "dateModified": "2024-06-07",
+    "author": {
+      "@type": "Organization",
+      "name": "UseEasyTool Team"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "UseEasyTool",
+      "url": "https://useeasytool.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://useeasytool.com/assets/images/favicon.svg"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://useeasytool.com/learn/formatting-4-diff.html"
+    },
+    "keywords": ["diff tools", "code comparison", "unified diff", "diff algorithm", "code review"]
+  }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5246764554303000" crossorigin="anonymous"></script>
+  <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WFG5TSM6M"></script>
+  <script src="../assets/js/ga4.js"></script>
+</head>
+<body>
+  <amp-auto-ads type="adsense" data-ad-client="ca-pub-5246764554303000"></amp-auto-ads>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <a href="../blog/index.html" class="navbar-link">Blog</a>
+        <a href="index.html" class="navbar-link" style="font-weight:600;">Learn</a>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="breadcrumb"><div class="container"><a href="../index.html">Home</a> / <a href="index.html">Learn</a> / <a href="index.html">Data Formatting</a> / <span>Code Diff</span></div></div>
+
+  <main style="max-width:800px;margin:0 auto;padding:24px 16px;">
+    <h1 style="font-size:2.2rem;font-weight:700;margin-bottom:0.75rem;">Code Comparison: Diff Tools Explained</h1>
+    <p style="font-size:1.1rem;color:var(--color-text-secondary,#6e6e73);margin-bottom:1.5rem;line-height:1.7;">Every pull request, every merge conflict, and every bug bisect depends on one concept: the diff. Diff tools compute what changed between two versions of a file and present it in a form humans can review. This guide explains how diffs work, the algorithms behind them, how to read unified diff output, and how modern semantic diffing goes beyond plain text comparison.</p>
+
+    <div class="ad-zone" style="margin:24px 0;text-align:center;">
+      <ins class="adsbygoogle" style="display:block;" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5246764554303000" data-ad-slot="4644408855"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <h2 style="font-size:1.6rem;font-weight:600;margin-top:2rem;margin-bottom:0.75rem;">What is a Diff?</h2>
+    <p style="line-height:1.7;margin-bottom:1rem;">A diff is a representation of the differences between two sets of text, traditionally an original file and a modified one. Rather than storing two complete copies, a diff records only the lines that were added, removed, or changed, plus enough surrounding context to locate them. This compactness made diffs essential when storage and bandwidth were scarce, and it remains useful for review because the eye is drawn to what changed.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">The most common representation is the unified diff format. It groups consecutive changes into hunks, each preceded by a header that gives the file name and the line ranges affected. Inside a hunk, lines starting with a plus sign are additions, lines starting with a minus sign are deletions, and lines starting with a space are context, shown to anchor the change but unchanged themselves.</p>
+    <pre style="background:#1e1e1e;color:#d4d4d4;padding:16px;border-radius:8px;overflow-x:auto;margin-bottom:1rem;"><code>@@ -10,7 +10,8 @@
+ function greet(name) {
+-  console.log("Hello, " + name);
++  if (!name) name = "world";
++  console.log(`Hello, ${name}!`);
+ }
+-
++ 
+ module.exports = greet;</code></pre>
+    <p style="line-height:1.7;margin-bottom:1rem;">The numbers in the hunk header (<code>-10,7 +10,8</code>) mean "starting at line 10 in the old file, 7 lines; starting at line 10 in the new file, 8 lines." Context lines are usually configurable; three lines of context is the default in Git, enough to show the surrounding function without flooding the output. Understanding this format is the foundation for reading every diff a version control system produces.</p>
+
+    <p style="line-height:1.7;margin-bottom:1rem;">Some diff tools offer word-level or character-level granularity rather than line-level. A word diff highlights individual changed words within a line, which is more precise when a sentence is edited rather than a whole line replaced. This is especially valuable for documentation and prose, where a line may contain a paragraph and a line-level diff obscures the exact word that changed. Most modern review UIs toggle between line and word modes, and character-level diffs help with minified or single-line files where everything is on one line.</p>
+
+    <h2 style="font-size:1.6rem;font-weight:600;margin-top:2rem;margin-bottom:0.75rem;">Diff Algorithms: LCS and Beyond</h2>
+    <p style="line-height:1.7;margin-bottom:1rem;">At its core, a diff is the solution to a classic computer science problem: find the Longest Common Subsequence (LCS) shared by two sequences. Lines that appear in the LCS are treated as unchanged context; everything else is an insertion or deletion. The dynamic programming solution to LCS runs in quadratic time relative to the number of lines, which is acceptable for typical source files but can be slow on very large inputs.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">The Myers algorithm, used by Git by default, improves on naive LCS by finding a shortest edit script, the minimum set of insertions and deletions to transform one file into the other. It works on a graph of possible edit positions and searches for the shortest path, producing minimal, readable diffs that tend to align well with how developers think about changes. Myers is fast in practice because most real edits are localized, so the search rarely explores the whole space.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">Other algorithms suit different cases. Patience diff anchors on unique lines that appear in both files, which produces more stable diffs when a function is moved or reordered. Histogram diff (the default in Eclipse and JGit) refines patience by using the rarest lines as anchors, often yielding the most human-intuitive output for refactors. The choice of algorithm rarely changes correctness, but it changes which lines the tool flags as moved versus deleted-and-readded, which directly affects review readability.</p>
+
+    <h2 style="font-size:1.6rem;font-weight:600;margin-top:2rem;margin-bottom:0.75rem;">Understanding Diff Output</h2>
+    <p style="line-height:1.7;margin-bottom:1rem;">Reading a unified diff efficiently is a learned skill. Start with the file header, which tells you which file changed and whether it is a new file, a deletion, or a modification. Then scan the hunk headers to see how many regions changed and roughly where. Within each hunk, the minus lines show what was removed and the plus lines show what replaced them; pairing them mentally reconstructs the edit.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">Watch for changes that look large but are semantically trivial. Reformatting code, changing indentation, or swapping line endings can produce a diff that touches every line, hiding the one real logic change. This is why teams enforce formatting before commit, so reviewers see meaningful diffs. Also watch for hunks where a block of lines is deleted and an identical block added a few lines later, which usually signals a move that the text diff did not detect. Move detection, available in Git with <code>-M</code>, rewrites these as moves for cleaner output.</p>
+
+    <h2 style="font-size:1.6rem;font-weight:600;margin-top:2rem;margin-bottom:0.75rem;">Using Diff for Code Review</h2>
+    <p style="line-height:1.7;margin-bottom:1rem;">In a pull request, the diff is the primary artifact a reviewer reads. A good review focuses on the diff, not the whole file, because the changes represent the decision under evaluation. Read each hunk and ask: does this change do what the PR description claims, does it introduce a regression, and does it match the patterns in the surrounding code? The context lines answer the third question, showing the conventions the change must fit.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">Diffs also surface regressions during debugging. When a test starts failing, comparing the current code to the last known-good commit reveals exactly what changed. <code>git bisect</code> automates this by binary-searching commits and running a test at each step, narrowing the culprit commit quickly. Without precise diffs, bisect would be impossible, because it relies on comparing states to determine which change introduced the bug.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">For reviewers, the diff is a communication tool. Comments attach to specific lines, threading discussion around the exact change. When you write a change, aim for a diff that tells a story: small, focused, with a commit message that explains the why. A reviewer should understand the intent from the diff and message together, without spelunking through the full history. Diffs that mix refactoring, new features, and formatting in one PR are hard to review because the signal is buried in noise.</p>
+
+    <h2 style="font-size:1.6rem;font-weight:600;margin-top:2rem;margin-bottom:0.75rem;">Beyond Text: Semantic Diffs</h2>
+    <p style="line-height:1.7;margin-bottom:1rem;">A text diff treats code as lines of strings, which breaks down when a change is structurally significant but textually minor. Renaming a variable used in 50 places produces a 50-line diff, but semantically it is one edit. Reordering two independent functions creates a large diff that is logically a no-op. Semantic diffs address this by comparing the abstract syntax tree (AST) of the code rather than its lines.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">AST-based diffing parses both versions into a tree of language constructs and matches nodes by structure and content. A rename becomes a single change to the declaration, propagated to references. A moved block shows as a move, not a delete-plus-add. Tools like Difftastic and the tree-sitter-based differ in many modern editors produce these structural diffs, which are dramatically easier to review for large refactors. Some language servers even offer rename-aware diffs inside the IDE.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">Semantic diffs are not yet universal because they require a parser for every language and do not translate to the line-based patch format that version control relies on. But as tools mature, they are becoming the default for review UIs, where readability matters more than patch compatibility. Expect the line-based unified diff to persist for storage while richer views dominate the review experience.</p>
+
+    <h2 style="font-size:1.6rem;font-weight:600;margin-top:2rem;margin-bottom:0.75rem;">Diff Tools in Practice</h2>
+    <p style="line-height:1.7;margin-bottom:1rem;">Git is the dominant source of diffs in modern workflows. <code>git diff</code> shows unstaged changes, <code>git diff --staged</code> shows staged changes, and <code>git log -p</code> shows the diffs in history. IDEs like VS Code and JetBrains render these diffs side-by-side with syntax highlighting and inline actions to stage or revert hunks. For a quick comparison of two arbitrary snippets without a repository, an online diff tool pastes text on both sides and returns a highlighted diff instantly.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">For merge conflicts, three-way diff tools are essential. A three-way diff compares the common ancestor (the merge base) with each branch's version, showing what each side changed relative to the base. Tools like Meld, Beyond Compare, and KDiff3 present this as three panes, helping you resolve conflicts by understanding both sides rather than guessing. Configuring Git with a merge tool (<code>git config merge.tool</code>) integrates these into the conflict resolution workflow.</p>
+
+    <h2 style="font-size:1.6rem;font-weight:600;margin-top:2rem;margin-bottom:0.75rem;">Merge Strategies and Conflict Resolution</h2>
+    <p style="line-height:1.7;margin-bottom:1rem;">When two branches diverge, a merge must reconcile their changes. A fast-forward merge simply moves the branch pointer when one side has no new commits, requiring no diff at all. A three-way merge is the general case: the tool finds the common ancestor, computes what each branch changed relative to it, and combines non-overlapping changes automatically. Conflicts arise only when both branches modify the same lines differently, which is where the diff becomes a tool for human judgment.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">A conflict marker in a file shows the three sides, the ancestor, the current branch (HEAD or "ours"), and the incoming branch ("theirs"), separated by angle brackets. Resolving the conflict means reading each side's intent and writing the correct merged result. A three-way diff tool, which displays all three versions side by side, makes this far easier than reading raw conflict markers, because you see what changed from the base on each side rather than just the two final states.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">To minimize conflicts, keep branches short-lived and rebase frequently onto the target branch, so the common ancestor stays close to the tip. When conflicts recur in the same files, it signals that two teams are editing overlapping code without coordination, which is a process problem no merge tool can fix. The rebase strategy, which replays your commits on top of the target, produces a linear history and avoids merge commits, but it rewrites history so it should never be used on shared branches. Choose merge or rebase per project convention and apply it consistently.</p>
+
+    <div class="ad-zone" style="margin:24px 0;text-align:center;">
+      <ins class="adsbygoogle" style="display:block;" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5246764554303000" data-ad-slot="3469113897"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div class="tool-cta" style="margin:24px 0;padding:20px;border:1px solid var(--color-border,#d2d2d7);border-radius:12px;text-align:center;background:var(--color-bg-secondary,#f5f5f7);">
+      <h3 style="margin-bottom:8px;">Try This Tool</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);margin-bottom:12px;">Paste two versions of code and instantly see a side-by-side diff with additions, deletions, and context highlighted.</p>
+      <a href="../tools/formatters/code-diff.html" style="display:inline-block;padding:10px 24px;background:#0071e3;color:#fff;border-radius:8px;text-decoration:none;font-weight:500;">Open Code Diff Tool &rarr;</a>
+    </div>
+
+    <h2 style="font-size:1.6rem;font-weight:600;margin-top:2rem;margin-bottom:0.75rem;">Frequently Asked Questions</h2>
+    <h3 style="font-size:1.2rem;font-weight:600;margin-top:1.5rem;margin-bottom:0.5rem;">What's the difference between diff and patch?</h3>
+    <p style="line-height:1.7;margin-bottom:1rem;">A diff describes what changed between two files; a patch is a file containing that diff plus instructions for applying it to the original. <code>diff</code> generates the comparison, <code>patch</code> consumes it and modifies files. In Git, <code>git apply</code> and <code>git format-patch</code> bundle these together.</p>
+    <h3 style="font-size:1.2rem;font-weight:600;margin-top:1.5rem;margin-bottom:0.5rem;">How does Git compute diffs?</h3>
+    <p style="line-height:1.7;margin-bottom:1rem;">Git uses the Myers algorithm by default to find the shortest edit script between the two file versions. You can switch algorithms with <code>git diff --patience</code> or <code>--histogram</code> for diffs that anchor on unique or rare lines, which often reads better for refactors.</p>
+    <h3 style="font-size:1.2rem;font-weight:600;margin-top:1.5rem;margin-bottom:0.5rem;">What is a three-way merge?</h3>
+    <p style="line-height:1.7;margin-bottom:1rem;">A three-way merge compares two branches against their common ancestor. By knowing what each side changed relative to the base, the tool can auto-merge non-overlapping changes and highlight only true conflicts, where both sides modified the same lines differently.</p>
+    <h3 style="font-size:1.2rem;font-weight:600;margin-top:1.5rem;margin-bottom:0.5rem;">Can diff tools compare binary files?</h3>
+    <p style="line-height:1.7;margin-bottom:1rem;">Text diffs do not work on binaries, but specialized tools can. Git can show whether a binary file changed and use external drivers (configured via <code>.gitattributes</code>) for formats like images or documents. Tools like ImageMagick can visually diff images pixel by pixel.</p>
+    <h3 style="font-size:1.2rem;font-weight:600;margin-top:1.5rem;margin-bottom:0.5rem;">What's a unified diff?</h3>
+    <p style="line-height:1.7;margin-bottom:1rem;">A unified diff is the standard format that shows both old and new content in one view. It uses hunks with headers listing line ranges, plus signs for additions, minus signs for deletions, and leading spaces for context lines. Git, patch, and most code review tools use this format.</p>
+
+    <div class="tool-author" style="margin-top:24px;padding:12px 0;border-top:1px solid var(--color-border,#d2d2d7);font-size:14px;color:var(--color-text-tertiary,#6e6e73);">
+      Written by <a href="../authors/useeasytool-team.html" style="color:var(--color-primary,#0071e3);">UseEasyTool Team</a> &mdash; Developer Tools Experts
+    </div>
+
+    <h2 style="font-size:1.4rem;font-weight:600;margin-top:2rem;margin-bottom:0.75rem;">Related Articles</h2>
+    <ul style="list-style:none;padding:0;line-height:2;">
+      <li><a href="formatting-1-json.html" style="color:var(--color-primary,#0071e3);">JSON Formatting: From Messy to Maintainable</a></li>
+      <li><a href="formatting-2-sql.html" style="color:var(--color-primary,#0071e3);">SQL Formatting: Writing Readable Queries</a></li>
+      <li><a href="formatting-3-xml.html" style="color:var(--color-primary,#0071e3);">XML Formatting and Validation Guide</a></li>
+      <li><a href="formatting-5-csv.html" style="color:var(--color-primary,#0071e3);">CSV Data Viewing and Analysis</a></li>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-bottom">
+        <div class="footer-brand"><a href="../index.html" class="logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a></div>
+        <div class="footer-links-group">
+          <div class="footer-col"><h5>Tools</h5><a href="../index.html#cat_converters">Converters</a><a href="../index.html#cat_calculators">Calculators</a><a href="../index.html#cat_generators">Generators</a><a href="../index.html#cat_formatters">Formatters</a></div>
+          <div class="footer-col"><h5>Resources</h5><a href="../guides/converters-guide.html">Guides</a><a href="../blog/index.html">Blog</a><a href="index.html">Learning Center</a><a href="../faq.html">FAQ</a></div>
+          <div class="footer-col"><h5>Company</h5><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../authors/useeasytool-team.html">Our Team</a></div>
+          <div class="footer-col"><h5>Legal</h5><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms of Service</a><a href="../disclaimer.html">Disclaimer</a></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="../assets/js/main.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

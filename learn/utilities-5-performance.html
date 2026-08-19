@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Performance Testing: Measuring and Optimizing | UseEasyTool Learn</title>
+  <meta name="description" content="Learn how to measure and optimize web performance. Understand Core Web Vitals, performance metrics, testing tools, and optimization strategies.">
+  <meta name="keywords" content="web performance, core web vitals, LCP, INP, CLS, lighthouse, page speed, performance optimization">
+  <meta name="author" content="UseEasyTool Team">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://useeasytool.com/learn/utilities-5-performance.html">
+  <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/dark.css">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Web Performance Testing: Measuring and Optimizing">
+  <meta property="og:description" content="Learn how to measure and optimize web performance. Understand Core Web Vitals, performance metrics, testing tools, and optimization.">
+  <meta property="og:url" content="https://useeasytool.com/learn/utilities-5-performance.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Web Performance Testing: Measuring and Optimizing">
+  <meta name="twitter:description" content="Learn how to measure and optimize web performance with Core Web Vitals and testing tools.">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Web Performance Testing: Measuring and Optimizing",
+    "description": "Learn how to measure and optimize web performance. Understand Core Web Vitals, performance metrics, testing tools, and optimization strategies.",
+    "datePublished": "2024-06-10",
+    "dateModified": "2024-06-10",
+    "author": {
+      "@type": "Organization",
+      "name": "UseEasyTool Team",
+      "url": "https://useeasytool.com/authors/useeasytool-team.html"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "UseEasyTool",
+      "url": "https://useeasytool.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://useeasytool.com/assets/images/favicon.svg"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://useeasytool.com/learn/utilities-5-performance.html"
+    },
+    "keywords": ["web performance", "core web vitals", "LCP", "CLS", "INP", "lighthouse"]
+  }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5246764554303000" crossorigin="anonymous"></script>
+  <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WFG5TSM6M"></script>
+  <script src="../assets/js/ga4.js"></script>
+</head>
+<body>
+  <amp-auto-ads type="adsense" data-ad-client="ca-pub-5246764554303000"></amp-auto-ads>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <a href="../blog/index.html" class="navbar-link">Blog</a>
+        <a href="index.html" class="navbar-link" style="font-weight:600;">Learn</a>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="breadcrumb"><div class="container"><a href="../index.html">Home</a> / <a href="index.html">Learn</a> / <a href="index.html">Developer Utilities &amp; Testing</a> / <span>Web Performance Testing</span></div></div>
+
+  <main style="max-width:800px;margin:0 auto;padding:24px 16px;">
+    <h1>Web Performance Testing: Measuring and Optimizing</h1>
+    <p style="font-size:1.1rem;color:var(--color-text-secondary,#6e6e73);line-height:1.7;">Web performance directly affects user experience, search ranking, and revenue. A page that loads in one second retains users better than one that takes four seconds. This guide covers the metrics that matter, the tools that measure them, and the optimization techniques that move the numbers. Whether you are chasing Core Web Vitals for SEO or improving conversion rates, these are the fundamentals.</p>
+
+    <div class="ad-zone" style="margin:24px 0;text-align:center;">
+      <ins class="adsbygoogle" style="display:block;" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5246764554303000" data-ad-slot="4644408855"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <h2>Why Web Performance Matters</h2>
+    <p>Performance is a business metric, not just a technical one. Google's research found that as page load time goes from one second to five seconds, the probability of a user bouncing increases by 90%. Walmart found that every 100ms of improvement increased revenue by up to 1%. The BBC lost 10% of users for every additional second of load time. These are not isolated anecdotes; they reflect a consistent pattern across the web: users abandon slow pages.</p>
+    <p>Since 2021, Google uses Core Web Vitals as a ranking signal in search results. Pages that pass the thresholds rank higher, all else equal. This means performance is now an SEO concern, not just a user experience concern. For content-driven sites that depend on organic search traffic, failing Core Web Vitals directly reduces visibility and traffic.</p>
+    <p>Performance also affects accessibility. Users on slow networks, low-end devices, and limited data plans are disproportionately harmed by bloated pages. A page that loads in two seconds on fiber loads in fifteen seconds on 3G, and many users in developing markets are on exactly those connections. Optimizing performance is optimizing for equity of access.</p>
+
+    <h2>Core Web Vitals Explained</h2>
+    <p>Core Web Vitals are Google's standardized metrics for measuring real-user experience. Three metrics form the core: <strong>Largest Contentful Paint (LCP)</strong> measures loading performance, <strong>Interaction to Next Paint (INP)</strong> measures interactivity, and <strong>Cumulative Layout Shift (CLS)</strong> measures visual stability. Each has thresholds for "good," "needs improvement," and "poor."</p>
+    <table>
+      <thead><tr><th>Metric</th><th>Good</th><th>Needs Work</th><th>Poor</th><th>What it measures</th></tr></thead>
+      <tbody>
+        <tr><td>LCP</td><td>≤ 2.5s</td><td>2.5s - 4.0s</td><td>&gt; 4.0s</td><td>Time to render largest visible element</td></tr>
+        <tr><td>INP</td><td>≤ 200ms</td><td>200ms - 500ms</td><td>&gt; 500ms</td><td>Response time to user interaction</td></tr>
+        <tr><td>CLS</td><td>≤ 0.1</td><td>0.1 - 0.25</td><td>&gt; 0.25</td><td>Visual layout shift during loading</td></tr>
+      </tbody>
+    </table>
+    <p><strong>LCP</strong> marks when the main content of the page has likely loaded, by timing when the largest visible element (usually an image, heading, or hero block) finishes rendering. A slow LCP usually means the server is slow, images are unoptimized, or render-blocking resources are delaying the first paint.</p>
+    <pre><code>// Measuring Core Web Vitals with the web-vitals library
+import { onLCP, onINP, onCLS, onFCP, onTTFB } from 'web-vitals';
+
+// LCP: Largest Contentful Paint
+onLCP((metric) => {
+  console.log('LCP:', metric.value, 'ms');
+  sendToAnalytics({ name: 'LCP', value: metric.value, rating: metric.rating });
+});
+
+// INP: Interaction to Next Paint (replaced FID in 2024)
+onINP((metric) => {
+  console.log('INP:', metric.value, 'ms');
+  // INP measures the worst interaction response time during the page lifecycle
+});
+
+// CLS: Cumulative Layout Shift
+onCLS((metric) => {
+  console.log('CLS:', metric.value);
+  // A value of 0.1 means the viewport shifted by 10% total
+});
+
+// Additional metrics
+onFCP((metric) => console.log('First Contentful Paint:', metric.value));
+onTTFB((metric) => console.log('Time to First Byte:', metric.value));
+
+function sendToAnalytics({ name, value, rating }) {
+  // Send to Google Analytics 4 or your analytics platform
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon('/api/vitals', JSON.stringify({ name, value, rating }));
+  }
+}</code></pre>
+    <p><strong>INP</strong> replaced First Input Delay (FID) in March 2024. It measures the latency of all user interactions (clicks, taps, key presses) throughout the page's life, not just the first one. A high INP means the page feels sluggish: buttons respond late, typing lags, scrolling jitters. INP is harder to optimize than LCP because it involves JavaScript execution time on the main thread.</p>
+    <p><strong>CLS</strong> measures how much the visible layout shifts as the page loads. A shift of 0.25 means content moved by 25% of the viewport, which is jarring and causes accidental clicks. The main causes are images without dimensions, dynamically injected content above existing content, and web fonts that change text size after loading.</p>
+
+    <h2>Performance Testing Tools</h2>
+    <p>Several tools measure performance, each with a different purpose. <strong>Lighthouse</strong> is Google's open-source auditing tool built into Chrome DevTools. It runs a simulated page load, scores performance on a 0-100 scale, and provides specific recommendations. Lighthouse is the best starting point because it explains what to fix and why.</p>
+    <p><strong>PageSpeed Insights</strong> runs Lighthouse in the cloud and combines the lab results with real-user data from the Chrome UX Report. This is valuable because lab data (simulated) and field data (real users) can differ significantly: a page that scores well in Lighthouse may perform poorly on real devices with slower CPUs. <strong>WebPageTest</strong> offers the most detailed analysis, with filmstrip views, waterfall charts, and testing from multiple locations and devices.</p>
+    <pre><code>// Running Lighthouse programmatically (Node.js)
+/*
+const lighthouse = require('lighthouse');
+const chromeLauncher = require('chrome-launcher');
+
+async function runLighthouse(url) {
+  const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
+  const options = {
+    logLevel: 'info',
+    output: 'json',
+    port: chrome.port,
+    onlyCategories: ['performance']  // Focus on performance only
+  };
+  const runnerResult = await lighthouse(url, options);
+  await chrome.kill();
+
+  const report = JSON.parse(runnerResult.report);
+  console.log('Performance Score:', report.categories.performance.score * 100);
+  console.log('LCP:', report.audits['largest-contentful-paint'].displayValue);
+  console.log('CLS:', report.audits['cumulative-layout-shift'].displayValue);
+  console.log('INP:', report.audits['interaction-to-next-paint'].displayValue);
+
+  // List failed audits with recommendations
+  Object.values(report.audits)
+    .filter(audit => audit.score !== null && audit.score < 0.9)
+    .forEach(audit => {
+      console.log(`- ${audit.title}: ${audit.displayValue}`);
+      if (audit.warnings) console.log(`  ${audit.warnings.join(', ')}`);
+    });
+  return report;
+}
+*/</code></pre>
+    <p><strong>Chrome DevTools</strong> Performance tab records a detailed timeline of the page's execution, showing where time is spent: JavaScript execution, layout, paint, network requests. The Network tab shows the waterfall of resource loading, revealing which resources block rendering. For ongoing monitoring, <strong>Real User Monitoring (RUM)</strong> through the web-vitals library captures actual user experience data that lab tests cannot, because real users have different devices, networks, and usage patterns.</p>
+
+    <h2>Optimizing Load Performance</h2>
+    <p>Load performance (LCP and First Contentful Paint) depends on how quickly the browser can download, parse, and render the critical content. The biggest wins come from reducing what the browser must do before the first paint: fewer resources, smaller resources, and non-blocking resources.</p>
+    <p><strong>Image optimization</strong> is usually the highest-impact change. Serve modern formats (WebP, AVIF) that are 25-50% smaller than JPEG and PNG at equivalent quality. Resize images to their display dimensions; serving a 4000px image for a 400px display slot wastes bandwidth and decode time. Use <code>srcset</code> to serve appropriately sized images per device. Lazy-load images below the fold with <code>loading="lazy"</code> so they do not compete with above-the-fold content during initial load.</p>
+    <pre><code>// Image optimization techniques
+
+// 1. Modern formats with fallback
+<picture>
+  <source srcset="hero.avif" type="image/avif">
+  <source srcset="hero.webp" type="image/webp">
+  <img src="hero.jpg" alt="Hero" width="1200" height="600" fetchpriority="high">
+</picture>
+
+// 2. Responsive images with srcset
+<img srcset="photo-320w.webp 320w,
+             photo-640w.webp 640w,
+             photo-1200w.webp 1200w"
+     sizes="(max-width: 600px) 320px, (max-width: 1200px) 640px, 1200px"
+     src="photo-1200w.webp"
+     alt="Photo" loading="lazy" decoding="async">
+
+// 3. Preload the LCP image (usually the hero image)
+<link rel="preload" as="image" href="hero.webp"
+      imagesrcset="hero-640w.webp 640w, hero-1200w.webp 1200w"
+      imagesizes="100vw" fetchpriority="high">
+
+// 4. Code splitting — only load JavaScript when needed
+// Instead of one large bundle:
+// import { heavyFeature } from './heavyFeature.js';  // Loaded immediately
+// Use dynamic import:
+const button = document.getElementById('feature-btn');
+button.addEventListener('click', async () => {
+  const { heavyFeature } = await import('./heavyFeature.js');  // Loaded on demand
+  heavyFeature();
+});
+
+// 5. Defer non-critical JavaScript
+// <script src="analytics.js" defer></script>
+// <script src="chat-widget.js" defer></script></code></pre>
+    <p><strong>Code splitting</strong> breaks your JavaScript into chunks loaded on demand, so the initial bundle only contains code needed for the first render. Modern bundlers (webpack, Vite, esbuild) support this through dynamic <code>import()</code>. <strong>CDN</strong> delivery reduces latency by serving assets from edge locations close to the user. <strong>HTTP caching</strong> with proper Cache-Control headers prevents re-downloading unchanged resources on repeat visits. <strong>Critical CSS</strong> inlining extracts the CSS needed for above-the-fold rendering and embeds it in the HTML, eliminating a render-blocking request.</p>
+
+    <h2>Optimizing Interactivity</h2>
+    <p>Interactivity (INP) depends on how quickly the main thread responds to user input. When JavaScript is executing, the browser cannot respond to clicks or typing until the current task completes. Long tasks (over 50ms) block interaction and cause poor INP scores. The fix is to break long tasks into shorter ones and move heavy work off the main thread.</p>
+    <pre><code>// Breaking up long tasks to improve INP
+
+// BAD: Long synchronous task blocks the main thread
+function processDataSync(data) {
+  // This 200ms task blocks all interactions
+  const results = data.map(item => expensiveTransform(item));
+  return results;
+}
+
+// GOOD: Yield to the main thread between chunks
+async function processDataChunked(data, chunkSize = 50) {
+  const results = [];
+  for (let i = 0; i < data.length; i += chunkSize) {
+    const chunk = data.slice(i, i + chunkSize);
+    results.push(...chunk.map(item => expensiveTransform(item)));
+
+    // Yield to let the browser handle pending interactions
+    if (i + chunkSize < data.length) {
+      await scheduler.yield();  // Modern browsers (2024+)
+      // Fallback: await new Promise(r => setTimeout(r, 0));
+    }
+  }
+  return results;
+}
+
+// BEST: Move heavy work to a Web Worker (off main thread)
+// worker.js
+self.onmessage = function(e) {
+  const results = e.data.map(item => expensiveTransform(item));
+  self.postMessage(results);
+};
+
+// main.js
+const worker = new Worker('worker.js');
+worker.postMessage(data);
+worker.onmessage = (e) => {
+  const results = e.data;  // Main thread stays free during processing
+  renderResults(results);
+};
+
+// Debouncing frequent events (scroll, resize, input)
+function debounce(fn, delay) {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn(...args), delay);
+  };
+}
+
+// Throttling to limit execution rate
+function throttle(fn, limit) {
+  let inThrottle = false;
+  return (...args) => {
+    if (!inThrottle) {
+      fn(...args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+}
+
+// Use requestIdleCallback for non-urgent work
+requestIdleCallback(() => {
+  preloadNonCriticalResources();
+});</code></pre>
+    <p>Debouncing and throttling limit how often event handlers fire. A scroll handler that runs on every scroll event (potentially 60 times per second) will block the main thread and cause jank. Debouncing delays execution until the event stops firing for a set period; throttling limits execution to once per interval. For truly heavy computation, Web Workers run code on a separate thread, leaving the main thread free to handle interactions.</p>
+
+    <h2>Monitoring and Continuous Improvement</h2>
+    <p>Performance is not a one-time fix; it degrades as code is added. Establish monitoring to catch regressions before they reach users. <strong>Real User Monitoring (RUM)</strong> collects Core Web Vitals from actual visitors via the web-vitals library, giving you the 75th-percentile values that Google uses for ranking. This field data is more representative than lab tests because it captures real devices, networks, and usage patterns.</p>
+    <p><strong>Synthetic testing</strong> runs automated Lighthouse checks on every deployment via CI/CD, failing the build if scores drop below a threshold. This catches regressions before they ship. <strong>Performance budgets</strong> set limits on resource sizes and counts; if a pull request adds a 500KB library, the budget check fails and forces a discussion about the trade-off. Set budgets for JavaScript bundle size, image weight, third-party scripts, and request count.</p>
+    <pre><code>// Performance budget configuration (Lighthouse / budget.json)
+const budget = {
+  "resourceSizes": [
+    { "resourceType": "script",     "budget": 170 },  // 170 KB JS
+    { "resourceType": "stylesheet",  "budget": 50 },   // 50 KB CSS
+    { "resourceType": "image",      "budget": 300 },  // 300 KB images
+    { "resourceType": "font",       "budget": 100 },  // 100 KB fonts
+    { "resourceType": "total",      "budget": 700 }    // 700 KB total
+  ],
+  "resourceCounts": [
+    { "resourceType": "third-party", "budget": 5 },   // Max 5 third-party requests
+    { "resourceType": "script",      "budget": 3 },   // Max 3 JS files
+    { "resourceType": "font",         "budget": 2 }    // Max 2 font files
+  ]
+};
+
+// CI/CD integration (GitHub Actions example)
+/*
+  - name: Lighthouse CI
+    uses: treosh/lighthouse-ci-action@v11
+    with:
+      urls: |
+        https://useeasytool.com/
+        https://useeasytool.com/tools/generators/password.html
+      budgetPath: ./budget.json
+      uploadArtifacts: true
+      temporaryPublicStorage: true
+*/
+
+// Ongoing RUM dashboard query (aggregate 75th percentile)
+/*
+  SELECT
+    PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY lcp_value) as p75_lcp,
+    PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY inp_value) as p75_inp,
+    PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY cls_value) as p75_cls
+  FROM web_vitals
+  WHERE timestamp > NOW() - INTERVAL '28 days'
+  GROUP BY page_url;
+*/</code></pre>
+    <p>Review RUM data weekly to spot trends. If LCP degrades after a release, investigate which change caused it. Segment by device type and connection speed to find user groups with poor experience. The combination of synthetic testing (catching regressions pre-ship) and RUM (tracking real-user experience) gives you both proactive and reactive coverage, ensuring performance stays good over time rather than just at launch.</p>
+
+    <div class="ad-zone" style="margin:24px 0;text-align:center;">
+      <ins class="adsbygoogle" style="display:block;" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5246764554303000" data-ad-slot="3469113897"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div class="tool-cta" style="margin:24px 0;padding:20px;border:1px solid var(--color-border,#d2d2d7);border-radius:12px;text-align:center;background:var(--color-bg-secondary,#f5f5f7);">
+      <h3 style="margin-bottom:8px;">Try This Tool</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);margin-bottom:12px;">Test your website's performance metrics, Core Web Vitals, and get optimization recommendations.</p>
+      <a href="../tools/testers/performance.html" style="display:inline-block;padding:10px 24px;background:#0071e3;color:#fff;border-radius:8px;text-decoration:none;font-weight:500;">Open Tool &rarr;</a>
+    </div>
+
+    <h2>Frequently Asked Questions</h2>
+    <div style="margin:16px 0;">
+      <h3 style="margin-bottom:6px;">What are good Core Web Vitals scores?</h3>
+      <p style="margin-bottom:16px;color:var(--color-text-secondary,#6e6e73);">Good scores are LCP at or under 2.5 seconds, INP at or under 200 milliseconds, and CLS at or under 0.1. Google requires all three metrics to pass these thresholds for a page to be considered "good" for ranking purposes. The 75th percentile of real-user measurements must meet these targets.</p>
+      <h3 style="margin-bottom:6px;">How do I improve LCP?</h3>
+      <p style="margin-bottom:16px;color:var(--color-text-secondary,#6e6e73);">Optimize your LCP element, which is usually the largest image or text block. Serve modern image formats (WebP, AVIF), preload the hero image, use a CDN, reduce server response time (TTFB), and eliminate render-blocking CSS and JavaScript. Ensure the LCP element is not lazy-loaded, as it needs to load immediately.</p>
+      <h3 style="margin-bottom:6px;">What causes CLS?</h3>
+      <p style="margin-bottom:16px;color:var(--color-text-secondary,#6e6e73);">The main causes are images and embeds without width and height attributes, dynamically injected content that pushes existing content down, and web fonts that change text dimensions after loading. Fix CLS by always specifying dimensions for media, reserving space for ads and embeds, and using font-display strategies.</p>
+      <h3 style="margin-bottom:6px;">How fast should my page load?</h3>
+      <p style="margin-bottom:16px;color:var(--color-text-secondary,#6e6e73);">Aim for LCP under 2.5 seconds on mobile networks. This means the main content renders within that time. Total page load can take longer if non-critical resources load after the initial paint. The key metric is perceived speed, which LCP approximates, not total download time.</p>
+      <h3 style="margin-bottom:6px;">What is the difference between Lighthouse and PageSpeed Insights?</h3>
+      <p style="margin-bottom:16px;color:var(--color-text-secondary,#6e6e73);">Lighthouse is a lab tool that simulates a page load under controlled conditions. PageSpeed Insights runs Lighthouse but also shows real-user data from the Chrome UX Report. Lighthouse tells you what to fix; PageSpeed Insights tells you how real users actually experience your page, which can differ from lab results.</p>
+    </div>
+
+    <div style="margin-top:24px;padding:16px 0;border-top:1px solid var(--color-border,#d2d2d7);font-size:14px;color:var(--color-text-tertiary,#6e6e73);">
+      Written by <a href="../authors/useeasytool-team.html" style="color:var(--color-primary,#0071e3);">UseEasyTool Team</a> &mdash; Developer Tools Experts
+    </div>
+
+    <h2 style="font-size:1.4rem;margin-top:24px;">Related Articles</h2>
+    <ul style="list-style:none;padding:0;line-height:2;">
+      <li><a href="utilities-1-passwords.html" style="color:var(--color-primary,#0071e3);">Password Generation and Security Best Practices</a></li>
+      <li><a href="utilities-2-identifiers.html" style="color:var(--color-primary,#0071e3);">UUID vs NanoID: Unique Identifier Generation</a></li>
+      <li><a href="utilities-3-qr-barcode.html" style="color:var(--color-primary,#0071e3);">QR Codes and Barcodes: Generation and Use Cases</a></li>
+      <li><a href="utilities-4-regex.html" style="color:var(--color-primary,#0071e3);">Regex Testing: A Practical Approach</a></li>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-bottom">
+        <div class="footer-brand"><a href="../index.html" class="logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a></div>
+        <div class="footer-links-group">
+          <div class="footer-col"><h5>Tools</h5><a href="../index.html#cat_converters">Converters</a><a href="../index.html#cat_calculators">Calculators</a><a href="../index.html#cat_generators">Generators</a><a href="../index.html#cat_formatters">Formatters</a></div>
+          <div class="footer-col"><h5>Resources</h5><a href="../guides/converters-guide.html">Guides</a><a href="../blog/index.html">Blog</a><a href="index.html">Learning Center</a><a href="../faq.html">FAQ</a></div>
+          <div class="footer-col"><h5>Company</h5><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../authors/useeasytool-team.html">Our Team</a></div>
+          <div class="footer-col"><h5>Legal</h5><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms of Service</a><a href="../disclaimer.html">Disclaimer</a></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="../assets/js/main.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

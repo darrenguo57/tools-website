@@ -109,6 +109,7 @@
 
       <div class="navbar-links">
         <a href="blog/index.html" class="nav-link" data-i18n="nav_blog">Blog</a>
+        <a href="learn/index.html" class="nav-link">Learn</a>
       </div>
       <div class="navbar-actions">
         <button class="btn-icon" id="langToggle" data-lang-switch aria-label="Toggle Language">
@@ -277,6 +278,46 @@
           <a href="custom-tool.html" class="custom-tool-banner-btn btn-accent">
             <i data-lucide="message-square-plus"></i>
             <span data-i18n="custom_banner_btn">Request Custom Tool</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Guides Banner -->
+      <section class="guides-banner" style="margin: 24px 0;">
+        <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">Complete Guides</h2>
+        <p style="color: var(--color-text-secondary, #6e6e73); margin-bottom: 16px; font-size: 14px;">Learn how to get the most from our tools with in-depth guides for each category.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;">
+          <a href="guides/converters-guide.html" style="display: flex; flex-direction: column; padding: 14px; border: 1px solid var(--color-border, #d2d2d7); border-radius: 10px; text-decoration: none; color: inherit; transition: box-shadow 0.2s;">
+            <span style="font-weight: 600; font-size: 14px;">Converters Guide</span>
+            <span style="font-size: 12px; color: var(--color-text-secondary, #6e6e73); margin-top: 4px;">Base64, URL, timestamps & more</span>
+          </a>
+          <a href="guides/crypto-guide.html" style="display: flex; flex-direction: column; padding: 14px; border: 1px solid var(--color-border, #d2d2d7); border-radius: 10px; text-decoration: none; color: inherit;">
+            <span style="font-weight: 600; font-size: 14px;">Encryption Guide</span>
+            <span style="font-size: 12px; color: var(--color-text-secondary, #6e6e73); margin-top: 4px;">AES, RSA, HMAC, hash tools</span>
+          </a>
+          <a href="guides/formatters-guide.html" style="display: flex; flex-direction: column; padding: 14px; border: 1px solid var(--color-border, #d2d2d7); border-radius: 10px; text-decoration: none; color: inherit;">
+            <span style="font-weight: 600; font-size: 14px;">Formatters Guide</span>
+            <span style="font-size: 12px; color: var(--color-text-secondary, #6e6e73); margin-top: 4px;">JSON, SQL, XML, CSV & diff</span>
+          </a>
+          <a href="guides/generators-guide.html" style="display: flex; flex-direction: column; padding: 14px; border: 1px solid var(--color-border, #d2d2d7); border-radius: 10px; text-decoration: none; color: inherit;">
+            <span style="font-weight: 600; font-size: 14px;">Generators Guide</span>
+            <span style="font-size: 12px; color: var(--color-text-secondary, #6e6e73); margin-top: 4px;">QR codes, passwords, UUIDs</span>
+          </a>
+          <a href="guides/image-tools-guide.html" style="display: flex; flex-direction: column; padding: 14px; border: 1px solid var(--color-border, #d2d2d7); border-radius: 10px; text-decoration: none; color: inherit;">
+            <span style="font-weight: 600; font-size: 14px;">Image Tools Guide</span>
+            <span style="font-size: 12px; color: var(--color-text-secondary, #6e6e73); margin-top: 4px;">Compress, convert, crop & colors</span>
+          </a>
+          <a href="guides/charts-guide.html" style="display: flex; flex-direction: column; padding: 14px; border: 1px solid var(--color-border, #d2d2d7); border-radius: 10px; text-decoration: none; color: inherit;">
+            <span style="font-weight: 600; font-size: 14px;">Charts Guide</span>
+            <span style="font-size: 12px; color: var(--color-text-secondary, #6e6e73); margin-top: 4px;">Bar, line, gauge, Gantt & more</span>
+          </a>
+          <a href="guides/calculators-guide.html" style="display: flex; flex-direction: column; padding: 14px; border: 1px solid var(--color-border, #d2d2d7); border-radius: 10px; text-decoration: none; color: inherit;">
+            <span style="font-weight: 600; font-size: 14px;">Calculators Guide</span>
+            <span style="font-size: 12px; color: var(--color-text-secondary, #6e6e73); margin-top: 4px;">Scientific, BMI, loan & age</span>
+          </a>
+          <a href="guides/testers-guide.html" style="display: flex; flex-direction: column; padding: 14px; border: 1px solid var(--color-border, #d2d2d7); border-radius: 10px; text-decoration: none; color: inherit;">
+            <span style="font-weight: 600; font-size: 14px;">Testing Guide</span>
+            <span style="font-size: 12px; color: var(--color-text-secondary, #6e6e73); margin-top: 4px;">Regex, color picker, gradients</span>
           </a>
         </div>
       </section>
@@ -648,7 +689,7 @@
           <span class="tool-card-tag" data-i18n="cat_charts">Charts</span>
         </a>
 
-        <a href="tools/charts/dashboard.html" class="tool-card" data-category="charts" data-name-en="Dashboard" data-name-zh="仪表盘">
+        <a href="tools/charts/gauge.html" class="tool-card" data-category="charts" data-name-en="Dashboard" data-name-zh="仪表盘">
           <div class="tool-card-icon tool-card-icon--charts"><i data-lucide="gauge"></i></div>
           <h3 data-i18n="tool_dashboard">Dashboard</h3>
           <p data-i18n="tool_dashboard_desc">Create interactive dashboards with gauges</p>
@@ -727,6 +768,68 @@
             </script>
       </div>
 
+      <!-- Featured Tutorials -->
+      <section style="margin: 32px 0;">
+        <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">Featured Tutorials</h2>
+        <p style="color: var(--color-text-secondary, #6e6e73); margin-bottom: 16px; font-size: 14px;">Deep-dive articles to help you master developer tools and concepts.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px;">
+          <a href="learn/data-encoding-1-base64.html" style="display: flex; flex-direction: column; padding: 16px; border: 1px solid var(--color-border, #d2d2d7); border-radius: 10px; text-decoration: none; color: inherit;">
+            <span style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Understanding Base64: From Binary to Text</span>
+            <span style="font-size: 13px; color: var(--color-text-secondary, #6e6e73);">Learn how Base64 encoding works and when to use it in your projects.</span>
+          </a>
+          <a href="learn/crypto-1-aes.html" style="display: flex; flex-direction: column; padding: 16px; border: 1px solid var(--color-border, #d2d2d7); border-radius: 10px; text-decoration: none; color: inherit;">
+            <span style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">AES Encryption: How It Works</span>
+            <span style="font-size: 13px; color: var(--color-text-secondary, #6e6e73);">Complete developer guide to AES encryption, key sizes, and modes.</span>
+          </a>
+          <a href="learn/formatting-1-json.html" style="display: flex; flex-direction: column; padding: 16px; border: 1px solid var(--color-border, #d2d2d7); border-radius: 10px; text-decoration: none; color: inherit;">
+            <span style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">JSON Formatting Best Practices</span>
+            <span style="font-size: 13px; color: var(--color-text-secondary, #6e6e73);">Master JSON formatting for readable, maintainable data.</span>
+          </a>
+          <a href="learn/image-1-compression.html" style="display: flex; flex-direction: column; padding: 16px; border: 1px solid var(--color-border, #d2d2d7); border-radius: 10px; text-decoration: none; color: inherit;">
+            <span style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Image Compression Guide</span>
+            <span style="font-size: 13px; color: var(--color-text-secondary, #6e6e73);">Reduce image size without quality loss for faster web pages.</span>
+          </a>
+          <a href="learn/charts-1-choosing-type.html" style="display: flex; flex-direction: column; padding: 16px; border: 1px solid var(--color-border, #d2d2d7); border-radius: 10px; text-decoration: none; color: inherit;">
+            <span style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Choosing the Right Chart Type</span>
+            <span style="font-size: 13px; color: var(--color-text-secondary, #6e6e73);">Select the perfect chart for your data with this visual guide.</span>
+          </a>
+          <a href="learn/utilities-1-passwords.html" style="display: flex; flex-direction: column; padding: 16px; border: 1px solid var(--color-border, #d2d2d7); border-radius: 10px; text-decoration: none; color: inherit;">
+            <span style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Password Security Best Practices</span>
+            <span style="font-size: 13px; color: var(--color-text-secondary, #6e6e73);">Generate secure passwords and implement security best practices.</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Latest Articles -->
+      <section style="margin: 32px 0;">
+        <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">Latest Articles</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px;">
+          <a href="blog/articles/base64-encoding-explained.html" style="display: flex; flex-direction: column; padding: 16px; border: 1px solid var(--color-border, #d2d2d7); border-radius: 10px; text-decoration: none; color: inherit;">
+            <span style="font-weight: 600; font-size: 15px;">Base64 Encoding Explained</span>
+            <span style="font-size: 13px; color: var(--color-text-secondary, #6e6e73); margin-top: 4px;">A comprehensive guide to Base64 encoding for developers.</span>
+          </a>
+          <a href="blog/articles/json-formatting-guide.html" style="display: flex; flex-direction: column; padding: 16px; border: 1px solid var(--color-border, #d2d2d7); border-radius: 10px; text-decoration: none; color: inherit;">
+            <span style="font-weight: 600; font-size: 15px;">JSON Formatting Guide</span>
+            <span style="font-size: 13px; color: var(--color-text-secondary, #6e6e73); margin-top: 4px;">Best practices for formatting and validating JSON data.</span>
+          </a>
+          <a href="blog/articles/password-security-guide.html" style="display: flex; flex-direction: column; padding: 16px; border: 1px solid var(--color-border, #d2d2d7); border-radius: 10px; text-decoration: none; color: inherit;">
+            <span style="font-weight: 600; font-size: 15px;">Password Security Guide</span>
+            <span style="font-size: 13px; color: var(--color-text-secondary, #6e6e73); margin-top: 4px;">How to create and manage secure passwords.</span>
+          </a>
+          <a href="blog/articles/data-visualization-best-practices.html" style="display: flex; flex-direction: column; padding: 16px; border: 1px solid var(--color-border, #d2d2d7); border-radius: 10px; text-decoration: none; color: inherit;">
+            <span style="font-weight: 600; font-size: 15px;">Data Visualization Best Practices</span>
+            <span style="font-size: 13px; color: var(--color-text-secondary, #6e6e73); margin-top: 4px;">Tips and techniques for effective data visualization.</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Learning Path -->
+      <section style="margin: 32px 0; padding: 24px; background: var(--color-bg-secondary, #f5f5f7); border-radius: 12px; text-align: center;">
+        <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">New Here? Start Learning</h2>
+        <p style="color: var(--color-text-secondary, #6e6e73); margin-bottom: 16px; max-width: 600px; margin-left: auto; margin-right: auto;">Our Learning Center offers 6 tutorial series with 30 in-depth articles covering data encoding, cryptography, formatting, image processing, data visualization, and developer utilities. Each tutorial includes code examples, FAQs, and practical use cases.</p>
+        <a href="learn/index.html" style="display: inline-block; padding: 10px 24px; background: #0071e3; color: #fff; border-radius: 8px; text-decoration: none; font-weight: 500;">Browse Learning Center</a>
+      </section>
+
       <!-- No Results -->
       <div class="no-results" id="noResults" data-no-results style="display:none">
         <i data-lucide="search-x"></i>
@@ -773,29 +876,36 @@
       <!-- Footer Bottom -->
       <div class="footer-bottom">
         <div class="footer-brand">
-          <a href="#" class="logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a>
+          <a href="index.html" class="logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a>
           <p data-i18n="footer_description">A comprehensive collection of free online tools for developers, designers, and everyone.</p>
         </div>
         <div class="footer-links-group">
           <div class="footer-col">
-            <h5 data-i18n="footer_col_product">Product</h5>
-            <a href="#converters" data-i18n="cat_converters">Converters</a>
-            <a href="#calculators" data-i18n="cat_calculators">Calculators</a>
-            <a href="#image-tools" data-i18n="cat_image_tools">Image Tools</a>
-            <a href="#generators" data-i18n="cat_generators">Generators</a>
+            <h5 data-i18n="footer_col_product">Tools</h5>
+            <a href="index.html#cat_converters" data-i18n="cat_converters">Converters</a>
+            <a href="index.html#cat_calculators" data-i18n="cat_calculators">Calculators</a>
+            <a href="index.html#cat_generators" data-i18n="cat_generators">Generators</a>
+            <a href="index.html#cat_formatters" data-i18n="cat_formatters">Formatters</a>
           </div>
           <div class="footer-col">
-            <h5 data-i18n="footer_col_more">More</h5>
-            <a href="#formatters" data-i18n="cat_formatters">Formatters</a>
-            <a href="#crypto" data-i18n="cat_crypto">Encryption</a>
-            <a href="#charts" data-i18n="cat_charts">Charts</a>
-            <a href="#testing" data-i18n="cat_testing">Testing</a>
-          </div>
-          <div class="footer-col">
-            <h5 data-i18n="footer_col_resources">Resources</h5>
+            <h5>Resources</h5>
+            <a href="guides/converters-guide.html">Guides</a>
+            <a href="learn/index.html">Learning Center</a>
             <a href="blog/index.html" data-i18n="footer_blog">Blog</a>
+            <a href="faq.html">FAQ</a>
+          </div>
+          <div class="footer-col">
+            <h5>Company</h5>
             <a href="about.html" data-i18n="footer_about">About</a>
             <a href="contact.html" data-i18n="footer_contact">Contact</a>
+            <a href="custom-tool.html">Custom Tool</a>
+            <a href="authors/useeasytool-team.html">Our Team</a>
+          </div>
+          <div class="footer-col">
+            <h5>Legal</h5>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+            <a href="disclaimer.html">Disclaimer</a>
           </div>
         </div>
       </div>

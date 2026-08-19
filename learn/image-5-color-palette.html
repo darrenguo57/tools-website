@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Palettes for Web Design | UseEasyTool</title>
+  <meta name="description" content="Learn how to extract and create color palettes for web design. Understand color theory, accessibility, and tools for generating harmonious color schemes.">
+  <meta name="keywords" content="color palette, color theory, color harmony, wcag contrast, css color variables, design tokens, k-means clustering, hsl">
+  <meta name="author" content="UseEasyTool Team">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://useeasytool.com/learn/image-5-color-palette.html">
+  <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/dark.css">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Color Palettes for Web Design | UseEasyTool">
+  <meta property="og:description" content="Learn how to extract and create color palettes for web design. Understand color theory, accessibility, and tools for generating harmonious color schemes.">
+  <meta property="og:url" content="https://useeasytool.com/learn/image-5-color-palette.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta property="article:published_time" content="2024-06-19">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Color Palettes for Web Design | UseEasyTool">
+  <meta name="twitter:description" content="Learn how to extract and create color palettes for web design. Understand color theory, accessibility, and tools for generating harmonious color schemes.">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Color Palettes for Web Design",
+    "description": "Learn how to extract and create color palettes for web design. Understand color theory, accessibility, and tools for generating harmonious color schemes.",
+    "datePublished": "2024-06-19",
+    "dateModified": "2024-06-19",
+    "author": {
+      "@type": "Organization",
+      "name": "UseEasyTool Team"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "UseEasyTool",
+      "url": "https://useeasytool.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://useeasytool.com/assets/images/favicon.svg"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://useeasytool.com/learn/image-5-color-palette.html"
+    },
+    "keywords": ["color palette", "color theory", "color harmony", "wcag contrast", "css variables", "design tokens"]
+  }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5246764554303000" crossorigin="anonymous"></script>
+  <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WFG5TSM6M"></script>
+  <script src="../assets/js/ga4.js"></script>
+</head>
+<body>
+  <amp-auto-ads type="adsense" data-ad-client="ca-pub-5246764554303000"></amp-auto-ads>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <a href="../blog/index.html" class="navbar-link">Blog</a>
+        <a href="index.html" class="navbar-link" style="font-weight:600;">Learn</a>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="breadcrumb"><div class="container"><a href="../index.html">Home</a> / <a href="index.html">Learn</a> / <a href="index.html">Image Processing</a> / <span>Color Palettes</span></div></div>
+
+  <main style="max-width:800px;margin:0 auto;padding:24px 16px;">
+    <h1 style="font-size:2.2rem;font-weight:700;margin-bottom:0.75rem;">Color Palettes for Web Design</h1>
+    <p style="font-size:1.1rem;color:var(--color-text-secondary,#6e6e73);margin-bottom:1.5rem;line-height:1.7;">Color is the most immediate signal a design sends. A coherent palette creates hierarchy, evokes mood, and reinforces brand identity before a single word is read. This guide covers the color theory behind harmonious palettes, how to extract dominant colors from an image, the accessibility rules that keep text legible, and how to encode palettes as CSS variables and design tokens so they stay consistent across a project.</p>
+
+    <div class="ad-zone" style="margin:24px 0;text-align:center;">
+      <ins class="adsbygoogle" style="display:block;" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5246764554303000" data-ad-slot="4644408855"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <h2 style="font-size:1.6rem;font-weight:600;margin-top:2rem;margin-bottom:0.75rem;">Color Theory Basics</h2>
+    <p style="line-height:1.7;margin-bottom:1rem;">Color theory starts with the color wheel, a circle arranging hues so that related colors sit together. The primary colors, red, blue, and yellow in pigment or red, green, and blue in light, combine to form secondary colors, which combine further into tertiary colors. Position on the wheel determines hue relationships, which is the basis for every palette scheme.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">A color has three perceptual dimensions. Hue is the color itself, measured as an angle on the wheel. Saturation (or chroma) is the intensity, how far the color is from gray. Lightness is how close it is to white or black. The HSL model represents these three dimensions directly, which makes it far more intuitive for building palettes than RGB. In RGB, a color is a mix of red, green, and blue channels, which is how screens emit light but tells you little about how the color will look or how to vary it.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">For web work, HSL is the practical choice because adjusting one dimension maps to a perceptual change. To create a darker variant of a brand color, you lower lightness while keeping hue and saturation fixed. To mute a color, you lower saturation. RGB requires you to fiddle with three channels simultaneously to achieve the same effect. Modern CSS supports <code>hsl()</code> and <code>hwb()</code> directly, and the <code>oklch()</code> function offers a perceptually uniform space that predicts lightness more accurately across hues.</p>
+
+    <h2 style="font-size:1.6rem;font-weight:600;margin-top:2rem;margin-bottom:0.75rem;">Creating Harmonious Palettes</h2>
+    <p style="line-height:1.7;margin-bottom:1rem;">Harmonious palettes come from specific relationships on the color wheel. A monochromatic scheme uses a single hue with variations in lightness and saturation, producing a calm, unified look that is easy to keep consistent. An analogous scheme uses colors adjacent on the wheel, like blue, blue-green, and green, which feels natural and cohesive because these colors appear together in nature.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">A complementary scheme pairs colors opposite each other on the wheel, like blue and orange, creating high contrast and vibrancy. It is striking but hard to balance; the usual practice is to let one color dominate and use the other as an accent. A triadic scheme uses three colors evenly spaced around the wheel, offering balance with more variety than complementary. A tetradic (or double-complementary) scheme uses two complementary pairs, giving rich variety at the cost of complexity.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">The practical rule is to limit the number of hues. A palette of one dominant hue, one supporting hue, and one accent covers most interface needs. The 60-30-10 rule borrows from interior design: 60 percent of the surface uses the dominant color, 30 percent the secondary, and 10 percent the accent. This proportion creates visual interest without chaos, and it maps cleanly to the roles of background, surface, and action colors in an interface.</p>
+
+    <p style="line-height:1.7;margin-bottom:1rem;">Color temperature adds another dimension to harmony. Warm colors (reds, oranges, yellows) feel energetic and close, while cool colors (blues, greens) feel calm and recede. A palette that mixes them intentionally can guide attention, warming the accent to draw the eye and cooling the background to push it back. Mixing them accidentally produces a muddy, unfocused result. Most photographs already have a temperature bias from their lighting, so an extracted palette tends to be temperature-consistent, which is one reason image-derived palettes look cohesive. When you build a palette by hand, decide on a temperature direction and let it guide every hue choice.</p>
+
+    <h2 style="font-size:1.6rem;font-weight:600;margin-top:2rem;margin-bottom:0.75rem;">Extracting Colors from Images</h2>
+    <p style="line-height:1.7;margin-bottom:1rem;">Sometimes the best palette source is an existing image, like a brand photograph or a product shot. Extracting the dominant colors programmatically gives you a palette that already harmonizes, because the colors coexist in a real scene. The standard technique is color quantization, which reduces the millions of colors in an image to a small representative set.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">K-means clustering is the most common algorithm. You treat each pixel as a point in color space and partition the points into k clusters, where k is the number of colors you want. The centroid of each cluster becomes a palette color. Libraries like Leptonica, vibrant.js, and node-vibrant implement this and often weight results by how much area each color occupies, so a tiny bright pixel does not overwhelm a large muted region. Median-cut and octree quantization are faster alternatives that trade some quality for speed.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">After extraction, refine the result. Drop near-duplicates, adjust lightness so you have a range from dark to light, and verify the colors work for text by checking contrast against your backgrounds. Extraction gives you a starting point, not a finished palette, so treat the output as a draft and tune it for your interface's needs.</p>
+
+    <h2 style="font-size:1.6rem;font-weight:600;margin-top:2rem;margin-bottom:0.75rem;">Accessibility and Color</h2>
+    <p style="line-height:1.7;margin-bottom:1rem;">A palette that looks beautiful but fails contrast checks is unusable. The Web Content Accessibility Guidelines (WCAG) define minimum contrast ratios for text: 4.5:1 for normal text and 3:1 for large text, with a stricter 7:1 for the highest conformance level. Contrast is the ratio of the relative luminance of the lighter and darker colors, and you can measure it with a contrast checker or programmatically with the WCAG formula.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">Color blindness affects roughly 8 percent of men and 0.5 percent of women, most commonly as red-green deficiency. A palette that distinguishes elements only by red versus green is invisible to many users. The safeguard is never to rely on color alone: pair color with shape, pattern, or text labels. Simulate your palette through a color-blindness filter (many design tools include this) to confirm that information survives. Good accessible palettes tend to vary lightness, not just hue, which also helps in bright sunlight and on low-quality screens.</p>
+
+    <h2 style="font-size:1.6rem;font-weight:600;margin-top:2rem;margin-bottom:0.75rem;">CSS Color Variables and Design Systems</h2>
+    <p style="line-height:1.7;margin-bottom:1rem;">Once a palette is chosen, encode it as CSS custom properties so it is applied consistently and trivial to change. Define semantic names that describe the role, not the color, so a rebrand swaps values without touching every rule. A token named <code>--color-accent</code> can be orange today and blue tomorrow; a token named <code>--color-orange</code> cannot.</p>
+    <pre style="background:#1e1e1e;color:#d4d4d4;padding:16px;border-radius:8px;overflow-x:auto;margin-bottom:1rem;"><code>:root {
+  --color-bg: #ffffff;
+  --color-surface: #f5f5f7;
+  --color-text: #1d1d1f;
+  --color-text-secondary: #6e6e73;
+  --color-accent: #0071e3;
+  --color-accent-hover: #0058b0;
+  --color-success: #34c759;
+  --color-danger: #ff3b30;
+}
+
+[data-theme="dark"] {
+  --color-bg: #1d1d1f;
+  --color-surface: #2c2c2e;
+  --color-text: #f5f5f7;
+  --color-text-secondary: #aeaeb2;
+}</code></pre>
+    <p style="line-height:1.7;margin-bottom:1rem;">This structure makes theming straightforward. A dark mode overrides the same tokens under a <code>[data-theme]</code> selector, and the whole interface updates because every component references the tokens. Design tokens extend this idea beyond CSS: a single source of truth, often a JSON or YAML file, that feeds CSS, native mobile, and design software, ensuring the palette is identical everywhere. Tools like Style Dictionary transform tokens into platform-specific output, so a change to one accent value propagates to web, iOS, and Android builds.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">Layer your tokens by abstraction. Primitive tokens hold raw values (<code>--blue-500: #0071e3</code>), semantic tokens map primitives to roles (<code>--color-accent: var(--blue-500)</code>), and component tokens map semantic to component parts (<code>--button-bg: var(--color-accent)</code>). This layering lets you retheme at any level without rewriting the levels below, which is how large design systems stay maintainable as they scale.</p>
+
+    <h2 style="font-size:1.6rem;font-weight:600;margin-top:2rem;margin-bottom:0.75rem;">Tools for Color Selection</h2>
+    <p style="line-height:1.7;margin-bottom:1rem;">A range of tools helps you build and test palettes. Online palette generators let you pick a base color and derive harmonious schemes, while contrast checkers verify accessibility before you commit. Browser extensions sample colors from any web page, which is useful for matching an existing brand. Design software like Figma and Sketch include palette and variable features that sync tokens to code.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">For programmatic work, libraries like Chroma.js and Culori generate scales, interpolate between colors, and compute contrast. An online color palette extractor that reads an uploaded image and returns the dominant colors is the fastest way to start from a visual reference. Whatever tool you use, the goal is the same: a small, intentional set of colors, encoded as tokens, tested for contrast, and applied consistently across every surface of the product.</p>
+
+    <h2 style="font-size:1.6rem;font-weight:600;margin-top:2rem;margin-bottom:0.75rem;">Dark Mode and Color Systems</h2>
+    <p style="line-height:1.7;margin-bottom:1rem;">Dark mode is no longer a novelty; it is an expected feature. Building a palette that works in both light and dark themes means thinking in semantic roles rather than fixed colors. A surface that is white in light mode becomes near-black in dark mode, and text inverts with it. The token system makes this trivial: override the semantic tokens under a dark selector and every component updates.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">The pitfall is contrast. Simply inverting colors does not preserve accessibility, because the perceived contrast between two colors changes when the background flips. A blue that reads well on white may vanish on black. Test every text-and-background pair in both themes with a contrast checker, and adjust lightness per theme rather than assuming one set of values works for both. Saturation often needs toning down in dark mode, because bright colors against dark backgrounds can cause vibration and eye strain.</p>
+    <p style="line-height:1.7;margin-bottom:1rem;">Elevation, the visual depth of a surface, is communicated differently in dark mode. In light mode, higher surfaces are lighter; in dark mode, they are slightly lighter than the background but never pure white. Define elevation tokens that shift appropriately per theme, and avoid pure black backgrounds, which flatten contrast and waste OLED energy less than near-black but can feel harsh. A near-black like <code>#1d1d1f</code> reads as dark while preserving a sense of depth, which is why it appears in many mature dark themes.</p>
+
+    <div class="ad-zone" style="margin:24px 0;text-align:center;">
+      <ins class="adsbygoogle" style="display:block;" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5246764554303000" data-ad-slot="3469113897"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div class="tool-cta" style="margin:24px 0;padding:20px;border:1px solid var(--color-border,#d2d2d7);border-radius:12px;text-align:center;background:var(--color-bg-secondary,#f5f5f7);">
+      <h3 style="margin-bottom:8px;">Try This Tool</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);margin-bottom:12px;">Upload an image and extract its dominant color palette instantly. Copy hex values and generate harmonious schemes.</p>
+      <a href="../tools/image-tools/color-palette.html" style="display:inline-block;padding:10px 24px;background:#0071e3;color:#fff;border-radius:8px;text-decoration:none;font-weight:500;">Open Color Palette Tool &rarr;</a>
+    </div>
+
+    <h2 style="font-size:1.6rem;font-weight:600;margin-top:2rem;margin-bottom:0.75rem;">Frequently Asked Questions</h2>
+    <h3 style="font-size:1.2rem;font-weight:600;margin-top:1.5rem;margin-bottom:0.5rem;">How many colors should be in a palette?</h3>
+    <p style="line-height:1.7;margin-bottom:1rem;">A core interface palette usually has one dominant color, one secondary, and one accent, plus neutrals for backgrounds and text. That is roughly five to seven colors, each in a few shades. More colors increase complexity without adding value, so keep the set small and intentional.</p>
+    <h3 style="font-size:1.2rem;font-weight:600;margin-top:1.5rem;margin-bottom:0.5rem;">What is the 60-30-10 rule?</h3>
+    <p style="line-height:1.7;margin-bottom:1rem;">The 60-30-10 rule is a proportion guide: 60 percent of a design uses the dominant color, 30 percent the secondary, and 10 percent the accent. In web terms, that maps to background, surfaces and secondary text, and calls to action, creating balance and hierarchy without visual noise.</p>
+    <h3 style="font-size:1.2rem;font-weight:600;margin-top:1.5rem;margin-bottom:0.5rem;">How do I ensure color accessibility?</h3>
+    <p style="line-height:1.7;margin-bottom:1rem;">Check text and background pairs against WCAG contrast ratios (4.5:1 for normal text). Never rely on color alone to convey information, since color-blind users may miss it; pair color with labels or patterns. Simulate your palette through a color-blindness filter and vary lightness, not just hue, to keep distinctions clear.</p>
+    <h3 style="font-size:1.2rem;font-weight:600;margin-top:1.5rem;margin-bottom:0.5rem;">What's the difference between RGB and HSL?</h3>
+    <p style="line-height:1.7;margin-bottom:1rem;">RGB describes a color as a mix of red, green, and blue light channels, which is how screens emit color. HSL describes a color by hue, saturation, and lightness, which maps to how we perceive color. HSL is more intuitive for building palettes because adjusting one dimension produces a predictable perceptual change.</p>
+    <h3 style="font-size:1.2rem;font-weight:600;margin-top:1.5rem;margin-bottom:0.5rem;">How do I extract colors from a photo?</h3>
+    <p style="line-height:1.7;margin-bottom:1rem;">Use a color quantization tool, typically k-means clustering, which groups pixels into a few representative colors. Libraries like node-vibrant and online extractors weight colors by the area they occupy, so dominant regions define the palette. Refine the output by removing duplicates and adjusting lightness for a usable range.</p>
+
+    <div class="tool-author" style="margin-top:24px;padding:12px 0;border-top:1px solid var(--color-border,#d2d2d7);font-size:14px;color:var(--color-text-tertiary,#6e6e73);">
+      Written by <a href="../authors/useeasytool-team.html" style="color:var(--color-primary,#0071e3);">UseEasyTool Team</a> &mdash; Developer Tools Experts
+    </div>
+
+    <h2 style="font-size:1.4rem;font-weight:600;margin-top:2rem;margin-bottom:0.75rem;">Related Articles</h2>
+    <ul style="list-style:none;padding:0;line-height:2;">
+      <li><a href="image-1-compression.html" style="color:var(--color-primary,#0071e3);">Image Compression: Reducing Size Without Quality Loss</a></li>
+      <li><a href="image-2-format-conversion.html" style="color:var(--color-primary,#0071e3);">Image Format Conversion: When to Use PNG, JPG, WebP</a></li>
+      <li><a href="image-3-base64.html" style="color:var(--color-primary,#0071e3);">Image to Base64: Embedding Images in Code</a></li>
+      <li><a href="image-4-crop-rotate.html" style="color:var(--color-primary,#0071e3);">Crop and Rotate: Photo Editing Basics</a></li>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-bottom">
+        <div class="footer-brand"><a href="../index.html" class="logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a></div>
+        <div class="footer-links-group">
+          <div class="footer-col"><h5>Tools</h5><a href="../index.html#cat_converters">Converters</a><a href="../index.html#cat_calculators">Calculators</a><a href="../index.html#cat_generators">Generators</a><a href="../index.html#cat_formatters">Formatters</a></div>
+          <div class="footer-col"><h5>Resources</h5><a href="../guides/converters-guide.html">Guides</a><a href="../blog/index.html">Blog</a><a href="index.html">Learning Center</a><a href="../faq.html">FAQ</a></div>
+          <div class="footer-col"><h5>Company</h5><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../authors/useeasytool-team.html">Our Team</a></div>
+          <div class="footer-col"><h5>Legal</h5><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms of Service</a><a href="../disclaimer.html">Disclaimer</a></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="../assets/js/main.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Encoding: A Developer's Complete Guide | UseEasyTool</title>
+  <meta name="description" content="Master URL encoding (percent-encoding) with this comprehensive guide. Learn RFC 3986 standards, common pitfalls, and language-specific implementations.">
+  <meta name="keywords" content="URL encoding, percent encoding, encodeURIComponent, encodeURI, RFC 3986, query parameters">
+  <link rel="canonical" href="https://useeasytool.com/learn/data-encoding-2-url.html">
+  <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.453.0"></script>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/dark.css">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="URL Encoding: A Developer's Complete Guide">
+  <meta property="og:description" content="Master URL encoding (percent-encoding) with this comprehensive guide. Learn RFC 3986 standards, common pitfalls, and language-specific implementations.">
+  <meta property="og:url" content="https://useeasytool.com/learn/data-encoding-2-url.html">
+  <meta property="og:site_name" content="UseEasyTool">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="URL Encoding: A Developer's Complete Guide">
+  <meta name="twitter:description" content="Master URL encoding (percent-encoding) with this comprehensive guide.">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "URL Encoding: A Developer's Complete Guide",
+    "description": "Master URL encoding (percent-encoding) with this comprehensive guide. Learn RFC 3986 standards, common pitfalls, and language-specific implementations.",
+    "datePublished": "2024-06-15",
+    "dateModified": "2024-06-15",
+    "author": { "@type": "Organization", "name": "UseEasyTool Team" },
+    "publisher": { "@type": "Organization", "name": "UseEasyTool", "url": "https://useeasytool.com/" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://useeasytool.com/learn/data-encoding-2-url.html" },
+    "keywords": ["URL encoding", "percent encoding", "encodeURIComponent", "RFC 3986"]
+  }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5246764554303000" crossorigin="anonymous"></script>
+  <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WFG5TSM6M"></script>
+  <script src="../assets/js/ga4.js"></script>
+</head>
+<body>
+  <amp-auto-ads type="adsense" data-ad-client="ca-pub-5246764554303000"></amp-auto-ads>
+
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a>
+      <div class="navbar-search"><i data-lucide="search"></i><input type="text" class="search-input" placeholder="Search tools..."></div>
+      <div class="navbar-actions">
+        <a href="../blog/index.html" class="navbar-link">Blog</a>
+        <a href="index.html" class="navbar-link" style="font-weight:600;">Learn</a>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></button>
+        <button class="btn-icon hamburger" id="hamburgerBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="breadcrumb"><div class="container"><a href="../index.html">Home</a> / <a href="index.html">Learn</a> / <a href="index.html">Data Encoding</a> / <span>URL Encoding</span></div></div>
+
+  <main style="max-width:800px;margin:0 auto;padding:24px 16px;">
+    <h1 style="font-size:2rem;font-weight:700;margin-bottom:0.5rem;">URL Encoding: A Developer's Complete Guide</h1>
+    <p style="font-size:1.1rem;color:var(--color-text-secondary,#6e6e73);margin-bottom:2rem;line-height:1.7;">URL encoding, also called percent-encoding, is how we represent characters that are not allowed or that have special meaning in a URL. Every web developer encounters it when building query strings, handling user input in paths, or constructing API calls. This guide covers the RFC 3986 standard, the difference between JavaScript's two encoding functions, common bugs, and how to handle Unicode correctly.</p>
+
+    <div class="ad-zone" style="margin:24px 0;text-align:center;">
+      <ins class="adsbygoogle" style="display:block;" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5246764554303000" data-ad-slot="4644408855"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">What is URL Encoding?</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">URL encoding replaces unsafe or reserved characters with a percent sign followed by a two-digit hexadecimal representation of the byte's value. For example, the space character becomes <code>%20</code>, the ampersand becomes <code>%26</code>, and the equals sign becomes <code>%3D</code>. This mechanism allows URLs to carry arbitrary data without ambiguity.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">A URL has a strict structure. It contains a scheme, authority, path, query, and fragment, each separated by reserved characters like <code>:</code>, <code>/</code>, <code>?</code>, <code>#</code>, and <code>&amp;</code>. If user-supplied data contains any of these characters literally, the URL parser may interpret them as structural delimiters instead of data. Percent-encoding tells the parser, "treat this as literal data, not as a separator."</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Unreserved characters, which are letters, digits, hyphen, period, underscore, and tilde (<code>A-Z a-z 0-9 - . _ ~</code>), never need encoding. They are always safe to include as-is. Everything else may need encoding depending on where in the URL it appears.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">RFC 3986: The Standard Explained</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">RFC 3986 defines the generic syntax for URIs. It classifies characters into three groups: unreserved, reserved, and other. Reserved characters are further divided into general delimiters and sub-delimiters.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">General delimiters separate the major structural components of a URI: <code>:</code> <code>/</code> <code>?</code> <code>#</code> <code>[</code> <code>]</code> <code>@</code>. Sub-delimiters separate sub-components within those parts: <code>!</code> <code>$</code> <code>&amp;</code> <code>'</code> <code>(</code> <code>)</code> <code>*</code> <code>+</code> <code>,</code> <code>;</code> <code>=</code>.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">The rule is context-dependent. A character like <code>/</code> is a path separator and does not need encoding when it serves that structural purpose. But if <code>/</code> appears in a query parameter value, it should be encoded as <code>%2F</code> to prevent it from being misinterpreted. This is why the choice of encoding function matters: you need to encode different sets of characters depending on whether you are encoding a full URL or a single component within it.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Encoding in Different Languages</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">JavaScript provides two functions for URL encoding, and understanding the difference is essential. <code>encodeURIComponent()</code> encodes everything except <code>A-Z a-z 0-9 - . _ ~ ! ' ( ) *</code>. It is designed for encoding individual query parameter values or path segments. <code>encodeURI()</code> encodes fewer characters, preserving structural delimiters like <code>/</code> <code>?</code> <code>#</code> <code>&amp;</code>, so it is meant for encoding a complete URL that already has structure.</p>
+    <pre style="background:var(--color-bg-secondary,#f5f5f7);padding:16px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.6;"><code>// For individual query parameter values:
+const query = "name=" + encodeURIComponent("John & Sons");
+// name=John%20%26%20Sons
+
+// For a complete URL (preserves structure):
+const url = encodeURI("https://example.com/path with spaces");
+// https://example.com/path%20with%20spaces</code></pre>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">In Python, the <code>urllib.parse</code> module provides <code>quote()</code> and <code>quote_plus()</code>. <code>quote()</code> uses <code>%20</code> for spaces, while <code>quote_plus()</code> uses <code>+</code> for spaces, which is the HTML form encoding convention:</p>
+    <pre style="background:var(--color-bg-secondary,#f5f5f7);padding:16px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.6;"><code>from urllib.parse import quote, quote_plus, urlencode
+
+# Percent-encoding (spaces become %20)
+print(quote("hello world & co"))  # hello%20world%20%26%20co
+
+# Form encoding (spaces become +)
+print(quote_plus("hello world & co"))  # hello+world+%26+co
+
+# Building query strings
+params = {"q": "rust & python", "page": "2"}
+print(urlencode(params))  # q=rust+%26+python&page=2</code></pre>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">In Java, <code>URLEncoder.encode()</code> uses the form encoding convention (spaces become <code>+</code>). Note that despite its name, it uses the application/x-www-form-urlencoded format, which is different from pure percent-encoding.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Common Pitfalls and Bugs</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Double encoding is a classic bug. It happens when you encode a string that is already encoded, or when a framework automatically encodes a value that you already encoded manually. The result is <code>%2520</code> instead of <code>%20</code>, because the <code>%</code> sign itself gets encoded to <code>%25</code>. To debug this, inspect the raw URL string before it is sent, and trace each layer of encoding.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">The space character has two valid encodings: <code>%20</code> and <code>+</code>. The <code>+</code> convention comes from HTML form encoding (application/x-www-form-urlencoded), while <code>%20</code> is the RFC 3986 standard. In query strings, both are usually accepted by servers. In path segments, <code>+</code> should be treated as a literal plus sign, not a space. Using <code>+</code> for spaces in paths can cause subtle bugs where a filename like <code>file+name.txt</code> gets decoded as <code>file name.txt</code>.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Encoding an already-constructed URL with <code>encodeURIComponent()</code> instead of <code>encodeURI()</code> is another common mistake. This encodes the structural characters, breaking the URL: <code>https%3A%2F%2Fexample.com</code> instead of <code>https://example.com</code>. The rule is simple: encode individual components before assembling the URL, and use <code>encodeURI()</code> only when you need to encode an entire pre-constructed URL with unsafe characters in its path.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Unicode characters deserve special attention. Modern URLs use UTF-8 encoding for non-ASCII characters, which means a single character like the euro sign becomes three bytes in UTF-8, and each byte is percent-encoded separately: <code>%E2%82%AC</code>. Browsers display these as the original character in the address bar (a feature called Punycode for domain names and percent-decoding for paths), but the underlying representation uses percent-encoding. When testing URLs with international characters, always verify the encoded form rather than relying on the browser's display, because the display may differ from what the server receives.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Another frequent issue is the difference between encoding a fragment identifier and encoding the rest of the URL. The fragment (everything after <code>#</code>) is processed client-side only and is not sent to the server. This means fragment parameters do not need the same encoding care for server-side correctness, but they do need proper encoding for client-side JavaScript to parse them correctly. Single-page applications that use hash-based routing must handle encoding consistently in both reading and writing the fragment.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">URL Encoding in API Development</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">When constructing API requests, you deal with encoding at multiple levels. Query parameter values must be encoded so that delimiters in the value do not break the query string structure. Path segments must be encoded so that slashes and other delimiters in the segment are treated as data, not separators.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">A practical example is an API that takes a redirect URL as a query parameter. If the redirect URL contains its own query string with <code>&amp;</code> characters, those must be encoded so they do not get interpreted as additional parameters in the outer URL:</p>
+    <pre style="background:var(--color-bg-secondary,#f5f5f7);padding:16px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.6;"><code>// Correct: encode the redirect value
+const redirect = encodeURIComponent("https://app.com/callback?code=abc&state=xyz");
+const url = `https://auth.example.com/authorize?redirect_uri=${redirect}`;
+// redirect_uri=https%3A%2F%2Fapp.com%2Fcallback%3Fcode%3Dabc%26state%3Dxyz</code></pre>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Special cases arise with characters like <code>#</code> (fragment identifier) and <code>;</code> (path parameter delimiter in some frameworks). If user input contains these, they must be encoded to prevent the URL parser from misinterpreting the structure. The safest approach is to always encode user input before placing it in a URL, and to rely on your HTTP client library's URL builder rather than constructing URLs via string concatenation.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">URL Encoding vs Base64: When to Use Each</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">URL encoding and Base64 serve different purposes. URL encoding makes a string safe to include in a URL by replacing problematic characters with percent sequences. Base64 converts binary data into ASCII text so it can be transported through text-based channels.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">If you need to include arbitrary text in a URL, use URL encoding. If you need to include binary data in a URL, first Base64-encode it to get ASCII text, then URL-encode the result (or use the URL-safe Base64 variant that replaces <code>+</code> and <code>/</code>). For example, a JWT token embedded in a URL is Base64URL-encoded, which avoids the need for an additional round of URL encoding.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">The choice depends on the data. Plain text with a few special characters? URL encoding. Binary data like images or encrypted payloads? Base64, then URL encoding if needed. The <code>URLSearchParams</code> API in modern JavaScript handles encoding automatically, which is the recommended approach for building query strings.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Server-Side URL Encoding in Frameworks</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Server-side frameworks handle URL encoding differently, and understanding these differences prevents subtle bugs when your application constructs URLs for redirects, API calls, or link generation. Express.js does not automatically encode query parameters when you construct URLs with string concatenation, but the built-in <code>URL</code> class (available in Node.js) handles encoding correctly when you use <code>searchParams</code>. Django's <code>reverse()</code> function encodes path parameters automatically, but <code>urlencode</code> in template tags uses form encoding (spaces become <code>+</code>), which may not be what you want for path segments.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">In PHP, <code>http_build_query()</code> uses form encoding by default, producing <code>+</code> for spaces. For RFC 3986 compliant encoding in PHP, you need to pass <code>PHP_QUERY_RFC3986</code> as the encoding type parameter. Rails' <code>to_query</code> method also uses form encoding. The key takeaway is that you must check your framework's default encoding behavior and ensure it matches what your server or downstream API expects. When in doubt, test with edge cases like spaces, ampersands, and Unicode characters to verify that round-trip encoding and decoding produce the original value.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">Security implications extend beyond correct encoding. Open redirect vulnerabilities occur when an application takes a redirect target from user input (like a <code>redirect</code> query parameter) without validating it. Even with proper URL encoding, an attacker can craft a URL that looks like a legitimate path on your domain but redirects to an external site. Always validate redirect targets against an allowlist of trusted domains, and never pass unvalidated user input directly to a redirect function regardless of encoding.</p>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Best Practices for URL Construction</h2>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">The safest way to build URLs programmatically is to use the built-in <code>URL</code> and <code>URLSearchParams</code> APIs rather than string concatenation. The <code>URLSearchParams</code> constructor handles encoding automatically, ensuring query parameter values are properly percent-encoded:</p>
+    <pre style="background:var(--color-bg-secondary,#f5f5f7);padding:16px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.6;"><code>// Safe URL construction with URLSearchParams
+const params = new URLSearchParams({
+  q: "rust & python",
+  redirect: "https://app.com/cb?code=abc",
+  page: "2"
+});
+const url = `https://api.example.com/search?${params}`;
+// q=rust+%26+python&redirect=https%3A%2F%2Fapp.com%2Fcb%3Fcode%3Dabc&page=2</code></pre>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">This approach eliminates the most common encoding bugs because the API handles the percent-encoding internally. Never manually concatenate query strings with <code>?</code> and <code>&amp;</code> when user input is involved. If you must construct URLs manually, always pass each component value through <code>encodeURIComponent()</code> before inserting it.</p>
+    <p style="line-height:1.7;color:var(--color-text-secondary,#6e6e73);">When building API clients, prefer libraries that provide URL builder abstractions. Libraries like <code>axios</code>, <code>got</code>, or Python's <code>requests</code> handle URL encoding of query parameters automatically. They also handle other concerns like timeout configuration, retry logic, and response parsing. The key principle is to encode data as late as possible: keep values in their natural form in your application code and let the URL-building layer handle encoding at the boundary where the URL is constructed.</p>
+
+    <div class="ad-zone" style="margin:24px 0;text-align:center;">
+      <ins class="adsbygoogle" style="display:block;" data-ad-format="auto" data-full-width-responsive="true" data-ad-client="ca-pub-5246764554303000" data-ad-slot="3469113897"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div class="tool-cta" style="margin:24px 0;padding:20px;border:1px solid var(--color-border,#d2d2d7);border-radius:12px;text-align:center;background:var(--color-bg-secondary,#f5f5f7);">
+      <h3 style="margin-bottom:8px;">Try This Tool</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);margin-bottom:12px;">Encode or decode URLs instantly. Test how your query strings look after percent-encoding.</p>
+      <a href="../tools/converters/url.html" style="display:inline-block;padding:10px 24px;background:#0071e3;color:#fff;border-radius:8px;text-decoration:none;font-weight:500;">Open Tool &rarr;</a>
+    </div>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Frequently Asked Questions</h2>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">What's the difference between encodeURI and encodeURIComponent?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">Use <code>encodeURIComponent()</code> for individual query parameter values or path segments, because it encodes all reserved characters. Use <code>encodeURI()</code> for entire pre-constructed URLs, because it preserves structural delimiters like <code>/</code>, <code>?</code>, and <code>#</code>. Using the wrong one breaks your URL structure.</p>
+    </div>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">Should I encode before or after constructing the URL?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">Encode individual component values before assembling the URL. This prevents double-encoding and ensures each part is properly escaped. Use the <code>URLSearchParams</code> API for query strings, which handles encoding automatically.</p>
+    </div>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">What characters need to be URL-encoded?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">Any character that is not an unreserved character (A-Z, a-z, 0-9, hyphen, period, underscore, tilde) may need encoding. Reserved characters like <code>&amp;</code>, <code>=</code>, <code>?</code>, <code>#</code>, and <code>/</code> must be encoded when they appear as literal data rather than structural delimiters.</p>
+    </div>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">Is + the same as %20?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">In query strings, <code>+</code> and <code>%20</code> both represent a space, following the HTML form encoding convention. In path segments, <code>+</code> is a literal plus character and <code>%20</code> is a space. Using <code>+</code> for spaces in paths can cause bugs, so prefer <code>%20</code> for consistency.</p>
+    </div>
+    <div>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">How do I handle Unicode in URLs?</h3>
+      <p style="color:var(--color-text-secondary,#6e6e73);line-height:1.6;margin-bottom:1rem;">Modern encoding functions handle Unicode by first encoding the string as UTF-8, then percent-encoding each byte. The character becomes <code>%E2%82%AC</code>. JavaScript's <code>encodeURIComponent()</code> and Python's <code>quote()</code> both handle this correctly.</p>
+    </div>
+
+    <div class="tool-author" style="margin-top:20px;padding:12px 0;border-top:1px solid var(--color-border,#d2d2d7);font-size:13px;color:var(--color-text-tertiary,#6e6e73);">
+      Written by <a href="../authors/useeasytool-team.html" style="color:var(--color-primary,#0071e3);">UseEasyTool Team</a> &mdash; Developer Tools Experts
+    </div>
+
+    <h2 style="font-size:1.5rem;font-weight:600;margin:2rem 0 1rem;">Related Articles</h2>
+    <ul style="list-style:none;padding:0;line-height:2;">
+      <li><a href="data-encoding-1-base64.html" style="color:var(--color-primary,#0071e3);">Understanding Base64: From Binary to Text</a></li>
+      <li><a href="data-encoding-3-html-entities.html" style="color:var(--color-primary,#0071e3);">HTML Entities: When and How to Use Them</a></li>
+      <li><a href="data-encoding-4-json-yaml.html" style="color:var(--color-primary,#0071e3);">JSON to YAML: Data Format Migration Guide</a></li>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-bottom">
+        <div class="footer-brand"><a href="../index.html" class="logo"><i data-lucide="UseEasyTool"></i><span>UseEasyTool</span></a></div>
+        <div class="footer-links-group">
+          <div class="footer-col"><h5>Tools</h5><a href="../index.html#cat_converters">Converters</a><a href="../index.html#cat_calculators">Calculators</a><a href="../index.html#cat_generators">Generators</a><a href="../index.html#cat_formatters">Formatters</a></div>
+          <div class="footer-col"><h5>Resources</h5><a href="../guides/converters-guide.html">Guides</a><a href="../blog/index.html">Blog</a><a href="index.html">Learning Center</a><a href="../faq.html">FAQ</a></div>
+          <div class="footer-col"><h5>Company</h5><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../authors/useeasytool-team.html">Our Team</a></div>
+          <div class="footer-col"><h5>Legal</h5><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms of Service</a><a href="../disclaimer.html">Disclaimer</a></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="../assets/js/main.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
